@@ -4,24 +4,29 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
 import { OrderCard } from "@/components/kaya/OrderCard";
 import { OrderPartnerPanel } from "@/components/kaya/OrderPartnerPanel";
-import { Notification, Order, Paginated, STATUS_LABELS } from "@/lib/types";
+import { QueueDepthPanel } from "@/components/kaya/QueueDepthPanel";
+import { fetchStatusCounts } from "@/lib/kpi/adapter";
+import { Notification, Order, OrderStatus, Paginated, STATUS_LABELS } from "@/lib/types";
 
 const PARTNER_STAGES = ["QUOTING", "CONFIRMED_HUB", "PICKED_UP", "IN_TRANSIT", "DELIVERED"] as const;
 
 export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [counts, setCounts] = useState<Partial<Record<OrderStatus, number>>>({});
   const [loading, setLoading] = useState(false);
 
   async function refresh() {
     setLoading(true);
     try {
-      const [result, notifs] = await Promise.all([
+      const [result, notifs, statusCounts] = await Promise.all([
         api.get<{ items: Order[] }>("/orders"),
         api.get<Paginated<Notification>>("/notifications?limit=5"),
+        fetchStatusCounts(),
       ]);
       setOrders(result.items);
       setNotifications(notifs.items);
+      setCounts(statusCounts);
     } finally {
       setLoading(false);
     }
@@ -31,11 +36,6 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const counts = PARTNER_STAGES.reduce<Record<string, number>>((acc, status) => {
-    acc[status] = orders.filter((o) => o.status === status).length;
-    return acc;
-  }, {});
 
   return (
     <div>
@@ -53,6 +53,10 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
             <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{STATUS_LABELS[status]}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mb-6">
+        <QueueDepthPanel />
       </div>
 
       {notifications.filter((n) => n.channel === "IN_APP").length > 0 && (

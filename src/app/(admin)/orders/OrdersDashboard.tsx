@@ -6,9 +6,11 @@ import { api } from "@/lib/apiClient";
 import { IntentForm } from "@/components/kaya/IntentForm";
 import { OrderCard } from "@/components/kaya/OrderCard";
 import { OrderAdminPanel } from "@/components/kaya/OrderAdminPanel";
+import { QueueDepthPanel } from "@/components/kaya/QueueDepthPanel";
 import { sideColor } from "@/components/kaya/CorridorTracker";
 import { useSession } from "@/context/SessionContext";
-import { Order, STATUS_LABELS, STATUS_SEQUENCE } from "@/lib/types";
+import { fetchStatusCounts } from "@/lib/kpi/adapter";
+import { Order, OrderStatus, STATUS_LABELS, STATUS_SEQUENCE } from "@/lib/types";
 
 const STAT_ACCENT: Record<"abidjan" | "handoff" | "niamey", string> = {
   abidjan: "before:bg-abidjan-500",
@@ -19,14 +21,16 @@ const STAT_ACCENT: Record<"abidjan" | "handoff" | "niamey", string> = {
 export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
   const user = useSession();
   const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [counts, setCounts] = useState<Partial<Record<OrderStatus, number>>>({});
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function refresh() {
     setLoading(true);
     try {
-      const result = await api.get<{ items: Order[] }>("/orders");
+      const [result, statusCounts] = await Promise.all([api.get<{ items: Order[] }>("/orders"), fetchStatusCounts()]);
       setOrders(result.items);
+      setCounts(statusCounts);
     } finally {
       setLoading(false);
     }
@@ -41,11 +45,6 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
     setShowForm(false);
     await refresh();
   }
-
-  const counts = STATUS_SEQUENCE.reduce<Record<string, number>>((acc, status) => {
-    acc[status] = orders.filter((o) => o.status === status).length;
-    return acc;
-  }, {});
 
   if (!user.hubId) {
     return (
@@ -92,6 +91,10 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
             <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{STATUS_LABELS[status]}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mb-6">
+        <QueueDepthPanel />
       </div>
 
       {showForm && (

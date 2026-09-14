@@ -1,13 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/apiClient";
 import { IntentForm } from "@/components/kaya/IntentForm";
+import { StatusPill } from "@/components/kaya/StatusPill";
+import { KpiRow } from "@/components/kaya/KpiRow";
+import { PanelShell } from "@/components/kaya/PanelShell";
+import { RankingBars } from "@/components/charts/RankingBars";
+import { BulletChart } from "@/components/charts/BulletChart";
+import { fetchReservationRanking, fetchReservationStats } from "@/lib/kpi/adapter";
+import { RESERVATION_CONVERSION_TARGET_PCT } from "@/lib/kpi/thresholds";
+import { RankingItem, ReservationStats } from "@/lib/kpi/types";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import { Paginated, Reservation } from "@/lib/types";
 
 const PAGE_LIMIT = 100;
+const STATS_RANGE_DAYS = 30;
 
 export function ReservationsDashboard({
   initialReservations,
@@ -21,12 +30,47 @@ export function ReservationsDashboard({
   const [converting, setConverting] = useState<Reservation | null>(null);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<ReservationStats | null>(null);
+  const [statsError, setStatsError] = useState<string | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [ranking, setRanking] = useState<RankingItem[] | null>(null);
+  const [rankingError, setRankingError] = useState<string | null>(null);
+  const [rankingLoading, setRankingLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchReservationStats(STATS_RANGE_DAYS)
+      .then((data) => {
+        if (!cancelled) setStats(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setStatsError(err instanceof Error ? err.message : "Impossible de charger les statistiques");
+      })
+      .finally(() => {
+        if (!cancelled) setStatsLoading(false);
+      });
+    fetchReservationRanking(STATS_RANGE_DAYS)
+      .then((data) => {
+        if (!cancelled) setRanking(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setRankingError(err instanceof Error ? err.message : "Impossible de charger le classement");
+      })
+      .finally(() => {
+        if (!cancelled) setRankingLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function refresh() {
     const result = await api.get<Paginated<Reservation>>(`/reservations?limit=${PAGE_LIMIT}`);
     setReservations(result.items);
     setTotal(result.total);
   }
+
+  const conversionRateKpi = stats?.kpis.find((k) => k.key === "conversionRatePct");
 
   async function remove(id: string) {
     setRemovingId(id);
@@ -63,6 +107,42 @@ export function ReservationsDashboard({
         )}
       </div>
 
+      <div className="mb-6">
+        <KpiRow stats={stats} loading={statsLoading} error={statsError} />
+      </div>
+
+      <div className="mb-6 grid gap-4 lg:grid-cols-3">
+        <PanelShell
+          title="Taux de conversion"
+          loading={statsLoading}
+          error={statsError}
+          empty={false}
+          emptyLabel=""
+        >
+          {conversionRateKpi && (
+            <BulletChart
+              label="Réservations transformées en commande"
+              value={conversionRateKpi.value}
+              target={RESERVATION_CONVERSION_TARGET_PCT}
+              format={(v) => `${v}%`}
+            />
+          )}
+        </PanelShell>
+        <div className="lg:col-span-2">
+          <PanelShell
+            title="Boutique la plus réservée"
+            loading={rankingLoading}
+            error={rankingError}
+            empty={!!ranking && ranking.length === 0}
+            emptyLabel="Aucune réservation sur les 30 derniers jours."
+          >
+            {ranking && (
+              <RankingBars items={ranking.map((r) => ({ key: r.key, label: r.label, value: r.count, logoUrl: r.logoUrl }))} />
+            )}
+          </PanelShell>
+        </div>
+      </div>
+
       {error && (
         <p className="mb-4 rounded-lg bg-error-50 px-3 py-2 text-sm text-error-600 dark:bg-error-500/10 dark:text-error-400">
           {error}
@@ -86,8 +166,8 @@ export function ReservationsDashboard({
       )}
 
       <div className="mb-8">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-          En attente ({reserved.length})
+        <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+          En attente <StatusPill tone="warning" label={String(reserved.length)} />
         </p>
         {reserved.length === 0 ? (
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -152,8 +232,8 @@ export function ReservationsDashboard({
 
       {converted.length > 0 && (
         <div>
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-            Transformées en commande ({converted.length})
+          <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            Transformées en commande <StatusPill tone="success" label={String(converted.length)} />
           </p>
           <div className="space-y-2">
             {converted.map((r) => (

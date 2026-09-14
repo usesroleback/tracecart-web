@@ -3,11 +3,14 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useSession } from "@/context/SessionContext";
+import { SessionUser } from "@/lib/types";
 
-const ROLE_LABELS: Record<string, string> = {
-  SUPER_ADMIN: "Gérant · Abidjan",
-  LOGISTICS_PARTNER: "Partenaire · Niamey",
-};
+function roleLabel(user: SessionUser): string {
+  if (user.role === "SUPER_ADMIN") {
+    return user.hub ? `Gérant · ${user.hub.city}` : "Gérant";
+  }
+  return "Partenaire logistique";
+}
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +47,7 @@ export default function UserDropdown() {
         <span className="mr-1 hidden text-left sm:block">
           <span className="block font-medium text-theme-sm">{user.name}</span>
           <span className="block text-theme-xs text-gray-500 dark:text-gray-400">
-            {ROLE_LABELS[user.role] ?? user.role}
+            {roleLabel(user)}
           </span>
         </span>
         <svg

@@ -1,15 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
 import { StoreForm } from "@/components/kaya/StoreForm";
+import { StatusPill } from "@/components/kaya/StatusPill";
+import { PanelShell } from "@/components/kaya/PanelShell";
+import { RankingBars } from "@/components/charts/RankingBars";
+import { GaugeCard } from "@/components/charts/GaugeCard";
+import { fetchBreakdown } from "@/lib/kpi/adapter";
+import { Breakdown } from "@/lib/kpi/types";
 import { Provider } from "@/lib/types";
+
+const RANKING_RANGE_DAYS = 90;
 
 export function StoresDashboard({ initialStores }: { initialStores: Provider[] }) {
   const [stores, setStores] = useState<Provider[]>(initialStores);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Provider | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [ranking, setRanking] = useState<Breakdown | null>(null);
+  const [rankingError, setRankingError] = useState<string | null>(null);
+  const [rankingLoading, setRankingLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchBreakdown("provider", RANKING_RANGE_DAYS)
+      .then((data) => {
+        if (!cancelled) setRanking(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setRankingError(err instanceof Error ? err.message : "Impossible de charger le classement");
+      })
+      .finally(() => {
+        if (!cancelled) setRankingLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function refresh() {
     const result = await api.get<Provider[]>("/providers?includeInactive=true");
@@ -55,6 +83,27 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
         </button>
       </div>
 
+      <div className="mb-6 grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <PanelShell
+            title="Commandes par boutique"
+            loading={rankingLoading}
+            error={rankingError}
+            empty={!!ranking && ranking.slices.length === 0}
+            emptyLabel="Aucune commande sur les 90 derniers jours."
+          >
+            {ranking && (
+              <RankingBars items={ranking.slices.map((s) => ({ key: s.key, label: s.label, value: s.count, logoUrl: s.logoUrl }))} />
+            )}
+          </PanelShell>
+        </div>
+        <PanelShell title="Boutiques actives" loading={false} error={null} empty={stores.length === 0} emptyLabel="Aucune boutique configurée.">
+          <div className="flex justify-center">
+            <GaugeCard label="Actives" value={stores.filter((s) => s.isActive).length} total={stores.length} height={160} />
+          </div>
+        </PanelShell>
+      </div>
+
       {showForm && (
         <div className="mb-6">
           <StoreForm
@@ -91,15 +140,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
                   <span className="text-sm font-semibold text-gray-400">{store.name.slice(0, 2).toUpperCase()}</span>
                 )}
               </div>
-              <span
-                className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                  store.isActive
-                    ? "bg-success-50 text-success-600 dark:bg-success-500/10 dark:text-success-400"
-                    : "bg-gray-100 text-gray-500 dark:bg-white/5 dark:text-gray-400"
-                }`}
-              >
-                {store.isActive ? "Active" : "Désactivée"}
-              </span>
+              <StatusPill tone={store.isActive ? "success" : "neutral"} label={store.isActive ? "Active" : "Désactivée"} />
             </div>
 
             <p className="mt-3 text-sm font-semibold text-gray-800 dark:text-white/90">{store.name}</p>

@@ -10,7 +10,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Kaya — Achetez en ligne, recevez à Niamey",
+  title: "Kaya — Achetez en ligne, recevez où que vous soyez",
   description: "Plateforme d'orchestration de commandes et de livraisons transfrontalières.",
 };
 

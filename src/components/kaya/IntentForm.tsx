@@ -27,8 +27,8 @@ export function IntentForm({
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-  const [destinationCity, setDestinationCity] = useState("Niamey");
-  const [destinationCountry, setDestinationCountry] = useState("Niger");
+  const [destinationCity, setDestinationCity] = useState("");
+  const [destinationCountry, setDestinationCountry] = useState("");
   const [productUrl, setProductUrl] = useState(initialProduct?.url ?? "");
   const [productName, setProductName] = useState(initialProduct?.name ?? "");
   const [productImageUrl, setProductImageUrl] = useState(initialProduct?.imageUrl ?? "");

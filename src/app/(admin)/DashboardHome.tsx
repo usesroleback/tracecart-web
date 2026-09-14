@@ -3,26 +3,16 @@
 import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
 import { OrderCard } from "@/components/kaya/OrderCard";
-import { sideColor } from "@/components/kaya/CorridorTracker";
+import { AttentionTable } from "@/components/kaya/AttentionTable";
+import { KpiRow } from "@/components/kaya/KpiRow";
+import { TrendPanel } from "@/components/kaya/TrendPanel";
+import { BreakdownPanel } from "@/components/kaya/BreakdownPanel";
+import { QueueDepthPanel } from "@/components/kaya/QueueDepthPanel";
 import { GridIcon, BoxCubeIcon, PlugInIcon, ListIcon, BoxIconLine } from "@/icons";
-import { Order, OrderStatus, STATUS_LABELS } from "@/lib/types";
+import { Order } from "@/lib/types";
+import { DashboardStats } from "@/lib/kpi/types";
 
-const STAT_ACCENT: Record<"abidjan" | "handoff" | "niamey", string> = {
-  abidjan: "before:bg-abidjan-500",
-  handoff: "before:bg-handoff-400",
-  niamey: "before:bg-niamey-500",
-};
-
-function StatTile({ label, count, phase }: { label: string; count: number; phase: "abidjan" | "handoff" | "niamey" }) {
-  return (
-    <div
-      className={`relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 pl-5 shadow-theme-xs before:absolute before:left-0 before:top-0 before:h-full before:w-1 dark:border-gray-800 dark:bg-white/[0.03] ${STAT_ACCENT[phase]}`}
-    >
-      <p className="text-2xl font-semibold tabular-nums text-gray-800 dark:text-white/90">{count}</p>
-      <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{label}</p>
-    </div>
-  );
-}
+const DASHBOARD_RANGE_DAYS = 30;
 
 function QuickAction({ href, icon, label, description }: { href: string; icon: React.ReactNode; label: string; description: string }) {
   return (
@@ -41,13 +31,10 @@ function QuickAction({ href, icon, label, description }: { href: string; icon: R
   );
 }
 
-function count(orders: Order[], statuses: OrderStatus[]) {
-  return orders.filter((o) => statuses.includes(o.status)).length;
-}
-
-export function DashboardHome({ initialOrders }: { initialOrders: Order[] }) {
+export function DashboardHome({ initialOrders, initialStats }: { initialOrders: Order[]; initialStats: DashboardStats | null }) {
   const user = useSession();
   const orders = initialOrders;
+  const statsError = initialStats ? null : "Impossible de charger les statistiques.";
   const firstName = user.name.split(" ")[0];
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Bonjour" : hour < 18 ? "Bon après-midi" : "Bonsoir";
@@ -84,17 +71,8 @@ export function DashboardHome({ initialOrders }: { initialOrders: Order[] }) {
           </div>
         )}
 
-        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          <StatTile label={STATUS_LABELS.QUOTING} count={count(orders, ["QUOTING"])} phase={sideColor("QUOTING")} />
-          <StatTile label="Devis à envoyer" count={count(orders, ["QUOTED"])} phase={sideColor("QUOTED")} />
-          <StatTile label="Attente paiement" count={count(orders, ["QUOTE_SENT"])} phase={sideColor("QUOTE_SENT")} />
-          <StatTile label="À confirmer" count={count(orders, ["RECEIVED_HUB"])} phase={sideColor("RECEIVED_HUB")} />
-          <StatTile
-            label="En livraison"
-            count={count(orders, ["PICKED_UP", "IN_TRANSIT"])}
-            phase={sideColor("PICKED_UP")}
-          />
-          <StatTile label="Livrées" count={count(orders, ["DELIVERED"])} phase={sideColor("DELIVERED")} />
+        <div className="mb-6">
+          <KpiRow stats={initialStats} loading={false} error={statsError} />
         </div>
 
         <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -104,21 +82,28 @@ export function DashboardHome({ initialOrders }: { initialOrders: Order[] }) {
           <QuickAction href="/hub-setup" icon={<PlugInIcon />} label="Mon hub" description="Voir ou changer de hub" />
         </div>
 
-        {needsAttention.length > 0 && (
-          <div className="mb-6">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-800 dark:text-white/90">Nécessite votre attention</h2>
-              <Link href="/orders" className="text-xs font-medium text-abidjan-600 hover:underline dark:text-abidjan-400">
-                Voir tout
-              </Link>
-            </div>
-            <div className="space-y-3">
-              {needsAttention.map((order) => (
-                <OrderCard key={order.id} order={order} />
-              ))}
-            </div>
+        <div className="mb-6 grid gap-4 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <TrendPanel rangeDays={DASHBOARD_RANGE_DAYS} />
           </div>
-        )}
+          <BreakdownPanel rangeDays={DASHBOARD_RANGE_DAYS} />
+        </div>
+
+        <div className="mb-6">
+          <QueueDepthPanel />
+        </div>
+
+        <div className="mb-6">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-800 dark:text-white/90">Nécessite votre attention</h2>
+            <Link href="/orders" className="text-xs font-medium text-abidjan-600 hover:underline dark:text-abidjan-400">
+              Voir tout
+            </Link>
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-theme-xs dark:border-gray-800 dark:bg-white/[0.03] sm:p-5">
+            <AttentionTable orders={needsAttention} loading={false} emptyLabel="Rien ne nécessite votre attention pour le moment." />
+          </div>
+        </div>
 
         <div>
           <div className="mb-3 flex items-center justify-between">
@@ -139,6 +124,9 @@ export function DashboardHome({ initialOrders }: { initialOrders: Order[] }) {
   }
 
   // LOGISTICS_PARTNER
+  const needsAttention = orders
+    .filter((o) => o.status === "QUOTING" || o.status === "CONFIRMED_HUB")
+    .slice(0, 5);
   const recent = orders.slice(0, 5);
   return (
     <div>
@@ -152,19 +140,28 @@ export function DashboardHome({ initialOrders }: { initialOrders: Order[] }) {
         </p>
       </div>
 
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatTile label={STATUS_LABELS.QUOTING} count={count(orders, ["QUOTING"])} phase={sideColor("QUOTING")} />
-        <StatTile label="Prêtes à récupérer" count={count(orders, ["CONFIRMED_HUB"])} phase={sideColor("CONFIRMED_HUB")} />
-        <StatTile
-          label="En route"
-          count={count(orders, ["PICKED_UP", "IN_TRANSIT"])}
-          phase={sideColor("PICKED_UP")}
-        />
-        <StatTile label="Livrées" count={count(orders, ["DELIVERED"])} phase={sideColor("DELIVERED")} />
+      <div className="mb-6">
+        <KpiRow stats={initialStats} loading={false} error={statsError} />
       </div>
 
       <div className="mb-6">
         <QuickAction href="/deliveries" icon={<BoxIconLine />} label="Mes livraisons" description="Voir toutes les livraisons assignées" />
+      </div>
+
+      <div className="mb-6">
+        <QueueDepthPanel />
+      </div>
+
+      <div className="mb-6">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-gray-800 dark:text-white/90">Nécessite votre attention</h2>
+          <Link href="/deliveries" className="text-xs font-medium text-niamey-600 hover:underline dark:text-niamey-400">
+            Voir tout
+          </Link>
+        </div>
+        <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-theme-xs dark:border-gray-800 dark:bg-white/[0.03] sm:p-5">
+          <AttentionTable orders={needsAttention} loading={false} emptyLabel="Rien ne nécessite votre attention pour le moment." />
+        </div>
       </div>
 
       <div>
