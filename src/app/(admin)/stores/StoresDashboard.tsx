@@ -77,7 +77,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
             setEditing(null);
             setShowForm((v) => !v);
           }}
-          className="rounded-lg bg-abidjan-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-abidjan-700"
+          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-700"
         >
           {showForm && !editing ? "Fermer" : "+ Nouvelle boutique"}
         </button>

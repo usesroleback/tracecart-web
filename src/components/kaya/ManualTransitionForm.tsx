@@ -5,7 +5,7 @@ import { api } from "@/lib/apiClient";
 import { ADMIN_MANUAL_TARGETS, Order, OrderStatus, STATUS_LABELS } from "@/lib/types";
 
 const inputClasses =
-  "h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs focus:border-abidjan-400 focus:outline-hidden focus:ring-3 focus:ring-abidjan-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
+  "h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
 
 /** Free-form manual status change, available to the admin at any phase — every change requires a note and is audit-logged. */
 export function ManualTransitionForm({ order, onChanged }: { order: Order; onChanged: () => void }) {

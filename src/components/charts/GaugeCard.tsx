@@ -31,7 +31,7 @@ export function GaugeCard({
     () => ({
       chart: { type: "radialBar", fontFamily: theme.fontFamily, background: "transparent" },
       theme: { mode: theme.mode },
-      colors: [theme.colors.abidjan],
+      colors: [theme.colors.brand],
       plotOptions: {
         radialBar: {
           hollow: { size: "65%" },

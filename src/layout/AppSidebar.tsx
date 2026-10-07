@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import { useSession } from "../context/SessionContext";
 import { ListIcon, BoxIconLine, GridIcon, BoxIcon, BoxCubeIcon, PlugInIcon, TaskIcon } from "../icons/index";
+import { Logo } from "../components/common/Logo";
 
 type NavItem = {
   name: string;
@@ -46,11 +47,7 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-abidjan-600 dark:text-abidjan-400">
-            {showLabel ? "Kaya" : "K"}
-          </span>
-        </Link>
+        <Logo variant={showLabel ? "lockup" : "symbol"} />
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">

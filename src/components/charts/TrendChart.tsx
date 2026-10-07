@@ -40,7 +40,7 @@ export function TrendChart({
         animations: { enabled: false },
       },
       theme: { mode: theme.mode },
-      colors: [theme.colors.abidjan, theme.colors.niamey, theme.colors.gray],
+      colors: [theme.colors.brand, theme.colors.origin, theme.colors.gray],
       stroke: { curve: "smooth", width: [2, 2, 1.5], dashArray: [0, 0, 5] },
       fill: { type: ["gradient", "gradient", "solid"], opacity: [0.15, 0.15, 0] },
       grid: { borderColor: theme.gridColor, strokeDashArray: 4 },

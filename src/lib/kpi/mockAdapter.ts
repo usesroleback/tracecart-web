@@ -118,10 +118,10 @@ export async function fetchBreakdown(dimension: BreakdownDimension, _rangeDays: 
 
 export async function fetchQueueDepth(): Promise<QueueStage[]> {
   return [
-    { status: "QUOTING", phase: "abidjan", count: 4, avgAgeHours: 3.2, p90AgeHours: 9.8, isBottleneck: false },
-    { status: "QUOTED", phase: "abidjan", count: 2, avgAgeHours: 12.1, p90AgeHours: 20.0, isBottleneck: true },
+    { status: "QUOTING", phase: "origin", count: 4, avgAgeHours: 3.2, p90AgeHours: 9.8, isBottleneck: false },
+    { status: "QUOTED", phase: "origin", count: 2, avgAgeHours: 12.1, p90AgeHours: 20.0, isBottleneck: true },
     { status: "CONFIRMED_HUB", phase: "handoff", count: 1, avgAgeHours: 0.4, p90AgeHours: 0.4, isBottleneck: false },
-    { status: "PICKED_UP", phase: "niamey", count: 5, avgAgeHours: 6.7, p90AgeHours: 15.2, isBottleneck: false },
+    { status: "PICKED_UP", phase: "transit", count: 5, avgAgeHours: 6.7, p90AgeHours: 15.2, isBottleneck: false },
   ];
 }
 

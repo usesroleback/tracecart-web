@@ -42,7 +42,7 @@ export function OrderPartnerPanel({ order, onChanged }: { order: Order; onChange
         <button
           onClick={advance}
           disabled={busy}
-          className="w-full rounded-lg bg-niamey-500 py-2 text-sm font-semibold text-white transition hover:bg-niamey-600 disabled:opacity-60"
+          className="w-full rounded-lg bg-origin-500 py-2 text-sm font-semibold text-white transition hover:bg-origin-600 disabled:opacity-60"
         >
           {busy ? "Mise à jour..." : PARTNER_NEXT_ACTION_LABELS[order.status]}
         </button>

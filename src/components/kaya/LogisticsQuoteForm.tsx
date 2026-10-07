@@ -5,7 +5,7 @@ import { api } from "@/lib/apiClient";
 import { LogisticsQuoteLineItem, Order } from "@/lib/types";
 
 const inputClasses =
-  "h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-niamey-400 focus:outline-hidden focus:ring-3 focus:ring-niamey-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
+  "h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-origin-400 focus:outline-hidden focus:ring-3 focus:ring-origin-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
 
 export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChanged: () => void }) {
   const existing = order.logisticsQuote;
@@ -84,7 +84,7 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
           </div>
         ))}
       </div>
-      <button type="button" onClick={addItem} className="text-xs font-medium text-niamey-600 hover:underline dark:text-niamey-400">
+      <button type="button" onClick={addItem} className="text-xs font-medium text-origin-600 hover:underline dark:text-origin-400">
         + Ajouter une ligne
       </button>
 
@@ -105,7 +105,7 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
       <button
         onClick={submit}
         disabled={busy || total <= 0}
-        className="w-full rounded-lg bg-niamey-500 py-2 text-sm font-semibold text-white transition hover:bg-niamey-600 disabled:opacity-60"
+        className="w-full rounded-lg bg-origin-500 py-2 text-sm font-semibold text-white transition hover:bg-origin-600 disabled:opacity-60"
       >
         {busy ? "Envoi..." : existing ? "Mettre à jour la cotation" : "Envoyer la cotation"}
       </button>

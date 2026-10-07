@@ -48,7 +48,7 @@ export function TrendPanel({ rangeDays }: { rangeDays: number }) {
               onClick={() => setGranularity(g)}
               className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
                 granularity === g
-                  ? "bg-abidjan-600 text-white"
+                  ? "bg-brand-600 text-white"
                   : "text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5"
               }`}
             >

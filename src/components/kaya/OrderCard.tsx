@@ -49,7 +49,7 @@ export function OrderCard({ order, children }: { order: Order; children?: React.
         <>
           <button
             onClick={() => setExpanded((v) => !v)}
-            className="mt-3 text-xs font-medium text-abidjan-600 hover:underline dark:text-abidjan-400"
+            className="mt-3 text-xs font-medium text-brand-600 hover:underline dark:text-brand-400"
           >
             {expanded ? "Masquer les détails" : "Voir les détails"}
           </button>

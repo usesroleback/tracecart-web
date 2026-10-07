@@ -33,7 +33,7 @@ export function RankingBars({ items, valueSuffix = "" }: { items: RankingBarItem
                 className="h-5 w-5 flex-shrink-0 rounded-full border border-gray-200 bg-white object-contain p-0.5 dark:border-gray-700"
               />
             ) : (
-              <span className="h-2 w-2 flex-shrink-0 rounded-full" style={{ backgroundColor: theme.colors.abidjan }} />
+              <span className="h-2 w-2 flex-shrink-0 rounded-full" style={{ backgroundColor: theme.colors.brand }} />
             )}
             <span className="min-w-0 flex-1 truncate text-sm text-gray-700 dark:text-gray-200">{item.label}</span>
             <span className="flex-shrink-0 text-xs tabular-nums text-gray-400">
@@ -44,7 +44,7 @@ export function RankingBars({ items, valueSuffix = "" }: { items: RankingBarItem
           <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-white/5">
             <div
               className="h-full rounded-full"
-              style={{ width: `${Math.max(4, (item.value / max) * 100)}%`, backgroundColor: theme.colors.abidjan }}
+              style={{ width: `${Math.max(4, (item.value / max) * 100)}%`, backgroundColor: theme.colors.brand }}
             />
           </div>
         </li>

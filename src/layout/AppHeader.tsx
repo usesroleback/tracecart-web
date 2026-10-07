@@ -3,7 +3,7 @@ import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
 import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
-import Link from "next/link";
+import { Logo } from "@/components/common/Logo";
 import React, { useState } from "react";
 
 const AppHeader: React.FC = () => {
@@ -52,9 +52,7 @@ const AppHeader: React.FC = () => {
             )}
           </button>
 
-          <Link href="/" className="text-lg font-bold text-abidjan-600 dark:text-abidjan-400 lg:hidden">
-            Kaya
-          </Link>
+          <Logo variant="symbol" className="lg:hidden" />
 
           <button
             onClick={toggleApplicationMenu}

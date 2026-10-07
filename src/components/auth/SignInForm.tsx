@@ -2,6 +2,7 @@
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
+import { Logo } from "@/components/common/Logo";
 import { EyeCloseIcon, EyeIcon } from "@/icons";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
@@ -46,9 +47,7 @@ export default function SignInForm() {
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
-            <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Kaya
-            </h1>
+            <Logo variant="lockup" href={null} className="mb-4" />
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Connectez-vous à votre espace pour continuer.
             </p>
@@ -59,7 +58,7 @@ export default function SignInForm() {
                 <Label>
                   Adresse e-mail <span className="text-error-500">*</span>
                 </Label>
-                <Input name="email" type="email" placeholder="vous@kaya.app" />
+                <Input name="email" type="email" placeholder="vous@terravia.com" />
               </div>
               <div>
                 <Label>

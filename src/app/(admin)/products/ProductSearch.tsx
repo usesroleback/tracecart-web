@@ -145,7 +145,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
 
   return (
     <div>
-      <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-abidjan-600 via-abidjan-500 to-niamey-500 p-6 text-white shadow-theme-lg sm:p-8">
+      <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 via-brand-500 to-origin-500 p-6 text-white shadow-theme-lg sm:p-8">
         <p className="text-xs font-semibold uppercase tracking-wide text-white/70">Sourcing produits</p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Rechercher &amp; réserver</h1>
         <p className="mt-1.5 max-w-xl text-sm text-white/80">
@@ -171,7 +171,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                 onClick={() => setProviderId(p.id)}
                 className={`flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
                   active
-                    ? "border-abidjan-500 bg-abidjan-50 text-abidjan-700 ring-2 ring-abidjan-500/20 dark:border-abidjan-400 dark:bg-abidjan-500/10 dark:text-abidjan-400"
+                    ? "border-brand-500 bg-brand-50 text-brand-700 ring-2 ring-brand-500/20 dark:border-brand-400 dark:bg-brand-500/10 dark:text-brand-400"
                     : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-300 dark:hover:bg-white/5"
                 }`}
               >
@@ -209,13 +209,13 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`Rechercher chez ${selectedProvider?.name ?? "une boutique"}...`}
-            className="h-12 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-abidjan-400 focus:outline-hidden focus:ring-3 focus:ring-abidjan-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+            className="h-12 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
           />
         </div>
         <button
           type="submit"
           disabled={loading || !selectedProvider}
-          className="rounded-xl bg-abidjan-600 px-6 text-sm font-medium text-white shadow-theme-xs transition hover:bg-abidjan-700 disabled:opacity-60"
+          className="rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-theme-xs transition hover:bg-brand-700 disabled:opacity-60"
         >
           {loading ? "Recherche..." : "Rechercher"}
         </button>
@@ -234,7 +234,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     onClick={() => toggleCategory(c.value)}
                     className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
                       category === c.value
-                        ? "border-abidjan-500 bg-abidjan-600 text-white"
+                        ? "border-brand-500 bg-brand-600 text-white"
                         : "border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
                     }`}
                   >
@@ -319,7 +319,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
           </p>
           <Link
             href="/orders"
-            className="mt-3 inline-block text-xs font-medium text-abidjan-600 underline dark:text-abidjan-400"
+            className="mt-3 inline-block text-xs font-medium text-brand-600 underline dark:text-brand-400"
           >
             Coller un lien produit dans une nouvelle commande
           </Link>
@@ -361,7 +361,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     {item.title ?? "Produit sans titre"}
                   </p>
                   {item.price != null && (
-                    <p className="mt-2 text-base font-semibold text-abidjan-700 dark:text-abidjan-400">
+                    <p className="mt-2 text-base font-semibold text-brand-700 dark:text-brand-400">
                       {item.price.toLocaleString("fr-FR")}{" "}
                       <span className="text-xs font-normal text-gray-400">{item.currency} · prix source, à titre indicatif</span>
                     </p>
@@ -372,7 +372,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     className={`mt-3 w-full rounded-lg py-2 text-xs font-semibold transition disabled:opacity-70 ${
                       isReserved
                         ? "bg-success-50 text-success-700 dark:bg-success-500/10 dark:text-success-400"
-                        : "bg-abidjan-600 text-white hover:bg-abidjan-700"
+                        : "bg-brand-600 text-white hover:bg-brand-700"
                     }`}
                   >
                     {isReserved ? "Réservé ✓" : reservingKey === key ? "Réservation..." : "Réserver"}

@@ -5,7 +5,7 @@ import { api } from "@/lib/apiClient";
 import { Order } from "@/lib/types";
 
 const inputClasses =
-  "h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-abidjan-400 focus:outline-hidden focus:ring-3 focus:ring-abidjan-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30";
+  "h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30";
 
 export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () => void }) {
   const [productCost, setProductCost] = useState(order.productCost ?? "");
@@ -115,10 +115,10 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
       </div>
 
       {total != null && order.status === "QUOTED" && (
-        <div className="rounded-lg bg-abidjan-50 p-3 text-sm dark:bg-abidjan-500/10">
+        <div className="rounded-lg bg-brand-50 p-3 text-sm dark:bg-brand-500/10">
           <div className="flex justify-between">
             <span className="text-gray-600 dark:text-gray-300">Total client estimé</span>
-            <span className="font-semibold text-abidjan-700 dark:text-abidjan-400">
+            <span className="font-semibold text-brand-700 dark:text-brand-400">
               {total.toLocaleString("fr-FR")} FCFA
             </span>
           </div>
@@ -129,7 +129,7 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
         <button
           disabled={busy === "send" || !order.productCost || !quote}
           onClick={() => run("send", () => api.post(`/orders/${order.id}/send-quote`))}
-          className="w-full rounded-lg bg-abidjan-600 py-2 text-sm font-semibold text-white transition hover:bg-abidjan-700 disabled:opacity-60"
+          className="w-full rounded-lg bg-brand-600 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
         >
           {busy === "send" ? "Envoi..." : "Envoyer le devis au client"}
         </button>
@@ -137,10 +137,10 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
 
       {order.status === "QUOTE_SENT" && (
         <div className="space-y-2">
-          <div className="rounded-lg bg-abidjan-50 p-3 text-sm dark:bg-abidjan-500/10">
+          <div className="rounded-lg bg-brand-50 p-3 text-sm dark:bg-brand-500/10">
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-300">Devis envoyé</span>
-              <span className="font-semibold text-abidjan-700 dark:text-abidjan-400">
+              <span className="font-semibold text-brand-700 dark:text-brand-400">
                 {order.customerQuoteTotal?.toLocaleString("fr-FR")} FCFA
               </span>
             </div>

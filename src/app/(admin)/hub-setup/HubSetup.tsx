@@ -6,7 +6,7 @@ import { api } from "@/lib/apiClient";
 import { GeoDetectResult, Hub } from "@/lib/types";
 
 const inputClasses =
-  "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-abidjan-400 focus:outline-hidden focus:ring-3 focus:ring-abidjan-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
+  "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
 
 export function HubSetup({ currentHub }: { currentHub: { id: string; name: string; city: string } | null }) {
   const router = useRouter();
@@ -92,7 +92,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
       </p>
 
       {detect?.location && (
-        <p className="mt-4 rounded-lg bg-abidjan-50 px-3 py-2 text-xs text-abidjan-700 dark:bg-abidjan-500/10 dark:text-abidjan-400">
+        <p className="mt-4 rounded-lg bg-brand-50 px-3 py-2 text-xs text-brand-700 dark:bg-brand-500/10 dark:text-brand-400">
           Position détectée : {detect.location.city}, {detect.location.country}
         </p>
       )}
@@ -104,7 +104,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
               key={hub.id}
               className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 transition ${
                 selectedHubId === hub.id
-                  ? "border-abidjan-500 bg-abidjan-50 dark:border-abidjan-400 dark:bg-abidjan-500/10"
+                  ? "border-brand-500 bg-brand-50 dark:border-brand-400 dark:bg-brand-500/10"
                   : "border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-800 dark:bg-white/[0.03] dark:hover:bg-white/5"
               }`}
             >
@@ -136,14 +136,14 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
             <button
               type="button"
               onClick={() => setCreatingNew(true)}
-              className="text-sm font-medium text-abidjan-600 hover:underline dark:text-abidjan-400"
+              className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
             >
               + Créer un nouveau hub
             </button>
             <button
               onClick={confirmExisting}
               disabled={saving || !selectedHubId}
-              className="rounded-lg bg-abidjan-600 px-4 py-2 text-sm font-medium text-white hover:bg-abidjan-700 disabled:opacity-60"
+              className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
             >
               {saving ? "Enregistrement..." : "Confirmer ce hub"}
             </button>
@@ -218,7 +218,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
             <button
               onClick={createAndConfirm}
               disabled={saving || !newHub.name || !newHub.city || !newHub.country || !newHub.countryCode}
-              className="rounded-lg bg-abidjan-600 px-4 py-2 text-sm font-medium text-white hover:bg-abidjan-700 disabled:opacity-60"
+              className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
             >
               {saving ? "Création..." : "Créer et confirmer"}
             </button>

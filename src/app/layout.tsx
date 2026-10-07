@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Outfit } from 'next/font/google';
+import { Bricolage_Grotesque } from 'next/font/google';
 import './globals.css';
 import "flatpickr/dist/flatpickr.css";
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 
-const outfit = Outfit({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Kaya — Achetez en ligne, recevez où que vous soyez",
-  description: "Plateforme d'orchestration de commandes et de livraisons transfrontalières.",
+  title: "Terravia — On trouvera un moyen.",
+  description: "Sourcing et logistique transfrontalière, pour les corridors commerciaux les plus difficiles.",
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${outfit.className} dark:bg-gray-900`}>
+      <body className={`${bricolage.className} dark:bg-gray-900`}>
         <ThemeProvider>
           <SidebarProvider>{children}</SidebarProvider>
         </ThemeProvider>

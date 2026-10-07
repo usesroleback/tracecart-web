@@ -18,9 +18,9 @@ function QuickAction({ href, icon, label, description }: { href: string; icon: R
   return (
     <Link
       href={href}
-      className="group flex items-start gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-theme-xs transition hover:-translate-y-0.5 hover:border-abidjan-300 hover:shadow-theme-md dark:border-gray-800 dark:bg-white/[0.03] dark:hover:border-abidjan-700"
+      className="group flex items-start gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-theme-xs transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-theme-md dark:border-gray-800 dark:bg-white/[0.03] dark:hover:border-brand-700"
     >
-      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-abidjan-50 text-abidjan-600 transition group-hover:bg-abidjan-600 group-hover:text-white dark:bg-abidjan-500/10 dark:text-abidjan-400">
+      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition group-hover:bg-brand-600 group-hover:text-white dark:bg-brand-500/10 dark:text-brand-400">
         {icon}
       </span>
       <div>
@@ -47,7 +47,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
 
     return (
       <div>
-        <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-abidjan-600 via-abidjan-500 to-niamey-500 p-6 text-white shadow-theme-lg sm:p-8">
+        <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 via-brand-500 to-origin-500 p-6 text-white shadow-theme-lg sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-wide text-white/70">
             {user.hub ? `${user.hub.city}, ${user.hub.country}` : "Hub non configuré"}
           </p>
@@ -64,7 +64,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
             <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Configurez votre hub pour commencer</p>
             <Link
               href="/hub-setup"
-              className="mt-2 inline-block rounded-lg bg-abidjan-600 px-4 py-2 text-sm font-medium text-white hover:bg-abidjan-700"
+              className="mt-2 inline-block rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
             >
               Configurer mon hub
             </Link>
@@ -96,7 +96,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-gray-800 dark:text-white/90">Nécessite votre attention</h2>
-            <Link href="/orders" className="text-xs font-medium text-abidjan-600 hover:underline dark:text-abidjan-400">
+            <Link href="/orders" className="text-xs font-medium text-brand-600 hover:underline dark:text-brand-400">
               Voir tout
             </Link>
           </div>
@@ -108,7 +108,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-gray-800 dark:text-white/90">Commandes récentes</h2>
-            <Link href="/orders" className="text-xs font-medium text-abidjan-600 hover:underline dark:text-abidjan-400">
+            <Link href="/orders" className="text-xs font-medium text-brand-600 hover:underline dark:text-brand-400">
               Voir tout
             </Link>
           </div>
@@ -130,7 +130,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
   const recent = orders.slice(0, 5);
   return (
     <div>
-      <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-niamey-600 via-niamey-500 to-abidjan-500 p-6 text-white shadow-theme-lg sm:p-8">
+      <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-origin-600 via-origin-500 to-brand-500 p-6 text-white shadow-theme-lg sm:p-8">
         <p className="text-xs font-semibold uppercase tracking-wide text-white/70">Partenaire logistique</p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
           {greeting}, {firstName}
@@ -155,7 +155,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
       <div className="mb-6">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-gray-800 dark:text-white/90">Nécessite votre attention</h2>
-          <Link href="/deliveries" className="text-xs font-medium text-niamey-600 hover:underline dark:text-niamey-400">
+          <Link href="/deliveries" className="text-xs font-medium text-origin-600 hover:underline dark:text-origin-400">
             Voir tout
           </Link>
         </div>
@@ -167,7 +167,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
       <div>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-gray-800 dark:text-white/90">Colis récents</h2>
-          <Link href="/deliveries" className="text-xs font-medium text-niamey-600 hover:underline dark:text-niamey-400">
+          <Link href="/deliveries" className="text-xs font-medium text-origin-600 hover:underline dark:text-origin-400">
             Voir tout
           </Link>
         </div>

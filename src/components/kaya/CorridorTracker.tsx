@@ -1,27 +1,30 @@
 import { OrderStatus, STATUS_LABELS, STATUS_SEQUENCE } from "@/lib/types";
 
-export type CorridorPhase = "abidjan" | "handoff" | "niamey";
+export type CorridorPhase = "origin" | "handoff" | "transit";
 
-// Hub-side ops (quoting through received-at-hub) = "abidjan" color; the
-// handoff moment = amber; the partner's shipping leg = "niamey" color. Names
-// kept from the original two-hub prototype, but the logic is corridor-agnostic
-// — it's keyed on phase, not on any particular city.
+// Hub-side ops (quoting through received-at-hub) = "origin" phase; the
+// handoff moment = amber; the partner's shipping leg = "transit" — the phase
+// where the shipment is physically moving, which is why it's colored
+// Corridor Green (docs/brand/terravia-brand-guidelines.md: "it means
+// moving"). Renamed from the original abidjan/handoff/niamey two-hub
+// prototype naming; the logic itself is unchanged — still keyed on phase,
+// not on any particular city.
 export function sideColor(status: OrderStatus): CorridorPhase {
   if (status === "CONFIRMED_HUB") return "handoff";
-  if (STATUS_SEQUENCE.indexOf(status) < STATUS_SEQUENCE.indexOf("CONFIRMED_HUB")) return "abidjan";
-  return "niamey";
+  if (STATUS_SEQUENCE.indexOf(status) < STATUS_SEQUENCE.indexOf("CONFIRMED_HUB")) return "origin";
+  return "transit";
 }
 
 const FILLED_CLASSES: Record<CorridorPhase, string> = {
-  abidjan: "bg-abidjan-500 border-abidjan-500",
-  handoff: "bg-handoff-400 border-handoff-400",
-  niamey: "bg-niamey-500 border-niamey-500",
+  origin: "bg-origin-500 border-origin-500",
+  handoff: "bg-handoff-500 border-handoff-500",
+  transit: "bg-transit-500 border-transit-500",
 };
 
 const RING_CLASSES: Record<CorridorPhase, string> = {
-  abidjan: "ring-abidjan-500",
-  handoff: "ring-handoff-400",
-  niamey: "ring-niamey-500",
+  origin: "ring-origin-500",
+  handoff: "ring-handoff-500",
+  transit: "ring-transit-500",
 };
 
 export function CorridorTracker({ status, hubCity, destinationCity }: { status: OrderStatus; hubCity: string; destinationCity: string }) {

@@ -36,7 +36,7 @@ export function BulletChart({
       <div className="relative h-3 w-full overflow-visible rounded-full bg-gray-100 dark:bg-white/5">
         <div
           className="h-full rounded-full"
-          style={{ width: `${valuePct}%`, backgroundColor: onTarget ? theme.colors.success : theme.colors.abidjan }}
+          style={{ width: `${valuePct}%`, backgroundColor: onTarget ? theme.colors.success : theme.colors.brand }}
         />
         <div
           className="absolute top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-gray-700 dark:bg-white"

@@ -12,10 +12,10 @@ import { useSession } from "@/context/SessionContext";
 import { fetchStatusCounts } from "@/lib/kpi/adapter";
 import { Order, OrderStatus, STATUS_LABELS, STATUS_SEQUENCE } from "@/lib/types";
 
-const STAT_ACCENT: Record<"abidjan" | "handoff" | "niamey", string> = {
-  abidjan: "before:bg-abidjan-500",
-  handoff: "before:bg-handoff-400",
-  niamey: "before:bg-niamey-500",
+const STAT_ACCENT: Record<"origin" | "handoff" | "transit", string> = {
+  origin: "before:bg-origin-500",
+  handoff: "before:bg-handoff-500",
+  transit: "before:bg-transit-500",
 };
 
 export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
@@ -56,7 +56,7 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
         </p>
         <Link
           href="/hub-setup"
-          className="mt-3 inline-block rounded-lg bg-abidjan-600 px-4 py-2 text-sm font-medium text-white hover:bg-abidjan-700"
+          className="mt-3 inline-block rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
         >
           Configurer mon hub
         </Link>
@@ -75,7 +75,7 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
         </div>
         <button
           onClick={() => setShowForm((v) => !v)}
-          className="rounded-lg bg-abidjan-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-abidjan-700"
+          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-700"
         >
           {showForm ? "Fermer" : "+ Nouvelle intention"}
         </button>

@@ -7,9 +7,9 @@ import { QueueStage } from "@/lib/kpi/types";
 import { STATUS_LABELS } from "@/lib/types";
 
 const PHASE_BAR: Record<QueueStage["phase"], string> = {
-  abidjan: "bg-abidjan-500",
-  handoff: "bg-handoff-400",
-  niamey: "bg-niamey-500",
+  origin: "bg-origin-500",
+  handoff: "bg-handoff-500",
+  transit: "bg-transit-500",
 };
 
 export function QueueDepthPanel() {

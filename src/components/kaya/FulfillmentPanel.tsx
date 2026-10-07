@@ -49,14 +49,14 @@ export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged
         value={note}
         onChange={(e) => setNote(e.target.value)}
         placeholder="Note (obligatoire)"
-        className="h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs focus:border-abidjan-400 focus:outline-hidden focus:ring-3 focus:ring-abidjan-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+        className="h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
       />
       {error && <p className="text-xs text-error-500">{error}</p>}
       <button
         onClick={advance}
         disabled={busy || !note.trim()}
         className={`w-full rounded-lg py-2 text-sm font-semibold text-white transition disabled:opacity-60 ${
-          step.toStatus === "CONFIRMED_HUB" ? "bg-handoff-400 hover:bg-handoff-500" : "bg-abidjan-600 hover:bg-abidjan-700"
+          step.toStatus === "CONFIRMED_HUB" ? "bg-handoff-400 hover:bg-handoff-500" : "bg-brand-600 hover:bg-brand-700"
         }`}
       >
         {busy ? "Mise à jour..." : step.label}

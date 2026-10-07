@@ -172,7 +172,7 @@ export function ReservationsDashboard({
         {reserved.length === 0 ? (
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Aucun produit réservé.{" "}
-            <Link href="/products" className="font-medium text-abidjan-600 underline dark:text-abidjan-400">
+            <Link href="/products" className="font-medium text-brand-600 underline dark:text-brand-400">
               Rechercher des produits
             </Link>
           </p>
@@ -204,14 +204,14 @@ export function ReservationsDashboard({
                     {r.title ?? "Produit sans titre"}
                   </p>
                   {r.price != null && (
-                    <p className="mt-2 text-base font-semibold text-abidjan-700 dark:text-abidjan-400">
+                    <p className="mt-2 text-base font-semibold text-brand-700 dark:text-brand-400">
                       {Number(r.price).toLocaleString("fr-FR")} <span className="text-xs font-normal text-gray-400">{r.currency}</span>
                     </p>
                   )}
                   <div className="mt-3 flex gap-2">
                     <button
                       onClick={() => setConverting(r)}
-                      className="flex-1 rounded-lg bg-abidjan-600 py-2 text-xs font-semibold text-white transition hover:bg-abidjan-700"
+                      className="flex-1 rounded-lg bg-brand-600 py-2 text-xs font-semibold text-white transition hover:bg-brand-700"
                     >
                       Créer une commande
                     </button>
@@ -243,7 +243,7 @@ export function ReservationsDashboard({
               >
                 <span className="text-gray-600 dark:text-gray-300">{r.title ?? "Produit sans titre"}</span>
                 {r.order && (
-                  <Link href="/orders" className="font-medium text-abidjan-600 hover:underline dark:text-abidjan-400">
+                  <Link href="/orders" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
                     {r.order.reference}
                   </Link>
                 )}

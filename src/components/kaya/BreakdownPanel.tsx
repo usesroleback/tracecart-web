@@ -48,7 +48,7 @@ export function BreakdownPanel({ rangeDays }: { rangeDays: number }) {
               onClick={() => setDimension(d)}
               className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
                 dimension === d
-                  ? "bg-abidjan-600 text-white"
+                  ? "bg-brand-600 text-white"
                   : "text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5"
               }`}
             >
