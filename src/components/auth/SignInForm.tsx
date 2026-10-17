@@ -47,7 +47,7 @@ export default function SignInForm() {
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
-            <Logo variant="lockup" href={null} className="mb-4" />
+            <Logo href={null} className="mb-4" />
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Connectez-vous à votre espace pour continuer.
             </p>
