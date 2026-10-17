@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import { useSession } from "../context/SessionContext";
-import { ListIcon, BoxIconLine, GridIcon, BoxIcon, BoxCubeIcon, PlugInIcon, TaskIcon } from "../icons/index";
+import { ListIcon, BoxIconLine, GridIcon, BoxIcon, BoxCubeIcon, PlugInIcon, TaskIcon, PaperPlaneIcon } from "../icons/index";
 import { Logo } from "../components/common/Logo";
 
 type NavItem = {
@@ -15,6 +15,7 @@ type NavItem = {
 
 const SUPER_ADMIN_ITEMS: NavItem[] = [
   { icon: <GridIcon />, name: "Accueil", path: "/" },
+  { icon: <PaperPlaneIcon />, name: "Sourcing", path: "/sourcing" },
   { icon: <ListIcon />, name: "Commandes", path: "/orders" },
   { icon: <BoxIcon />, name: "Produits", path: "/products" },
   { icon: <TaskIcon />, name: "Réservations", path: "/reservations" },

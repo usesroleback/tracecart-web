@@ -225,6 +225,44 @@ export interface Reservation {
   updatedAt: string;
 }
 
+export type SourcingRequestStatus = "OPEN" | "MATCHED" | "CONVERTED" | "CLOSED";
+
+export interface SourcingRequest {
+  id: string;
+  hubId: string;
+  requestedByUser: { id: string; name: string };
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string | null;
+  description: string;
+  category: string | null;
+  brand: string | null;
+  budgetMin: string | null;
+  budgetMax: string | null;
+  quantity: number;
+  destinationCity: string;
+  destinationCountry: string;
+  status: SourcingRequestStatus;
+  selectedProductId: string | null;
+  selectedProduct: {
+    id: string;
+    title: string;
+    imageUrl: string | null;
+    price: string | null;
+    currency: string | null;
+    canonicalUrl: string;
+    externalId: string;
+    providerId: string;
+  } | null;
+  reservationId: string | null;
+  reservation: { id: string; status: string } | null;
+  orderId: string | null;
+  order: { id: string; reference: string; status: OrderStatus } | null;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ResolveResult {
   providerId: string | null;
   providerSlug: string | null;
@@ -243,6 +281,9 @@ export interface SearchResultItem {
   imageUrl?: string;
   price?: number;
   currency?: string;
+  // Only set for catalog-backed results (sourcing-request matches) — see
+  // GET /sourcing-requests/:id/matches.
+  productId?: string;
 }
 
 export interface SearchFacetOption {

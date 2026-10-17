@@ -13,6 +13,7 @@ export interface IntentFormInitialProduct {
   imageUrl?: string;
   provider?: Provider | null;
   reservationId?: string;
+  sourcingRequestId?: string;
 }
 
 export function IntentForm({
@@ -82,6 +83,7 @@ export function IntentForm({
         volumeTier,
         notes: notes || undefined,
         reservationId: initialProduct?.reservationId,
+        sourcingRequestId: initialProduct?.sourcingRequestId,
       });
       onCreated();
     } catch (err) {
