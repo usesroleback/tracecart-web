@@ -58,7 +58,7 @@ export default function SignInForm() {
                 <Label>
                   Adresse e-mail <span className="text-error-500">*</span>
                 </Label>
-                <Input name="email" type="email" placeholder="vous@terravia.com" />
+                <Input name="email" type="email" placeholder="vous@tracecart.co" />
               </div>
               <div>
                 <Label>

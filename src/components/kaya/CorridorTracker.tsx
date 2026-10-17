@@ -5,7 +5,7 @@ export type CorridorPhase = "origin" | "handoff" | "transit";
 // Hub-side ops (quoting through received-at-hub) = "origin" phase; the
 // handoff moment = amber; the partner's shipping leg = "transit" — the phase
 // where the shipment is physically moving, which is why it's colored
-// Corridor Green (docs/brand/terravia-brand-guidelines.md: "it means
+// Corridor Green (docs/brand/tracecart-brand-guidelines.md: "it means
 // moving"). Renamed from the original abidjan/handoff/niamey two-hub
 // prototype naming; the logic itself is unchanged — still keyed on phase,
 // not on any particular city.

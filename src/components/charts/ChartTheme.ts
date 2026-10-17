@@ -16,8 +16,8 @@ export function useApexTheme() {
     () => ({
       mode: isDark ? ("dark" as const) : ("light" as const),
       colors: {
-        // brand = Corridor Green, the one Terravia accent — same value as
-        // success/transit by design (docs/brand/terravia-brand-guidelines.md).
+        // brand = Corridor Green, the one TraceCart accent — same value as
+        // success/transit by design (docs/brand/tracecart-brand-guidelines.md).
         brand: "#19d36b",
         origin: "#2440e0",
         handoff: "#fdd40a",

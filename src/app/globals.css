@@ -38,14 +38,14 @@
   --color-white: #ffffff;
   --color-black: #0e0e0c;
 
-  /* Terravia brand constants, sampled directly from docs/brand/references/ —
+  /* TraceCart brand constants, sampled directly from docs/brand/references/ —
      ink (logo/text) and concrete (light-theme page ground). */
   --color-ink: #0e0e0c;
   --color-concrete: #f2f3f1;
 
-  /* Corridor Green is the one Terravia accent: primary actions, the live
+  /* Corridor Green is the one TraceCart accent: primary actions, the live
      leg of a route, the "moving" status — all the same color by design
-     (see docs/brand/terravia-brand-guidelines.md). brand-* is therefore
+     (see docs/brand/tracecart-brand-guidelines.md). brand-* is therefore
      identical to green-* below, not a separate hue. */
   --color-brand-25: #f4fdf8;
   --color-brand-50: #ecfbf2;
@@ -154,13 +154,13 @@
   --color-info-900: #0d1854;
   --color-info-950: #0a1340;
 
-  /* Terravia corridor-phase palette (formerly "Kaya corridor palette":
+  /* TraceCart corridor-phase palette (formerly "Kaya corridor palette":
      abidjan/handoff/niamey, named after the original two-city prototype).
      Same 3-phase structure as before — pre-handoff / at-handoff /
      post-handoff — just renamed to scheme-neutral identifiers and recolored.
      transit reuses brand/success green deliberately: this is the phase
      where the shipment is physically moving, which is exactly what Corridor
-     Green means per docs/brand/terravia-brand-guidelines.md. */
+     Green means per docs/brand/tracecart-brand-guidelines.md. */
   --color-origin-50: #f0f2ff;
   --color-origin-100: #e3e8ff;
   --color-origin-400: #4f67ed;

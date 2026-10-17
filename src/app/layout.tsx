@@ -10,7 +10,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Terravia — On trouvera un moyen.",
+  title: "TraceCart — On trouvera un moyen.",
   description: "Sourcing et logistique transfrontalière, pour les corridors commerciaux les plus difficiles.",
 };
 

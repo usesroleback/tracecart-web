@@ -8,10 +8,13 @@ const DIMENSIONS: Record<LogoVariant, { width: number; height: number }> = {
 };
 
 /**
- * Terravia logo. Renders both the ink and white SVG, toggling visibility by
+ * TraceCart logo. Renders both the ink and white SVG, toggling visibility by
  * theme (the source files hardcode fill="#0e0e0c"/"#ffffff" rather than
  * currentColor, so a CSS-only swap is simpler than recoloring at runtime).
  * Per docs/brand/README.md: symbol alone at <=32px, full lockup otherwise.
+ * NOTE: the underlying SVG assets and alt text below still say "Terravia" —
+ * they're real drawn artwork from before the TraceCart rename and can't be
+ * fixed by a text edit. Swap them once new TraceCart logo files exist.
  */
 export function Logo({
   variant = "lockup",

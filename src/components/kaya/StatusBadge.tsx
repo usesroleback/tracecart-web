@@ -8,7 +8,7 @@ const PHASE_BADGE_CLASSES: Record<CorridorPhase, string> = {
 };
 
 // Delivered gets its own ink-black treatment distinct from the transit green
-// — per docs/brand/terravia-brand-guidelines.md's 5-state status vocabulary
+// — per docs/brand/tracecart-brand-guidelines.md's 5-state status vocabulary
 // ("delivered = ink with a check"), not just "still in the transit phase."
 const DELIVERED_CLASSES = "bg-gray-100 text-ink dark:bg-white/10 dark:text-white";
 

@@ -26,7 +26,7 @@ export default function AuthLayout({
                     width={160}
                     height={26}
                     src="/images/logo/terravia-lockup-white.svg"
-                    alt="Terravia"
+                    alt="TraceCart"
                   />
                 </Link>
                 <p className="text-center text-white/60">
