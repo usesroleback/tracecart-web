@@ -3,6 +3,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/apiClient";
+import Button from "@/components/ui/button/Button";
+import { Card } from "@/components/ui/card/Card";
+import { DsSearchIcon } from "@/icons";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import {
   Provider,
@@ -145,12 +148,12 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
 
   return (
     <div>
-      <div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 via-brand-500 to-origin-500 p-6 text-white shadow-theme-lg sm:p-8">
-        <p className="text-xs font-semibold uppercase tracking-wide text-white/70">Sourcing produits</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Rechercher &amp; réserver</h1>
-        <p className="mt-1.5 max-w-xl text-sm text-white/80">
+      <div className="mb-6">
+        <p className="sq-overline">Sourcing produits</p>
+        <h1 className="sq-headline text-[32px]">Rechercher &amp; réserver</h1>
+        <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
           Parcourez une boutique ou cherchez un produit, puis réservez-le pour le retrouver dans{" "}
-          <Link href="/reservations" className="underline">
+          <Link href="/reservations" className="text-accent-ink underline">
             Réservations
           </Link>
           .
@@ -158,9 +161,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
       </div>
 
       <div className="mb-6">
-        <p className="mb-2.5 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-          Boutique
-        </p>
+        <p className="sq-overline mb-2.5">Boutique</p>
         <div className="flex flex-wrap gap-2.5">
           {providers.map((p) => {
             const active = p.id === providerId;
@@ -169,17 +170,17 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                 key={p.id}
                 type="button"
                 onClick={() => setProviderId(p.id)}
-                className={`flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
+                className={`flex items-center gap-2.5 rounded-[var(--radius-s)] border px-4 py-2.5 text-sm font-medium transition ${
                   active
-                    ? "border-brand-500 bg-brand-50 text-brand-700 ring-2 ring-brand-500/20 dark:border-brand-400 dark:bg-brand-500/10 dark:text-brand-400"
-                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-300 dark:hover:bg-white/5"
+                    ? "border-ink bg-surface-sunken text-ink"
+                    : "border-line bg-surface-raised text-ink-muted hover:border-line-strong hover:bg-surface-sunken"
                 }`}
               >
                 {p.logoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.logoUrl} alt="" className="h-5 w-5 object-contain" />
                 ) : (
-                  <span className="flex h-5 w-5 items-center justify-center rounded bg-gray-100 text-[10px] font-semibold text-gray-400 dark:bg-white/10">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-[var(--radius-xs)] bg-surface-sunken text-[10px] font-semibold text-ink-muted">
                     {p.name.slice(0, 1)}
                   </span>
                 )}
@@ -192,40 +193,26 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
 
       <form onSubmit={handleSearch} className="mb-4 flex gap-2">
         <div className="relative flex-1">
-          <svg
-            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-muted">
+            <DsSearchIcon />
+          </span>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`Rechercher chez ${selectedProvider?.name ?? "une boutique"}...`}
-            className="h-12 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+            className="h-12 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised pl-11 pr-4 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring"
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading || !selectedProvider}
-          className="rounded-xl bg-brand-600 px-6 text-sm font-medium text-white shadow-theme-xs transition hover:bg-brand-700 disabled:opacity-60"
-        >
-          {loading ? "Recherche..." : "Rechercher"}
-        </button>
+        <Button type="submit" size="l" disabled={!selectedProvider} loading={loading}>
+          Rechercher
+        </Button>
       </form>
 
       {hasFilters && (
-        <div className="mb-8 space-y-3 rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
+        <Card className="mb-8 space-y-3">
           {facets.categories.length > 0 && (
             <div>
-              <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400">Catégorie</p>
+              <p className="sq-overline mb-1.5">Catégorie</p>
               <div className="flex flex-wrap gap-1.5">
                 {facets.categories.map((c) => (
                   <button
@@ -234,8 +221,8 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     onClick={() => toggleCategory(c.value)}
                     className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
                       category === c.value
-                        ? "border-brand-500 bg-brand-600 text-white"
-                        : "border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
+                        ? "border-ink bg-ink text-ink-inverse"
+                        : "border-line text-ink-muted hover:bg-surface-sunken"
                     }`}
                   >
                     {c.label}
@@ -248,11 +235,11 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
           <div className="flex flex-wrap items-end gap-4">
             {facets.brands.length > 0 && (
               <label className="text-sm">
-                <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-gray-400">Marque</span>
+                <span className="sq-overline mb-1 block">Marque</span>
                 <select
                   value={brand}
                   onChange={(e) => handleBrandChange(e.target.value)}
-                  className="h-9 rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                  className="h-9 rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink"
                 >
                   <option value="">Toutes les marques</option>
                   {facets.brands.map((b) => (
@@ -266,8 +253,8 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
 
             {facets.priceRange && (
               <div className="text-sm">
-                <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-                  Prix (FCFA, {facets.priceRange.min.toLocaleString("fr-FR")}–{facets.priceRange.max.toLocaleString("fr-FR")})
+                <span className="sq-overline mb-1 block">
+                  Prix ({selectedProvider?.defaultCurrency}, {facets.priceRange.min.toLocaleString("fr-FR")}–{facets.priceRange.max.toLocaleString("fr-FR")})
                 </span>
                 <div className="flex items-center gap-2">
                   <input
@@ -277,9 +264,9 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     value={priceMin}
                     onChange={(e) => setPriceMin(e.target.value)}
                     placeholder="Min"
-                    className="h-9 w-24 rounded-lg border border-gray-300 bg-transparent px-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                    className="h-9 w-24 rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-2.5 text-sm text-ink"
                   />
-                  <span className="text-gray-400">–</span>
+                  <span className="text-ink-muted">–</span>
                   <input
                     type="number"
                     min={facets.priceRange.min}
@@ -287,39 +274,31 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     value={priceMax}
                     onChange={(e) => setPriceMax(e.target.value)}
                     placeholder="Max"
-                    className="h-9 w-24 rounded-lg border border-gray-300 bg-transparent px-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+                    className="h-9 w-24 rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-2.5 text-sm text-ink"
                   />
-                  <button
-                    type="button"
-                    onClick={applyPriceRange}
-                    className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
-                  >
+                  <Button type="button" variant="secondary" size="s" onClick={applyPriceRange}>
                     Appliquer
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
           </div>
-        </div>
+        </Card>
       )}
 
-      {error && (
-        <p className="mb-4 rounded-lg bg-error-50 px-3 py-2 text-sm text-error-600 dark:bg-error-500/10 dark:text-error-400">
-          {error}
-        </p>
-      )}
+      {error && <p className="mb-4 rounded-[var(--radius-s)] bg-critical-soft px-3 py-2 text-sm text-critical">{error}</p>}
 
       {searched && !supported && (
-        <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center dark:border-gray-700 dark:bg-white/[0.03]">
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
+        <div className="rounded-[var(--radius-m)] border border-dashed border-line-strong bg-surface-raised p-8 text-center">
+          <p className="text-sm font-medium text-ink">
             Recherche indisponible pour {selectedProvider?.name}
           </p>
-          <p className="mx-auto mt-1 max-w-md text-xs text-gray-500 dark:text-gray-400">
+          <p className="mx-auto mt-1 max-w-md text-xs text-ink-muted">
             {selectedProvider?.notes ?? "Cette boutique ne propose pas de recherche par mot-clé pour le moment."}
           </p>
           <Link
             href="/orders"
-            className="mt-3 inline-block text-xs font-medium text-brand-600 underline dark:text-brand-400"
+            className="mt-3 inline-block text-xs font-medium text-accent-ink underline"
           >
             Coller un lien produit dans une nouvelle commande
           </Link>
@@ -327,7 +306,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
       )}
 
       {searched && supported && results.length === 0 && !loading && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">Aucun résultat pour cette recherche.</p>
+        <p className="text-sm text-ink-muted">Aucun résultat pour cette recherche.</p>
       )}
 
       {results.length > 0 && (
@@ -336,11 +315,8 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
             const key = item.externalId ?? item.url;
             const isReserved = reservedKeys.has(key);
             return (
-              <div
-                key={key}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-theme-xs transition hover:-translate-y-0.5 hover:shadow-theme-md dark:border-gray-800 dark:bg-white/[0.03]"
-              >
-                <div className="relative aspect-square w-full overflow-hidden bg-gray-50 dark:bg-white/5">
+              <Card key={key} as="div" className="group flex flex-col overflow-hidden p-0! transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-1)]">
+                <div className="relative aspect-square w-full overflow-hidden bg-surface-sunken">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.imageUrl || productPlaceholder(key)}
@@ -352,33 +328,40 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     <img
                       src={selectedProvider.logoUrl}
                       alt=""
-                      className="absolute left-2 top-2 h-6 w-6 rounded-md bg-white/90 object-contain p-1 shadow-sm"
+                      className="absolute left-2 top-2 h-6 w-6 rounded-[var(--radius-s)] bg-surface-raised/90 object-contain p-1 shadow-[var(--shadow-1)]"
                     />
                   )}
                 </div>
                 <div className="flex flex-1 flex-col p-3.5">
-                  <p className="line-clamp-2 flex-1 text-sm font-medium text-gray-800 dark:text-white/90">
+                  <p className="line-clamp-2 flex-1 text-sm font-medium text-ink">
                     {item.title ?? "Produit sans titre"}
                   </p>
                   {item.price != null && (
-                    <p className="mt-2 text-base font-semibold text-brand-700 dark:text-brand-400">
+                    <p className="mt-2 text-base font-semibold text-accent-ink">
                       {item.price.toLocaleString("fr-FR")}{" "}
-                      <span className="text-xs font-normal text-gray-400">{item.currency} · prix source, à titre indicatif</span>
+                      <span className="text-xs font-normal text-ink-muted">{item.currency} · prix source, à titre indicatif</span>
                     </p>
                   )}
-                  <button
-                    onClick={() => handleReserve(item)}
-                    disabled={reservingKey === key || isReserved}
-                    className={`mt-3 w-full rounded-lg py-2 text-xs font-semibold transition disabled:opacity-70 ${
-                      isReserved
-                        ? "bg-success-50 text-success-700 dark:bg-success-500/10 dark:text-success-400"
-                        : "bg-brand-600 text-white hover:bg-brand-700"
-                    }`}
-                  >
-                    {isReserved ? "Réservé ✓" : reservingKey === key ? "Réservation..." : "Réserver"}
-                  </button>
+                  {isReserved ? (
+                    <button
+                      disabled
+                      className="mt-3 w-full rounded-[var(--radius-s)] bg-positive-soft py-2 text-xs font-semibold text-positive"
+                    >
+                      Réservé ✓
+                    </button>
+                  ) : (
+                    <Button
+                      size="s"
+                      block
+                      className="mt-3"
+                      onClick={() => handleReserve(item)}
+                      loading={reservingKey === key}
+                    >
+                      Réserver
+                    </Button>
+                  )}
                 </div>
-              </div>
+              </Card>
             );
           })}
         </div>
@@ -386,26 +369,26 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
 
       {results.length > 0 && (pagination.page > 1 || pagination.hasMore) && (
         <div className="mt-6 flex items-center justify-between">
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => goToPage(pagination.page - 1)}
             disabled={loading || pagination.page <= 1}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-40 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
           >
             ← Précédent
-          </button>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          </Button>
+          <span className="text-xs text-ink-muted">
             Page {pagination.page}
             {pagination.totalResults != null && ` · ${pagination.totalResults.toLocaleString("fr-FR")} résultats`}
           </span>
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => goToPage(pagination.page + 1)}
             disabled={loading || !pagination.hasMore}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-40 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
           >
             Suivant →
-          </button>
+          </Button>
         </div>
       )}
     </div>

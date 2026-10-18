@@ -3,7 +3,7 @@ import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { Logo } from "@/components/common/Logo";
-import { EyeCloseIcon, EyeIcon } from "@/icons";
+import { DsEyeOffIcon, DsEyeIcon } from "@/icons";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
@@ -48,7 +48,7 @@ export default function SignInForm() {
         <div>
           <div className="mb-5 sm:mb-8">
             <Logo href={null} className="mb-4" />
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-ink-muted">
               Connectez-vous à votre espace pour continuer.
             </p>
           </div>
@@ -56,31 +56,27 @@ export default function SignInForm() {
             <div className="space-y-6">
               <div>
                 <Label>
-                  Adresse e-mail <span className="text-error-500">*</span>
+                  Adresse e-mail <span className="text-critical">*</span>
                 </Label>
                 <Input name="email" type="email" placeholder="vous@tracecart.co" />
               </div>
               <div>
                 <Label>
-                  Mot de passe <span className="text-error-500">*</span>
+                  Mot de passe <span className="text-critical">*</span>
                 </Label>
                 <div className="relative">
                   <Input name="password" type={showPassword ? "text" : "password"} placeholder="••••••••" />
                   <span
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2 text-gray-500 dark:text-gray-400"
+                    className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2 text-ink-muted"
                   >
-                    {showPassword ? <EyeIcon /> : <EyeCloseIcon />}
+                    {showPassword ? <DsEyeIcon /> : <DsEyeOffIcon />}
                   </span>
                 </div>
               </div>
-              {error && (
-                <p className="rounded-lg bg-error-50 px-3 py-2 text-sm text-error-600 dark:bg-error-500/10 dark:text-error-400">
-                  {error}
-                </p>
-              )}
+              {error && <p className="rounded-[var(--radius-s)] bg-critical-soft px-3 py-2 text-sm text-critical">{error}</p>}
               <div>
-                <Button className="w-full" size="sm" disabled={loading}>
+                <Button className="w-full" size="m" disabled={loading} loading={loading}>
                   {loading ? "Connexion..." : "Se connecter"}
                 </Button>
               </div>

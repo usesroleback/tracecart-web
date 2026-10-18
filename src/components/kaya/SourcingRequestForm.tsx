@@ -2,9 +2,10 @@
 
 import { FormEvent, useState } from "react";
 import { api } from "@/lib/apiClient";
+import Button from "@/components/ui/button/Button";
 
 const inputClasses =
-  "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30";
+  "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
 export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => void; onCancel: () => void }) {
   const [customerName, setCustomerName] = useState("");
@@ -51,10 +52,10 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"
+      className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90">Nouvelle demande de sourcing</h2>
-      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+      <h2 className="sq-title-l text-[20px]">Nouvelle demande de sourcing</h2>
+      <p className="mt-1 text-sm text-ink-muted">
         Décrivez ce que le client recherche — pas besoin d&apos;un lien produit. On cherchera des candidats dans le
         catalogue une fois la demande créée.
       </p>
@@ -104,7 +105,7 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
             placeholder="Ex: téléphone Samsung Galaxy, pas cher, bon état d'écran"
-            className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+            className="w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring"
           />
         </Field>
       </div>
@@ -127,32 +128,20 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={2}
-            className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+            className="w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring"
           />
         </Field>
       </div>
 
-      {error && (
-        <p className="mt-4 rounded-lg bg-error-50 px-3 py-2 text-sm text-error-600 dark:bg-error-500/10 dark:text-error-400">
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-4 rounded-[var(--radius-s)] bg-critical-soft px-3 py-2 text-sm text-critical">{error}</p>}
 
       <div className="mt-5 flex justify-end gap-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
-        >
+        <Button type="button" variant="secondary" onClick={onCancel}>
           Annuler
-        </button>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
-        >
+        </Button>
+        <Button type="submit" loading={submitting}>
           {submitting ? "Création..." : "Créer la demande"}
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -161,7 +150,7 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={`block text-sm ${className ?? ""}`}>
-      <span className="mb-1 block font-medium text-gray-700 dark:text-gray-300">{label}</span>
+      <span className="sq-label mb-1 block text-ink">{label}</span>
       {children}
     </label>
   );

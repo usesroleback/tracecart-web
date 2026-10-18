@@ -52,6 +52,118 @@ import ChatIcon from "./chat.svg";
 import MoreDotIcon from "./more-dot.svg";
 import BellIcon from "./bell.svg";
 
+// Terravia design-system icon set (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
+// project/components/bundle.js "ICONS" — 24px grid, 1.75px stroke, round
+// caps/joins). Additive alongside the template icons above so nothing
+// unseen breaks; new call sites should use these.
+import DsSearchIcon from "./ds-search.svg";
+import DsArrowRightIcon from "./ds-arrow-right.svg";
+import DsArrowUpRightIcon from "./ds-arrow-up-right.svg";
+import DsArrowLeftIcon from "./ds-arrow-left.svg";
+import DsChevronDownIcon from "./ds-chevron-down.svg";
+import DsChevronRightIcon from "./ds-chevron-right.svg";
+import DsChevronLeftIcon from "./ds-chevron-left.svg";
+import DsCheckIcon from "./ds-check.svg";
+import DsCloseIcon from "./ds-x.svg";
+import DsPlusIcon from "./ds-plus.svg";
+import DsMinusIcon from "./ds-minus.svg";
+import DsMenuIcon from "./ds-menu.svg";
+import DsMoreIcon from "./ds-more.svg";
+import DsBookmarkIcon from "./ds-bookmark.svg";
+import DsBookmarkFilledIcon from "./ds-bookmark-filled.svg";
+import DsPinIcon from "./ds-pin.svg";
+import DsGlobeIcon from "./ds-globe.svg";
+import DsRemoteIcon from "./ds-remote.svg";
+import DsBuildingIcon from "./ds-building.svg";
+import DsBriefcaseIcon from "./ds-briefcase.svg";
+import DsClockIcon from "./ds-clock.svg";
+import DsCalendarIcon from "./ds-calendar.svg";
+import DsUserIcon from "./ds-user.svg";
+import DsUsersIcon from "./ds-users.svg";
+import DsFilterIcon from "./ds-filter.svg";
+import DsSlidersIcon from "./ds-sliders.svg";
+import DsCompassIcon from "./ds-compass.svg";
+import DsSparkIcon from "./ds-spark.svg";
+import DsRouteIcon from "./ds-route.svg";
+import DsPackageIcon from "./ds-package.svg";
+import DsTruckIcon from "./ds-truck.svg";
+import DsHubIcon from "./ds-hub.svg";
+import DsBorderIcon from "./ds-border.svg";
+import DsShieldIcon from "./ds-shield.svg";
+import DsFileIcon from "./ds-file.svg";
+import DsUploadIcon from "./ds-upload.svg";
+import DsDownloadIcon from "./ds-download.svg";
+import DsCoinIcon from "./ds-coin.svg";
+import DsAlertIcon from "./ds-alert.svg";
+import DsInfoIcon from "./ds-info.svg";
+import DsBellIcon from "./ds-bell.svg";
+import DsHomeIcon from "./ds-home.svg";
+import DsEyeIcon from "./ds-eye.svg";
+import DsEyeOffIcon from "./ds-eye-off.svg";
+import DsExternalIcon from "./ds-external.svg";
+import DsFlagIcon from "./ds-flag.svg";
+import DsLayersIcon from "./ds-layers.svg";
+import DsChatIcon from "./ds-chat.svg";
+import DsSignalIcon from "./ds-signal.svg";
+import DsSortIcon from "./ds-sort.svg";
+import DsRefreshIcon from "./ds-refresh.svg";
+import DsLockIcon from "./ds-lock.svg";
+
+export {
+  DsSearchIcon,
+  DsArrowRightIcon,
+  DsArrowUpRightIcon,
+  DsArrowLeftIcon,
+  DsChevronDownIcon,
+  DsChevronRightIcon,
+  DsChevronLeftIcon,
+  DsCheckIcon,
+  DsCloseIcon,
+  DsPlusIcon,
+  DsMinusIcon,
+  DsMenuIcon,
+  DsMoreIcon,
+  DsBookmarkIcon,
+  DsBookmarkFilledIcon,
+  DsPinIcon,
+  DsGlobeIcon,
+  DsRemoteIcon,
+  DsBuildingIcon,
+  DsBriefcaseIcon,
+  DsClockIcon,
+  DsCalendarIcon,
+  DsUserIcon,
+  DsUsersIcon,
+  DsFilterIcon,
+  DsSlidersIcon,
+  DsCompassIcon,
+  DsSparkIcon,
+  DsRouteIcon,
+  DsPackageIcon,
+  DsTruckIcon,
+  DsHubIcon,
+  DsBorderIcon,
+  DsShieldIcon,
+  DsFileIcon,
+  DsUploadIcon,
+  DsDownloadIcon,
+  DsCoinIcon,
+  DsAlertIcon,
+  DsInfoIcon,
+  DsBellIcon,
+  DsHomeIcon,
+  DsEyeIcon,
+  DsEyeOffIcon,
+  DsExternalIcon,
+  DsFlagIcon,
+  DsLayersIcon,
+  DsChatIcon,
+  DsSignalIcon,
+  DsSortIcon,
+  DsRefreshIcon,
+  DsLockIcon,
+};
+
 export {
   DownloadIcon,
   BellIcon,

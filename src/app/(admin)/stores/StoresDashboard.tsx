@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
 import { StoreForm } from "@/components/kaya/StoreForm";
-import { StatusPill } from "@/components/kaya/StatusPill";
+import { Badge } from "@/components/ui/badge/Badge";
+import { Card } from "@/components/ui/card/Card";
+import Button from "@/components/ui/button/Button";
 import { PanelShell } from "@/components/kaya/PanelShell";
 import { RankingBars } from "@/components/charts/RankingBars";
 import { GaugeCard } from "@/components/charts/GaugeCard";
@@ -66,21 +68,20 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-gray-800 dark:text-white/90">Boutiques</h1>
-          <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          <h1 className="sq-headline text-[32px]">Boutiques</h1>
+          <p className="mt-1 text-sm text-ink-muted">
             {activeCount} boutique{activeCount !== 1 ? "s" : ""} active{activeCount !== 1 ? "s" : ""} sur{" "}
             {stores.length} — gérez la détection de produits et la recherche par boutique.
           </p>
         </div>
-        <button
+        <Button
           onClick={() => {
             setEditing(null);
             setShowForm((v) => !v);
           }}
-          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-700"
         >
           {showForm && !editing ? "Fermer" : "+ Nouvelle boutique"}
-        </button>
+        </Button>
       </div>
 
       <div className="mb-6 grid gap-4 lg:grid-cols-3">
@@ -117,60 +118,53 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
         </div>
       )}
 
-      {stores.length === 0 && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">Aucune boutique configurée.</p>
-      )}
+      {stores.length === 0 && <p className="text-sm text-ink-muted">Aucune boutique configurée.</p>}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {stores.map((store) => (
-          <div
-            key={store.id}
-            className={`flex flex-col rounded-2xl border bg-white p-5 shadow-theme-xs transition dark:bg-white/[0.03] ${
-              store.isActive
-                ? "border-gray-200 dark:border-gray-800"
-                : "border-gray-200 opacity-60 dark:border-gray-800"
-            }`}
-          >
+          <Card key={store.id} className={`flex flex-col ${store.isActive ? "" : "opacity-60"}`}>
             <div className="flex items-start justify-between">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gray-50 p-2.5 dark:bg-white/5">
+              <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-s)] bg-surface-sunken p-2.5">
                 {store.logoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={store.logoUrl} alt="" className="h-full w-full object-contain" />
                 ) : (
-                  <span className="text-sm font-semibold text-gray-400">{store.name.slice(0, 2).toUpperCase()}</span>
+                  <span className="text-sm font-semibold text-ink-muted">{store.name.slice(0, 2).toUpperCase()}</span>
                 )}
               </div>
-              <StatusPill tone={store.isActive ? "success" : "neutral"} label={store.isActive ? "Active" : "Désactivée"} />
+              <Badge variant={store.isActive ? "positive" : "default"}>{store.isActive ? "Active" : "Désactivée"}</Badge>
             </div>
 
-            <p className="mt-3 text-sm font-semibold text-gray-800 dark:text-white/90">{store.name}</p>
-            <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+            <p className="mt-3 text-sm font-semibold text-ink">{store.name}</p>
+            <p className="mt-0.5 text-xs text-ink-muted">
               {store.type === "LOCAL_MARKETPLACE" ? "Marché local" : "International"} · {store.defaultCurrency}
             </p>
-            <p className="mt-1 truncate text-xs text-gray-400 dark:text-gray-500">{store.domains.join(", ")}</p>
-            {store.notes && (
-              <p className="mt-2 line-clamp-2 text-xs text-gray-400 dark:text-gray-500">{store.notes}</p>
-            )}
+            <p className="mt-1 truncate text-xs text-ink-muted">{store.domains.join(", ")}</p>
+            {store.notes && <p className="mt-2 line-clamp-2 text-xs text-ink-muted">{store.notes}</p>}
 
             <div className="mt-4 flex gap-2">
-              <button
+              <Button
+                variant="secondary"
+                size="s"
+                block
                 onClick={() => toggleActive(store)}
                 disabled={busyId === store.id}
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-60 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
               >
                 {store.isActive ? "Désactiver" : "Activer"}
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="secondary"
+                size="s"
+                block
                 onClick={() => {
                   setEditing(store);
                   setShowForm(true);
                 }}
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
               >
                 Modifier
-              </button>
+              </Button>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

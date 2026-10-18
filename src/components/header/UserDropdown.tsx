@@ -39,19 +39,19 @@ export default function UserDropdown() {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle"
+        className="flex items-center text-ink dropdown-toggle"
       >
-        <span className="mr-3 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-brand-500 font-semibold text-white">
+        <span className="mr-3 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-ink font-semibold text-ink-inverse">
           {initial}
         </span>
         <span className="mr-1 hidden text-left sm:block">
           <span className="block font-medium text-theme-sm">{user.name}</span>
-          <span className="block text-theme-xs text-gray-500 dark:text-gray-400">
+          <span className="block text-theme-xs text-ink-muted">
             {roleLabel(user)}
           </span>
         </span>
         <svg
-          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
+          className={`stroke-ink-muted transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
           width="18"
@@ -73,15 +73,15 @@ export default function UserDropdown() {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+        className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 shadow-[var(--shadow-2)]"
       >
         <div className="px-1 pb-3">
-          <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">{user.name}</span>
-          <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">{user.email}</span>
+          <span className="block font-medium text-ink text-theme-sm">{user.name}</span>
+          <span className="mt-0.5 block text-theme-xs text-ink-muted">{user.email}</span>
         </div>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 rounded-lg border-t border-gray-200 px-3 py-2 pt-4 text-left font-medium text-gray-700 text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+          className="flex items-center gap-3 rounded-[var(--radius-s)] border-t border-line px-3 py-2 pt-4 text-left font-medium text-ink text-theme-sm hover:bg-surface-sunken"
         >
           Déconnexion
         </button>

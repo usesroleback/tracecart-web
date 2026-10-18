@@ -3,10 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/apiClient";
+import Button from "@/components/ui/button/Button";
+import { Card } from "@/components/ui/card/Card";
+import { Badge } from "@/components/ui/badge/Badge";
 import { GeoDetectResult, Hub } from "@/lib/types";
 
 const inputClasses =
-  "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
+  "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
 export function HubSetup({ currentHub }: { currentHub: { id: string; name: string; city: string } | null }) {
   const router = useRouter();
@@ -78,21 +81,21 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
   }
 
   if (loading) {
-    return <p className="text-sm text-gray-500 dark:text-gray-400">Détection de votre position...</p>;
+    return <p className="text-sm text-ink-muted">Détection de votre position...</p>;
   }
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="text-2xl font-semibold tracking-tight text-gray-800 dark:text-white/90">
+      <h1 className="sq-headline text-[32px]">
         {currentHub ? "Mon hub" : "Configurez votre hub"}
       </h1>
-      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+      <p className="mt-1 text-sm text-ink-muted">
         Le hub est le point de réception de l&apos;opérateur — l&apos;origine de chaque commande. Toutes vos commandes
         seront rattachées à ce hub.
       </p>
 
       {detect?.location && (
-        <p className="mt-4 rounded-lg bg-brand-50 px-3 py-2 text-xs text-brand-700 dark:bg-brand-500/10 dark:text-brand-400">
+        <p className="mt-4 rounded-[var(--radius-s)] bg-accent-soft px-3 py-2 text-xs text-accent-ink">
           Position détectée : {detect.location.city}, {detect.location.country}
         </p>
       )}
@@ -102,10 +105,10 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
           {hubs.map((hub) => (
             <label
               key={hub.id}
-              className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 transition ${
+              className={`flex cursor-pointer items-center gap-3 rounded-[var(--radius-m)] border p-4 transition ${
                 selectedHubId === hub.id
-                  ? "border-brand-500 bg-brand-50 dark:border-brand-400 dark:bg-brand-500/10"
-                  : "border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-800 dark:bg-white/[0.03] dark:hover:bg-white/5"
+                  ? "border-ink bg-surface-sunken"
+                  : "border-line bg-surface-raised hover:bg-surface-sunken"
               }`}
             >
               <input
@@ -115,42 +118,38 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
                 onChange={() => setSelectedHubId(hub.id)}
               />
               <div>
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                <p className="text-sm font-medium text-ink">
                   {hub.name}
                   {detect?.nearestHubId === hub.id && (
-                    <span className="ml-2 rounded-full bg-success-50 px-2 py-0.5 text-[10px] font-medium text-success-600 dark:bg-success-500/10 dark:text-success-400">
+                    <Badge variant="positive" className="ml-2">
                       Le plus proche
-                    </span>
+                    </Badge>
                   )}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-ink-muted">
                   {hub.city}, {hub.country} · {hub.currency}
                 </p>
               </div>
             </label>
           ))}
 
-          {error && <p className="text-sm text-error-500">{error}</p>}
+          {error && <p className="text-sm text-critical">{error}</p>}
 
           <div className="flex items-center justify-between pt-2">
             <button
               type="button"
               onClick={() => setCreatingNew(true)}
-              className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
+              className="text-sm font-medium text-accent-ink hover:underline"
             >
               + Créer un nouveau hub
             </button>
-            <button
-              onClick={confirmExisting}
-              disabled={saving || !selectedHubId}
-              className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
-            >
-              {saving ? "Enregistrement..." : "Confirmer ce hub"}
-            </button>
+            <Button onClick={confirmExisting} disabled={!selectedHubId} loading={saving}>
+              Confirmer ce hub
+            </Button>
           </div>
         </div>
       ) : (
-        <div className="mt-5 space-y-4 rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <Card as="div" className="mt-5 space-y-4">
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Nom">
               <input value={newHub.name} onChange={(e) => setNewHub((h) => ({ ...h, name: e.target.value }))} className={inputClasses} />
@@ -205,25 +204,21 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
             </Field>
           </div>
 
-          {error && <p className="text-sm text-error-500">{error}</p>}
+          {error && <p className="text-sm text-critical">{error}</p>}
 
           <div className="flex justify-between">
-            <button
-              type="button"
-              onClick={() => setCreatingNew(false)}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
-            >
+            <Button type="button" variant="secondary" onClick={() => setCreatingNew(false)}>
               Annuler
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={createAndConfirm}
-              disabled={saving || !newHub.name || !newHub.city || !newHub.country || !newHub.countryCode}
-              className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
+              disabled={!newHub.name || !newHub.city || !newHub.country || !newHub.countryCode}
+              loading={saving}
             >
-              {saving ? "Création..." : "Créer et confirmer"}
-            </button>
+              Créer et confirmer
+            </Button>
           </div>
-        </div>
+        </Card>
       )}
     </div>
   );
@@ -232,7 +227,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block text-sm">
-      <span className="mb-1 block font-medium text-gray-700 dark:text-gray-300">{label}</span>
+      <span className="sq-label mb-1 block text-ink">{label}</span>
       {children}
     </label>
   );

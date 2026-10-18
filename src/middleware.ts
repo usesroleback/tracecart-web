@@ -9,8 +9,10 @@ const ROLE_HOME: Record<string, string> = {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Public tokenized customer page — no session, no login redirect.
-  if (pathname.startsWith("/q/")) {
+  // Public surfaces — no session, no login redirect. "/" is the public
+  // marketing site (TraceCartSite); the authenticated console lives at
+  // /dashboard and the other admin/partner paths below.
+  if (pathname === "/" || pathname.startsWith("/q/")) {
     return NextResponse.next();
   }
 
@@ -19,7 +21,7 @@ export function middleware(req: NextRequest) {
 
   if (pathname === "/login") {
     if (session) {
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL("/dashboard", req.url));
     }
     return NextResponse.next();
   }

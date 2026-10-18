@@ -16,20 +16,21 @@ export function useApexTheme() {
     () => ({
       mode: isDark ? ("dark" as const) : ("light" as const),
       colors: {
-        // brand = Corridor Green, the one TraceCart accent — same value as
-        // success/transit by design (docs/brand/tracecart-brand-guidelines.md).
-        brand: "#19d36b",
-        origin: "#2440e0",
-        handoff: "#fdd40a",
+        // Exact Terravia token values (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
+        // project/tokens.json) — ApexCharts bakes colors into SVG options, so
+        // these stay literal hex rather than CSS vars.
+        brand: "#19d36b", // accent
+        origin: "#2440e0", // ds-info
+        handoff: "#ffd60a", // signal — the "held" state
         transit: "#19d36b",
         success: "#19d36b",
-        warning: "#fdd40a",
-        error: "#c41d14",
+        warning: "#ffd60a",
+        error: "#c41d14", // critical
         info: "#2440e0",
-        gray: "#98a2b3",
+        gray: "#6b675f", // stone
       },
-      axisLabelColor: isDark ? "#98a2b3" : "#667085",
-      gridColor: isDark ? "#1d2939" : "#f2f4f7",
+      axisLabelColor: isDark ? "#a3aaa5" : "#575d59", // ink-muted
+      gridColor: isDark ? "#2e3330" : "#d9dcd7", // line
       tooltipTheme: isDark ? ("dark" as const) : ("light" as const),
       fontFamily: "Bricolage Grotesque, sans-serif",
     }),
@@ -41,4 +42,4 @@ export type ApexTheme = ReturnType<typeof useApexTheme>;
 
 // A small qualitative palette for categorical breakdowns (provider/destination),
 // not tied to corridor-phase semantics since those dimensions aren't phases.
-export const QUALITATIVE_PALETTE = ["#19d36b", "#2440e0", "#fdd40a", "#c41d14", "#667085", "#98a2b3"];
+export const QUALITATIVE_PALETTE = ["#19d36b", "#2440e0", "#ffd60a", "#c41d14", "#6b675f", "#858b86"];

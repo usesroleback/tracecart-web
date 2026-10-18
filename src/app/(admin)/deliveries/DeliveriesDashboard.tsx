@@ -5,6 +5,7 @@ import { api } from "@/lib/apiClient";
 import { OrderCard } from "@/components/kaya/OrderCard";
 import { OrderPartnerPanel } from "@/components/kaya/OrderPartnerPanel";
 import { QueueDepthPanel } from "@/components/kaya/QueueDepthPanel";
+import { Card } from "@/components/ui/card/Card";
 import { fetchStatusCounts } from "@/lib/kpi/adapter";
 import { Notification, Order, OrderStatus, Paginated, STATUS_LABELS } from "@/lib/types";
 
@@ -40,17 +41,17 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-gray-800 dark:text-white/90">Livraisons</h1>
-        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+        <h1 className="sq-headline text-[32px]">Livraisons</h1>
+        <p className="mt-1 text-sm text-ink-muted">
           Demandes de cotation et colis confirmés, prêts à prendre la route.
         </p>
       </div>
 
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
-        {PARTNER_STAGES.map((status) => (
-          <div key={status} className="rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-2xl font-semibold tabular-nums text-gray-800 dark:text-white/90">{counts[status] ?? 0}</p>
-            <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{STATUS_LABELS[status]}</p>
+      <div className="mb-6 grid grid-cols-3 border-t-[var(--border-strong)] border-b border-t-ink border-b-line sm:grid-cols-5">
+        {PARTNER_STAGES.map((status, i) => (
+          <div key={status} className={`py-4 pr-3 ${i > 0 ? "border-l border-line pl-3" : ""}`}>
+            <p className="sq-numeral-l text-[28px]">{counts[status] ?? 0}</p>
+            <p className="mt-1 text-[12px] text-ink-muted">{STATUS_LABELS[status]}</p>
           </div>
         ))}
       </div>
@@ -60,27 +61,27 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
       </div>
 
       {notifications.filter((n) => n.channel === "IN_APP").length > 0 && (
-        <div className="mb-6 rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
-          <h2 className="mb-3 text-sm font-semibold text-gray-800 dark:text-white/90">Dernières notifications</h2>
+        <Card className="mb-6">
+          <h2 className="sq-title text-[14px] mb-3">Dernières notifications</h2>
           <ul className="space-y-2">
             {notifications
               .filter((n) => n.channel === "IN_APP")
               .map((n) => (
                 <li key={n.id} className="text-sm">
-                  <span className="font-medium text-gray-800 dark:text-white/90">{n.title}</span>
-                  <span className="ml-2 text-gray-500 dark:text-gray-400">{n.body}</span>
+                  <span className="font-medium text-ink">{n.title}</span>
+                  <span className="ml-2 text-ink-muted">{n.body}</span>
                 </li>
               ))}
           </ul>
-        </div>
+        </Card>
       )}
 
       <div className="space-y-3">
         {loading && orders.length === 0 && (
-          <p className="text-sm text-gray-500 dark:text-gray-400">Chargement des livraisons...</p>
+          <p className="text-sm text-ink-muted">Chargement des livraisons...</p>
         )}
         {!loading && orders.length === 0 && (
-          <p className="text-sm text-gray-500 dark:text-gray-400">Aucun colis assigné pour le moment.</p>
+          <p className="text-sm text-ink-muted">Aucun colis assigné pour le moment.</p>
         )}
         {orders.map((order) => (
           <OrderCard key={order.id} order={order}>

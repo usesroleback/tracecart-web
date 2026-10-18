@@ -28,18 +28,18 @@ export function BulletChart({
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between text-sm">
-        <span className="font-medium text-gray-700 dark:text-gray-200">{label}</span>
-        <span className={`text-xs font-medium ${onTarget ? "text-success-600 dark:text-success-400" : "text-warning-600 dark:text-warning-400"}`}>
-          {format(value)} <span className="text-gray-400">/ objectif {format(target)}</span>
+        <span className="font-medium text-ink">{label}</span>
+        <span className={`text-xs font-medium ${onTarget ? "text-positive" : "text-attn"}`}>
+          {format(value)} <span className="text-ink-muted">/ objectif {format(target)}</span>
         </span>
       </div>
-      <div className="relative h-3 w-full overflow-visible rounded-full bg-gray-100 dark:bg-white/5">
+      <div className="relative h-3 w-full overflow-visible rounded-full bg-surface-sunken">
         <div
           className="h-full rounded-full"
           style={{ width: `${valuePct}%`, backgroundColor: onTarget ? theme.colors.success : theme.colors.brand }}
         />
         <div
-          className="absolute top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-gray-700 dark:bg-white"
+          className="absolute top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-ink"
           style={{ left: `${targetPct}%` }}
           title={`Objectif : ${format(target)}`}
         />

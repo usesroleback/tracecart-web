@@ -41,15 +41,13 @@ export function BreakdownPanel({ rangeDays }: { rangeDays: number }) {
       empty={!!breakdown && breakdown.slices.length === 0}
       emptyLabel="Aucune commande sur cette période."
       action={
-        <div className="flex gap-1 rounded-lg border border-gray-200 p-0.5 dark:border-gray-700">
+        <div className="flex gap-1 rounded-[var(--radius-s)] border border-line p-0.5">
           {(Object.keys(DIMENSION_LABELS) as BreakdownDimension[]).map((d) => (
             <button
               key={d}
               onClick={() => setDimension(d)}
-              className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
-                dimension === d
-                  ? "bg-brand-600 text-white"
-                  : "text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5"
+              className={`rounded-[var(--radius-xs)] px-2.5 py-1 text-xs font-medium transition ${
+                dimension === d ? "bg-ink text-ink-inverse" : "text-ink-muted hover:bg-surface-sunken"
               }`}
             >
               {DIMENSION_LABELS[d]}

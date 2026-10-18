@@ -51,7 +51,7 @@ export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlic
                 <img
                   src={slice.logoUrl}
                   alt=""
-                  className="h-6 w-6 flex-shrink-0 rounded-full border border-gray-200 bg-white object-contain p-0.5 dark:border-gray-700"
+                  className="h-6 w-6 flex-shrink-0 rounded-full border border-line bg-surface-raised object-contain p-0.5"
                 />
               ) : (
                 <span
@@ -59,15 +59,15 @@ export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlic
                   style={{ backgroundColor: QUALITATIVE_PALETTE[i % QUALITATIVE_PALETTE.length] }}
                 />
               )}
-              <span className="min-w-0 flex-1 truncate text-sm text-gray-700 dark:text-gray-200">
+              <span className="min-w-0 flex-1 truncate text-sm text-ink">
                 {slice.label}
                 {i === 0 && slices.length > 1 && (
-                  <span className="ml-1.5 rounded-full bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-600 dark:bg-brand-500/10 dark:text-brand-400">
+                  <span className="ml-1.5 rounded-full bg-accent-soft px-1.5 py-0.5 text-[10px] font-medium text-accent-ink">
                     Le plus utilisé
                   </span>
                 )}
               </span>
-              <span className="flex-shrink-0 text-xs tabular-nums text-gray-400">
+              <span className="flex-shrink-0 text-xs tabular-nums text-ink-muted">
                 {slice.count} · {pct}%
               </span>
             </li>

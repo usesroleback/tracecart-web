@@ -3,40 +3,46 @@
 import { useState } from "react";
 import { CorridorTracker } from "./CorridorTracker";
 import { ProviderBadge } from "./ProviderBadge";
-import { StatusBadge } from "./StatusBadge";
+import { OrderStatusTag } from "@/components/ui/status/Status";
+import { Badge } from "@/components/ui/badge/Badge";
+import { Card } from "@/components/ui/card/Card";
+import { KAYA_API_URL } from "@/lib/apiBase";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import { Order } from "@/lib/types";
 
 export function OrderCard({ order, children }: { order: Order; children?: React.ReactNode }) {
   const [expanded, setExpanded] = useState(false);
+  const thumbnail = order.photos[0]?.url
+    ? `${KAYA_API_URL}${order.photos[0].url}`
+    : order.productImageUrl || productPlaceholder(order.id);
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
+    <Card>
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={order.productImageUrl || productPlaceholder(order.id)}
+            src={thumbnail}
             alt=""
-            className="h-14 w-14 flex-shrink-0 rounded-lg border border-gray-200 object-cover dark:border-gray-800"
+            className="h-14 w-14 flex-shrink-0 rounded-[var(--radius-s)] border border-line object-cover"
           />
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-gray-800 dark:text-white/90">{order.reference}</span>
-              <ProviderBadge provider={order.provider} />
-              <StatusBadge status={order.status} />
+              <span className="sq-mono text-ink">{order.reference}</span>
+              {order.intakeType === "CUSTOMER_OWNED" ? <Badge>Transport seul</Badge> : <ProviderBadge provider={order.provider} />}
+              <OrderStatusTag status={order.status} />
             </div>
-            <p className="mt-1 text-sm font-medium text-gray-800 dark:text-white/90">
+            <p className="mt-1 text-sm font-medium text-ink">
               {order.productName} {order.quantity > 1 ? `× ${order.quantity}` : ""}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-ink-muted">
               {order.customerName} · {order.customerPhone}
             </p>
           </div>
         </div>
         {order.customerQuoteTotal != null && (
-          <div className="whitespace-nowrap text-right text-sm font-semibold text-gray-800 dark:text-white/90">
-            {order.customerQuoteTotal.toLocaleString("fr-FR")} FCFA
+          <div className="whitespace-nowrap text-right text-sm font-semibold text-ink">
+            {order.customerQuoteTotal.toLocaleString("fr-FR")} {order.currency ?? order.hub.currency}
           </div>
         )}
       </div>
@@ -49,13 +55,13 @@ export function OrderCard({ order, children }: { order: Order; children?: React.
         <>
           <button
             onClick={() => setExpanded((v) => !v)}
-            className="mt-3 text-xs font-medium text-brand-600 hover:underline dark:text-brand-400"
+            className="mt-3 text-xs font-medium text-accent-ink hover:underline"
           >
             {expanded ? "Masquer les détails" : "Voir les détails"}
           </button>
-          {expanded && <div className="mt-3 border-t border-gray-100 pt-3 dark:border-gray-800">{children}</div>}
+          {expanded && <div className="mt-3 border-t border-line pt-3">{children}</div>}
         </>
       )}
-    </div>
+    </Card>
   );
 }

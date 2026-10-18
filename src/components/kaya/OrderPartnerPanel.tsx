@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { api } from "@/lib/apiClient";
+import Button from "@/components/ui/button/Button";
 import { LogisticsQuoteForm } from "./LogisticsQuoteForm";
-import { Order, PARTNER_NEXT_ACTION_LABELS, PARTNER_NEXT_STATUS } from "@/lib/types";
+import { LocationUpdateForm } from "./LocationUpdateForm";
+import { Order, PARTNER_NEXT_ACTION_LABELS, PARTNER_NEXT_STATUS, PARTNER_SEQUENCE } from "@/lib/types";
 
 const QUOTING_PHASE = new Set(["QUOTING", "QUOTED"]);
 
@@ -32,23 +34,33 @@ export function OrderPartnerPanel({ order, onChanged }: { order: Order; onChange
   }
 
   if (order.status === "QUOTE_SENT" || order.status === "PAID" || order.status === "PURCHASED" || order.status === "RECEIVED_HUB") {
-    return <p className="text-sm text-gray-500 dark:text-gray-400">En attente de confirmation de prise en charge par le hub.</p>;
+    return <p className="text-sm text-ink-muted">En attente de confirmation de prise en charge par le hub.</p>;
   }
 
   if (nextStatus) {
     return (
-      <div className="space-y-2">
-        {error && <p className="text-xs text-error-500">{error}</p>}
-        <button
-          onClick={advance}
-          disabled={busy}
-          className="w-full rounded-lg bg-origin-500 py-2 text-sm font-semibold text-white transition hover:bg-origin-600 disabled:opacity-60"
-        >
-          {busy ? "Mise à jour..." : PARTNER_NEXT_ACTION_LABELS[order.status]}
-        </button>
+      <div className="space-y-4">
+        {PARTNER_SEQUENCE.includes(order.status) && (
+          <LocationUpdateForm order={order} onChanged={onChanged} />
+        )}
+        <div className="space-y-2 border-t border-line pt-3">
+          {error && <p className="text-xs text-critical">{error}</p>}
+          <Button block onClick={advance} loading={busy}>
+            {PARTNER_NEXT_ACTION_LABELS[order.status]}
+          </Button>
+        </div>
       </div>
     );
   }
 
-  return <p className="text-sm text-gray-500 dark:text-gray-400">Livré.</p>;
+  if (order.status === "DELIVERED") {
+    return (
+      <div className="space-y-4">
+        <LocationUpdateForm order={order} onChanged={onChanged} />
+        <p className="text-sm text-ink-muted">Livré.</p>
+      </div>
+    );
+  }
+
+  return <p className="text-sm text-ink-muted">Livré.</p>;
 }

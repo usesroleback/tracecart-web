@@ -2,10 +2,11 @@
 
 import { FormEvent, useState } from "react";
 import { api } from "@/lib/apiClient";
+import Button from "@/components/ui/button/Button";
 import { Provider, ResolveResult, VolumeTier, VOLUME_TIER_LABELS } from "@/lib/types";
 
 const inputClasses =
-  "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30";
+  "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
 export interface IntentFormInitialProduct {
   url: string;
@@ -96,10 +97,10 @@ export function IntentForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"
+      className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-white/90">Nouvelle intention</h2>
-      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+      <h2 className="sq-title-l text-[20px]">Nouvelle intention</h2>
+      <p className="mt-1 text-sm text-ink-muted">
         Collez le lien du produit, renseignez la destination et les informations client. La cotation (coût produit,
         logistique, frais) se fait à l&apos;étape suivante.
       </p>
@@ -168,21 +169,16 @@ export function IntentForm({
               placeholder="https://www.jumia.ci/..."
               className={`flex-1 ${inputClasses}`}
             />
-            <button
-              type="button"
-              onClick={handleResolve}
-              disabled={resolving || !productUrl}
-              className="whitespace-nowrap rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
-            >
+            <Button type="button" variant="secondary" size="m" onClick={handleResolve} disabled={resolving || !productUrl}>
               {resolving ? "Analyse..." : "Détecter"}
-            </button>
+            </Button>
           </div>
           {provider && (
-            <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 dark:text-brand-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-500" /> Boutique détectée : {provider.name}
+            <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-accent-ink">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Boutique détectée : {provider.name}
             </p>
           )}
-          {resolveError && <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">{resolveError}</p>}
+          {resolveError && <p className="mt-1.5 text-xs text-ink-muted">{resolveError}</p>}
         </Field>
       </div>
 
@@ -192,7 +188,7 @@ export function IntentForm({
           <img
             src={productImageUrl}
             alt=""
-            className="h-20 w-20 rounded-lg border border-gray-200 object-cover dark:border-gray-800"
+            className="h-20 w-20 rounded-[var(--radius-s)] border border-line object-cover"
           />
         )}
         <Field label="Nom du produit">
@@ -211,32 +207,20 @@ export function IntentForm({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={2}
-            className="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
+            className="w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring"
           />
         </Field>
       </div>
 
-      {error && (
-        <p className="mt-4 rounded-lg bg-error-50 px-3 py-2 text-sm text-error-600 dark:bg-error-500/10 dark:text-error-400">
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-4 rounded-[var(--radius-s)] bg-critical-soft px-3 py-2 text-sm text-critical">{error}</p>}
 
       <div className="mt-5 flex justify-end gap-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
-        >
+        <Button type="button" variant="secondary" onClick={onCancel}>
           Annuler
-        </button>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
-        >
+        </Button>
+        <Button type="submit" loading={submitting}>
           {submitting ? "Création..." : "Créer l'intention"}
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -245,7 +229,7 @@ export function IntentForm({
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={`block text-sm ${className ?? ""}`}>
-      <span className="mb-1 block font-medium text-gray-700 dark:text-gray-300">{label}</span>
+      <span className="sq-label mb-1 block text-ink">{label}</span>
       {children}
     </label>
   );

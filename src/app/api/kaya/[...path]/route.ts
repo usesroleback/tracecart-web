@@ -10,17 +10,23 @@ async function forward(req: NextRequest, pathParts: string[]) {
 
   const targetUrl = `${KAYA_API_URL}/${pathParts.join("/")}${req.nextUrl.search}`;
 
-  const init: RequestInit = {
-    method: req.method,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  };
+  // Forward whatever Content-Type the request actually has instead of always
+  // forcing application/json — a multipart upload's browser-generated
+  // boundary must survive, or the API can't parse the body at all.
+  const incomingContentType = req.headers.get("content-type");
+  const headers: Record<string, string> = { Authorization: `Bearer ${token}` };
+  if (incomingContentType) headers["Content-Type"] = incomingContentType;
+
+  const init: RequestInit = { method: req.method, headers };
 
   if (req.method !== "GET" && req.method !== "HEAD") {
-    const bodyText = await req.text();
-    if (bodyText) init.body = bodyText;
+    // arrayBuffer(), not text() — text() decodes as UTF-8, which would
+    // corrupt binary bytes in an uploaded image.
+    const bodyBuffer = await req.arrayBuffer();
+    if (bodyBuffer.byteLength > 0) {
+      init.body = bodyBuffer;
+      if (!incomingContentType) headers["Content-Type"] = "application/json";
+    }
   }
 
   const apiRes = await fetch(targetUrl, init);

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { KAYA_API_URL } from "@/lib/apiBase";
 import { Logo } from "@/components/common/Logo";
+import { Card } from "@/components/ui/card/Card";
+import Button from "@/components/ui/button/Button";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import { STATUS_LABELS, PublicQuote } from "@/lib/types";
 
@@ -63,17 +65,17 @@ export default function PublicQuotePage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10 dark:bg-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-surface px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex justify-center">
           <Logo href={null} />
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-theme-md dark:border-gray-800 dark:bg-white/[0.03]">
-          {loading && <p className="text-center text-sm text-gray-500 dark:text-gray-400">Chargement de votre devis...</p>}
+        <Card className="shadow-[var(--shadow-2)]">
+          {loading && <p className="text-center text-sm text-ink-muted">Chargement de votre devis...</p>}
 
           {notFound && !loading && (
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-center text-sm text-ink-muted">
               Ce lien de devis est invalide ou a expiré.
             </p>
           )}
@@ -84,66 +86,58 @@ export default function PublicQuotePage() {
               <img
                 src={quote.productImageUrl || productPlaceholder(quote.reference)}
                 alt=""
-                className="mx-auto h-32 w-32 rounded-xl border border-gray-200 object-cover dark:border-gray-800"
+                className="mx-auto h-32 w-32 rounded-[var(--radius-s)] border border-line object-cover"
               />
-              <p className="mt-4 text-center text-xs font-medium uppercase tracking-wide text-gray-400">{quote.reference}</p>
-              <h1 className="mt-1 text-center text-lg font-semibold text-gray-800 dark:text-white/90">
+              <p className="mt-4 text-center sq-overline">{quote.reference}</p>
+              <h1 className="mt-1 text-center sq-title text-[18px]">
                 {quote.productName} {quote.quantity > 1 ? `× ${quote.quantity}` : ""}
               </h1>
-              <p className="mt-1 text-center text-sm text-gray-500 dark:text-gray-400">{quote.route}</p>
+              <p className="mt-1 text-center text-sm text-ink-muted">{quote.route}</p>
 
               {quote.customerQuoteTotal != null && (
-                <div className="mt-5 rounded-xl bg-brand-50 p-4 text-center dark:bg-brand-500/10">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Total</p>
-                  <p className="text-2xl font-semibold text-brand-700 dark:text-brand-400">
-                    {quote.customerQuoteTotal.toLocaleString("fr-FR")} FCFA
+                <div className="mt-5 rounded-[var(--radius-s)] bg-accent-soft p-4 text-center">
+                  <p className="text-xs text-ink-muted">Total</p>
+                  <p className="text-2xl font-semibold text-accent-ink">
+                    {quote.customerQuoteTotal.toLocaleString("fr-FR")} {quote.currency}
                   </p>
                 </div>
               )}
 
-              <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-center text-sm text-ink">
                 Statut : <span className="font-medium">{STATUS_LABELS[quote.status]}</span>
               </p>
 
-              {error && <p className="mt-3 text-center text-sm text-error-500">{error}</p>}
+              {error && <p className="mt-3 text-center text-sm text-critical">{error}</p>}
 
               {decisionResult && (
-                <p className="mt-4 rounded-lg bg-success-50 px-3 py-2 text-center text-sm text-success-600 dark:bg-success-500/10 dark:text-success-400">
+                <p className="mt-4 rounded-[var(--radius-s)] bg-positive-soft px-3 py-2 text-center text-sm text-positive">
                   {decisionResult}
                 </p>
               )}
 
               {quote.status === "QUOTE_SENT" && !decisionResult && (
                 <div className="mt-5 flex gap-2">
-                  <button
-                    onClick={() => decide("decline")}
-                    disabled={deciding}
-                    className="flex-1 rounded-lg border border-gray-300 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-60 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
-                  >
+                  <Button variant="secondary" block onClick={() => decide("decline")} disabled={deciding}>
                     Refuser
-                  </button>
-                  <button
-                    onClick={() => decide("accept")}
-                    disabled={deciding}
-                    className="flex-1 rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60"
-                  >
-                    {deciding ? "..." : "Accepter"}
-                  </button>
+                  </Button>
+                  <Button block onClick={() => decide("accept")} loading={deciding}>
+                    Accepter
+                  </Button>
                 </div>
               )}
 
               {quote.status === "PAID" && (
-                <p className="mt-5 text-center text-sm text-success-600 dark:text-success-400">
+                <p className="mt-5 text-center text-sm text-positive">
                   Paiement confirmé — votre commande est en préparation.
                 </p>
               )}
 
               {quote.status === "DECLINED" && (
-                <p className="mt-5 text-center text-sm text-gray-500 dark:text-gray-400">Vous avez refusé ce devis.</p>
+                <p className="mt-5 text-center text-sm text-ink-muted">Vous avez refusé ce devis.</p>
               )}
             </div>
           )}
-        </div>
+        </Card>
       </div>
     </div>
   );

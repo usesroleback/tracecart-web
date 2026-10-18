@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 import { api } from "@/lib/apiClient";
+import Button from "@/components/ui/button/Button";
 import { ADMIN_MANUAL_TARGETS, Order, OrderStatus, STATUS_LABELS } from "@/lib/types";
 
 const inputClasses =
-  "h-10 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-sm text-gray-800 shadow-theme-xs focus:border-brand-400 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
+  "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
 /** Free-form manual status change, available to the admin at any phase — every change requires a note and is audit-logged. */
 export function ManualTransitionForm({ order, onChanged }: { order: Order; onChanged: () => void }) {
+  // Nothing for TraceCart to purchase on a CUSTOMER_OWNED order.
+  const targets =
+    order.intakeType === "CUSTOMER_OWNED" ? ADMIN_MANUAL_TARGETS.filter((s) => s !== "PURCHASED") : ADMIN_MANUAL_TARGETS;
   const [open, setOpen] = useState(false);
-  const [toStatus, setToStatus] = useState<OrderStatus>(ADMIN_MANUAL_TARGETS[0]);
+  const [toStatus, setToStatus] = useState<OrderStatus>(targets[0]);
   const [note, setNote] = useState("");
   const [override, setOverride] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -35,7 +39,7 @@ export function ManualTransitionForm({ order, onChanged }: { order: Order; onCha
     return (
       <button
         onClick={() => setOpen(true)}
-        className="text-xs font-medium text-gray-500 hover:underline dark:text-gray-400"
+        className="text-xs font-medium text-ink-muted hover:underline"
       >
         Modifier le statut manuellement
       </button>
@@ -43,13 +47,11 @@ export function ManualTransitionForm({ order, onChanged }: { order: Order; onCha
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 p-3 dark:border-gray-800">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-        Changement de statut manuel
-      </p>
+    <div className="rounded-[var(--radius-s)] border border-line p-3">
+      <p className="sq-overline mb-2">Changement de statut manuel</p>
       <div className="grid gap-2 sm:grid-cols-2">
         <select value={toStatus} onChange={(e) => setToStatus(e.target.value as OrderStatus)} className={inputClasses}>
-          {ADMIN_MANUAL_TARGETS.map((s) => (
+          {targets.map((s) => (
             <option key={s} value={s}>
               {STATUS_LABELS[s]}
             </option>
@@ -58,26 +60,19 @@ export function ManualTransitionForm({ order, onChanged }: { order: Order; onCha
         <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note (obligatoire)" className={inputClasses} />
       </div>
       {toStatus === "PURCHASED" && (
-        <label className="mt-2 flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+        <label className="mt-2 flex items-center gap-2 text-xs text-ink">
           <input type="checkbox" checked={override} onChange={(e) => setOverride(e.target.checked)} />
           Forcer même si non payé
         </label>
       )}
-      {error && <p className="mt-2 text-xs text-error-500">{error}</p>}
+      {error && <p className="mt-2 text-xs text-critical">{error}</p>}
       <div className="mt-2 flex justify-end gap-2">
-        <button
-          onClick={() => setOpen(false)}
-          className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/5"
-        >
+        <Button variant="secondary" size="s" onClick={() => setOpen(false)}>
           Annuler
-        </button>
-        <button
-          onClick={submit}
-          disabled={busy || !note.trim()}
-          className="rounded-lg bg-gray-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-gray-900 disabled:opacity-50 dark:bg-white/10 dark:hover:bg-white/20"
-        >
-          {busy ? "Application..." : "Appliquer"}
-        </button>
+        </Button>
+        <Button size="s" onClick={submit} disabled={!note.trim()} loading={busy}>
+          Appliquer
+        </Button>
       </div>
     </div>
   );

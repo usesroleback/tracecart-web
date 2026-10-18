@@ -24,7 +24,7 @@ export const VOLUME_TIER_LABELS: Record<VolumeTier, string> = {
 };
 
 // The main path through the lifecycle — used to render the corridor tracker.
-// DECLINED/UNAVAILABLE are terminal off-ramps, shown separately (see StatusBadge).
+// DECLINED/UNAVAILABLE are terminal off-ramps, shown separately (see Status).
 export const STATUS_SEQUENCE: OrderStatus[] = [
   "INTENT_SUBMITTED",
   "QUOTING",
@@ -133,6 +133,27 @@ export interface LogisticsQuote {
   createdAt: string;
 }
 
+export type IntakeType = "BUY_ON_BEHALF" | "CUSTOMER_OWNED";
+export type LocationSource = "MANUAL" | "GPS";
+
+export interface OrderPhoto {
+  id: string;
+  url: string;
+  originalName: string | null;
+  createdAt: string;
+}
+
+export interface LocationUpdate {
+  id: string;
+  source: LocationSource;
+  city: string | null;
+  note: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  recordedAt: string;
+  reportedByUserId: string;
+}
+
 // Price fields (productCost, currency, platformFee, customerQuoteTotal,
 // paymentStatus, paidAt) are only ever present for SUPER_ADMIN — the API
 // omits them entirely from the partner-facing serialization (§3, enforced
@@ -150,8 +171,9 @@ export interface Order {
   destinationCountry: string;
   providerId: string | null;
   provider: Provider | null;
+  intakeType: IntakeType;
   productName: string;
-  productUrl: string;
+  productUrl: string | null;
   productImageUrl: string | null;
   quantity: number;
   volumeTier: VolumeTier;
@@ -169,6 +191,8 @@ export interface Order {
   assignedPartnerId: string | null;
   assignedPartner: OrderUserRef | null;
   logisticsQuote: LogisticsQuote | null;
+  photos: OrderPhoto[];
+  locationUpdates: LocationUpdate[];
   createdAt: string;
   updatedAt: string;
 }
@@ -206,6 +230,8 @@ export interface SessionUser {
   hub: { id: string; name: string; city: string; country: string; currency: string } | null;
 }
 
+export type ReservationStatus = "RESERVED" | "CONVERTED";
+
 export interface Reservation {
   id: string;
   hubId: string;
@@ -218,7 +244,7 @@ export interface Reservation {
   imageUrl: string | null;
   price: string | null;
   currency: string | null;
-  status: "RESERVED" | "CONVERTED";
+  status: ReservationStatus;
   orderId: string | null;
   order: { id: string; reference: string; status: OrderStatus } | null;
   createdAt: string;
@@ -338,5 +364,6 @@ export interface PublicQuote {
   route: string;
   status: OrderStatus;
   customerQuoteTotal: number | null;
+  currency: string;
   paymentStatus: "UNPAID" | "PAID";
 }

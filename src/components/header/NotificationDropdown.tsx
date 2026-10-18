@@ -67,12 +67,12 @@ export default function NotificationDropdown() {
   return (
     <div className="relative">
       <button
-        className="relative dropdown-toggle flex items-center justify-center text-gray-500 transition-colors bg-white border border-gray-200 rounded-full hover:text-gray-700 h-11 w-11 hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+        className="relative dropdown-toggle flex items-center justify-center text-ink-muted transition-colors bg-surface-raised border border-line rounded-full hover:text-ink h-11 w-11 hover:bg-surface-sunken"
         onClick={toggleDropdown}
         aria-label="Notifications"
       >
         {count > 0 && (
-          <span className="absolute right-0 top-0.5 z-10 flex h-4 min-w-4 items-center justify-center rounded-full bg-handoff-400 px-1 text-[10px] font-semibold text-white">
+          <span className="absolute right-0 top-0.5 z-10 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[10px] font-semibold text-black">
             {count > 9 ? "9+" : count}
           </span>
         )}
@@ -88,14 +88,14 @@ export default function NotificationDropdown() {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className="absolute -right-[240px] mt-[17px] flex h-[480px] w-[350px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark sm:w-[361px] lg:right-0"
+        className="absolute -right-[240px] mt-[17px] flex h-[480px] w-[350px] flex-col rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 shadow-[var(--shadow-2)] sm:w-[361px] lg:right-0"
       >
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100 dark:border-gray-700">
-          <h5 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Notifications</h5>
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-line">
+          <h5 className="sq-title text-[16px]">Notifications</h5>
         </div>
         <ul className="flex flex-col h-auto overflow-y-auto custom-scrollbar">
           {notifications.length === 0 && (
-            <li className="px-2 py-6 text-center text-sm text-gray-400">
+            <li className="px-2 py-6 text-center text-sm text-ink-muted">
               Aucune notification pour le moment.
             </li>
           )}
@@ -103,13 +103,13 @@ export default function NotificationDropdown() {
             <li key={n.id}>
               <DropdownItem
                 onItemClick={() => markRead(n.id)}
-                className={`flex flex-col gap-1 rounded-lg border-b border-gray-100 p-3 px-3.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5 ${
+                className={`flex flex-col gap-1 rounded-[var(--radius-s)] border-b border-line p-3 px-3.5 py-3 hover:bg-surface-sunken ${
                   n.status === "READ" ? "opacity-60" : ""
                 }`}
               >
-                <span className="font-medium text-gray-800 dark:text-white/90">{n.title}</span>
-                <span className="text-theme-xs text-gray-500 dark:text-gray-400 line-clamp-2">{n.body}</span>
-                <span className="text-theme-xs text-gray-400">{timeAgo(n.createdAt)}</span>
+                <span className="font-medium text-ink">{n.title}</span>
+                <span className="text-theme-xs text-ink-muted line-clamp-2">{n.body}</span>
+                <span className="text-theme-xs text-ink-muted">{timeAgo(n.createdAt)}</span>
               </DropdownItem>
             </li>
           ))}

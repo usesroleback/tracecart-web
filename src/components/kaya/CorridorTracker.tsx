@@ -30,8 +30,8 @@ const RING_CLASSES: Record<CorridorPhase, string> = {
 export function CorridorTracker({ status, hubCity, destinationCity }: { status: OrderStatus; hubCity: string; destinationCity: string }) {
   if (status === "DECLINED" || status === "UNAVAILABLE") {
     return (
-      <div className="flex items-center gap-2 text-xs text-error-600 dark:text-error-400">
-        <span className="h-2 w-2 rounded-full bg-error-500" />
+      <div className="flex items-center gap-2 text-xs text-critical">
+        <span className="h-2 w-2 rounded-full bg-critical" />
         {STATUS_LABELS[status]}
       </div>
     );
@@ -52,15 +52,15 @@ export function CorridorTracker({ status, hubCity, destinationCity }: { status: 
               <div
                 title={STATUS_LABELS[step]}
                 className={`h-3 w-3 flex-shrink-0 rounded-full border-2 transition ${
-                  isFilled ? FILLED_CLASSES[color] : "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
-                } ${isCurrent ? `ring-2 ring-offset-2 dark:ring-offset-gray-900 ${RING_CLASSES[color]}` : ""}`}
+                  isFilled ? FILLED_CLASSES[color] : "border-line bg-surface-raised"
+                } ${isCurrent ? `ring-2 ring-offset-2 ring-offset-[var(--color-surface-raised)] ${RING_CLASSES[color]}` : ""}`}
               />
               {index < STATUS_SEQUENCE.length - 1 && (
                 <div
                   className={`h-0.5 flex-1 ${
                     index < currentIndex
                       ? FILLED_CLASSES[sideColor(STATUS_SEQUENCE[index + 1])].split(" ")[0]
-                      : "bg-gray-200 dark:bg-gray-700"
+                      : "bg-line"
                   }`}
                 />
               )}
@@ -68,7 +68,7 @@ export function CorridorTracker({ status, hubCity, destinationCity }: { status: 
           );
         })}
       </div>
-      <div className="mt-1 flex justify-between text-[10px] text-gray-400 dark:text-gray-500">
+      <div className="mt-1 flex justify-between text-[10px] text-ink-muted">
         <span>{hubCity}</span>
         <span>{destinationCity}</span>
       </div>

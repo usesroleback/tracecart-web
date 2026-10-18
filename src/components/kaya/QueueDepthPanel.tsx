@@ -48,17 +48,17 @@ export function QueueDepthPanel() {
         {stages?.map((stage) => (
           <div key={stage.status}>
             <div className="mb-1 flex items-center justify-between gap-2 text-xs">
-              <span className="font-medium text-gray-700 dark:text-gray-200">{STATUS_LABELS[stage.status]}</span>
-              <span className="flex items-center gap-1.5 text-gray-400">
+              <span className="font-medium text-ink">{STATUS_LABELS[stage.status]}</span>
+              <span className="flex items-center gap-1.5 text-ink-muted">
                 {stage.isBottleneck && (
-                  <span className="text-warning-500" title="Ce stade prend plus de temps que d'habitude">
+                  <span className="text-attn" title="Ce stade prend plus de temps que d'habitude">
                     ⚠
                   </span>
                 )}
                 {stage.count} · moy. {stage.avgAgeHours.toLocaleString("fr-FR")} h · p90 {stage.p90AgeHours.toLocaleString("fr-FR")} h
               </span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-white/5">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-surface-sunken">
               <div
                 className={`h-full rounded-full ${PHASE_BAR[stage.phase]} ${stage.isBottleneck ? "opacity-100" : "opacity-70"}`}
                 style={{ width: `${Math.max(6, (stage.count / maxCount) * 100)}%` }}
