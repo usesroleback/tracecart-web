@@ -1,5 +1,6 @@
 import type React from "react";
-import Link from "next/link";
+import { Link } from '@/i18n/navigation';
+
 
 interface DropdownItemProps {
   tag?: "a" | "button";

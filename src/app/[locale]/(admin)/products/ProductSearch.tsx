@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from '@/i18n/navigation';
+
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";

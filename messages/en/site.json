@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "TraceCart — Get it there.",
+    "description": "Sourcing and cross-border logistics for landlocked and difficult-to-reach markets. Tell us what needs to move — we'll work out the route."
+  },
+  "header": {
+    "brand": "TraceCart",
+    "howItWorks": "How it works",
+    "corridors": "Corridors",
+    "signIn": "Sign in",
+    "getAQuote": "Get a quote"
+  },
+  "hero": {
+    "overline": "Sourcing and logistics for hard-to-reach places",
+    "title": "Get it there.",
+    "body": "We source, move and deliver goods to landlocked and difficult-to-reach markets. Tell us what needs to move. We will work out the route.",
+    "originLabel": "ORIGIN",
+    "destinationLabel": "DESTINATION"
+  },
+  "howItWorks": {
+    "overline": "How it works",
+    "title": "Five steps. You only see one: delivered.",
+    "steps": {
+      "source": { "title": "Source", "body": "We find the supplier, check the goods, and pay them safely." },
+      "consolidate": { "title": "Consolidate", "body": "Your cargo joins others at a hub, so you only pay for the space you use." },
+      "move": { "title": "Move", "body": "Sea, rail and road, planned as one route and tracked as one shipment." },
+      "clear": { "title": "Clear", "body": "Our brokers handle customs and border papers before the truck arrives." },
+      "deliver": { "title": "Deliver", "body": "To the door, with a signed, photographed proof of delivery." }
+    }
+  },
+  "proof": {
+    "photoCaption": "Documentary photo: the Dakola border crossing at 4 a.m. — a TraceCart broker walking the queue with a clipboard. Real place, real people, no staging.",
+    "stats": {
+      "shipments": { "value": "1,284", "label": "Shipments delivered to landlocked destinations this year" },
+      "dwellTime": { "value": "42h", "label": "Median border dwell time, down from 71 hours" },
+      "delivered": { "value": "97.6%", "label": "Delivered complete and undamaged" }
+    }
+  },
+  "corridors": {
+    "title": "Corridors we run every week",
+    "allCorridors": "All 31 corridors",
+    "dayRange": "{min}–{max} days"
+  },
+  "closingBand": {
+    "title": "Tell us where it needs to go.",
+    "cta": "Get a quote →"
+  },
+  "quoteBar": {
+    "from": "From",
+    "fromPlaceholder": "City, port or supplier",
+    "to": "To",
+    "toPlaceholder": "Where it needs to go",
+    "what": "What",
+    "whatPlaceholder": "e.g. 2 solar inverters, 1.4 t",
+    "when": "When",
+    "whenPlaceholder": "Within 3 weeks",
+    "cta": "Get a quote →",
+    "disclaimer": "A person who knows the corridor replies within 4 hours. No account needed.",
+    "submittedTitle": "Thanks — that's on its way.",
+    "submittedBody": "A person who knows the {from} → {to} corridor will reply within 4 working hours."
+  },
+  "footer": {
+    "brand": "TraceCart",
+    "byline": "A Roleback company",
+    "cities": "Lomé · Mersin · Antofagasta · Rotterdam"
+  }
+}

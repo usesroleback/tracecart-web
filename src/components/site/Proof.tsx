@@ -1,10 +1,10 @@
-const STATS = [
-  { value: "1,284", label: "Shipments delivered to landlocked destinations this year" },
-  { value: "42h", label: "Median border dwell time, down from 71 hours" },
-  { value: "97.6%", label: "Delivered complete and undamaged" },
-] as const;
+import { useTranslations } from "next-intl";
+
+const STAT_KEYS = ["shipments", "dwellTime", "delivered"] as const;
 
 export function Proof() {
+  const t = useTranslations("site.proof");
+
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
       <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
@@ -16,16 +16,15 @@ export function Proof() {
             }}
           />
           <p className="absolute bottom-4 left-4 right-4 rounded-[var(--radius-xs)] bg-surface-raised px-3 py-2 text-xs text-ink-muted shadow-[var(--shadow-1)]">
-            Documentary photo: the Dakola border crossing at 4 a.m. — a TraceCart broker walking the queue with a
-            clipboard. Real place, real people, no staging.
+            {t("photoCaption")}
           </p>
         </div>
 
         <div className="space-y-8">
-          {STATS.map((stat) => (
-            <div key={stat.label}>
-              <p className="sq-numeral-l">{stat.value}</p>
-              <p className="mt-1 text-sm text-ink-muted">{stat.label}</p>
+          {STAT_KEYS.map((key) => (
+            <div key={key}>
+              <p className="sq-numeral-l">{t(`stats.${key}.value`)}</p>
+              <p className="mt-1 text-sm text-ink-muted">{t(`stats.${key}.label`)}</p>
             </div>
           ))}
         </div>

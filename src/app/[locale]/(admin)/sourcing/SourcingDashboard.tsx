@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from '@/i18n/navigation';
 import { api } from "@/lib/apiClient";
 import { IntentForm } from "@/components/kaya/IntentForm";
 import { SourcingRequestForm } from "@/components/kaya/SourcingRequestForm";

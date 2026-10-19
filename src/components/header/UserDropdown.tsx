@@ -1,5 +1,6 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter } from '@/i18n/navigation';
+
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useSession } from "@/context/SessionContext";

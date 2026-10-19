@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "title": "TraceCart — On trouvera un moyen.",
+    "description": "Sourcing et logistique transfrontalière, pour les corridors commerciaux les plus difficiles."
+  },
+  "notFound": {
+    "message": "Cette page est introuvable.",
+    "cta": "Retour à l'accueil"
+  }
+}

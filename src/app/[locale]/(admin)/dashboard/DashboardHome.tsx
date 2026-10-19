@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from '@/i18n/navigation';
+
 import { useSession } from "@/context/SessionContext";
 import { OrderCard } from "@/components/kaya/OrderCard";
 import { AttentionTable } from "@/components/kaya/AttentionTable";

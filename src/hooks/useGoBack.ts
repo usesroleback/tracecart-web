@@ -1,4 +1,5 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from '@/i18n/navigation';
+
 
 const useGoBack = () => {
   const router = useRouter();

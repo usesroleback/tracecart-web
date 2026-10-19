@@ -4,7 +4,8 @@ import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { Logo } from "@/components/common/Logo";
 import { DsEyeOffIcon, DsEyeIcon } from "@/icons";
-import { useRouter } from "next/navigation";
+import { useRouter } from '@/i18n/navigation';
+
 import React, { FormEvent, useState } from "react";
 
 export default function SignInForm() {

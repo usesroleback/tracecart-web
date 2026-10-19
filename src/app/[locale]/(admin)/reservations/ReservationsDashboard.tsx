@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from '@/i18n/navigation';
+
 import { api } from "@/lib/apiClient";
 import { useSession } from "@/context/SessionContext";
 import { IntentForm } from "@/components/kaya/IntentForm";

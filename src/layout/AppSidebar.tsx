@@ -1,7 +1,7 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link } from '@/i18n/navigation';
+import { usePathname } from '@/i18n/navigation';
 import { useSidebar } from "../context/SidebarContext";
 import { useSession } from "../context/SessionContext";
 import { api } from "../lib/apiClient";
