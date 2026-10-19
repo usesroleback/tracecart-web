@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
-import { OrderCard } from "@/components/kaya/OrderCard";
-import { OrderPartnerPanel } from "@/components/kaya/OrderPartnerPanel";
-import { QueueDepthPanel } from "@/components/kaya/QueueDepthPanel";
+import { OrderCard } from "@/components/tracecart/OrderCard";
+import { OrderPartnerPanel } from "@/components/tracecart/OrderPartnerPanel";
+import { QueueDepthPanel } from "@/components/tracecart/QueueDepthPanel";
 import { Card } from "@/components/ui/card/Card";
 import { fetchStatusCounts } from "@/lib/kpi/adapter";
 import { Notification, Order, OrderStatus, Paginated, STATUS_LABELS } from "@/lib/types";

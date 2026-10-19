@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
-import { IntentForm } from "@/components/kaya/IntentForm";
-import { CustomerOwnedIntentForm } from "@/components/kaya/CustomerOwnedIntentForm";
-import { OrderCard } from "@/components/kaya/OrderCard";
-import { OrderAdminPanel } from "@/components/kaya/OrderAdminPanel";
-import { QueueDepthPanel } from "@/components/kaya/QueueDepthPanel";
+import { IntentForm } from "@/components/tracecart/IntentForm";
+import { CustomerOwnedIntentForm } from "@/components/tracecart/CustomerOwnedIntentForm";
+import { OrderCard } from "@/components/tracecart/OrderCard";
+import { OrderAdminPanel } from "@/components/tracecart/OrderAdminPanel";
+import { QueueDepthPanel } from "@/components/tracecart/QueueDepthPanel";
 import Button from "@/components/ui/button/Button";
 import { ExceptionCard } from "@/components/ui/exception-card/ExceptionCard";
 import { useSession } from "@/context/SessionContext";

@@ -5,12 +5,12 @@ import { Link } from '@/i18n/navigation';
 
 import { api } from "@/lib/apiClient";
 import { useSession } from "@/context/SessionContext";
-import { IntentForm } from "@/components/kaya/IntentForm";
+import { IntentForm } from "@/components/tracecart/IntentForm";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
 import Button from "@/components/ui/button/Button";
-import { KpiRow } from "@/components/kaya/KpiRow";
-import { PanelShell } from "@/components/kaya/PanelShell";
+import { KpiRow } from "@/components/tracecart/KpiRow";
+import { PanelShell } from "@/components/tracecart/PanelShell";
 import { RankingBars } from "@/components/charts/RankingBars";
 import { BulletChart } from "@/components/charts/BulletChart";
 import { fetchReservationRanking, fetchReservationStats } from "@/lib/kpi/adapter";

@@ -6,14 +6,14 @@ import { ProviderBadge } from "./ProviderBadge";
 import { OrderStatusTag } from "@/components/ui/status/Status";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
-import { KAYA_API_URL } from "@/lib/apiBase";
+import { TRACECART_API_URL } from "@/lib/apiBase";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import { Order } from "@/lib/types";
 
 export function OrderCard({ order, children }: { order: Order; children?: React.ReactNode }) {
   const [expanded, setExpanded] = useState(false);
   const thumbnail = order.photos[0]?.url
-    ? `${KAYA_API_URL}${order.photos[0].url}`
+    ? `${TRACECART_API_URL}${order.photos[0].url}`
     : order.productImageUrl || productPlaceholder(order.id);
 
   return (

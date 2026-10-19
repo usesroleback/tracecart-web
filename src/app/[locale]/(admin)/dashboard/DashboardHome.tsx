@@ -3,12 +3,12 @@
 import { Link } from '@/i18n/navigation';
 
 import { useSession } from "@/context/SessionContext";
-import { OrderCard } from "@/components/kaya/OrderCard";
-import { AttentionTable } from "@/components/kaya/AttentionTable";
-import { KpiRow } from "@/components/kaya/KpiRow";
-import { TrendPanel } from "@/components/kaya/TrendPanel";
-import { BreakdownPanel } from "@/components/kaya/BreakdownPanel";
-import { QueueDepthPanel } from "@/components/kaya/QueueDepthPanel";
+import { OrderCard } from "@/components/tracecart/OrderCard";
+import { AttentionTable } from "@/components/tracecart/AttentionTable";
+import { KpiRow } from "@/components/tracecart/KpiRow";
+import { TrendPanel } from "@/components/tracecart/TrendPanel";
+import { BreakdownPanel } from "@/components/tracecart/BreakdownPanel";
+import { QueueDepthPanel } from "@/components/tracecart/QueueDepthPanel";
 import { Card } from "@/components/ui/card/Card";
 import Button from "@/components/ui/button/Button";
 import { DsSearchIcon, DsBuildingIcon, DsHubIcon, DsPackageIcon, DsTruckIcon } from "@/icons";

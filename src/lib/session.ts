@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { Role } from "./types";
 
-export const SESSION_COOKIE = "kaya_token";
+export const SESSION_COOKIE = "tracecart_token";
 
 export interface TokenPayload {
   sub: string;

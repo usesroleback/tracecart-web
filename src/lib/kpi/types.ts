@@ -1,5 +1,5 @@
 import { OrderStatus } from "@/lib/types";
-import { CorridorPhase } from "@/components/kaya/CorridorTracker";
+import { CorridorPhase } from "@/components/tracecart/CorridorTracker";
 
 export type KpiStatus = "success" | "warning" | "error" | "neutral";
 export type KpiFormat = "count" | "currency" | "hours" | "percent";

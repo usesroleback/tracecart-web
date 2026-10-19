@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Link } from '@/i18n/navigation';
 import { api } from "@/lib/apiClient";
-import { IntentForm } from "@/components/kaya/IntentForm";
-import { SourcingRequestForm } from "@/components/kaya/SourcingRequestForm";
+import { IntentForm } from "@/components/tracecart/IntentForm";
+import { SourcingRequestForm } from "@/components/tracecart/SourcingRequestForm";
 import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";

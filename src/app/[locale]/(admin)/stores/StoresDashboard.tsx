@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
-import { StoreForm } from "@/components/kaya/StoreForm";
+import { StoreForm } from "@/components/tracecart/StoreForm";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
 import Button from "@/components/ui/button/Button";
-import { PanelShell } from "@/components/kaya/PanelShell";
+import { PanelShell } from "@/components/tracecart/PanelShell";
 import { RankingBars } from "@/components/charts/RankingBars";
 import { GaugeCard } from "@/components/charts/GaugeCard";
 import { fetchBreakdown } from "@/lib/kpi/adapter";

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { KAYA_API_URL } from "@/lib/apiBase";
+import { TRACECART_API_URL } from "@/lib/apiBase";
 import { Logo } from "@/components/common/Logo";
 import { Card } from "@/components/ui/card/Card";
 import Button from "@/components/ui/button/Button";
@@ -10,7 +10,7 @@ import { productPlaceholder } from "@/lib/placeholderImage";
 import { STATUS_LABELS, PublicQuote } from "@/lib/types";
 
 async function publicRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${KAYA_API_URL}${path}`, {
+  const res = await fetch(`${TRACECART_API_URL}${path}`, {
     ...init,
     headers: { "Content-Type": "application/json", ...init?.headers },
   });

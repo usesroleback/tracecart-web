@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { KAYA_API_URL } from "@/lib/apiBase";
+import { TRACECART_API_URL } from "@/lib/apiBase";
 import { getServerToken } from "@/lib/session";
 
 async function forward(req: NextRequest, pathParts: string[]) {
@@ -8,7 +8,7 @@ async function forward(req: NextRequest, pathParts: string[]) {
     return NextResponse.json({ error: { code: "UNAUTHORIZED", message: "Not authenticated" } }, { status: 401 });
   }
 
-  const targetUrl = `${KAYA_API_URL}/${pathParts.join("/")}${req.nextUrl.search}`;
+  const targetUrl = `${TRACECART_API_URL}/${pathParts.join("/")}${req.nextUrl.search}`;
 
   // Forward whatever Content-Type the request actually has instead of always
   // forcing application/json — a multipart upload's browser-generated
