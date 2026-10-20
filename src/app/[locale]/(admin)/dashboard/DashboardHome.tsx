@@ -130,7 +130,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
 
 const CARRIER_STAGES: { key: string; label: string; statuses: OrderStatus[] }[] = [
   { key: "quote", label: "À coter", statuses: ["QUOTING", "QUOTED"] },
-  { key: "ready", label: "À prendre en charge", statuses: ["CONFIRMED_HUB"] },
+  { key: "ready", label: "À gérer", statuses: ["CONFIRMED_HUB"] },
   { key: "moving", label: "En route", statuses: ["PICKED_UP", "IN_TRANSIT"] },
   { key: "delivered", label: "Livrés", statuses: ["DELIVERED"] },
 ];
@@ -153,10 +153,10 @@ function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
         <h1 className="rb-headline text-[32px]">{name}</h1>
         <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
           {todo === 0
-            ? "Rien à coter ni à prendre en charge pour le moment."
+            ? "Rien à coter ni à gérer pour le moment."
             : [
                 toQuote.length > 0 && `${toQuote.length} cotation${toQuote.length > 1 ? "s" : ""} à soumettre`,
-                toCollect.length > 0 && `${toCollect.length} colis à prendre en charge`,
+                toCollect.length > 0 && `${toCollect.length} colis à gérer`,
               ]
                 .filter(Boolean)
                 .join(" · ") + "."}

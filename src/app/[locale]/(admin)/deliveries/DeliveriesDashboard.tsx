@@ -33,7 +33,7 @@ const SEGMENT_LABELS: Record<Segment, string> = {
   all: "Tous",
   quote: "À coter",
   waiting: "En attente du hub",
-  ready: "À prendre en charge",
+  ready: "À gérer",
   moving: "En route",
   delivered: "Livrés",
 };
@@ -107,7 +107,7 @@ export function DeliveriesDashboard({ initialOrders, initialTotal }: { initialOr
         items={[
           { key: "quote", value: sumOf(counts, SEGMENT_STATUSES.quote), label: "À coter" },
           { key: "waiting", value: sumOf(counts, SEGMENT_STATUSES.waiting), label: "En attente du hub" },
-          { key: "ready", value: sumOf(counts, SEGMENT_STATUSES.ready), label: "À prendre en charge" },
+          { key: "ready", value: sumOf(counts, SEGMENT_STATUSES.ready), label: "À gérer" },
           { key: "moving", value: sumOf(counts, SEGMENT_STATUSES.moving), label: "En route" },
           { key: "delivered", value: sumOf(counts, SEGMENT_STATUSES.delivered), label: "Livrés" },
         ]}
@@ -156,7 +156,7 @@ export function DeliveriesDashboard({ initialOrders, initialTotal }: { initialOr
             {toQuote.length + toCollect.length > 0 && <Badge variant="attn">{toQuote.length + toCollect.length}</Badge>}
           </div>
           {toQuote.length + toCollect.length === 0 ? (
-            <p className="text-sm text-ink-muted">Rien à coter ni à prendre en charge pour le moment.</p>
+            <p className="text-sm text-ink-muted">Rien à coter ni à gérer pour le moment.</p>
           ) : (
             <>
               {toQuote.map((order) => (

@@ -70,7 +70,7 @@ const CARRIER_NAV: NavGroup[] = [
     title: "Livraisons",
     items: [
       { icon: <DsFileIcon />, name: "À coter", path: "/deliveries", query: { etape: "quote" }, count: (c) => c.QUOTING },
-      { icon: <DsPackageIcon />, name: "À prendre en charge", path: "/deliveries", query: { etape: "ready" }, count: (c) => c.CONFIRMED_HUB },
+      { icon: <DsPackageIcon />, name: "À gérer", path: "/deliveries", query: { etape: "ready" }, count: (c) => c.CONFIRMED_HUB },
       { icon: <DsTruckIcon />, name: "En route", path: "/deliveries", query: { etape: "moving" }, count: (c) => sum(c, ["PICKED_UP", "IN_TRANSIT"]) },
       { icon: <DsLayersIcon />, name: "Toutes les livraisons", path: "/deliveries" },
     ],
