@@ -35,7 +35,6 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
 
   useEffect(() => {
     refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

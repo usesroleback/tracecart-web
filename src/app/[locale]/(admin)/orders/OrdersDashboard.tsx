@@ -33,7 +33,6 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
 
   useEffect(() => {
     refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleCreated() {

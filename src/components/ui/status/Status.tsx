@@ -1,4 +1,4 @@
-import { OrderStatus, ReservationStatus, SourcingRequestStatus, STATUS_LABELS, STATUS_SEQUENCE } from "@/lib/types";
+import { OrderStatus, ReservationStatus, SourcingRequestStatus, STATUS_LABELS } from "@/lib/types";
 import { sideColor } from "@/components/tracecart/CorridorTracker";
 
 export type StatusState = "planned" | "moving" | "held" | "exception" | "done";
