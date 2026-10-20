@@ -16,9 +16,6 @@
     "signOut": "Déconnexion",
     "menu": "Menu du compte"
   },
-  "locale": {
-    "switch": "Passer en anglais"
-  },
   "header": {
     "toggleSidebar": "Afficher ou masquer le menu",
     "moreActions": "Plus d'actions"

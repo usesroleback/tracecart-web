@@ -16,9 +16,6 @@
     "signOut": "Sign out",
     "menu": "Account menu"
   },
-  "locale": {
-    "switch": "Switch to French"
-  },
   "header": {
     "toggleSidebar": "Show or hide the menu",
     "moreActions": "More actions"

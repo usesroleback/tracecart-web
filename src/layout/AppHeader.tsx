@@ -1,6 +1,5 @@
 "use client";
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
-import { LocaleSwitcher } from "@/components/common/LocaleSwitcher";
 import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
@@ -79,7 +78,6 @@ const AppHeader: React.FC = () => {
           } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-[var(--shadow-2)] lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
-            <LocaleSwitcher />
             <ThemeToggleButton />
             <NotificationDropdown />
           </div>
