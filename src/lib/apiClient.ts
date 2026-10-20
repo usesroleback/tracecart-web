@@ -1,7 +1,11 @@
+// The page's language (<html lang>), so the API answers errors in it.
+const localeHeader = (): Record<string, string> =>
+  typeof document === "undefined" ? {} : { "X-TraceCart-Locale": document.documentElement.lang };
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`/api/tracecart${path}`, {
     ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
+    headers: { "Content-Type": "application/json", ...localeHeader(), ...init?.headers },
     cache: "no-store",
   });
 
@@ -27,7 +31,7 @@ export const api = {
   // itself when the body is a FormData, and request() would otherwise force
   // application/json and break the upload.
   postForm: async <T>(path: string, formData: FormData): Promise<T> => {
-    const res = await fetch(`/api/tracecart${path}`, { method: "POST", body: formData, cache: "no-store" });
+    const res = await fetch(`/api/tracecart${path}`, { method: "POST", body: formData, headers: localeHeader(), cache: "no-store" });
     const text = await res.text();
     const data = text ? JSON.parse(text) : null;
     if (!res.ok) {

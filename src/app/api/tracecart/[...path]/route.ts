@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { SERVER_API_URL } from "@/lib/apiBase";
 import { getServerToken } from "@/lib/session";
 
+const LOCALE_HEADER = "x-tracecart-locale";
+
 async function forward(req: NextRequest, pathParts: string[]) {
   const token = await getServerToken();
   if (!token) {
-    return NextResponse.json({ error: { code: "UNAUTHORIZED", message: "Not authenticated" } }, { status: 401 });
+    const message = req.headers.get(LOCALE_HEADER) === "fr" ? "Session expirée. Reconnectez-vous." : "Your session has ended. Sign in again.";
+    return NextResponse.json({ error: { code: "UNAUTHORIZED", message } }, { status: 401 });
   }
 
   const targetUrl = `${SERVER_API_URL}/${pathParts.join("/")}${req.nextUrl.search}`;
@@ -16,6 +19,8 @@ async function forward(req: NextRequest, pathParts: string[]) {
   const incomingContentType = req.headers.get("content-type");
   const headers: Record<string, string> = { Authorization: `Bearer ${token}` };
   if (incomingContentType) headers["Content-Type"] = incomingContentType;
+  const locale = req.headers.get(LOCALE_HEADER);
+  if (locale) headers["X-TraceCart-Locale"] = locale;
 
   const init: RequestInit = { method: req.method, headers };
 

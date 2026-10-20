@@ -170,6 +170,7 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
                   [td("name"), order.customerName],
                   [td("phone"), order.customerPhone, { mono: true }],
                   [td("email"), order.customerEmail],
+                  [td("language"), order.customerLocale === "en" ? "English" : "Français"],
                   [td("destination"), `${order.destinationCity}, ${order.destinationCountry}`],
                 ]}
               />

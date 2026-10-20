@@ -1,5 +1,7 @@
 export type Role = "SUPER_ADMIN" | "LOGISTICS_PARTNER";
 
+export type Locale = "fr" | "en";
+
 export type OrderStatus =
   | "INTENT_SUBMITTED"
   | "QUOTING"
@@ -139,6 +141,7 @@ export interface Order {
   customerName: string;
   customerPhone: string;
   customerEmail?: string | null;
+  customerLocale: Locale;
   destinationCity: string;
   destinationCountry: string;
   providerId: string | null;
@@ -200,6 +203,8 @@ export interface SessionUser {
   email: string;
   phone: string | null;
   role: Role;
+  /** The language their notifications are written in (kept in step with the console's). */
+  locale: Locale;
   hubId: string | null;
   hub: { id: string; name: string; city: string; country: string; currency: string } | null;
 }

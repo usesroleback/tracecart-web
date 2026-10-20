@@ -1,12 +1,18 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
-import { Provider, ResolveResult, VolumeTier } from "@/lib/types";
+import { Locale, Provider, ResolveResult, VolumeTier } from "@/lib/types";
 
 const VOLUME_TIERS: VolumeTier[] = ["SMALL_UNITS", "MID_QUANTITY", "LARGE_STOCK"];
+
+// Each language named in itself, so the customer's can be found in either console.
+const CUSTOMER_LOCALES: { id: Locale; name: string }[] = [
+  { id: "fr", name: "Français" },
+  { id: "en", name: "English" },
+];
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -34,6 +40,8 @@ export function IntentForm({
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  // The customer's SMS, emails and quote page; the console's language until changed.
+  const [customerLocale, setCustomerLocale] = useState<Locale>(useLocale() as Locale);
   const [destinationCity, setDestinationCity] = useState("");
   const [destinationCountry, setDestinationCountry] = useState("");
   const [productUrl, setProductUrl] = useState(initialProduct?.url ?? "");
@@ -79,6 +87,7 @@ export function IntentForm({
         customerName,
         customerPhone,
         customerEmail: customerEmail || undefined,
+        customerLocale,
         destinationCity,
         destinationCountry,
         providerId: provider?.id,
@@ -130,6 +139,15 @@ export function IntentForm({
             className={inputClasses}
           />
         </Field>
+        <Field label={t("form.customerLocale")}>
+          <select value={customerLocale} onChange={(e) => setCustomerLocale(e.target.value as Locale)} className={inputClasses}>
+            {CUSTOMER_LOCALES.map((l) => (
+              <option key={l.id} value={l.id} lang={l.id}>
+                {l.name}
+              </option>
+            ))}
+          </select>
+        </Field>
         <Field label={t("form.quantity")}>
           <input
             type="number"
@@ -150,7 +168,7 @@ export function IntentForm({
             className={inputClasses}
           />
         </Field>
-        <Field label={t("form.volume")} className="sm:col-span-2">
+        <Field label={t("form.volume")}>
           <select value={volumeTier} onChange={(e) => setVolumeTier(e.target.value as VolumeTier)} className={inputClasses}>
             {VOLUME_TIERS.map((tier) => (
               <option key={tier} value={tier}>

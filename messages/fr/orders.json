@@ -139,7 +139,8 @@
     "nextStep": "Prochaine étape",
     "photos": "Photos",
     "noPhotos": "Pas encore de photos de la marchandise.",
-    "photoOf": "Photo de {product}"
+    "photoOf": "Photo de {product}",
+    "language": "Langue"
   },
   "form": {
     "customerName": "Nom du client",
@@ -150,7 +151,8 @@
     "destinationCountry": "Pays de destination",
     "volume": "Volume estimé",
     "notes": "Notes internes",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "customerLocale": "Langue du client"
   },
   "intent": {
     "title": "Nouvelle intention",
