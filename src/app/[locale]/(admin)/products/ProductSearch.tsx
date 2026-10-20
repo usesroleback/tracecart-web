@@ -346,7 +346,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
             const key = item.externalId ?? item.url;
             const isReserved = reservedKeys.has(key);
             return (
-              <Card key={key} as="div" className="group flex flex-col overflow-hidden p-0! transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-1)]">
+              <Card key={key} as="div" padding={0} className="group flex flex-col overflow-hidden transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-1)]">
                 <div className="relative aspect-square w-full overflow-hidden bg-surface-sunken">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

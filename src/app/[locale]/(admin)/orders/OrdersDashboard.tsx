@@ -93,17 +93,6 @@ export function OrdersDashboard({ initialOrders, initialTotal }: { initialOrders
     await refresh();
   }
 
-  function openOrder(id: string) {
-    setSegment("exceptions");
-    setOpenId(id);
-    // After the filtered table renders, bring the opened row (or card) into view.
-    requestAnimationFrame(() => {
-      const el = document.getElementById(`order-${id}`);
-      const target = el && el.offsetParent !== null ? el : document.getElementById(`order-card-${id}`);
-      target?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
-  }
-
   if (!user.hubId) {
     return (
       <div className="rounded-[var(--radius-m)] border border-dashed border-line-strong bg-surface-raised p-8 text-center">
@@ -230,7 +219,7 @@ export function OrdersDashboard({ initialOrders, initialTotal }: { initialOrders
                 title={order.productName}
                 meta={`${order.reference} · ${STATUS_LABELS[order.status]}`}
                 actions={
-                  <Button size="s" variant="secondary" onClick={() => openOrder(order.id)}>
+                  <Button size="s" variant="secondary" href={`/orders/${order.id}`}>
                     Ouvrir la commande
                   </Button>
                 }

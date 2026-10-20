@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Link } from "@/i18n/navigation";
 import { CorridorTracker } from "./CorridorTracker";
 import { ProviderBadge } from "./ProviderBadge";
 import { OrderStatusTag } from "@/components/ui/status/Status";
@@ -27,7 +28,9 @@ export function OrderCard({ order, children }: { order: Order; children?: React.
           />
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rb-mono text-ink">{order.reference}</span>
+              <Link href={`/orders/${order.id}`} className="rb-mono rb-link">
+                {order.reference}
+              </Link>
               {order.intakeType === "CUSTOMER_OWNED" ? <Badge>Transport seul</Badge> : <ProviderBadge provider={order.provider} />}
               <OrderStatusTag status={order.status} />
               {order.status === "QUOTE_SENT" && order.quoteAcceptedAt && (

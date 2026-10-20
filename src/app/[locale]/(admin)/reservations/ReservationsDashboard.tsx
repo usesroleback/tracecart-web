@@ -180,7 +180,7 @@ export function ReservationsDashboard({
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {reserved.map((r) => (
-              <Card key={r.id} className="flex flex-col overflow-hidden p-0!">
+              <Card key={r.id} padding={0} className="flex flex-col overflow-hidden">
                 <div className="relative aspect-square w-full overflow-hidden bg-surface-sunken">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

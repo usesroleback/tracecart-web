@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { Link } from "@/i18n/navigation";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "inverse" | "danger";
 type ButtonSize = "s" | "m" | "l" | "xl";
@@ -72,9 +73,20 @@ const Button: React.FC<ButtonProps> = ({
     </>
   );
 
-  if (href) {
+  // App paths go through the locale-aware Link (localePrefix "always"), so
+  // /orders stays /en/orders for an English session; anchors and external
+  // URLs stay plain, external ones opening in a new tab.
+  if (href && href.startsWith("/") && !href.startsWith("//")) {
     return (
-      <a href={href} className={classes} onClick={onClick}>
+      <Link href={href} className={classes} onClick={onClick}>
+        {content}
+      </Link>
+    );
+  }
+  if (href) {
+    const external = /^https?:\/\//.test(href);
+    return (
+      <a href={href} className={classes} onClick={onClick} {...(external ? { target: "_blank", rel: "noreferrer" } : {})}>
         {content}
       </a>
     );

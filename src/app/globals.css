@@ -221,11 +221,54 @@
   /* bundle.css L11-12: links are ink with a quiet underline that turns accent on hover. */
   .rb-link { color: var(--color-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: var(--color-line-strong); transition: text-decoration-color var(--duration-quick) var(--ease-out); }
   .rb-link:hover { text-decoration-color: var(--color-accent); text-decoration-thickness: 2px; }
+
+  /* Route timeline (bundle.css "route timeline (TraceCart)", components/tracecart/RouteTimeline.tsx):
+     a 4px line per leg with a node at its start; done legs are ink, the
+     current leg fills to --_p, the destination node is square. Vertical
+     below 700px or with .rb-route--vertical. */
+  .rb-route { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--_n, 5), minmax(0, 1fr)); }
+  .rb-route__step { position: relative; display: grid; align-content: start; gap: var(--space-1); padding-top: var(--space-8); padding-right: var(--space-4); }
+  .rb-route__step::before { content: ""; position: absolute; top: 9px; left: 0; right: 0; height: var(--border-heavy); background: var(--color-line); }
+  .rb-route__step[data-s="done"]::before { background: var(--color-ink); }
+  .rb-route__step[data-s="now"]::before { background: linear-gradient(90deg, var(--color-ink) 0 var(--_p, 50%), var(--color-line) var(--_p, 50%)); }
+  .rb-route__step:last-child::before { right: auto; width: 22px; }
+  .rb-route__node { position: absolute; top: 0; left: 0; width: 22px; height: 22px; display: grid; place-items: center; background: var(--color-surface-raised); border: var(--border-heavy) solid var(--color-line-strong); border-radius: 9999px; }
+  .rb-route__step[data-s="done"] .rb-route__node { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-ink-inverse); }
+  .rb-route__step[data-s="now"] .rb-route__node { background: var(--color-accent); border-color: var(--color-ink); }
+  .rb-route__step[data-s="held"] .rb-route__node { background: var(--color-signal); border-color: var(--color-ink); }
+  .rb-route__step[data-s="exception"] .rb-route__node { background: var(--color-critical); border-color: var(--color-critical); border-radius: var(--radius-xs); color: var(--color-white); }
+  .rb-route__step:last-child .rb-route__node { border-radius: var(--radius-xs); }
+  .rb-route__label { font-size: 12px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-muted); }
+  .rb-route__place { font-size: 16px; font-weight: 650; line-height: 20px; }
+  .rb-route__when { font-family: var(--font-mono); font-size: 12px; color: var(--color-ink-muted); }
+  .rb-route__step[data-s="now"] .rb-route__label, .rb-route__step[data-s="done"] .rb-route__label { color: var(--color-ink); }
+  .rb-route--draw .rb-route__step::before { transform-origin: left; animation: rb-draw var(--duration-route) var(--ease-in-out) both; }
+  .rb-route--draw .rb-route__step:nth-child(2)::before { animation-delay: 150ms; }
+  .rb-route--draw .rb-route__step:nth-child(3)::before { animation-delay: 300ms; }
+  .rb-route--draw .rb-route__step:nth-child(4)::before { animation-delay: 450ms; }
+  .rb-route--draw .rb-route__step:nth-child(5)::before { animation-delay: 600ms; }
+  .rb-route--vertical { grid-template-columns: 1fr; }
+  .rb-route--vertical .rb-route__step { padding: 0 0 var(--space-6) var(--space-10); min-height: 72px; }
+  .rb-route--vertical .rb-route__step::before { top: 0; bottom: 0; left: 9px; right: auto; width: var(--border-heavy); height: auto; }
+  .rb-route--vertical .rb-route__step[data-s="now"]::before { background: linear-gradient(180deg, var(--color-ink) 0 var(--_p, 50%), var(--color-line) var(--_p, 50%)); }
+  .rb-route--vertical .rb-route__step:last-child::before { display: none; }
+  @media (max-width: 699px) {
+    .rb-route:not(.rb-route--keep) { grid-template-columns: 1fr; }
+    .rb-route:not(.rb-route--keep) .rb-route__step { padding: 0 0 var(--space-6) var(--space-10); min-height: 72px; }
+    .rb-route:not(.rb-route--keep) .rb-route__step::before { top: 0; bottom: 0; left: 9px; right: auto; width: var(--border-heavy); height: auto; }
+    .rb-route:not(.rb-route--keep) .rb-route__step[data-s="now"]::before { background: linear-gradient(180deg, var(--color-ink) 0 var(--_p, 50%), var(--color-line) var(--_p, 50%)); }
+    .rb-route:not(.rb-route--keep) .rb-route__step:last-child::before { display: none; }
+  }
+  @media (forced-colors: active) { .rb-route__node { forced-color-adjust: none; } }
   .rb-mono { font-family: var(--font-mono); font-size: 13px; line-height: 1.54; font-weight: 450; }
   .rb-mono-s { font-family: var(--font-mono); font-size: 11px; line-height: 1.45; font-weight: 500; letter-spacing: 0.02em; }
 }
 
 /* Status "moving" pulse (project/components/bundle.css .rb-status--moving::after). */
+/* Route lines draw once on first view (bundle.css rb-draw). */
+@keyframes rb-draw {
+  from { transform: scaleX(0); }
+}
 @keyframes rb-pulse {
   0% { opacity: 0.9; transform: scale(0.8); }
   100% { opacity: 0; transform: scale(1.6); }

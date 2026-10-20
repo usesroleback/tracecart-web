@@ -4,6 +4,8 @@ import { Fragment, ReactNode } from "react";
 import { CorridorTracker } from "./CorridorTracker";
 import { OrderStatusTag } from "@/components/ui/status/Status";
 import { Badge } from "@/components/ui/badge/Badge";
+import Button from "@/components/ui/button/Button";
+import { DsArrowRightIcon } from "@/icons";
 import { Order } from "@/lib/types";
 
 function formatAmount(order: Order): string | null {
@@ -24,9 +26,14 @@ function OrderDetail({ order, children }: { order: Order; children?: ReactNode }
   return (
     <div className="grid gap-4">
       <CorridorTracker status={order.status} hubCity={order.hub.city} destinationCity={order.destinationCity} />
-      <p className="text-sm text-ink-muted">
-        {order.customerName} · {order.customerPhone}
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-ink-muted">
+          {order.customerName} · {order.customerPhone}
+        </p>
+        <Button href={`/orders/${order.id}`} size="s" variant="secondary" endIcon={<DsArrowRightIcon width={16} height={16} />}>
+          Ouvrir la fiche
+        </Button>
+      </div>
       {children}
     </div>
   );
