@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/apiClient";
 import { OrdersTable, logisticsAmount } from "@/components/tracecart/OrdersTable";
 import { OrderPartnerPanel } from "@/components/tracecart/OrderPartnerPanel";
@@ -52,7 +54,13 @@ export function DeliveriesDashboard({ initialOrders, initialTotal }: { initialOr
   const [total, setTotal] = useState(initialTotal);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [counts, setCounts] = useState<Partial<Record<OrderStatus, number>>>({});
-  const [segment, setSegment] = useState<Segment>("all");
+  // The selected tab lives in the URL (?etape=), so the sidebar can link
+  // straight to a step and back/forward and shared links keep it.
+  const router = useRouter();
+  const tab = useSearchParams().get("etape");
+  const segment: Segment = tab && tab in SEGMENT_LABELS ? (tab as Segment) : "all";
+  const setSegment = (id: Segment) =>
+    router.replace({ pathname: "/deliveries", query: id === "all" ? {} : { etape: id } }, { scroll: false });
   const [openId, setOpenId] = useState<string | null>(null);
   // True from the start: the first load begins as soon as the page mounts.
   const [loading, setLoading] = useState(true);

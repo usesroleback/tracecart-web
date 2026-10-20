@@ -10,10 +10,11 @@ const hours = (h: number) => `${h.toLocaleString("fr-FR", { maximumFractionDigit
 
 /**
  * How long open orders have been sitting at each stage, in the brand's
- * "plain words, real numbers" voice: "2 commandes · 24,6 h en moyenne ·
- * 9 sur 10 sous 25,9 h". Bars measure time (the longest average is the full
- * width), in ink; a stage slower than usual turns Signal Yellow and says so
- * in words, never by colour alone. Stages follow the order lifecycle.
+ * "plain words, real numbers" voice: "2 commandes · 24,6 h en moyenne",
+ * plus "9 sur 10 sous 31 h" when the spread is wide enough to matter. Bars
+ * measure time (the longest average is the full width), in ink; a stage
+ * slower than usual turns Signal Yellow and says so in words, never by
+ * colour alone. Stages follow the order lifecycle.
  */
 export function QueueDepthPanel() {
   const [stages, setStages] = useState<QueueStage[] | null>(null);
@@ -65,7 +66,9 @@ export function QueueDepthPanel() {
                 <b className="font-semibold text-ink">
                   {stage.count} commande{stage.count > 1 ? "s" : ""}
                 </b>{" "}
-                · {hours(stage.avgAgeHours)} en moyenne · 9 sur 10 sous {hours(stage.p90AgeHours)}
+                · {hours(stage.avgAgeHours)} en moyenne
+                {/* The spread only says something when it differs from the average. */}
+                {stage.p90AgeHours > stage.avgAgeHours * 1.1 && ` · 9 sur 10 sous ${hours(stage.p90AgeHours)}`}
               </span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-[var(--radius-xs)] bg-surface-sunken" aria-hidden>

@@ -39,7 +39,8 @@ export default function UserDropdown() {
         <span className="mr-3 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-ink font-semibold text-ink-inverse">
           {initial}
         </span>
-        <span className="mr-1 hidden text-left sm:block">
+        {/* From lg the sidebar shows who is signed in; the header keeps just the menu. */}
+        <span className="mr-1 hidden text-left sm:block lg:hidden">
           <span className="block font-medium text-sm">{name}</span>
           <span className="block text-xs text-ink-muted">
             {ROLE_LABELS[user.role]}

@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/apiClient";
 import { IntentForm } from "@/components/tracecart/IntentForm";
 import { CustomerOwnedIntentForm } from "@/components/tracecart/CustomerOwnedIntentForm";
@@ -59,7 +61,13 @@ export function OrdersDashboard({ initialOrders, initialTotal }: { initialOrders
   const [total, setTotal] = useState(initialTotal);
   const [counts, setCounts] = useState<Partial<Record<OrderStatus, number>>>({});
   const [formMode, setFormMode] = useState<"none" | "buy" | "customer_owned">("none");
-  const [segment, setSegment] = useState<Segment>("all");
+  // The selected tab lives in the URL (?statut=), so the sidebar can link
+  // straight to a step and back/forward and shared links keep it.
+  const router = useRouter();
+  const tab = useSearchParams().get("statut");
+  const segment: Segment = tab && tab in SEGMENT_LABELS ? (tab as Segment) : "all";
+  const setSegment = (id: Segment) =>
+    router.replace({ pathname: "/orders", query: id === "all" ? {} : { statut: id } }, { scroll: false });
   const [openId, setOpenId] = useState<string | null>(null);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   // True from the start: the first load begins as soon as the page mounts.
