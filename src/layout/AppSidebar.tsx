@@ -13,10 +13,8 @@ import {
   DsBookmarkIcon,
   DsBuildingIcon,
   DsChatIcon,
-  DsFileIcon,
   DsHomeIcon,
   DsHubIcon,
-  DsLayersIcon,
   DsPackageIcon,
   DsSearchIcon,
   DsTruckIcon,
@@ -62,17 +60,13 @@ const ADMIN_NAV: NavGroup[] = [
   { title: "Réseau", items: [{ icon: <DsHubIcon />, name: "Mon hub", path: "/hub-setup" }] },
 ];
 
-// The carrier's job, in order (docs/partner-flow.md): quote it, collect it
-// once the hub confirms, drive it. Each opens Livraisons on that step.
+// Two entries: the steps (à coter, à gérer, en route…) are tabs on Livraisons.
+// The count is what's waiting on the carrier: quotes to submit + parcels to handle.
 const CARRIER_NAV: NavGroup[] = [
-  { items: [{ icon: <DsHomeIcon />, name: "Vue d'ensemble", path: "/dashboard" }] },
   {
-    title: "Livraisons",
     items: [
-      { icon: <DsFileIcon />, name: "À coter", path: "/deliveries", query: { etape: "quote" }, count: (c) => c.QUOTING },
-      { icon: <DsPackageIcon />, name: "À gérer", path: "/deliveries", query: { etape: "ready" }, count: (c) => c.CONFIRMED_HUB },
-      { icon: <DsTruckIcon />, name: "En route", path: "/deliveries", query: { etape: "moving" }, count: (c) => sum(c, ["PICKED_UP", "IN_TRANSIT"]) },
-      { icon: <DsLayersIcon />, name: "Toutes les livraisons", path: "/deliveries" },
+      { icon: <DsHomeIcon />, name: "Vue d'ensemble", path: "/dashboard" },
+      { icon: <DsTruckIcon />, name: "Livraisons", path: "/deliveries", count: (c) => sum(c, ["QUOTING", "CONFIRMED_HUB"]) },
     ],
   },
 ];
@@ -100,9 +94,11 @@ const AppSidebar: React.FC = () => {
     if (pathname.startsWith("/orders/")) return !item.query && item.path === (isAdmin ? "/orders" : "/deliveries");
     const onPath = item.path === "/dashboard" ? pathname === "/dashboard" : pathname === item.path;
     if (!onPath) return false;
-    const key = item.query ? Object.keys(item.query)[0] : isAdmin ? "statut" : "etape";
-    const current = search.get(key);
-    return item.query ? current === item.query[key] : !current;
+    // An item with a tab query is current on that tab; a plain item is current
+    // on every other tab of its page (Commandes, except while Exceptions is).
+    const matches = (i: NavItem) => Object.entries(i.query ?? {}).every(([k, v]) => search.get(k) === v);
+    if (item.query) return matches(item);
+    return !groups.some((g) => g.items.some((i) => i.path === item.path && i.query && matches(i)));
   };
 
   useEffect(() => {
