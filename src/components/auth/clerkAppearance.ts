@@ -1,15 +1,29 @@
+import type { ComponentProps } from "react";
+import type { ClerkProvider } from "@clerk/nextjs";
+
 /**
  * Maps Clerk's components onto TraceCart's design tokens (globals.css), so
- * sign-in doesn't look like a different product. Same approach as Roleback.
+ * sign-in doesn't look like a different product, and follows dark mode
+ * because the tokens do. Typed from ClerkProvider so a renamed variable
+ * (Clerk 7 renamed colorText → colorForeground, etc.) fails type-checking.
  */
-export const clerkAppearance = {
+export const clerkAppearance: ComponentProps<typeof ClerkProvider>["appearance"] = {
+  // Clerk's styles go in this cascade layer, which globals.css orders below
+  // Tailwind's utilities, so the `elements` classes below can override them.
+  cssLayerName: "clerk",
   variables: {
     colorPrimary: "var(--color-accent)",
-    colorText: "var(--color-ink)",
-    colorTextSecondary: "var(--color-ink-muted)",
+    colorPrimaryForeground: "var(--color-on-accent)",
+    colorForeground: "var(--color-ink)",
+    colorMutedForeground: "var(--color-ink-muted)",
+    // Clerk derives borders and secondary button text from this; its default
+    // (black) disappears on the dark-mode card.
+    colorNeutral: "var(--color-ink)",
     colorBackground: "var(--color-surface-raised)",
-    colorInputBackground: "var(--color-surface)",
-    colorInputText: "var(--color-ink)",
+    colorInput: "var(--color-surface)",
+    colorInputForeground: "var(--color-ink)",
+    colorBorder: "var(--color-line)",
+    colorRing: "var(--color-focus-ring)",
     colorDanger: "var(--color-critical)",
     borderRadius: "var(--radius-s)",
     fontFamily: "inherit",

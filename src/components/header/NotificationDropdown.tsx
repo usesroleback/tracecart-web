@@ -117,8 +117,8 @@ export default function NotificationDropdown() {
                 }`}
               >
                 <span className="font-medium text-ink">{n.title}</span>
-                <span className="text-theme-xs text-ink-muted line-clamp-2">{n.body}</span>
-                <span className="text-theme-xs text-ink-muted">{timeAgo(n.createdAt)}</span>
+                <span className="text-xs text-ink-muted line-clamp-2">{n.body}</span>
+                <span className="text-xs text-ink-muted">{timeAgo(n.createdAt)}</span>
               </DropdownItem>
             </li>
           ))}

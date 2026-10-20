@@ -7,7 +7,6 @@ import { routing } from '@/i18n/routing';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import '../globals.css';
-import 'flatpickr/dist/flatpickr.css';
 
 // Full variable weight range (tokens.json: 200-800) fed into the
 // --font-bricolage var the .sq-display/.sq-headline/.sq-title utilities and

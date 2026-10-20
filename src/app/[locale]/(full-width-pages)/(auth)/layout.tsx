@@ -18,7 +18,8 @@ export default function AuthLayout({
       <ThemeProvider>
         <div className="relative flex lg:flex-row w-full h-screen justify-center flex-col sm:p-0">
           <AuthProvider>{children}</AuthProvider>
-          <div className="lg:w-1/2 w-full h-full bg-ink lg:grid items-center hidden">
+          {/* Brand panel: dark in both themes (bg-ink would flip to light in dark mode). */}
+          <div className="lg:w-1/2 w-full h-full bg-black lg:grid items-center hidden">
             <div className="relative items-center justify-center  flex z-1">
               {/* <!-- ===== Common Grid Shape Start ===== --> */}
               <GridShape />

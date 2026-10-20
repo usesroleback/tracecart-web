@@ -46,8 +46,8 @@ export default function UserDropdown() {
           {initial}
         </span>
         <span className="mr-1 hidden text-left sm:block">
-          <span className="block font-medium text-theme-sm">{user.name}</span>
-          <span className="block text-theme-xs text-ink-muted">
+          <span className="block font-medium text-sm">{user.name}</span>
+          <span className="block text-xs text-ink-muted">
             {roleLabel(user)}
           </span>
         </span>
@@ -77,12 +77,12 @@ export default function UserDropdown() {
         className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 shadow-[var(--shadow-2)]"
       >
         <div className="px-1 pb-3">
-          <span className="block font-medium text-ink text-theme-sm">{user.name}</span>
-          <span className="mt-0.5 block text-theme-xs text-ink-muted">{user.email}</span>
+          <span className="block font-medium text-ink text-sm">{user.name}</span>
+          <span className="mt-0.5 block text-xs text-ink-muted">{user.email}</span>
         </div>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 rounded-[var(--radius-s)] border-t border-line px-3 py-2 pt-4 text-left font-medium text-ink text-theme-sm hover:bg-surface-sunken"
+          className="flex items-center gap-3 rounded-[var(--radius-s)] border-t border-line px-3 py-2 pt-4 text-left font-medium text-ink text-sm hover:bg-surface-sunken"
         >
           Déconnexion
         </button>
