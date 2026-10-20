@@ -23,7 +23,8 @@ export function Proof() {
         <div className="space-y-8">
           {STAT_KEYS.map((key) => (
             <div key={key}>
-              <p className="rb-numeral-l">{t(`stats.${key}.value`)}</p>
+              {/* Outcome numbers: large light numerals (06-tracecart, numeral-xl), held to TraceCart's 80px cap. */}
+              <p className="rb-numeral text-[64px] sm:text-[80px]">{t(`stats.${key}.value`)}</p>
               <p className="mt-1 text-sm text-ink-muted">{t(`stats.${key}.label`)}</p>
             </div>
           ))}
