@@ -347,4 +347,15 @@ export interface PublicQuote {
   paymentStatus: "UNPAID" | "PAID";
   /** Set once the customer accepts; the status stays QUOTE_SENT until payment. */
   quoteAcceptedAt: string | null;
+  intakeType: IntakeType;
+  /** The store the goods come from, when TraceCart buys them. */
+  sourceName: string | null;
+  hubCity: string;
+  destinationCity: string;
+  destinationCountry: string;
+  updatedAt: string;
+  /** When the order reached each status (no names, no internal notes). */
+  history: { fromStatus: OrderStatus | null; toStatus: OrderStatus; createdAt: string }[];
+  /** Where the carrier reported the parcel, newest first. */
+  positions: { id: string; city: string; recordedAt: string }[];
 }

@@ -41,5 +41,9 @@
     "title": "Notifications",
     "empty": "No notifications yet.",
     "button": "{count, plural, =0 {Notifications} one {Notifications, # unread} other {Notifications, # unread}}"
+  },
+  "severity": {
+    "held": "Held",
+    "critical": "Exception"
   }
 }

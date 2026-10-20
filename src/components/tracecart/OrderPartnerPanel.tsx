@@ -9,6 +9,8 @@ import { LocationUpdateForm } from "./LocationUpdateForm";
 import { Order, PARTNER_NEXT_STATUS, PARTNER_SEQUENCE } from "@/lib/types";
 
 const QUOTING_PHASE = new Set(["QUOTING", "QUOTED"]);
+// Before the quote request, and while the hub buys and receives the goods.
+const WAITING_ON_HUB = new Set(["INTENT_SUBMITTED", "QUOTE_SENT", "PAID", "PURCHASED", "RECEIVED_HUB"]);
 
 export function OrderPartnerPanel({ order, onChanged }: { order: Order; onChanged: () => void }) {
   const t = useTranslations("orders");
@@ -36,7 +38,7 @@ export function OrderPartnerPanel({ order, onChanged }: { order: Order; onChange
     return <LogisticsQuoteForm order={order} onChanged={onChanged} />;
   }
 
-  if (order.status === "QUOTE_SENT" || order.status === "PAID" || order.status === "PURCHASED" || order.status === "RECEIVED_HUB") {
+  if (WAITING_ON_HUB.has(order.status)) {
     return <p className="text-sm text-ink-muted">{t("partner.waitingHub")}</p>;
   }
 
@@ -65,5 +67,6 @@ export function OrderPartnerPanel({ order, onChanged }: { order: Order; onChange
     );
   }
 
-  return <p className="text-sm text-ink-muted">{t("partner.delivered")}</p>;
+  // Declined or unavailable: nothing left for the carrier to do.
+  return <p className="text-sm text-ink-muted">{t("closed")}</p>;
 }

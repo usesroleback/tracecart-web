@@ -4,6 +4,13 @@ import { Format } from "@/lib/format";
 import { DsCheckIcon, DsCloseIcon } from "@/icons";
 import { Order, OrderHistoryEntry, OrderStatus } from "@/lib/types";
 
+/** What the route needs from an order: the console's Order, or the customer's tracking view. */
+export type RouteOrder = Pick<Order, "status" | "intakeType" | "destinationCity"> & {
+  provider?: { name: string } | null;
+  hub: { city: string };
+};
+export type RouteHistoryEntry = Pick<OrderHistoryEntry, "fromStatus" | "toStatus" | "createdAt">;
+
 export type RouteStepState = "done" | "now" | "held" | "exception" | "planned";
 
 export type RouteStep = {
@@ -83,8 +90,8 @@ function legIndexOf(status: OrderStatus): number {
  * was in when it stopped as the exception. `t` is the "orders" translator.
  */
 export function orderRouteSteps(
-  order: Order,
-  history: OrderHistoryEntry[],
+  order: RouteOrder,
+  history: RouteHistoryEntry[],
   t: (key: string) => string,
   f: Format,
 ): RouteStep[] {

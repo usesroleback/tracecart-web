@@ -38,7 +38,7 @@ export function Status({ state, label, meta }: { state: StatusState; label: stri
   );
 }
 
-function orderStatusState(status: OrderStatus): StatusState {
+export function orderStatusState(status: OrderStatus): StatusState {
   if (status === "DECLINED" || status === "UNAVAILABLE") return "exception";
   if (status === "DELIVERED") return "done";
   const phase = sideColor(status);

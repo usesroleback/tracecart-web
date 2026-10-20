@@ -1,7 +1,6 @@
 {
   "loading": "Loading your quote…",
   "total": "Total",
-  "statusLine": "Status: {status}",
   "status": {
     "INTENT_SUBMITTED": "Request received",
     "QUOTING": "Quote in preparation",
@@ -29,5 +28,15 @@
     "unavailable": "We can't show your quote right now. Check your connection and try again.",
     "alreadyAnswered": "This quote has already been answered. Here is its current status.",
     "decisionFailed": "Your answer couldn't be saved. Please try again."
+  },
+  "tracking": {
+    "updated": "Updated {when}",
+    "yourOrder": "Your order",
+    "positions": "Where your parcel is",
+    "noPositions": "No position yet. It will show here once the carrier is on the road.",
+    "delivered": "Delivered to {city}.",
+    "deliveredOn": "On {when}.",
+    "unavailable": "This item is no longer available from the seller.",
+    "contact": "A TraceCart operator will contact you about what happens next."
   }
 }

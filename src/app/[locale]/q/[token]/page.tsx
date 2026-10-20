@@ -8,6 +8,10 @@ import { Logo } from "@/components/common/Logo";
 import { Card } from "@/components/ui/card/Card";
 import Button from "@/components/ui/button/Button";
 import { productPlaceholder } from "@/lib/placeholderImage";
+import { Alert } from "@/components/ui/alert/Alert";
+import { Status, orderStatusState } from "@/components/ui/status/Status";
+import { RouteTimeline, orderRouteSteps } from "@/components/tracecart/RouteTimeline";
+import { useFormat } from "@/lib/format";
 import { PublicQuote } from "@/lib/types";
 
 /** status 0 = the request never got a response (offline, DNS, CORS). */
@@ -100,27 +104,29 @@ export default function PublicQuotePage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface px-4 py-10">
-      <div className="w-full max-w-md">
-        <div className="mb-6 flex justify-center">
-          <Logo href={null} />
+    <div className="min-h-screen bg-surface">
+      <header className="border-b border-line bg-surface-raised">
+        <div className="mx-auto flex h-16 max-w-4xl items-center px-4 sm:px-6">
+          <Logo variant="lockup" height={22} href={null} />
         </div>
+      </header>
 
-        <Card className="shadow-[var(--shadow-2)]">
-          {state.kind === "loading" && <p className="text-center text-sm text-ink-muted">{t("loading")}</p>}
+      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
+        {state.kind === "loading" && <p className="text-center text-sm text-ink-muted">{t("loading")}</p>}
 
-          {state.kind === "error" && (
-            <div className="text-center">
-              <p className="text-sm text-ink-muted">{t(`errors.${state.reason}`)}</p>
-              {state.reason !== "notFound" && (
-                <Button variant="secondary" className="mt-4" onClick={retry}>
-                  {t("retry")}
-                </Button>
-              )}
-            </div>
-          )}
+        {state.kind === "error" && (
+          <Card className="mx-auto max-w-md text-center">
+            <p className="text-sm text-ink-muted">{t(`errors.${state.reason}`)}</p>
+            {state.reason !== "notFound" && (
+              <Button variant="secondary" className="mt-4" onClick={retry}>
+                {t("retry")}
+              </Button>
+            )}
+          </Card>
+        )}
 
-          {state.kind === "ready" && (
+        {state.kind === "ready" && (
+          <Tracking quote={state.quote}>
             <QuoteDetails
               quote={state.quote}
               locale={locale}
@@ -130,6 +136,83 @@ export default function PublicQuotePage() {
               error={error}
               onDecide={decide}
             />
+          </Tracking>
+        )}
+      </main>
+    </div>
+  );
+}
+
+/**
+ * The customer's view of their order (TraceCartSite "Track"): the route as
+ * the headline, its status in shape + word, the route timeline, then the
+ * quote and where the carrier last reported the parcel. No costs, names or
+ * internal notes reach this page (serializeOrderForCustomer).
+ */
+function Tracking({ quote, children }: { quote: PublicQuote; children: React.ReactNode }) {
+  const t = useTranslations("quote");
+  const to = useTranslations("orders");
+  const f = useFormat();
+  const steps = orderRouteSteps(
+    {
+      status: quote.status,
+      intakeType: quote.intakeType,
+      destinationCity: quote.destinationCity,
+      provider: quote.sourceName ? { name: quote.sourceName } : null,
+      hub: { city: quote.hubCity },
+    },
+    quote.history,
+    to,
+    f,
+  );
+  const deliveredAt = [...quote.history].reverse().find((h) => h.toStatus === "DELIVERED")?.createdAt;
+
+  return (
+    <div>
+      <p className="rb-mono text-ink-muted">{quote.reference}</p>
+      <h1 className="rb-display rb-display-l mt-2">
+        {quote.hubCity} → {quote.destinationCity}
+      </h1>
+      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <Status state={orderStatusState(quote.status)} label={t(`status.${quote.status}`)} />
+        <span className="text-sm text-ink-muted">{t("tracking.updated", { when: f.dayTime(quote.updatedAt) })}</span>
+      </div>
+
+      <Card route padding={32} className="mt-6">
+        <RouteTimeline animate steps={steps} label={to("route.labelFor", { reference: quote.reference })} />
+      </Card>
+
+      <div className="mt-4 grid gap-3" aria-live="polite">
+        {quote.status === "DELIVERED" && (
+          <Alert tone="positive" title={t("tracking.delivered", { city: quote.destinationCity })}>
+            {deliveredAt && t("tracking.deliveredOn", { when: f.dayTime(deliveredAt) })}
+          </Alert>
+        )}
+        {quote.status === "UNAVAILABLE" && (
+          <Alert tone="critical" title={t("tracking.unavailable")}>
+            {t("tracking.contact")}
+          </Alert>
+        )}
+      </div>
+
+      <div className="mt-4 grid gap-4 md:grid-cols-2 md:items-start">
+        <Card padding={24}>
+          <h2 className="rb-title">{t("tracking.yourOrder")}</h2>
+          <div className="mt-4">{children}</div>
+        </Card>
+        <Card padding={24}>
+          <h2 className="rb-title">{t("tracking.positions")}</h2>
+          {quote.positions.length === 0 ? (
+            <p className="mt-3 text-sm text-ink-muted">{t("tracking.noPositions")}</p>
+          ) : (
+            <ol className="mt-3 grid">
+              {quote.positions.map((p) => (
+                <li key={p.id} className="flex items-baseline justify-between gap-3 border-b border-line py-2.5 last:border-b-0">
+                  <span className="font-semibold text-ink">{p.city}</span>
+                  <span className="rb-mono text-xs text-ink-muted">{f.dayTime(p.recordedAt)}</span>
+                </li>
+              ))}
+            </ol>
           )}
         </Card>
       </div>
@@ -160,40 +243,37 @@ function QuoteDetails({
 
   return (
     <div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={quote.productImageUrl || productPlaceholder(quote.reference)}
-        alt=""
-        className="mx-auto h-32 w-32 rounded-[var(--radius-s)] border border-line object-cover"
-      />
-      <p className="mt-4 text-center rb-overline">{quote.reference}</p>
-      <h1 className="mt-1 text-center rb-title text-[18px]">
-        {quote.productName} {quote.quantity > 1 ? `× ${quote.quantity}` : ""}
-      </h1>
-      <p className="mt-1 text-center text-sm text-ink-muted">{quote.route}</p>
+      <div className="flex items-center gap-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={quote.productImageUrl || productPlaceholder(quote.reference)}
+          alt=""
+          className="h-16 w-16 flex-none rounded-[var(--radius-s)] border border-line object-cover"
+        />
+        <p className="font-semibold text-ink">
+          {quote.productName}
+          {quote.quantity > 1 ? ` × ${new Intl.NumberFormat(locale).format(quote.quantity)}` : ""}
+        </p>
+      </div>
 
       {quote.customerQuoteTotal != null && (
-        <div className="mt-5 rounded-[var(--radius-s)] bg-surface-sunken p-4 text-center">
-          <p className="text-xs text-ink-muted">{t("total")}</p>
-          <p className="text-2xl font-semibold tabular-nums text-ink">
+        <div className="mt-4 flex items-baseline justify-between gap-3 rounded-[var(--radius-s)] bg-surface-sunken px-4 py-3">
+          <span className="text-sm text-ink-muted">{t("total")}</span>
+          <span className="text-xl font-semibold tabular-nums text-ink">
             {new Intl.NumberFormat(locale).format(quote.customerQuoteTotal)} {quote.currency}
-          </p>
+          </span>
         </div>
       )}
 
-      <p className="mt-4 text-center text-sm text-ink">
-        {t("statusLine", { status: t(`status.${quote.status}`) })}
-      </p>
-
-      {notice && <p className="mt-3 text-center text-sm text-ink-muted">{notice}</p>}
+      {notice && <p className="mt-3 text-sm text-ink-muted">{notice}</p>}
       {error && (
-        <p role="alert" className="mt-3 text-center text-sm text-critical">
+        <p role="alert" className="mt-3 text-sm text-critical">
           {error}
         </p>
       )}
 
       {isAccepted && (
-        <p className="mt-4 rounded-[var(--radius-s)] bg-positive-soft px-3 py-2 text-center text-sm text-positive">
+        <p className="mt-4 rounded-[var(--radius-s)] bg-positive-soft px-3 py-2 text-sm text-positive">
           {t("accepted")}
         </p>
       )}
@@ -209,9 +289,9 @@ function QuoteDetails({
         </div>
       )}
 
-      {quote.status === "PAID" && <p className="mt-5 text-center text-sm text-positive">{t("paid")}</p>}
+      {quote.status === "PAID" && <p className="mt-4 text-sm text-positive">{t("paid")}</p>}
 
-      {quote.status === "DECLINED" && <p className="mt-5 text-center text-sm text-ink-muted">{t("declined")}</p>}
+      {quote.status === "DECLINED" && <p className="mt-4 text-sm text-ink-muted">{t("declined")}</p>}
     </div>
   );
 }

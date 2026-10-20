@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import { DsAlertIcon, DsBorderIcon } from "@/icons";
 
 type Severity = "critical" | "held";
@@ -28,11 +29,12 @@ export function ExceptionCard({
   actions?: ReactNode;
   children?: ReactNode;
 }) {
+  const t = useTranslations("common.severity");
   const s = SEVERITY_CLASSES[severity];
   const Glyph = severity === "held" ? DsBorderIcon : DsAlertIcon;
   return (
     <article
-      aria-label={`${severity === "held" ? "Held" : "Exception"}: ${title}`}
+      aria-label={`${t(severity)}: ${title}`}
       className={`grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 ${s.card}`}
     >
       <span aria-hidden className={`row-span-3 grid h-8 w-8 place-items-center rounded-[var(--radius-xs)] ${s.glyph}`}>

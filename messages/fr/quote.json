@@ -1,7 +1,6 @@
 {
   "loading": "Chargement de votre devis…",
   "total": "Total",
-  "statusLine": "Statut : {status}",
   "status": {
     "INTENT_SUBMITTED": "Demande reçue",
     "QUOTING": "Devis en préparation",
@@ -29,5 +28,15 @@
     "unavailable": "Impossible d'afficher votre devis pour le moment. Vérifiez votre connexion et réessayez.",
     "alreadyAnswered": "Ce devis a déjà reçu une réponse. Voici son état actuel.",
     "decisionFailed": "Votre réponse n'a pas pu être enregistrée. Réessayez."
+  },
+  "tracking": {
+    "updated": "Mis à jour {when}",
+    "yourOrder": "Votre commande",
+    "positions": "Où est votre colis",
+    "noPositions": "Pas encore de position. Elle apparaîtra ici dès que le transporteur prend la route.",
+    "delivered": "Livré à {city}.",
+    "deliveredOn": "Le {when}.",
+    "unavailable": "Cet article n'est plus disponible chez le revendeur.",
+    "contact": "Un opérateur TraceCart vous contactera pour la suite."
   }
 }

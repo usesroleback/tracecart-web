@@ -71,7 +71,8 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
   async function copyCustomerLink() {
     if (!order.quoteToken) return;
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/q/${order.quoteToken}`);
+      // The customer's quote and tracking page, in their language.
+      await navigator.clipboard.writeText(`${window.location.origin}/${order.customerLocale}/q/${order.quoteToken}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
