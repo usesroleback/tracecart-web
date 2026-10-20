@@ -1,4 +1,6 @@
 import { CSSProperties } from "react";
+import { useTranslations } from "next-intl";
+import { Format } from "@/lib/format";
 import { DsCheckIcon, DsCloseIcon } from "@/icons";
 import { Order, OrderHistoryEntry, OrderStatus } from "@/lib/types";
 
@@ -13,14 +15,6 @@ export type RouteStep = {
   progress?: number;
 };
 
-const SR_STATE: Record<RouteStepState, string> = {
-  done: "terminé",
-  now: "étape en cours",
-  held: "en attente",
-  exception: "exception",
-  planned: "pas commencé",
-};
-
 /**
  * Design system RouteTimeline (bundle.js RouteTimeline, styles in
  * globals.css .rb-route): an ordered list of legs, aria-current on the
@@ -28,7 +22,7 @@ const SR_STATE: Record<RouteStepState, string> = {
  */
 export function RouteTimeline({
   steps,
-  label = "Trajet",
+  label,
   vertical = false,
   animate = false,
   className = "",
@@ -39,9 +33,10 @@ export function RouteTimeline({
   animate?: boolean;
   className?: string;
 }) {
+  const t = useTranslations("orders.route");
   return (
     <ol
-      aria-label={label}
+      aria-label={label ?? t("label")}
       className={`rb-route ${vertical ? "rb-route--vertical" : ""} ${animate ? "rb-route--draw" : ""} ${className}`}
       style={{ "--_n": steps.length } as CSSProperties}
     >
@@ -59,7 +54,7 @@ export function RouteTimeline({
           </span>
           <span className="rb-route__label">
             {s.label}
-            <span className="sr-only"> — {SR_STATE[s.state]}</span>
+            <span className="sr-only"> — {t(`state.${s.state}`)}</span>
           </span>
           {s.place && <span className="rb-route__place">{s.place}</span>}
           {s.when && <span className="rb-route__when">{s.when}</span>}
@@ -71,27 +66,28 @@ export function RouteTimeline({
 
 // The lifecycle's statuses grouped into the legs a customer would recognise.
 // No customs/"clear" leg: orders don't record border checkpoints yet.
-const LEGS: { label: string; statuses: OrderStatus[] }[] = [
-  { label: "Commande", statuses: ["INTENT_SUBMITTED", "QUOTING", "QUOTED", "QUOTE_SENT", "PAID", "PURCHASED"] },
-  { label: "Hub", statuses: ["RECEIVED_HUB", "CONFIRMED_HUB"] },
-  { label: "En route", statuses: ["PICKED_UP", "IN_TRANSIT"] },
-  { label: "Livraison", statuses: ["DELIVERED"] },
+const LEGS: { label: "order" | "hub" | "moving" | "delivery"; statuses: OrderStatus[] }[] = [
+  { label: "order", statuses: ["INTENT_SUBMITTED", "QUOTING", "QUOTED", "QUOTE_SENT", "PAID", "PURCHASED"] },
+  { label: "hub", statuses: ["RECEIVED_HUB", "CONFIRMED_HUB"] },
+  { label: "moving", statuses: ["PICKED_UP", "IN_TRANSIT"] },
+  { label: "delivery", statuses: ["DELIVERED"] },
 ];
 
 function legIndexOf(status: OrderStatus): number {
   return LEGS.findIndex((leg) => leg.statuses.includes(status));
 }
 
-function shortDay(iso: string): string {
-  return new Date(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" });
-}
-
 /**
  * Route steps for an order. Each leg is dated from the first time the order
  * entered it (status history). A declined/unavailable order marks the leg it
- * was in when it stopped as the exception.
+ * was in when it stopped as the exception. `t` is the "orders" translator.
  */
-export function orderRouteSteps(order: Order, history: OrderHistoryEntry[]): RouteStep[] {
+export function orderRouteSteps(
+  order: Order,
+  history: OrderHistoryEntry[],
+  t: (key: string) => string,
+  f: Format,
+): RouteStep[] {
   const stopped = order.status === "DECLINED" || order.status === "UNAVAILABLE";
   let current = order.status;
   if (stopped) {
@@ -102,7 +98,7 @@ export function orderRouteSteps(order: Order, history: OrderHistoryEntry[]): Rou
   const delivered = order.status === "DELIVERED";
 
   const places = [
-    order.intakeType === "CUSTOMER_OWNED" ? "Transport seul" : order.provider?.name ?? "Boutique inconnue",
+    order.intakeType === "CUSTOMER_OWNED" ? t("source.customerOwned") : order.provider?.name ?? t("source.unknownStore"),
     order.hub.city,
     `${order.hub.city} → ${order.destinationCity}`,
     order.destinationCity,
@@ -122,9 +118,9 @@ export function orderRouteSteps(order: Order, history: OrderHistoryEntry[]): Rou
       }
     }
     return {
-      label: leg.label,
+      label: t(`route.legs.${leg.label}`),
       place: places[i],
-      when: entered && state !== "planned" ? shortDay(entered.createdAt) : undefined,
+      when: entered && state !== "planned" ? f.shortDate(entered.createdAt) : undefined,
       state,
       progress,
     };

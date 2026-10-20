@@ -1,14 +1,17 @@
 "use client";
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
+import { LocaleSwitcher } from "@/components/common/LocaleSwitcher";
 import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
 import { Logo } from "@/components/common/Logo";
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+  const t = useTranslations("common.header");
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -29,7 +32,7 @@ const AppHeader: React.FC = () => {
           <button
             className="items-center justify-center w-10 h-10 text-ink-muted border-line rounded-[var(--radius-s)] z-99999 lg:flex lg:h-11 lg:w-11 lg:border"
             onClick={handleToggle}
-            aria-label="Toggle Sidebar"
+            aria-label={t("toggleSidebar")}
           >
             {isMobileOpen ? (
               <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,6 +59,8 @@ const AppHeader: React.FC = () => {
 
           <button
             onClick={toggleApplicationMenu}
+            aria-label={t("moreActions")}
+            aria-expanded={isApplicationMenuOpen}
             className="flex items-center justify-center w-10 h-10 text-ink rounded-[var(--radius-s)] z-99999 hover:bg-surface-sunken lg:hidden"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,6 +79,7 @@ const AppHeader: React.FC = () => {
           } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-[var(--shadow-2)] lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
+            <LocaleSwitcher />
             <ThemeToggleButton />
             <NotificationDropdown />
           </div>

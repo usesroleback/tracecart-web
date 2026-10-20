@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from '@/i18n/navigation';
 
 import { api } from "@/lib/apiClient";
@@ -21,6 +22,7 @@ import { RESERVATION_CONVERSION_TARGET_PCT } from "@/lib/kpi/thresholds";
 import { RankingItem, ReservationStats } from "@/lib/kpi/types";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import { Paginated, Reservation } from "@/lib/types";
+import { useFormat } from "@/lib/format";
 
 const PAGE_LIMIT = 100;
 const STATS_RANGE_DAYS = 30;
@@ -33,6 +35,8 @@ export function ReservationsDashboard({
   initialTotal: number;
 }) {
   const user = useSession();
+  const t = useTranslations("reservations");
+  const f = useFormat();
   const [reservations, setReservations] = useState<Reservation[]>(initialReservations);
   const [total, setTotal] = useState(initialTotal);
   const [converting, setConverting] = useState<Reservation | null>(null);
@@ -53,7 +57,7 @@ export function ReservationsDashboard({
         if (!cancelled) setStats(data);
       })
       .catch((err) => {
-        if (!cancelled) setStatsError(err instanceof Error ? err.message : "Impossible de charger les statistiques");
+        if (!cancelled) setStatsError(err instanceof Error ? err.message : t("statsFailed"));
       })
       .finally(() => {
         if (!cancelled) setStatsLoading(false);
@@ -63,7 +67,7 @@ export function ReservationsDashboard({
         if (!cancelled) setRanking(data);
       })
       .catch((err) => {
-        if (!cancelled) setRankingError(err instanceof Error ? err.message : "Impossible de charger le classement");
+        if (!cancelled) setRankingError(err instanceof Error ? err.message : t("rankingFailed"));
       })
       .finally(() => {
         if (!cancelled) setRankingLoading(false);
@@ -71,7 +75,7 @@ export function ReservationsDashboard({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [t]);
 
   async function refresh() {
     const result = await api.get<Paginated<Reservation>>(`/reservations?limit=${PAGE_LIMIT}`);
@@ -88,7 +92,7 @@ export function ReservationsDashboard({
       await api.delete(`/reservations/${id}`);
       await refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible de retirer cette réservation");
+      setError(err instanceof Error ? err.message : t("removeFailed"));
     } finally {
       setRemovingId(null);
     }
@@ -105,13 +109,13 @@ export function ReservationsDashboard({
   return (
     <div>
       <div className="mb-6">
-        <h1 className="rb-headline text-[32px]">Produits réservés</h1>
+        <h1 className="rb-headline text-[32px]">{t("title")}</h1>
         <p className="mt-1 text-sm text-ink-muted">
-          Produits mis de côté depuis la recherche. Transformez-les en commande dès qu&apos;un client est prêt.
+          {t("subtitle")}
         </p>
         {total > reservations.length && (
           <p className="mt-1 text-xs text-ink-muted">
-            Affichage des {reservations.length} plus récents sur {total} au total.
+            {t("showing", { shown: reservations.length, total })}
           </p>
         )}
       </div>
@@ -122,7 +126,7 @@ export function ReservationsDashboard({
 
       <div className="mb-6 grid gap-4 lg:grid-cols-3">
         <PanelShell
-          title="Taux de conversion"
+          title={t("conversion.title")}
           loading={statsLoading}
           error={statsError}
           empty={false}
@@ -130,20 +134,20 @@ export function ReservationsDashboard({
         >
           {conversionRateKpi && (
             <BulletChart
-              label="Réservations transformées en commande"
+              label={t("conversion.label")}
               value={conversionRateKpi.value}
               target={RESERVATION_CONVERSION_TARGET_PCT}
-              format={(v) => `${v}%`}
+              format={(v) => f.percent(v)}
             />
           )}
         </PanelShell>
         <div className="lg:col-span-2">
           <PanelShell
-            title="Boutique la plus réservée"
+            title={t("ranking.title")}
             loading={rankingLoading}
             error={rankingError}
             empty={!!ranking && ranking.length === 0}
-            emptyLabel="Aucune réservation sur les 30 derniers jours."
+            emptyLabel={t("ranking.empty")}
           >
             {ranking && (
               <RankingBars items={ranking.map((r) => ({ key: r.key, label: r.label, value: r.count, logoUrl: r.logoUrl }))} />
@@ -171,13 +175,13 @@ export function ReservationsDashboard({
       )}
 
       <SegmentedTabs
-        label="Réservations"
+        label={t("tabs.label")}
         className="mb-4"
         value={view}
         onChange={setView}
         tabs={[
-          { id: "reserved", label: "En attente", count: reserved.length },
-          { id: "converted", label: "Transformées en commande", count: converted.length },
+          { id: "reserved", label: t("tabs.reserved"), count: reserved.length },
+          { id: "converted", label: t("tabs.converted"), count: converted.length },
         ]}
       />
 
@@ -185,9 +189,9 @@ export function ReservationsDashboard({
         <div className="mb-8">
           {reserved.length === 0 ? (
             <p className="text-sm text-ink-muted">
-              Aucun produit réservé.{" "}
+              {t("emptyReserved")}{" "}
               <Link href="/products" className="rb-link">
-                Rechercher des produits
+                {t("searchProducts")}
               </Link>
             </p>
           ) : (
@@ -212,23 +216,23 @@ export function ReservationsDashboard({
                   </div>
                   <div className="flex flex-1 flex-col p-3.5">
                     <p className="line-clamp-2 flex-1 text-sm font-medium text-ink">
-                      {r.title ?? "Produit sans titre"}
+                      {r.title ?? t("untitled")}
                     </p>
                     {r.price != null && (
                       <p className="mt-2 text-base font-semibold tabular-nums text-ink">
-                        {Number(r.price).toLocaleString("fr-FR")} <span className="text-xs font-normal text-ink-muted">{r.currency}</span>
+                        {f.number(Number(r.price))} <span className="text-xs font-normal text-ink-muted">{r.currency}</span>
                       </p>
                     )}
                     <div className="mt-3 flex gap-2">
                       <Button size="s" block onClick={() => setConverting(r)}>
-                        Créer une commande
+                        {t("createOrder")}
                       </Button>
                       <Button
                         variant="secondary"
                         size="s"
                         onClick={() => remove(r.id)}
                         loading={removingId === r.id}
-                        aria-label={`Retirer ${r.title ?? "ce produit"} des réservations`}
+                        aria-label={t("remove", { title: r.title ?? t("thisProduct") })}
                       >
                         {removingId !== r.id && <DsCloseIcon width={16} height={16} aria-hidden />}
                       </Button>
@@ -243,7 +247,7 @@ export function ReservationsDashboard({
 
       {view === "converted" &&
         (converted.length === 0 ? (
-          <p className="text-sm text-ink-muted">Aucune réservation transformée en commande pour le moment.</p>
+          <p className="text-sm text-ink-muted">{t("emptyConverted")}</p>
         ) : (
           <ul className="overflow-hidden rounded-[var(--radius-m)] border border-line bg-surface-raised">
             {converted.map((r) => (
@@ -251,7 +255,7 @@ export function ReservationsDashboard({
                 key={r.id}
                 className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line px-4 py-2.5 text-sm last:border-b-0"
               >
-                <span className="min-w-0 flex-1 truncate text-ink">{r.title ?? "Produit sans titre"}</span>
+                <span className="min-w-0 flex-1 truncate text-ink">{r.title ?? t("untitled")}</span>
                 {r.order && (
                   <span className="flex items-center gap-4">
                     <OrderStatusTag status={r.order.status} />

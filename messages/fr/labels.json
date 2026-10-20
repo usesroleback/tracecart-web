@@ -1,1 +1,54 @@
-{}
+{
+  "role": {
+    "SUPER_ADMIN": "Administrateur",
+    "LOGISTICS_PARTNER": "Transporteur"
+  },
+  "status": {
+    "INTENT_SUBMITTED": "Intention reçue",
+    "QUOTING": "En cotation",
+    "QUOTED": "Coté",
+    "QUOTE_SENT": "Devis envoyé",
+    "PAID": "Payé",
+    "PURCHASED": "Acheté",
+    "RECEIVED_HUB": "Reçu au hub",
+    "CONFIRMED_HUB": "Confirmé (hub)",
+    "PICKED_UP": "Pris en charge",
+    "IN_TRANSIT": "En route",
+    "DELIVERED": "Livré",
+    "DECLINED": "Refusé",
+    "UNAVAILABLE": "Indisponible"
+  },
+  "partnerAction": {
+    "CONFIRMED_HUB": "Marquer pris en charge",
+    "PICKED_UP": "Marquer en route",
+    "IN_TRANSIT": "Marquer livré"
+  },
+  "volumeTier": {
+    "SMALL_UNITS": "Quelques unités",
+    "MID_QUANTITY": "Quantité moyenne",
+    "LARGE_STOCK": "Gros stock"
+  },
+  "sourcingStatus": {
+    "OPEN": "Ouverte",
+    "MATCHED": "Candidat choisi",
+    "CONVERTED": "Transformée",
+    "CLOSED": "Clôturée"
+  },
+  "reservationStatus": {
+    "RESERVED": "Réservé",
+    "CONVERTED": "Transformé"
+  },
+  "kpi": {
+    "ordersCreated": "Intentions créées",
+    "ordersDelivered": "Livrées",
+    "revenueProcessed": "Chiffre d'affaires encaissé",
+    "avgOrderValue": "Panier moyen",
+    "avgCycleTimeHours": "Délai moyen (intention → livraison)",
+    "reservationsCreated": "Produits réservés",
+    "reservationsConverted": "Transformés en commande",
+    "conversionRatePct": "Taux de conversion"
+  },
+  "unassigned": "Non assigné",
+  "orderCount": "{count, plural, one {# commande} other {# commandes}}",
+  "parcelCount": "{count, plural, one {# colis} other {# colis}}"
+}

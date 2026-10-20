@@ -1,21 +1,15 @@
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge/Badge";
 import { DsPinIcon } from "@/icons";
 import { LocationUpdate } from "@/lib/types";
-
-function timeAgo(iso: string): string {
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diffMs / 60000);
-  if (minutes < 1) return "à l'instant";
-  if (minutes < 60) return `il y a ${minutes} min`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `il y a ${hours} h`;
-  return `il y a ${Math.floor(hours / 24)} j`;
-}
+import { useFormat } from "@/lib/format";
 
 /** Read-only position history — newest first. Shared between the partner's write view and the admin's read-only view. */
 export function LocationTimeline({ updates }: { updates: LocationUpdate[] }) {
+  const t = useTranslations("orders.location");
+  const f = useFormat();
   if (updates.length === 0) {
-    return <p className="text-sm text-ink-muted">Aucune position signalée pour le moment.</p>;
+    return <p className="text-sm text-ink-muted">{t("none")}</p>;
   }
 
   return (
@@ -28,8 +22,8 @@ export function LocationTimeline({ updates }: { updates: LocationUpdate[] }) {
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-1.5">
               {update.city && <span className="font-medium text-ink">{update.city}</span>}
-              <Badge variant="outline">{update.source === "GPS" ? "GPS" : "Manuel"}</Badge>
-              <span className="text-xs text-ink-muted">{timeAgo(update.recordedAt)}</span>
+              <Badge variant="outline">{update.source === "GPS" ? "GPS" : t("manual")}</Badge>
+              <span className="text-xs text-ink-muted">{f.ago(update.recordedAt)}</span>
             </div>
             {update.note && <p className="mt-0.5 text-xs text-ink-muted">{update.note}</p>}
           </div>

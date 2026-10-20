@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card/Card";
 
 /** Shared card chrome + loading/error/empty states, so every dashboard panel writes them once. */
@@ -19,6 +20,7 @@ export function PanelShell({
   emptyLabel: string;
   children: ReactNode;
 }) {
+  const t = useTranslations("dashboard.panels");
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between gap-3">
@@ -27,7 +29,7 @@ export function PanelShell({
       </div>
 
       {loading && (
-        <div className="space-y-2" role="status" aria-label="Chargement">
+        <div className="space-y-2" role="status" aria-label={t("loading")}>
           <div className="h-4 w-2/3 animate-pulse rounded bg-surface-sunken" />
           <div className="h-32 w-full animate-pulse rounded bg-surface-sunken" />
         </div>

@@ -1,20 +1,14 @@
+import { useTranslations } from "next-intl";
 import { Link } from '@/i18n/navigation';
+import { useFormat } from "@/lib/format";
 
 import { Order } from "@/lib/types";
 import { OrderStatusTag } from "@/components/ui/status/Status";
 import { productPlaceholder } from "@/lib/placeholderImage";
 
-function timeAgo(iso: string): string {
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diffMs / 60000);
-  if (minutes < 1) return "à l'instant";
-  if (minutes < 60) return `il y a ${minutes} min`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `il y a ${hours} h`;
-  return `il y a ${Math.floor(hours / 24)} j`;
-}
-
 export function AttentionTable({ orders, loading, emptyLabel }: { orders: Order[]; loading: boolean; emptyLabel: string }) {
+  const t = useTranslations("orders.table");
+  const f = useFormat();
   if (loading) {
     return (
       <div className="space-y-2">
@@ -34,10 +28,10 @@ export function AttentionTable({ orders, loading, emptyLabel }: { orders: Order[
       <table className="w-full text-left text-sm">
         <thead>
           <tr className="rb-overline">
-            <th className="pb-2 font-medium normal-case tracking-normal">Commande</th>
-            <th className="pb-2 font-medium normal-case tracking-normal">Statut</th>
-            <th className="pb-2 font-medium normal-case tracking-normal">Destination</th>
-            <th className="pb-2 pr-0 text-right font-medium normal-case tracking-normal">Mis à jour</th>
+            <th className="pb-2 font-medium normal-case tracking-normal">{t("order")}</th>
+            <th className="pb-2 font-medium normal-case tracking-normal">{t("status")}</th>
+            <th className="pb-2 font-medium normal-case tracking-normal">{t("destination")}</th>
+            <th className="pb-2 pr-0 text-right font-medium normal-case tracking-normal">{t("updated")}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-line">
@@ -61,7 +55,7 @@ export function AttentionTable({ orders, loading, emptyLabel }: { orders: Order[
                 <OrderStatusTag status={order.status} />
               </td>
               <td className="py-2.5 pr-3 text-xs text-ink-muted">{order.destinationCity}</td>
-              <td className="py-2.5 pr-0 text-right text-xs text-ink-muted">{timeAgo(order.updatedAt)}</td>
+              <td className="py-2.5 pr-0 text-right text-xs text-ink-muted">{f.ago(order.updatedAt)}</td>
             </tr>
           ))}
         </tbody>

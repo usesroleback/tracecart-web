@@ -1,11 +1,13 @@
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Provider } from "@/lib/types";
 
 // Neutral, not accent: Trace Green means *moving* and nothing else
 // (docs/brand/tracecart-brand-guidelines.md, colour guide).
 export function ProviderBadge({ provider }: { provider: Provider | null }) {
+  const t = useTranslations("orders");
   if (!provider) {
-    return <Badge>Boutique inconnue</Badge>;
+    return <Badge>{t("source.unknownStore")}</Badge>;
   }
 
   return (

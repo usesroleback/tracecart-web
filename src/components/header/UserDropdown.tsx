@@ -1,17 +1,19 @@
 "use client";
 import { useClerk } from "@clerk/nextjs";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useSession } from "@/context/SessionContext";
-import { ROLE_LABELS, nameFromEmail } from "@/lib/people";
+import { nameFromEmail } from "@/lib/people";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const { signOut } = useClerk();
   const locale = useLocale();
   const user = useSession();
+  const t = useTranslations("common.user");
+  const tr = useTranslations("labels.role");
 
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
@@ -34,6 +36,8 @@ export default function UserDropdown() {
     <div className="relative">
       <button
         onClick={toggleDropdown}
+        aria-label={t("menu")}
+        aria-expanded={isOpen}
         className="flex items-center text-ink dropdown-toggle"
       >
         <span className="mr-3 flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-ink font-semibold text-ink-inverse">
@@ -43,7 +47,7 @@ export default function UserDropdown() {
         <span className="mr-1 hidden text-left sm:block lg:hidden">
           <span className="block font-medium text-sm">{name}</span>
           <span className="block text-xs text-ink-muted">
-            {ROLE_LABELS[user.role]}
+            {tr(user.role)}
           </span>
         </span>
         <svg
@@ -79,7 +83,7 @@ export default function UserDropdown() {
           onClick={handleLogout}
           className="flex items-center gap-3 rounded-[var(--radius-s)] border-t border-line px-3 py-2 pt-4 text-left font-medium text-ink text-sm hover:bg-surface-sunken"
         >
-          Déconnexion
+          {t("signOut")}
         </button>
       </Dropdown>
     </div>

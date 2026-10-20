@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CorridorTracker } from "./CorridorTracker";
 import { ProviderBadge } from "./ProviderBadge";
@@ -9,8 +10,11 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import { Order } from "@/lib/types";
+import { useFormat } from "@/lib/format";
 
 export function OrderCard({ order, children }: { order: Order; children?: React.ReactNode }) {
+  const t = useTranslations("orders");
+  const f = useFormat();
   const [expanded, setExpanded] = useState(false);
   const thumbnail = order.photos[0]?.url
     ? `/api/tracecart${order.photos[0].url}`
@@ -31,14 +35,14 @@ export function OrderCard({ order, children }: { order: Order; children?: React.
               <Link href={`/orders/${order.id}`} className="rb-mono rb-link">
                 {order.reference}
               </Link>
-              {order.intakeType === "CUSTOMER_OWNED" ? <Badge>Transport seul</Badge> : <ProviderBadge provider={order.provider} />}
+              {order.intakeType === "CUSTOMER_OWNED" ? <Badge>{t("source.customerOwned")}</Badge> : <ProviderBadge provider={order.provider} />}
               <OrderStatusTag status={order.status} />
               {order.status === "QUOTE_SENT" && order.quoteAcceptedAt && (
-                <Badge variant="positive">Accepté par le client</Badge>
+                <Badge variant="positive">{t("table.acceptedByCustomer")}</Badge>
               )}
             </div>
             <p className="mt-1 text-sm font-medium text-ink">
-              {order.productName} {order.quantity > 1 ? `× ${order.quantity}` : ""}
+              {order.productName} {order.quantity > 1 ? `× ${f.number(order.quantity)}` : ""}
             </p>
             <p className="text-xs text-ink-muted">
               {order.customerName} · {order.customerPhone}
@@ -47,7 +51,7 @@ export function OrderCard({ order, children }: { order: Order; children?: React.
         </div>
         {order.customerQuoteTotal != null && (
           <div className="whitespace-nowrap text-right text-sm font-semibold text-ink">
-            {order.customerQuoteTotal.toLocaleString("fr-FR")} {order.currency ?? order.hub.currency}
+            {f.money(order.customerQuoteTotal, order.currency ?? order.hub.currency)}
           </div>
         )}
       </div>
@@ -62,7 +66,7 @@ export function OrderCard({ order, children }: { order: Order; children?: React.
             onClick={() => setExpanded((v) => !v)}
             className="rb-link mt-3 text-xs font-medium"
           >
-            {expanded ? "Masquer les détails" : "Voir les détails"}
+            {expanded ? t("card.hideDetails") : t("card.showDetails")}
           </button>
           {expanded && <div className="mt-3 border-t border-line pt-3">{children}</div>}
         </>

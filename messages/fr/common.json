@@ -5,10 +5,44 @@
   },
   "notFound": {
     "message": "Cette page est introuvable.",
-    "cta": "Retour à l'accueil"
+    "cta": "Retour à l'accueil",
+    "title": "Erreur"
   },
   "theme": {
     "toDark": "Passer en mode sombre",
     "toLight": "Passer en mode clair"
+  },
+  "user": {
+    "signOut": "Déconnexion",
+    "menu": "Menu du compte"
+  },
+  "locale": {
+    "switch": "Passer en anglais"
+  },
+  "header": {
+    "toggleSidebar": "Afficher ou masquer le menu",
+    "moreActions": "Plus d'actions"
+  },
+  "nav": {
+    "groups": {
+      "operations": "Opérations",
+      "catalogue": "Catalogue",
+      "network": "Réseau"
+    },
+    "overview": "Vue d'ensemble",
+    "requests": "Demandes",
+    "orders": "Commandes",
+    "exceptions": "Exceptions",
+    "products": "Produits",
+    "reservations": "Réservations",
+    "stores": "Boutiques",
+    "hub": "Mon hub",
+    "deliveries": "Livraisons",
+    "label": "Navigation principale"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "Aucune notification pour le moment.",
+    "button": "{count, plural, =0 {Notifications} one {Notifications, # non lue} other {Notifications, # non lues}}"
   }
 }

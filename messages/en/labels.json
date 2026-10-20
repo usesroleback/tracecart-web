@@ -1,1 +1,54 @@
-{}
+{
+  "role": {
+    "SUPER_ADMIN": "Administrator",
+    "LOGISTICS_PARTNER": "Carrier"
+  },
+  "status": {
+    "INTENT_SUBMITTED": "Intent received",
+    "QUOTING": "Quoting",
+    "QUOTED": "Quoted",
+    "QUOTE_SENT": "Quote sent",
+    "PAID": "Paid",
+    "PURCHASED": "Purchased",
+    "RECEIVED_HUB": "Received at hub",
+    "CONFIRMED_HUB": "Confirmed (hub)",
+    "PICKED_UP": "Picked up",
+    "IN_TRANSIT": "On the road",
+    "DELIVERED": "Delivered",
+    "DECLINED": "Declined",
+    "UNAVAILABLE": "Unavailable"
+  },
+  "partnerAction": {
+    "CONFIRMED_HUB": "Mark picked up",
+    "PICKED_UP": "Mark on the road",
+    "IN_TRANSIT": "Mark delivered"
+  },
+  "volumeTier": {
+    "SMALL_UNITS": "A few units",
+    "MID_QUANTITY": "Medium quantity",
+    "LARGE_STOCK": "Large stock"
+  },
+  "sourcingStatus": {
+    "OPEN": "Open",
+    "MATCHED": "Candidate chosen",
+    "CONVERTED": "Converted",
+    "CLOSED": "Closed"
+  },
+  "reservationStatus": {
+    "RESERVED": "Reserved",
+    "CONVERTED": "Converted"
+  },
+  "kpi": {
+    "ordersCreated": "Intents created",
+    "ordersDelivered": "Delivered",
+    "revenueProcessed": "Revenue collected",
+    "avgOrderValue": "Average order value",
+    "avgCycleTimeHours": "Average lead time (intent → delivery)",
+    "reservationsCreated": "Products reserved",
+    "reservationsConverted": "Turned into orders",
+    "conversionRatePct": "Conversion rate"
+  },
+  "unassigned": "Unassigned",
+  "orderCount": "{count, plural, one {# order} other {# orders}}",
+  "parcelCount": "{count, plural, one {# parcel} other {# parcels}}"
+}

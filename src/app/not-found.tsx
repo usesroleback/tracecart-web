@@ -9,8 +9,9 @@ export default function RootNotFound() {
     <html lang="fr">
       <body>
         <div style={{ padding: 40, textAlign: 'center' }}>
-          <p>Cette page est introuvable.</p>
-          <Link href="/">Retour à l&apos;accueil</Link>
+          {/* No locale is known here, so both languages. */}
+          <p>Cette page est introuvable. · This page can&apos;t be found.</p>
+          <Link href="/">Retour à l&apos;accueil · Back to the home page</Link>
         </div>
       </body>
     </html>

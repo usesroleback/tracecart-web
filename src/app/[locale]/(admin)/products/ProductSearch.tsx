@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from '@/i18n/navigation';
 
 import { api } from "@/lib/apiClient";
@@ -8,6 +9,7 @@ import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
 import { DsSearchIcon } from "@/icons";
 import { productPlaceholder } from "@/lib/placeholderImage";
+import { useFormat } from "@/lib/format";
 import {
   Provider,
   ProductSearchResponse,
@@ -34,11 +36,13 @@ function searchProducts(provider: Provider, q: string, filters: SearchFilters) {
   return api.get<ProductSearchResponse>(`/providers/search?${params.toString()}`);
 }
 
-function searchErrorMessage(err: unknown) {
-  return err instanceof Error ? err.message : "La recherche a échoué";
+function searchErrorMessage(err: unknown, fallback: string) {
+  return err instanceof Error ? err.message : fallback;
 }
 
 export function ProductSearch({ providers }: { providers: Provider[] }) {
+  const t = useTranslations("products");
+  const f = useFormat();
   const [providerId, setProviderId] = useState(providers[0]?.id ?? "");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResultItem[]>([]);
@@ -74,7 +78,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
     try {
       showResult(await searchProducts(providerToUse, q, filters));
     } catch (err) {
-      setError(searchErrorMessage(err));
+      setError(searchErrorMessage(err, t("searchFailed")));
     } finally {
       setLoading(false);
     }
@@ -98,13 +102,13 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
     searchProducts(initialProvider, DEFAULT_QUERY, {})
       .then(
         (result) => !cancelled && showResult(result),
-        (err) => !cancelled && setError(searchErrorMessage(err))
+        (err) => !cancelled && setError(searchErrorMessage(err, t("searchFailed")))
       )
       .finally(() => !cancelled && setLoading(false));
     return () => {
       cancelled = true;
     };
-  }, [initialProvider, showResult]);
+  }, [initialProvider, showResult, t]);
 
   // Switching store starts over: clear the previous store's results and
   // filters, then show its general listing.
@@ -169,7 +173,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
       });
       setReservedKeys((prev) => new Set(prev).add(key));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible de réserver ce produit");
+      setError(err instanceof Error ? err.message : t("reserveFailed"));
     } finally {
       setReservingKey(null);
     }
@@ -180,19 +184,21 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
   return (
     <div>
       <div className="mb-6">
-        <p className="rb-overline">Sourcing produits</p>
-        <h1 className="rb-headline text-[32px]">Rechercher &amp; réserver</h1>
+        <p className="rb-overline">{t("overline")}</p>
+        <h1 className="rb-headline text-[32px]">{t("title")}</h1>
         <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
-          Parcourez une boutique ou cherchez un produit, puis réservez-le pour le retrouver dans{" "}
-          <Link href="/reservations" className="rb-link">
-            Réservations
-          </Link>
-          .
+          {t.rich("intro", {
+            link: (chunks) => (
+              <Link href="/reservations" className="rb-link">
+                {chunks}
+              </Link>
+            ),
+          })}
         </p>
       </div>
 
       <div className="mb-6">
-        <p className="rb-overline mb-2.5">Boutique</p>
+        <p className="rb-overline mb-2.5">{t("store")}</p>
         <div className="flex flex-wrap gap-2.5">
           {providers.map((p) => {
             const active = p.id === providerId;
@@ -230,12 +236,13 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={`Rechercher chez ${selectedProvider?.name ?? "une boutique"}...`}
+            placeholder={t("placeholder", { store: selectedProvider?.name ?? t("aStore") })}
+            aria-label={t("search")}
             className="h-12 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised pl-11 pr-4 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring"
           />
         </div>
         <Button type="submit" size="l" disabled={!selectedProvider} loading={loading}>
-          Rechercher
+          {t("search")}
         </Button>
       </form>
 
@@ -243,7 +250,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
         <Card className="mb-8 space-y-3">
           {facets.categories.length > 0 && (
             <div>
-              <p className="rb-overline mb-1.5">Catégorie</p>
+              <p className="rb-overline mb-1.5">{t("category")}</p>
               <div className="flex flex-wrap gap-1.5">
                 {facets.categories.map((c) => (
                   <button
@@ -266,13 +273,13 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
           <div className="flex flex-wrap items-end gap-4">
             {facets.brands.length > 0 && (
               <label className="text-sm">
-                <span className="rb-overline mb-1 block">Marque</span>
+                <span className="rb-overline mb-1 block">{t("brand")}</span>
                 <select
                   value={brand}
                   onChange={(e) => handleBrandChange(e.target.value)}
                   className="h-9 rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink"
                 >
-                  <option value="">Toutes les marques</option>
+                  <option value="">{t("allBrands")}</option>
                   {facets.brands.map((b) => (
                     <option key={b.value} value={b.value}>
                       {b.label}
@@ -285,7 +292,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
             {facets.priceRange && (
               <div className="text-sm">
                 <span className="rb-overline mb-1 block">
-                  Prix ({selectedProvider?.defaultCurrency}, {facets.priceRange.min.toLocaleString("fr-FR")}–{facets.priceRange.max.toLocaleString("fr-FR")})
+                  {t("price", { currency: selectedProvider?.defaultCurrency ?? "", min: f.number(facets.priceRange.min), max: f.number(facets.priceRange.max) })}
                 </span>
                 <div className="flex items-center gap-2">
                   <input
@@ -294,7 +301,8 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     max={facets.priceRange.max}
                     value={priceMin}
                     onChange={(e) => setPriceMin(e.target.value)}
-                    placeholder="Min"
+                    placeholder={t("min")}
+                    aria-label={t("min")}
                     className="h-9 w-24 rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-2.5 text-sm text-ink"
                   />
                   <span className="text-ink-muted">–</span>
@@ -304,11 +312,12 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     max={facets.priceRange.max}
                     value={priceMax}
                     onChange={(e) => setPriceMax(e.target.value)}
-                    placeholder="Max"
+                    placeholder={t("max")}
+                    aria-label={t("max")}
                     className="h-9 w-24 rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-2.5 text-sm text-ink"
                   />
                   <Button type="button" variant="secondary" size="s" onClick={applyPriceRange}>
-                    Appliquer
+                    {t("apply")}
                   </Button>
                 </div>
               </div>
@@ -322,22 +331,22 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
       {searched && !supported && (
         <div className="rounded-[var(--radius-m)] border border-dashed border-line-strong bg-surface-raised p-8 text-center">
           <p className="text-sm font-medium text-ink">
-            Recherche indisponible pour {selectedProvider?.name}
+            {t("unsupported", { store: selectedProvider?.name ?? "" })}
           </p>
           <p className="mx-auto mt-1 max-w-md text-xs text-ink-muted">
-            {selectedProvider?.notes ?? "Cette boutique ne propose pas de recherche par mot-clé pour le moment."}
+            {selectedProvider?.notes ?? t("unsupportedHint")}
           </p>
           <Link
             href="/orders"
             className="rb-link mt-3 inline-block text-xs font-medium"
           >
-            Coller un lien produit dans une nouvelle commande
+            {t("pasteLink")}
           </Link>
         </div>
       )}
 
       {searched && supported && results.length === 0 && !loading && (
-        <p className="text-sm text-ink-muted">Aucun résultat pour cette recherche.</p>
+        <p className="text-sm text-ink-muted">{t("noResults")}</p>
       )}
 
       {results.length > 0 && (
@@ -365,12 +374,12 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                 </div>
                 <div className="flex flex-1 flex-col p-3.5">
                   <p className="line-clamp-2 flex-1 text-sm font-medium text-ink">
-                    {item.title ?? "Produit sans titre"}
+                    {item.title ?? t("untitled")}
                   </p>
                   {item.price != null && (
                     <p className="mt-2 text-base font-semibold tabular-nums text-ink">
-                      {item.price.toLocaleString("fr-FR")}{" "}
-                      <span className="text-xs font-normal text-ink-muted">{item.currency} · prix source, à titre indicatif</span>
+                      {f.number(item.price)}{" "}
+                      <span className="text-xs font-normal text-ink-muted">{t("sourcePrice", { currency: item.currency ?? "" })}</span>
                     </p>
                   )}
                   {isReserved ? (
@@ -378,7 +387,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                       disabled
                       className="mt-3 w-full rounded-[var(--radius-s)] bg-positive-soft py-2 text-xs font-semibold text-positive"
                     >
-                      Réservé ✓
+                      {t("reserved")}
                     </button>
                   ) : (
                     <Button
@@ -388,7 +397,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                       onClick={() => handleReserve(item)}
                       loading={reservingKey === key}
                     >
-                      Réserver
+                      {t("reserve")}
                     </Button>
                   )}
                 </div>
@@ -406,11 +415,11 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
             onClick={() => goToPage(pagination.page - 1)}
             disabled={loading || pagination.page <= 1}
           >
-            ← Précédent
+            {t("previous")}
           </Button>
           <span className="text-xs text-ink-muted">
-            Page {pagination.page}
-            {pagination.totalResults != null && ` · ${pagination.totalResults.toLocaleString("fr-FR")} résultats`}
+            {t("page", { page: pagination.page })}
+            {pagination.totalResults != null && t("results", { count: pagination.totalResults })}
           </span>
           <Button
             type="button"
@@ -418,7 +427,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
             onClick={() => goToPage(pagination.page + 1)}
             disabled={loading || !pagination.hasMore}
           >
-            Suivant →
+            {t("next")}
           </Button>
         </div>
       )}

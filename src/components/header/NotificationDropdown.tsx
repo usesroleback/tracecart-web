@@ -1,23 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { api } from "@/lib/apiClient";
 import { Notification, Paginated } from "@/lib/types";
+import { useFormat } from "@/lib/format";
 
 const POLL_INTERVAL_MS = 15000;
 
-function timeAgo(iso: string): string {
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diffMs / 60000);
-  if (minutes < 1) return "à l'instant";
-  if (minutes < 60) return `il y a ${minutes} min`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `il y a ${hours} h`;
-  return `il y a ${Math.floor(hours / 24)} j`;
-}
-
 export default function NotificationDropdown() {
+  const t = useTranslations("common.notifications");
+  const f = useFormat();
   const [isOpen, setIsOpen] = useState(false);
   const [count, setCount] = useState(0);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -78,7 +72,7 @@ export default function NotificationDropdown() {
       <button
         className="relative dropdown-toggle flex items-center justify-center text-ink-muted transition-colors bg-surface-raised border border-line rounded-full hover:text-ink h-11 w-11 hover:bg-surface-sunken"
         onClick={toggleDropdown}
-        aria-label="Notifications"
+        aria-label={t("button", { count })}
       >
         {count > 0 && (
           <span className="absolute right-0 top-0.5 z-10 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[10px] font-semibold text-black">
@@ -100,12 +94,12 @@ export default function NotificationDropdown() {
         className="absolute -right-[240px] mt-[17px] flex h-[480px] w-[350px] flex-col rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 shadow-[var(--shadow-2)] sm:w-[361px] lg:right-0"
       >
         <div className="flex items-center justify-between pb-3 mb-3 border-b border-line">
-          <h5 className="rb-title text-[16px]">Notifications</h5>
+          <h5 className="rb-title text-[16px]">{t("title")}</h5>
         </div>
         <ul className="flex flex-col h-auto overflow-y-auto custom-scrollbar">
           {notifications.length === 0 && (
             <li className="px-2 py-6 text-center text-sm text-ink-muted">
-              Aucune notification pour le moment.
+              {t("empty")}
             </li>
           )}
           {notifications.map((n) => (
@@ -118,7 +112,7 @@ export default function NotificationDropdown() {
               >
                 <span className="font-medium text-ink">{n.title}</span>
                 <span className="text-xs text-ink-muted line-clamp-2">{n.body}</span>
-                <span className="text-xs text-ink-muted">{timeAgo(n.createdAt)}</span>
+                <span className="text-xs text-ink-muted">{f.ago(n.createdAt)}</span>
               </DropdownItem>
             </li>
           ))}

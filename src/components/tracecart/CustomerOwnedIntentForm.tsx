@@ -1,10 +1,13 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { OrderPhotoUploader } from "./OrderPhotoUploader";
-import { Order, VolumeTier, VOLUME_TIER_LABELS } from "@/lib/types";
+import { Order, VolumeTier } from "@/lib/types";
+
+const VOLUME_TIERS: VolumeTier[] = ["SMALL_UNITS", "MID_QUANTITY", "LARGE_STOCK"];
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -17,6 +20,8 @@ const inputClasses =
  * the product-URL/"Détecter" step.
  */
 export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: () => void; onCancel: () => void }) {
+  const t = useTranslations("orders");
+  const tl = useTranslations("labels");
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
@@ -50,7 +55,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
       });
       setCreatedOrder(order);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible de créer la demande de transport");
+      setError(err instanceof Error ? err.message : t("owned.failed"));
     } finally {
       setSubmitting(false);
     }
@@ -65,16 +70,15 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
   if (createdOrder) {
     return (
       <div className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5">
-        <h2 className="rb-title-l text-[20px]">Photos de l&apos;article</h2>
+        <h2 className="rb-title-l text-[20px]">{t("owned.photosTitle")}</h2>
         <p className="mt-1 text-sm text-ink-muted">
-          Ajoutez des photos de {createdOrder.productName} avant de terminer — le transporteur s&apos;en sert
-          pour préparer sa cotation.
+          {t("owned.photosIntro", { product: createdOrder.productName })}
         </p>
         <div className="mt-4">
           <OrderPhotoUploader order={createdOrder} onChanged={refreshCreatedOrder} />
         </div>
         <div className="mt-5 flex justify-end">
-          <Button onClick={onCreated}>Terminer</Button>
+          <Button onClick={onCreated}>{t("owned.finish")}</Button>
         </div>
       </div>
     );
@@ -85,17 +89,16 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
       onSubmit={handleSubmit}
       className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
-      <h2 className="rb-title-l text-[20px]">Transport d&apos;un article déjà acheté</h2>
+      <h2 className="rb-title-l text-[20px]">{t("owned.title")}</h2>
       <p className="mt-1 text-sm text-ink-muted">
-        Le client a déjà acheté cet article — TraceCart s&apos;occupe uniquement du transport. Renseignez le client, la
-        destination et ce qui doit être transporté ; vous ajouterez des photos à l&apos;étape suivante.
+        {t("owned.intro")}
       </p>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Field label="Nom du client">
+        <Field label={t("form.customerName")}>
           <input required value={customerName} onChange={(e) => setCustomerName(e.target.value)} className={inputClasses} />
         </Field>
-        <Field label="Téléphone du client">
+        <Field label={t("form.customerPhone")}>
           <input
             required
             value={customerPhone}
@@ -104,7 +107,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
             className={inputClasses}
           />
         </Field>
-        <Field label="Email du client (optionnel)">
+        <Field label={t("form.customerEmail")}>
           <input
             type="email"
             value={customerEmail}
@@ -112,7 +115,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
             className={inputClasses}
           />
         </Field>
-        <Field label="Quantité">
+        <Field label={t("form.quantity")}>
           <input
             type="number"
             min="1"
@@ -121,10 +124,10 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
             className={inputClasses}
           />
         </Field>
-        <Field label="Ville de destination">
+        <Field label={t("form.destinationCity")}>
           <input required value={destinationCity} onChange={(e) => setDestinationCity(e.target.value)} className={inputClasses} />
         </Field>
-        <Field label="Pays de destination">
+        <Field label={t("form.destinationCountry")}>
           <input
             required
             value={destinationCountry}
@@ -132,11 +135,11 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
             className={inputClasses}
           />
         </Field>
-        <Field label="Volume estimé" className="sm:col-span-2">
+        <Field label={t("form.volume")} className="sm:col-span-2">
           <select value={volumeTier} onChange={(e) => setVolumeTier(e.target.value as VolumeTier)} className={inputClasses}>
-            {(Object.keys(VOLUME_TIER_LABELS) as VolumeTier[]).map((tier) => (
+            {VOLUME_TIERS.map((tier) => (
               <option key={tier} value={tier}>
-                {VOLUME_TIER_LABELS[tier]}
+                {tl(`volumeTier.${tier}`)}
               </option>
             ))}
           </select>
@@ -144,19 +147,19 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
       </div>
 
       <div className="mt-4">
-        <Field label="Ce qui doit être transporté">
+        <Field label={t("owned.what")}>
           <input
             required
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            placeholder="Ex: Samsung Galaxy A17 5G"
+            placeholder={t("owned.whatPlaceholder")}
             className={inputClasses}
           />
         </Field>
       </div>
 
       <div className="mt-4">
-        <Field label="Notes internes">
+        <Field label={t("form.notes")}>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -170,10 +173,10 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
 
       <div className="mt-5 flex justify-end gap-2">
         <Button type="button" variant="secondary" onClick={onCancel}>
-          Annuler
+          {t("form.cancel")}
         </Button>
         <Button type="submit" loading={submitting}>
-          Continuer
+          {t("owned.continue")}
         </Button>
       </div>
     </form>

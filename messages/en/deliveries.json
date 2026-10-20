@@ -1,1 +1,32 @@
-{}
+{
+  "title": "Deliveries",
+  "subtitle": "Quote requests and confirmed parcels, ready for the road.",
+  "stages": {
+    "all": "All",
+    "quote": "To quote",
+    "waiting": "Waiting on the hub",
+    "ready": "To handle",
+    "moving": "On the road",
+    "delivered": "Delivered"
+  },
+  "stageLabel": "Stage",
+  "loading": "Loading deliveries...",
+  "empty": "No parcels assigned yet.",
+  "emptyStage": "No parcels in “{stage}” right now.",
+  "caption": "Deliveries — {stage}",
+  "yourQuote": "Your quote",
+  "showing": "The {shown} most recent parcels of {total}.",
+  "todo": {
+    "title": "To do",
+    "none": "Nothing to quote or handle right now.",
+    "summaryQuotes": "{count, plural, one {# quote to submit} other {# quotes to submit}}",
+    "summaryParcels": "{count, plural, one {# parcel to handle} other {# parcels to handle}}",
+    "quoteTitle": "Quote needed · {product}",
+    "quantity": "Quantity {quantity}.",
+    "quote": "Quote",
+    "readyTitle": "Ready at the hub · {product}",
+    "readyBody": "The hub confirmed the parcel: it's waiting for you to pick it up.",
+    "open": "Open"
+  },
+  "notifications": "Latest notifications"
+}

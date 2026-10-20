@@ -12,7 +12,7 @@ export default function NotFound() {
       <GridShape />
       <div className="mx-auto w-full max-w-[242px] text-center sm:max-w-[472px]">
         <h1 className="rb-display-l mb-8">
-          ERROR
+          {t('notFound.title')}
         </h1>
 
         <Image

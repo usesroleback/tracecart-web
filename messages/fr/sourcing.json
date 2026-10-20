@@ -1,1 +1,57 @@
-{}
+{
+  "title": "Sourcing",
+  "subtitle": "Ce que les clients recherchent, avant même d'avoir trouvé un lien produit précis.",
+  "new": "Nouvelle demande",
+  "segments": {
+    "active": "En cours",
+    "open": "Ouvertes",
+    "matched": "Candidat choisi",
+    "done": "Terminées",
+    "all": "Toutes"
+  },
+  "kpi": {
+    "total": "Demandes",
+    "open": "Ouvertes",
+    "matched": "Candidat choisi",
+    "converted": "Transformées"
+  },
+  "statusLabel": "Statut",
+  "matchesFailed": "Impossible de charger les candidats",
+  "selectFailed": "Impossible de choisir ce produit",
+  "createOrder": "Créer la commande",
+  "hide": "Masquer",
+  "seeCandidates": "Voir les candidats",
+  "chosen": "Candidat choisi · ",
+  "searching": "Recherche de candidats...",
+  "noCandidates": "Aucun candidat trouvé dans le catalogue pour cette demande.",
+  "untitled": "Produit sans titre",
+  "choose": "Choisir ce produit",
+  "empty": "Aucune demande pour le moment.",
+  "emptySegment": "Aucune demande « {segment} ».",
+  "caption": "Demandes de sourcing — {segment}",
+  "th": {
+    "customer": "Client",
+    "request": "Demande",
+    "destination": "Destination",
+    "qtyBudget": "Qté · budget",
+    "status": "Statut",
+    "actions": "Actions"
+  },
+  "qty": "qté {quantity}",
+  "noCandidate": {
+    "title": "Sans candidat",
+    "none": "Aucune demande sans candidat pour le moment."
+  },
+  "form": {
+    "title": "Nouvelle demande de sourcing",
+    "intro": "Décrivez ce que le client recherche — pas besoin d'un lien produit. On cherchera des candidats dans le catalogue une fois la demande créée.",
+    "what": "Ce que le client recherche",
+    "whatPlaceholder": "Ex: téléphone Samsung Galaxy, pas cher, bon état d'écran",
+    "category": "Catégorie (optionnel)",
+    "budgetMin": "Budget min (optionnel)",
+    "budgetMax": "Budget max (optionnel)",
+    "failed": "Impossible de créer la demande",
+    "creating": "Création...",
+    "create": "Créer la demande"
+  }
+}

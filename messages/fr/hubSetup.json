@@ -1,1 +1,24 @@
-{}
+{
+  "saveFailed": "Impossible d'enregistrer le hub",
+  "createFailed": "Impossible de créer le hub",
+  "detecting": "Détection de votre position...",
+  "titleMine": "Mon hub",
+  "titleSetup": "Configurez votre hub",
+  "intro": "Le hub est le point de réception de l'opérateur — l'origine de chaque commande. Toutes vos commandes seront rattachées à ce hub.",
+  "detected": "Position détectée : {city}, {country}",
+  "nearest": "Le plus proche",
+  "createNew": "+ Créer un nouveau hub",
+  "confirm": "Confirmer ce hub",
+  "field": {
+    "name": "Nom",
+    "currency": "Devise",
+    "city": "Ville",
+    "country": "Pays",
+    "countryCode": "Code pays (2 lettres)",
+    "timezone": "Fuseau horaire",
+    "latitude": "Latitude",
+    "longitude": "Longitude"
+  },
+  "cancel": "Annuler",
+  "createConfirm": "Créer et confirmer"
+}

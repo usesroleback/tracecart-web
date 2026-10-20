@@ -1,1 +1,245 @@
-{}
+{
+  "manual": {
+    "open": "Modifier le statut manuellement",
+    "title": "Changement de statut manuel",
+    "note": "Note (obligatoire)",
+    "override": "Forcer même si non payé",
+    "apply": "Appliquer",
+    "failed": "Transition impossible"
+  },
+  "cancel": "Annuler",
+  "actionFailed": "Action impossible",
+  "partner": {
+    "waitingHub": "En attente de confirmation de prise en charge par le hub.",
+    "delivered": "Livré."
+  },
+  "source": {
+    "customerOwned": "Transport seul",
+    "unknownStore": "Boutique inconnue"
+  },
+  "table": {
+    "openOrder": "Ouvrir la fiche",
+    "order": "Commande",
+    "productCustomer": "Produit / client",
+    "route": "Trajet",
+    "status": "Statut",
+    "amount": "Montant",
+    "amountSuffix": " et date de mise à jour",
+    "acceptedByCustomer": "Accepté par le client",
+    "destination": "Destination",
+    "updated": "Mis à jour"
+  },
+  "route": {
+    "label": "Trajet",
+    "labelFor": "Trajet de {reference}",
+    "legs": {
+      "order": "Commande",
+      "hub": "Hub",
+      "moving": "En route",
+      "delivery": "Livraison"
+    },
+    "state": {
+      "done": "terminé",
+      "now": "étape en cours",
+      "held": "en attente",
+      "exception": "exception",
+      "planned": "pas commencé"
+    }
+  },
+  "card": {
+    "showDetails": "Voir les détails",
+    "hideDetails": "Masquer les détails"
+  },
+  "title": "Commandes",
+  "summary": "{role} · hub de {city} · {active, plural, one {# active} other {# actives}}",
+  "updatedAt": " · mis à jour {time}",
+  "close": "Fermer",
+  "newIntent": "Nouvelle intention",
+  "transportOnly": "Transport seul",
+  "noHub": {
+    "title": "Configurez votre hub pour commencer",
+    "body": "Chaque commande est rattachée au hub de l'opérateur qui la crée. Configurez le vôtre avant de créer une intention.",
+    "cta": "Configurer mon hub"
+  },
+  "kpi": {
+    "active": "Actives",
+    "preparing": "En préparation",
+    "hub": "Prêtes au hub",
+    "moving": "En route",
+    "delivered": "Livrées"
+  },
+  "segments": {
+    "all": "Toutes",
+    "preparing": "En préparation",
+    "hub": "Au hub",
+    "moving": "En route",
+    "delivered": "Livrées",
+    "exceptions": "Exceptions"
+  },
+  "statusLabel": "Statut",
+  "loading": "Chargement des commandes...",
+  "empty": "Aucune commande pour le moment.",
+  "emptySegment": "Aucune commande « {segment} » pour le moment.",
+  "caption": "Commandes — {segment}",
+  "showing": "Les {shown} commandes les plus récentes sur {total}.",
+  "decision": {
+    "title": "Besoin d'une décision",
+    "none": "Aucune commande déclinée ou indisponible en attente.",
+    "open": "Ouvrir la commande"
+  },
+  "detail": {
+    "breadcrumb": "Fil d'Ariane",
+    "back": {
+      "admin": "Commandes",
+      "carrier": "Livraisons"
+    },
+    "updated": "Mis à jour {when}",
+    "productPage": "Fiche produit",
+    "copyLink": "Copier le lien client",
+    "copied": "Lien copié",
+    "declined": "Commande refusée.",
+    "unavailable": "Commande indisponible.",
+    "noNextStep": "Aucune autre étape n'est prévue pour cette commande.",
+    "stoppedBy": " — {name}, {when}.",
+    "accepted": {
+      "title": "Le client a accepté le devis.",
+      "body": "Le {when}. Enregistrez le paiement dès qu'il est reçu."
+    },
+    "sent": {
+      "title": "Devis envoyé au client.",
+      "body": "En attente de sa réponse. Vous pouvez lui renvoyer le lien."
+    },
+    "cargo": "Marchandise",
+    "product": "Produit",
+    "quantity": "Quantité",
+    "volume": "Volume",
+    "source": "Source",
+    "notes": "Notes",
+    "customer": "Client",
+    "name": "Nom",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "destination": "Destination",
+    "hubCarrier": "Hub et transporteur",
+    "hub": "Hub",
+    "carrier": "Transporteur",
+    "createdBy": "Créée par",
+    "payment": "Paiement",
+    "paid": "Payé",
+    "unpaid": "Non payé",
+    "amountsCaption": "Montants de la commande {reference}",
+    "logistics": "Logistique",
+    "fee": "Frais TraceCart",
+    "yourLogisticsQuote": "Votre devis logistique",
+    "customerTotal": "Total client",
+    "notQuoted": "Pas encore coté",
+    "history": "Historique",
+    "noHistory": "Aucun changement de statut enregistré.",
+    "positions": "Positions",
+    "nextStep": "Prochaine étape",
+    "photos": "Photos",
+    "noPhotos": "Pas encore de photos de la marchandise.",
+    "photoOf": "Photo de {product}"
+  },
+  "form": {
+    "customerName": "Nom du client",
+    "customerPhone": "Téléphone du client",
+    "customerEmail": "Email du client (optionnel)",
+    "quantity": "Quantité",
+    "destinationCity": "Ville de destination",
+    "destinationCountry": "Pays de destination",
+    "volume": "Volume estimé",
+    "notes": "Notes internes",
+    "cancel": "Annuler"
+  },
+  "intent": {
+    "title": "Nouvelle intention",
+    "intro": "Collez le lien du produit, renseignez la destination et les informations client. La cotation (coût produit, logistique, frais) se fait à l'étape suivante.",
+    "productUrl": "Lien du produit",
+    "detect": "Détecter",
+    "detecting": "Analyse...",
+    "storeDetected": "Boutique détectée : {name}",
+    "previewFailed": "Aperçu indisponible, vous pouvez renseigner les champs manuellement.",
+    "productName": "Nom du produit",
+    "productNamePlaceholder": "À confirmer manuellement si non détecté",
+    "failed": "Impossible de créer l'intention",
+    "creating": "Création...",
+    "create": "Créer l'intention"
+  },
+  "owned": {
+    "title": "Transport d'un article déjà acheté",
+    "intro": "Le client a déjà acheté cet article — TraceCart s'occupe uniquement du transport. Renseignez le client, la destination et ce qui doit être transporté ; vous ajouterez des photos à l'étape suivante.",
+    "what": "Ce qui doit être transporté",
+    "whatPlaceholder": "Ex: Samsung Galaxy A17 5G",
+    "failed": "Impossible de créer la demande de transport",
+    "continue": "Continuer",
+    "photosTitle": "Photos de l'article",
+    "photosIntro": "Ajoutez des photos de {product} avant de terminer — le transporteur s'en sert pour préparer sa cotation.",
+    "finish": "Terminer"
+  },
+  "quote": {
+    "defaultTransport": "Transport",
+    "defaultHandling": "Manutention",
+    "failed": "Impossible d'envoyer la cotation",
+    "title": "Cotation logistique",
+    "titleEdit": "Cotation logistique (modifier)",
+    "lineLabel": "Libellé (ex. Transport)",
+    "lineAmount": "Montant",
+    "removeLine": "Retirer la ligne",
+    "addLine": "+ Ajouter une ligne",
+    "currency": "Devise",
+    "note": "Note (optionnel)",
+    "total": "Total",
+    "update": "Mettre à jour la cotation",
+    "send": "Envoyer la cotation"
+  },
+  "location": {
+    "title": "Où est le colis",
+    "failed": "Impossible d'enregistrer la position",
+    "city": "Ville ou lieu actuel",
+    "cityPlaceholder": "Ville / lieu actuel",
+    "note": "Note (optionnel)",
+    "report": "Signaler",
+    "none": "Aucune position signalée pour le moment.",
+    "manual": "Manuel"
+  },
+  "photos": {
+    "failed": "Impossible d'envoyer les photos",
+    "uploading": "Envoi...",
+    "add": "Ajouter des photos de l'article"
+  },
+  "closed": "Commande close.",
+  "desk": {
+    "photos": "Photos de l'article",
+    "quote": "Cotation logistique",
+    "carrierQuote": "Cotation logistique du transporteur",
+    "waiting": "En attente de la cotation.",
+    "waitingCarrier": "En attente de la cotation du transporteur.",
+    "revise": "Réviser la cotation",
+    "propose": "Proposer une cotation",
+    "productCost": "Coût produit",
+    "currency": "Devise",
+    "feeOptional": "Frais plateforme (optionnel)",
+    "feeDefault": "Frais plateforme (défaut 12% si vide)",
+    "feePlaceholder": "Calculé automatiquement",
+    "saveCost": "Enregistrer le coût",
+    "saveFee": "Enregistrer les frais",
+    "estimatedTotal": "Total client estimé",
+    "sendQuote": "Envoyer le devis au client",
+    "quoteSent": "Devis envoyé",
+    "acceptedOn": "Accepté par le client le {when} — paiement à confirmer",
+    "waitingCustomer": "En attente de la réponse du client",
+    "paymentStatus": "Statut paiement : {status}",
+    "paid": "Payé",
+    "pending": "En attente",
+    "markPaid": "Marquer payé"
+  },
+  "fulfil": {
+    "markPurchased": "Marquer acheté",
+    "markReceived": "Marquer reçu au hub",
+    "confirm": "Confirmer et transmettre au transporteur",
+    "delivering": "En cours de livraison par le transporteur.",
+    "delivered": "Livré.",
+    "updating": "Mise à jour..."
+  }
+}

@@ -1,1 +1,28 @@
-{}
+{
+  "title": "Produits réservés",
+  "subtitle": "Produits mis de côté depuis la recherche. Transformez-les en commande dès qu'un client est prêt.",
+  "showing": "Affichage des {shown} plus récents sur {total} au total.",
+  "statsFailed": "Impossible de charger les statistiques",
+  "rankingFailed": "Impossible de charger le classement",
+  "removeFailed": "Impossible de retirer cette réservation",
+  "conversion": {
+    "title": "Taux de conversion",
+    "label": "Réservations transformées en commande"
+  },
+  "ranking": {
+    "title": "Boutique la plus réservée",
+    "empty": "Aucune réservation sur les 30 derniers jours."
+  },
+  "tabs": {
+    "label": "Réservations",
+    "reserved": "En attente",
+    "converted": "Transformées en commande"
+  },
+  "emptyReserved": "Aucun produit réservé.",
+  "searchProducts": "Rechercher des produits",
+  "untitled": "Produit sans titre",
+  "createOrder": "Créer une commande",
+  "remove": "Retirer {title} des réservations",
+  "thisProduct": "ce produit",
+  "emptyConverted": "Aucune réservation transformée en commande pour le moment."
+}

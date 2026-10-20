@@ -1,24 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Order, OrderStatus } from "@/lib/types";
 
-const STEP_BUY_ON_BEHALF: Partial<Record<OrderStatus, { toStatus: OrderStatus; label: string }>> = {
-  PAID: { toStatus: "PURCHASED", label: "Marquer acheté" },
-  PURCHASED: { toStatus: "RECEIVED_HUB", label: "Marquer reçu au hub" },
-  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "Confirmer et transmettre au transporteur" },
+// Labels are orders.fulfil.*.
+type Step = { toStatus: OrderStatus; label: "markPurchased" | "markReceived" | "confirm" };
+
+const STEP_BUY_ON_BEHALF: Partial<Record<OrderStatus, Step>> = {
+  PAID: { toStatus: "PURCHASED", label: "markPurchased" },
+  PURCHASED: { toStatus: "RECEIVED_HUB", label: "markReceived" },
+  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "confirm" },
 };
 
 // No purchase for TraceCart to make — the customer already owns the goods,
 // so PAID (for the shipping) goes straight to RECEIVED_HUB.
-const STEP_CUSTOMER_OWNED: Partial<Record<OrderStatus, { toStatus: OrderStatus; label: string }>> = {
-  PAID: { toStatus: "RECEIVED_HUB", label: "Marquer reçu au hub" },
-  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "Confirmer et transmettre au transporteur" },
+const STEP_CUSTOMER_OWNED: Partial<Record<OrderStatus, Step>> = {
+  PAID: { toStatus: "RECEIVED_HUB", label: "markReceived" },
+  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "confirm" },
 };
 
 export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged: () => void }) {
+  const t = useTranslations("orders");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,9 +34,9 @@ export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged
     return (
       <p className="text-sm text-ink-muted">
         {order.status === "PICKED_UP" || order.status === "IN_TRANSIT"
-          ? "En cours de livraison par le transporteur."
+          ? t("fulfil.delivering")
           : order.status === "DELIVERED"
-            ? "Livré."
+            ? t("fulfil.delivered")
             : null}
       </p>
     );
@@ -45,7 +50,7 @@ export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged
       setNote("");
       onChanged();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Action impossible");
+      setError(err instanceof Error ? err.message : t("actionFailed"));
     } finally {
       setBusy(false);
     }
@@ -56,7 +61,8 @@ export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged
       <input
         value={note}
         onChange={(e) => setNote(e.target.value)}
-        placeholder="Note (obligatoire)"
+        placeholder={t("manual.note")}
+        aria-label={t("manual.note")}
         className="h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring"
       />
       {error && <p className="text-xs text-critical">{error}</p>}
@@ -66,11 +72,11 @@ export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged
           disabled={busy || !note.trim()}
           className="w-full rounded-[var(--radius-s)] bg-signal py-2 text-sm font-semibold text-black transition hover:opacity-90 disabled:opacity-60"
         >
-          {busy ? "Mise à jour..." : step.label}
+          {busy ? t("fulfil.updating") : t(`fulfil.${step.label}`)}
         </button>
       ) : (
         <Button block onClick={advance} disabled={!note.trim()} loading={busy}>
-          {step.label}
+          {t(`fulfil.${step.label}`)}
         </Button>
       )}
     </div>

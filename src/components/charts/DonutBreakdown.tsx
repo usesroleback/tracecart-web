@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import type { ApexOptions } from "apexcharts";
 import { useApexTheme, QUALITATIVE_PALETTE } from "./ChartTheme";
@@ -10,13 +11,16 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlice[]; height?: number }) {
   const theme = useApexTheme();
+  const t = useTranslations("dashboard.breakdown");
+  const tl = useTranslations("labels");
+  const labelOf = useCallback((s: BreakdownSlice) => (s.key === "unassigned" ? tl("unassigned") : s.label), [tl]);
   const total = slices.reduce((sum, s) => sum + s.count, 0);
 
   const options: ApexOptions = useMemo(
     () => ({
       chart: { type: "donut", fontFamily: theme.fontFamily, background: "transparent" },
       theme: { mode: theme.mode },
-      labels: slices.map((s) => s.label),
+      labels: slices.map(labelOf),
       colors: QUALITATIVE_PALETTE,
       legend: { show: false },
       dataLabels: { enabled: false },
@@ -27,13 +31,13 @@ export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlic
           donut: {
             labels: {
               show: true,
-              total: { show: true, label: "Total", color: theme.axisLabelColor },
+              total: { show: true, label: t("total"), color: theme.axisLabelColor },
             },
           },
         },
       },
     }),
-    [theme, slices]
+    [theme, slices, labelOf, t]
   );
 
   // Side by side only when the panel itself is wide enough (container query):
@@ -63,10 +67,10 @@ export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlic
                 />
               )}
               <span className="min-w-0 flex-1 truncate text-sm text-ink">
-                {slice.label}
+                {labelOf(slice)}
                 {i === 0 && slices.length > 1 && (
                   <span className="ml-1.5 rounded-[var(--radius-xs)] bg-surface-sunken px-1.5 py-0.5 text-[11px] font-semibold text-ink">
-                    Le plus utilisé
+                    {t("mostUsed")}
                   </span>
                 )}
               </span>

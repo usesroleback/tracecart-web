@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import { IntentForm } from "@/components/tracecart/IntentForm";
 import { SourcingRequestForm } from "@/components/tracecart/SourcingRequestForm";
@@ -14,18 +15,14 @@ import { SourcingRequestStatusTag } from "@/components/ui/status/Status";
 import { DsPlusIcon } from "@/icons";
 import { productPlaceholder } from "@/lib/placeholderImage";
 import { Paginated, ProductSearchResponse, SearchResultItem, SourcingRequest } from "@/lib/types";
+import { Format, useFormat } from "@/lib/format";
 
 const PAGE_LIMIT = 100;
 
 type Segment = "active" | "open" | "matched" | "done" | "all";
 
-const SEGMENT_LABELS: Record<Segment, string> = {
-  active: "En cours",
-  open: "Ouvertes",
-  matched: "Candidat choisi",
-  done: "Terminées",
-  all: "Toutes",
-};
+// Labels are sourcing.segments.*.
+const SEGMENTS: Segment[] = ["active", "open", "matched", "done", "all"];
 
 function inSegment(r: SourcingRequest, segment: Segment): boolean {
   if (segment === "all") return true;
@@ -35,8 +32,8 @@ function inSegment(r: SourcingRequest, segment: Segment): boolean {
   return r.status === "CONVERTED" || r.status === "CLOSED";
 }
 
-function budget(r: SourcingRequest): string | null {
-  const fmt = (v: string) => Number(v).toLocaleString("fr-FR");
+function budget(r: SourcingRequest, f: Format): string | null {
+  const fmt = (v: string) => f.number(Number(v));
   if (r.budgetMin && r.budgetMax) return `${fmt(r.budgetMin)}–${fmt(r.budgetMax)}`;
   if (r.budgetMax) return `≤ ${fmt(r.budgetMax)}`;
   if (r.budgetMin) return `≥ ${fmt(r.budgetMin)}`;
@@ -59,6 +56,8 @@ export function SourcingDashboard({
   initialRequests: SourcingRequest[];
   initialTotal: number;
 }) {
+  const t = useTranslations("sourcing");
+  const f = useFormat();
   const [requests, setRequests] = useState<SourcingRequest[]>(initialRequests);
   const [total, setTotal] = useState(initialTotal);
   const [showForm, setShowForm] = useState(false);
@@ -95,7 +94,7 @@ export function SourcingDashboard({
       const result = await api.get<ProductSearchResponse>(`/sourcing-requests/${request.id}/matches`);
       setMatchResults(result.results);
     } catch (err) {
-      setMatchesError(err instanceof Error ? err.message : "Impossible de charger les candidats");
+      setMatchesError(err instanceof Error ? err.message : t("matchesFailed"));
     } finally {
       setMatchesLoading(false);
     }
@@ -111,7 +110,7 @@ export function SourcingDashboard({
       setExpandedId(null);
       await refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible de choisir ce produit");
+      setError(err instanceof Error ? err.message : t("selectFailed"));
     } finally {
       setSelectingKey(null);
     }
@@ -147,12 +146,12 @@ export function SourcingDashboard({
       <div className="flex flex-wrap justify-end gap-2">
         {r.status === "MATCHED" && r.selectedProduct && (
           <Button size="s" onClick={() => setConverting(r)}>
-            Créer la commande
+            {t("createOrder")}
           </Button>
         )}
         {(r.status === "OPEN" || r.status === "MATCHED") && (
           <Button size="s" variant="secondary" onClick={() => toggleMatches(r)}>
-            {expandedId === r.id ? "Masquer" : "Voir les candidats"}
+            {expandedId === r.id ? t("hide") : t("seeCandidates")}
           </Button>
         )}
         {r.order && (
@@ -176,15 +175,15 @@ export function SourcingDashboard({
               className="h-10 w-10 rounded-[var(--radius-s)] object-cover"
             />
             <p className="line-clamp-1 text-sm text-ink">
-              <span className="text-ink-muted">Candidat choisi · </span>
+              <span className="text-ink-muted">{t("chosen")}</span>
               {r.selectedProduct.title}
             </p>
           </div>
         )}
-        {matchesLoading && <p className="text-sm text-ink-muted">Recherche de candidats...</p>}
+        {matchesLoading && <p className="text-sm text-ink-muted">{t("searching")}</p>}
         {matchesError && <p className="text-sm text-critical">{matchesError}</p>}
         {!matchesLoading && !matchesError && matchResults.length === 0 && (
-          <p className="text-sm text-ink-muted">Aucun candidat trouvé dans le catalogue pour cette demande.</p>
+          <p className="text-sm text-ink-muted">{t("noCandidates")}</p>
         )}
         {matchResults.length > 0 && (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -197,10 +196,10 @@ export function SourcingDashboard({
                     <img src={item.imageUrl || productPlaceholder(key)} alt="" className="h-full w-full object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col p-2.5">
-                    <p className="line-clamp-2 flex-1 text-xs font-medium text-ink">{item.title ?? "Produit sans titre"}</p>
+                    <p className="line-clamp-2 flex-1 text-xs font-medium text-ink">{item.title ?? t("untitled")}</p>
                     {item.price != null && (
                       <p className="mt-1.5 text-sm font-semibold tabular-nums text-ink">
-                        {item.price.toLocaleString("fr-FR")} <span className="text-xs font-normal text-ink-muted">{item.currency}</span>
+                        {f.number(item.price)} <span className="text-xs font-normal text-ink-muted">{item.currency}</span>
                       </p>
                     )}
                     <Button
@@ -212,7 +211,7 @@ export function SourcingDashboard({
                       disabled={!item.productId || selectingKey === key}
                       loading={selectingKey === key}
                     >
-                      Choisir ce produit
+                      {t("choose")}
                     </Button>
                   </div>
                 </div>
@@ -228,14 +227,14 @@ export function SourcingDashboard({
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="rb-headline text-[32px]">Sourcing</h1>
+          <h1 className="rb-headline text-[32px]">{t("title")}</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Ce que les clients recherchent, avant même d&apos;avoir trouvé un lien produit précis.
+            {t("subtitle")}
           </p>
         </div>
         {!showForm && (
           <Button startIcon={<DsPlusIcon width={18} height={18} />} onClick={() => setShowForm(true)}>
-            Nouvelle demande
+            {t("new")}
           </Button>
         )}
       </div>
@@ -243,10 +242,10 @@ export function SourcingDashboard({
       <KpiStrip
         className="mt-6"
         items={[
-          { key: "total", value: total, label: "Demandes" },
-          { key: "open", value: counts.open, label: "Ouvertes" },
-          { key: "matched", value: counts.matched, label: "Candidat choisi" },
-          { key: "converted", value: requests.filter((r) => r.status === "CONVERTED").length, label: "Transformées" },
+          { key: "total", value: total, label: t("kpi.total") },
+          { key: "open", value: counts.open, label: t("kpi.open") },
+          { key: "matched", value: counts.matched, label: t("kpi.matched") },
+          { key: "converted", value: requests.filter((r) => r.status === "CONVERTED").length, label: t("kpi.converted") },
         ]}
       />
 
@@ -277,32 +276,32 @@ export function SourcingDashboard({
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0">
           <SegmentedTabs
-            label="Statut"
+            label={t("statusLabel")}
             className="mb-3"
             value={segment}
             onChange={setSegment}
-            tabs={(Object.keys(SEGMENT_LABELS) as Segment[]).map((id) => ({ id, label: SEGMENT_LABELS[id], count: counts[id] }))}
+            tabs={SEGMENTS.map((id) => ({ id, label: t(`segments.${id}`), count: counts[id] }))}
           />
 
           {visible.length === 0 ? (
             <p className="text-sm text-ink-muted">
-              {requests.length === 0 ? "Aucune demande pour le moment." : `Aucune demande « ${SEGMENT_LABELS[segment].toLowerCase()} ».`}
+              {requests.length === 0 ? t("empty") : t("emptySegment", { segment: t(`segments.${segment}`).toLowerCase() })}
             </p>
           ) : (
             <>
               {/* sm and up: dense table, a row opens its candidates in place */}
               <div className="hidden w-full overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised sm:block">
                 <table className="w-full min-w-[680px] border-separate border-spacing-0 text-sm leading-5">
-                  <caption className="sr-only">Demandes de sourcing — {SEGMENT_LABELS[segment]}</caption>
+                  <caption className="sr-only">{t("caption", { segment: t(`segments.${segment}`) })}</caption>
                   <thead>
                     <tr>
-                      <th scope="col" className={TH}>Client</th>
-                      <th scope="col" className={TH}>Demande</th>
-                      <th scope="col" className={TH}>Destination</th>
-                      <th scope="col" className={`${TH} text-right`}>Qté · budget</th>
-                      <th scope="col" className={TH}>Statut</th>
+                      <th scope="col" className={TH}>{t("th.customer")}</th>
+                      <th scope="col" className={TH}>{t("th.request")}</th>
+                      <th scope="col" className={TH}>{t("th.destination")}</th>
+                      <th scope="col" className={`${TH} text-right`}>{t("th.qtyBudget")}</th>
+                      <th scope="col" className={TH}>{t("th.status")}</th>
                       <th scope="col" className={`${TH} text-right`}>
-                        <span className="sr-only">Actions</span>
+                        <span className="sr-only">{t("th.actions")}</span>
                       </th>
                     </tr>
                   </thead>
@@ -329,8 +328,8 @@ export function SourcingDashboard({
                               <span className="block text-[13px] text-ink-muted">{r.destinationCountry}</span>
                             </td>
                             <td className={`${td} whitespace-nowrap text-right tabular-nums`}>
-                              {r.quantity.toLocaleString("fr-FR")}
-                              <span className="block text-[13px] text-ink-muted">{budget(r) ?? "—"}</span>
+                              {f.number(r.quantity)}
+                              <span className="block text-[13px] text-ink-muted">{budget(r, f) ?? "—"}</span>
                             </td>
                             <td className={td}>
                               <SourcingRequestStatusTag status={r.status} />
@@ -352,7 +351,7 @@ export function SourcingDashboard({
               </div>
 
               {/* Below sm: a card list */}
-              <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label={`Demandes de sourcing — ${SEGMENT_LABELS[segment]}`}>
+              <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label={t("caption", { segment: t(`segments.${segment}`) })}>
                 {visible.map((r) => (
                   <li
                     key={r.id}
@@ -367,8 +366,8 @@ export function SourcingDashboard({
                     </div>
                     <p className="mt-1 line-clamp-3 text-sm text-ink">{r.description}</p>
                     <p className="mt-1 text-[13px] text-ink-muted">
-                      {r.destinationCity}, {r.destinationCountry} · qté {r.quantity}
-                      {budget(r) ? ` · ${budget(r)}` : ""}
+                      {r.destinationCity}, {r.destinationCountry} · {t("qty", { quantity: f.number(r.quantity) })}
+                      {budget(r, f) ? ` · ${budget(r, f)}` : ""}
                     </p>
                     <div className="mt-3">{actions(r)}</div>
                     {expandedId === r.id && <div className="mt-4 border-t border-line pt-4">{detail(r)}</div>}
@@ -379,23 +378,23 @@ export function SourcingDashboard({
           )}
         </div>
 
-        <aside className="grid content-start gap-3" aria-label="Sans candidat">
+        <aside className="grid content-start gap-3" aria-label={t("noCandidate.title")}>
           <div className="flex items-center justify-between">
-            <h2 className="rb-title">Sans candidat</h2>
+            <h2 className="rb-title">{t("noCandidate.title")}</h2>
             {needsDecision.length > 0 && <Badge variant="attn">{needsDecision.length}</Badge>}
           </div>
           {needsDecision.length === 0 ? (
-            <p className="text-sm text-ink-muted">Aucune demande sans candidat pour le moment.</p>
+            <p className="text-sm text-ink-muted">{t("noCandidate.none")}</p>
           ) : (
             needsDecision.map((r) => (
               <ExceptionCard
                 key={r.id}
                 severity="held"
                 title={r.customerName}
-                meta={`${r.destinationCity} · qté ${r.quantity}`}
+                meta={`${r.destinationCity} · ${t("qty", { quantity: f.number(r.quantity) })}`}
                 actions={
                   <Button size="s" variant="secondary" onClick={() => openFromSide(r)}>
-                    Voir les candidats
+                    {t("seeCandidates")}
                   </Button>
                 }
               >

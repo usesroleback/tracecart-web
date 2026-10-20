@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { api } from "@/lib/apiClient";
 import { useSession } from "@/context/SessionContext";
@@ -14,16 +15,13 @@ import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
 import { OrderStatusTag } from "@/components/ui/status/Status";
 import { DsChevronRightIcon, DsExternalIcon } from "@/icons";
-import { Order, OrderHistoryEntry, STATUS_LABELS, VOLUME_TIER_LABELS } from "@/lib/types";
+import { Order, OrderHistoryEntry } from "@/lib/types";
+import { Format, useFormat } from "@/lib/format";
 
-function dayTime(iso: string): string {
-  return new Date(iso).toLocaleString("fr-FR", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
-}
-
-function money(value: string | number | null | undefined, currency: string): string | null {
+function money(f: Format, value: string | number | null | undefined, currency: string): string | null {
   if (value == null || value === "") return null;
   const n = typeof value === "number" ? value : Number(value);
-  return Number.isFinite(n) ? `${n.toLocaleString("fr-FR")} ${currency}` : null;
+  return Number.isFinite(n) ? f.money(n, currency) : null;
 }
 
 /** dt/dd pairs as in TraceCartShipment's cargo and customs cards. */
@@ -51,6 +49,11 @@ function Facts({ items }: { items: [string, ReactNode, { mono?: boolean }?][] })
  */
 export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder: Order; initialHistory: OrderHistoryEntry[] }) {
   const user = useSession();
+  const t = useTranslations("orders");
+  const td = (key: string, values?: Record<string, string | number>) => t(`detail.${key}`, values);
+  const tl = useTranslations("labels");
+  const f = useFormat();
+  const dayTime = f.dayTime;
   const isAdmin = user.role === "SUPER_ADMIN";
   const [order, setOrder] = useState(initialOrder);
   const [history, setHistory] = useState(initialHistory);
@@ -80,12 +83,12 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
   const stopped = order.status === "DECLINED" || order.status === "UNAVAILABLE";
   const stopEntry = stopped ? [...history].reverse().find((h) => h.toStatus === order.status) : undefined;
   const backHref = isAdmin ? "/orders" : "/deliveries";
-  const backLabel = isAdmin ? "Commandes" : "Livraisons";
-  const total = money(order.customerQuoteTotal, currency);
+  const backLabel = td(isAdmin ? "back.admin" : "back.carrier");
+  const total = money(f, order.customerQuoteTotal, currency);
 
   return (
     <div>
-      <nav aria-label="Fil d'Ariane" className="flex items-center gap-1.5 text-sm text-ink-muted">
+      <nav aria-label={td("breadcrumb")} className="flex items-center gap-1.5 text-sm text-ink-muted">
         <Link href={backHref} className="rb-link text-ink-muted">
           {backLabel}
         </Link>
@@ -105,42 +108,42 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
             <OrderStatusTag status={order.status} />
-            <span className="text-sm text-ink-muted">Mis à jour {dayTime(order.updatedAt)}</span>
+            <span className="text-sm text-ink-muted">{td("updated", { when: dayTime(order.updatedAt) })}</span>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {order.productUrl && (
             <Button variant="ghost" href={order.productUrl} endIcon={<DsExternalIcon width={18} height={18} />}>
-              Fiche produit
+              {td("productPage")}
             </Button>
           )}
           {isAdmin && order.quoteToken && (
             <Button variant="secondary" onClick={copyCustomerLink}>
-              {copied ? "Lien copié" : "Copier le lien client"}
+              {copied ? td("copied") : td("copyLink")}
             </Button>
           )}
         </div>
       </div>
 
       <Card route padding={32} className="mt-6">
-        <RouteTimeline animate steps={orderRouteSteps(order, history)} label={`Trajet de ${order.reference}`} />
+        <RouteTimeline animate steps={orderRouteSteps(order, history, t, f)} label={t("route.labelFor", { reference: order.reference })} />
       </Card>
 
       <div className="mt-4 grid gap-3" aria-live="polite">
         {stopped && (
-          <Alert tone="critical" title={`Commande ${order.status === "DECLINED" ? "refusée" : "indisponible"}.`}>
-            {stopEntry?.note ?? "Aucune autre étape n'est prévue pour cette commande."}
-            {stopEntry && ` — ${stopEntry.changedByUser.name}, ${dayTime(stopEntry.createdAt)}.`}
+          <Alert tone="critical" title={td(order.status === "DECLINED" ? "declined" : "unavailable")}>
+            {stopEntry?.note ?? td("noNextStep")}
+            {stopEntry && td("stoppedBy", { name: stopEntry.changedByUser.name, when: dayTime(stopEntry.createdAt) })}
           </Alert>
         )}
         {isAdmin && order.status === "QUOTE_SENT" && order.quoteAcceptedAt && (
-          <Alert tone="positive" title="Le client a accepté le devis.">
-            Le {dayTime(order.quoteAcceptedAt)}. Enregistrez le paiement dès qu&apos;il est reçu.
+          <Alert tone="positive" title={td("accepted.title")}>
+            {td("accepted.body", { when: dayTime(order.quoteAcceptedAt) })}
           </Alert>
         )}
         {isAdmin && order.status === "QUOTE_SENT" && !order.quoteAcceptedAt && (
-          <Alert tone="info" title="Devis envoyé au client.">
-            En attente de sa réponse. Vous pouvez lui renvoyer le lien.
+          <Alert tone="info" title={td("sent.title")}>
+            {td("sent.body")}
           </Alert>
         )}
       </div>
@@ -149,36 +152,36 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
         <div className="grid min-w-0 gap-4">
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             <Card padding={24}>
-              <h2 className="rb-title">Marchandise</h2>
+              <h2 className="rb-title">{td("cargo")}</h2>
               <Facts
                 items={[
-                  ["Produit", order.productName],
-                  ["Quantité", order.quantity.toLocaleString("fr-FR")],
-                  ["Volume", VOLUME_TIER_LABELS[order.volumeTier]],
-                  ["Source", order.intakeType === "CUSTOMER_OWNED" ? "Transport seul" : order.provider?.name ?? "Boutique inconnue"],
-                  ["Notes", order.notes],
+                  [td("product"), order.productName],
+                  [td("quantity"), f.number(order.quantity)],
+                  [td("volume"), tl(`volumeTier.${order.volumeTier}`)],
+                  [td("source"), order.intakeType === "CUSTOMER_OWNED" ? t("source.customerOwned") : order.provider?.name ?? t("source.unknownStore")],
+                  [td("notes"), order.notes],
                 ]}
               />
             </Card>
             <Card padding={24}>
-              <h2 className="rb-title">Client</h2>
+              <h2 className="rb-title">{td("customer")}</h2>
               <Facts
                 items={[
-                  ["Nom", order.customerName],
-                  ["Téléphone", order.customerPhone, { mono: true }],
-                  ["E-mail", order.customerEmail],
-                  ["Destination", `${order.destinationCity}, ${order.destinationCountry}`],
+                  [td("name"), order.customerName],
+                  [td("phone"), order.customerPhone, { mono: true }],
+                  [td("email"), order.customerEmail],
+                  [td("destination"), `${order.destinationCity}, ${order.destinationCountry}`],
                 ]}
               />
             </Card>
             <Card padding={24} className="md:col-span-2 xl:col-span-1">
-              <h2 className="rb-title">Hub et transporteur</h2>
+              <h2 className="rb-title">{td("hubCarrier")}</h2>
               <Facts
                 items={[
-                  ["Hub", `${order.hub.name} · ${order.hub.city}, ${order.hub.country}`],
-                  ["Transporteur", order.assignedPartner?.name ?? "Non assigné"],
-                  ["Téléphone", order.assignedPartner?.phone, { mono: true }],
-                  ["Créée par", isAdmin ? order.createdByUser?.name : undefined],
+                  [td("hub"), `${order.hub.name} · ${order.hub.city}, ${order.hub.country}`],
+                  [td("carrier"), order.assignedPartner?.name ?? tl("unassigned")],
+                  [td("phone"), order.assignedPartner?.phone, { mono: true }],
+                  [td("createdBy"), isAdmin ? order.createdByUser?.name : undefined],
                 ]}
               />
             </Card>
@@ -186,24 +189,24 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
 
           <Card padding={24}>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="rb-title">Paiement</h2>
+              <h2 className="rb-title">{td("payment")}</h2>
               {isAdmin &&
                 (order.paymentStatus === "PAID" ? (
-                  <Badge variant="positive">Payé{order.paidAt ? ` · ${dayTime(order.paidAt)}` : ""}</Badge>
+                  <Badge variant="positive">{td("paid")}{order.paidAt ? ` · ${dayTime(order.paidAt)}` : ""}</Badge>
                 ) : (
-                  <Badge variant="outline">Non payé</Badge>
+                  <Badge variant="outline">{td("unpaid")}</Badge>
                 ))}
             </div>
             <table className="mt-3 w-full border-separate border-spacing-0 text-sm leading-5">
-              <caption className="sr-only">Montants de la commande {order.reference}</caption>
+              <caption className="sr-only">{td("amountsCaption", { reference: order.reference })}</caption>
               <tbody>
                 {(isAdmin
                   ? [
-                      ["Produit", money(order.productCost, currency)],
-                      ["Logistique", money(order.logisticsCost, order.logisticsQuote?.currency ?? currency)],
-                      ["Frais TraceCart", money(order.platformFee, currency)],
+                      [td("product"), money(f, order.productCost, currency)],
+                      [td("logistics"), money(f, order.logisticsCost, order.logisticsQuote?.currency ?? currency)],
+                      [td("fee"), money(f, order.platformFee, currency)],
                     ]
-                  : [["Votre devis logistique", money(order.logisticsCost, order.logisticsQuote?.currency ?? currency)]]
+                  : [[td("yourLogisticsQuote"), money(f, order.logisticsCost, order.logisticsQuote?.currency ?? currency)]]
                 ).map(([label, value]) => (
                   <tr key={label}>
                     <th scope="row" className="border-b border-line py-2 pr-3 text-left font-normal text-ink-muted">
@@ -215,9 +218,9 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
                 {isAdmin && (
                   <tr>
                     <th scope="row" className="py-2.5 pr-3 text-left font-semibold">
-                      Total client
+                      {td("customerTotal")}
                     </th>
-                    <td className="py-2.5 text-right text-base font-semibold tabular-nums">{total ?? "Pas encore coté"}</td>
+                    <td className="py-2.5 text-right text-base font-semibold tabular-nums">{total ?? td("notQuoted")}</td>
                   </tr>
                 )}
               </tbody>
@@ -226,15 +229,15 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card padding={24}>
-              <h2 className="rb-title">Historique</h2>
+              <h2 className="rb-title">{td("history")}</h2>
               {history.length === 0 ? (
-                <p className="mt-3 text-sm text-ink-muted">Aucun changement de statut enregistré.</p>
+                <p className="mt-3 text-sm text-ink-muted">{td("noHistory")}</p>
               ) : (
                 <ol className="mt-3 grid">
                   {[...history].reverse().map((h) => (
                     <li key={h.id} className="border-b border-line py-2.5 last:border-b-0">
                       <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                        <span className="font-semibold text-ink">{STATUS_LABELS[h.toStatus]}</span>
+                        <span className="font-semibold text-ink">{tl(`status.${h.toStatus}`)}</span>
                         <span className="rb-mono text-xs text-ink-muted">{dayTime(h.createdAt)}</span>
                       </div>
                       <p className="text-[13px] text-ink-muted">
@@ -247,7 +250,7 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
               )}
             </Card>
             <Card padding={24}>
-              <h2 className="rb-title">Positions</h2>
+              <h2 className="rb-title">{td("positions")}</h2>
               <div className="mt-3">
                 <LocationTimeline updates={order.locationUpdates} />
               </div>
@@ -258,7 +261,7 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
         {/* Actions first on small screens (they are why the page is opened), beside the facts from lg. */}
         <div className="order-first grid gap-4 lg:sticky lg:top-24 lg:order-none">
           <Card padding={24}>
-            <h2 className="rb-title">Prochaine étape</h2>
+            <h2 className="rb-title">{td("nextStep")}</h2>
             <div className="mt-4">
               {isAdmin ? (
                 <OrderAdminPanel order={order} onChanged={refresh} showLocations={false} />
@@ -268,9 +271,9 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
             </div>
           </Card>
           <Card variant="sunken" padding={24}>
-            <h2 className="rb-title">Photos</h2>
+            <h2 className="rb-title">{td("photos")}</h2>
             {order.photos.length === 0 ? (
-              <p className="mt-2 text-sm text-ink-muted">Pas encore de photos de la marchandise.</p>
+              <p className="mt-2 text-sm text-ink-muted">{td("noPhotos")}</p>
             ) : (
               <ul className="mt-3 grid grid-cols-3 gap-2">
                 {order.photos.map((p) => (
@@ -284,7 +287,7 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={`/api/tracecart${p.url}`}
-                        alt={p.originalName ?? `Photo de ${order.productName}`}
+                        alt={p.originalName ?? td("photoOf", { product: order.productName })}
                         className="aspect-square w-full object-cover"
                       />
                     </a>

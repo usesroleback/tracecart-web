@@ -1,4 +1,5 @@
-import { OrderStatus, ReservationStatus, SourcingRequestStatus, STATUS_LABELS } from "@/lib/types";
+import { useTranslations } from "next-intl";
+import { OrderStatus, ReservationStatus, SourcingRequestStatus } from "@/lib/types";
 import { sideColor } from "@/components/tracecart/CorridorTracker";
 import { DsCheckIcon, DsCloseIcon } from "@/icons";
 
@@ -47,15 +48,9 @@ function orderStatusState(status: OrderStatus): StatusState {
 }
 
 export function OrderStatusTag({ status, meta }: { status: OrderStatus; meta?: string }) {
-  return <Status state={orderStatusState(status)} label={STATUS_LABELS[status]} meta={meta} />;
+  const t = useTranslations("labels.status");
+  return <Status state={orderStatusState(status)} label={t(status)} meta={meta} />;
 }
-
-const SOURCING_REQUEST_LABELS: Record<SourcingRequestStatus, string> = {
-  OPEN: "Ouverte",
-  MATCHED: "Candidat choisi",
-  CONVERTED: "Transformée",
-  CLOSED: "Clôturée",
-};
 
 const SOURCING_REQUEST_STATES: Record<SourcingRequestStatus, StatusState> = {
   OPEN: "planned",
@@ -65,13 +60,9 @@ const SOURCING_REQUEST_STATES: Record<SourcingRequestStatus, StatusState> = {
 };
 
 export function SourcingRequestStatusTag({ status, meta }: { status: SourcingRequestStatus; meta?: string }) {
-  return <Status state={SOURCING_REQUEST_STATES[status]} label={SOURCING_REQUEST_LABELS[status]} meta={meta} />;
+  const t = useTranslations("labels.sourcingStatus");
+  return <Status state={SOURCING_REQUEST_STATES[status]} label={t(status)} meta={meta} />;
 }
-
-const RESERVATION_LABELS: Record<ReservationStatus, string> = {
-  RESERVED: "Réservé",
-  CONVERTED: "Transformé",
-};
 
 const RESERVATION_STATES: Record<ReservationStatus, StatusState> = {
   RESERVED: "planned",
@@ -79,5 +70,6 @@ const RESERVATION_STATES: Record<ReservationStatus, StatusState> = {
 };
 
 export function ReservationStatusTag({ status, meta }: { status: ReservationStatus; meta?: string }) {
-  return <Status state={RESERVATION_STATES[status]} label={RESERVATION_LABELS[status]} meta={meta} />;
+  const t = useTranslations("labels.reservationStatus");
+  return <Status state={RESERVATION_STATES[status]} label={t(status)} meta={meta} />;
 }

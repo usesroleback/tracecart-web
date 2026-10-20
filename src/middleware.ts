@@ -38,7 +38,10 @@ const withClerk = clerkMiddleware(async (auth, req) => {
   if (bare !== "/login") {
     const { userId } = await auth();
     if (!userId) {
-      const locale = pathname.match(LOCALE_PATTERN)?.[1] ?? routing.defaultLocale;
+      // The path's locale, else the one last chosen (next-intl's cookie), else the default.
+      const cookie = req.cookies.get("NEXT_LOCALE")?.value;
+      const chosen = routing.locales.find((l) => l === cookie);
+      const locale = pathname.match(LOCALE_PATTERN)?.[1] ?? chosen ?? routing.defaultLocale;
       return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
     }
   }

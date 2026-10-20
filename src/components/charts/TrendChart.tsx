@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import type { ApexOptions } from "apexcharts";
 import { useApexTheme } from "./ChartTheme";
@@ -18,17 +19,18 @@ export function TrendChart({
   height?: number;
 }) {
   const theme = useApexTheme();
+  const t = useTranslations("dashboard.trend");
 
   const series = useMemo(() => {
     const s = [
-      { name: "Créées", data: points.map((p) => p.created) },
-      { name: "Livrées", data: points.map((p) => p.delivered) },
+      { name: t("created"), data: points.map((p) => p.created) },
+      { name: t("delivered"), data: points.map((p) => p.delivered) },
     ];
     if (previousPoints && previousPoints.length > 0) {
-      s.push({ name: "Créées (période précédente)", data: previousPoints.map((p) => p.created) });
+      s.push({ name: t("createdBefore"), data: previousPoints.map((p) => p.created) });
     }
     return s;
-  }, [points, previousPoints]);
+  }, [points, previousPoints, t]);
 
   const options: ApexOptions = useMemo(
     () => ({

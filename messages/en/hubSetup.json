@@ -1,1 +1,24 @@
-{}
+{
+  "saveFailed": "Couldn't save the hub",
+  "createFailed": "Couldn't create the hub",
+  "detecting": "Finding your location...",
+  "titleMine": "My hub",
+  "titleSetup": "Set up your hub",
+  "intro": "The hub is where the operator receives goods — where every order starts. All your orders will belong to this hub.",
+  "detected": "Location detected: {city}, {country}",
+  "nearest": "Nearest",
+  "createNew": "+ Create a new hub",
+  "confirm": "Confirm this hub",
+  "field": {
+    "name": "Name",
+    "currency": "Currency",
+    "city": "City",
+    "country": "Country",
+    "countryCode": "Country code (2 letters)",
+    "timezone": "Time zone",
+    "latitude": "Latitude",
+    "longitude": "Longitude"
+  },
+  "cancel": "Cancel",
+  "createConfirm": "Create and confirm"
+}

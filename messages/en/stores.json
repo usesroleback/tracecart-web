@@ -1,1 +1,52 @@
-{}
+{
+  "title": "Stores",
+  "subtitle": "Manage product detection and search for each store.",
+  "rankingFailed": "Couldn't load the ranking",
+  "type": {
+    "local": "Local marketplace",
+    "intl": "International"
+  },
+  "edit": "Edit",
+  "disable": "Disable",
+  "enable": "Enable",
+  "active": "Active",
+  "disabled": "Disabled",
+  "close": "Close",
+  "new": "New store",
+  "kpi": {
+    "active": "Active",
+    "of": "of {total}",
+    "disabled": "Disabled",
+    "local": "Local marketplaces",
+    "intl": "International"
+  },
+  "empty": "No stores set up.",
+  "caption": "Stores",
+  "th": {
+    "store": "Store",
+    "type": "Type",
+    "domains": "Domains",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "ranking": {
+    "title": "Orders by store",
+    "empty": "No orders in the last 90 days."
+  },
+  "form": {
+    "failed": "Couldn't save the store",
+    "editTitle": "Edit {name}",
+    "name": "Name",
+    "slug": "Slug",
+    "domains": "Domains (comma-separated)",
+    "type": "Type",
+    "currency": "Default currency",
+    "logo": "Logo (URL or local path, e.g. /images/brand/jumia.svg)",
+    "logoPlaceholder": "/images/brand/jumia.svg or https://...",
+    "notes": "Internal notes",
+    "active": "Store active",
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create the store"
+  }
+}

@@ -1,1 +1,57 @@
-{}
+{
+  "title": "Sourcing",
+  "subtitle": "What customers are looking for, before they've found an exact product link.",
+  "new": "New request",
+  "segments": {
+    "active": "In progress",
+    "open": "Open",
+    "matched": "Candidate chosen",
+    "done": "Done",
+    "all": "All"
+  },
+  "kpi": {
+    "total": "Requests",
+    "open": "Open",
+    "matched": "Candidate chosen",
+    "converted": "Converted"
+  },
+  "statusLabel": "Status",
+  "matchesFailed": "Couldn't load the candidates",
+  "selectFailed": "Couldn't choose this product",
+  "createOrder": "Create the order",
+  "hide": "Hide",
+  "seeCandidates": "See candidates",
+  "chosen": "Candidate chosen · ",
+  "searching": "Looking for candidates...",
+  "noCandidates": "No candidates in the catalogue for this request.",
+  "untitled": "Untitled product",
+  "choose": "Choose this product",
+  "empty": "No requests yet.",
+  "emptySegment": "No requests in “{segment}”.",
+  "caption": "Sourcing requests — {segment}",
+  "th": {
+    "customer": "Customer",
+    "request": "Request",
+    "destination": "Destination",
+    "qtyBudget": "Qty · budget",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "qty": "qty {quantity}",
+  "noCandidate": {
+    "title": "No candidate yet",
+    "none": "Every request has a candidate."
+  },
+  "form": {
+    "title": "New sourcing request",
+    "intro": "Describe what the customer is looking for — no product link needed. We'll look for candidates in the catalogue once the request exists.",
+    "what": "What the customer is looking for",
+    "whatPlaceholder": "E.g. Samsung Galaxy phone, cheap, screen in good condition",
+    "category": "Category (optional)",
+    "budgetMin": "Minimum budget (optional)",
+    "budgetMax": "Maximum budget (optional)",
+    "failed": "Couldn't create the request",
+    "creating": "Creating...",
+    "create": "Create the request"
+  }
+}

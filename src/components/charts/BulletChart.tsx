@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useApexTheme } from "./ChartTheme";
 
 /**
@@ -20,6 +21,7 @@ export function BulletChart({
   format?: (v: number) => string;
 }) {
   const theme = useApexTheme();
+  const t = useTranslations("dashboard.bullet");
   const max = Math.max(value, target) * 1.25 || 1;
   const valuePct = Math.min(100, (value / max) * 100);
   const targetPct = Math.min(100, (target / max) * 100);
@@ -30,7 +32,7 @@ export function BulletChart({
       <div className="mb-1.5 flex items-center justify-between text-sm">
         <span className="font-medium text-ink">{label}</span>
         <span className={`text-xs font-medium ${onTarget ? "text-positive" : "text-attn"}`}>
-          {format(value)} <span className="text-ink-muted">/ objectif {format(target)}</span>
+          {format(value)} <span className="text-ink-muted">{t("ofTarget", { target: format(target) })}</span>
         </span>
       </div>
       <div className="relative h-3 w-full overflow-visible rounded-full bg-surface-sunken">
@@ -41,7 +43,7 @@ export function BulletChart({
         <div
           className="absolute top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-ink"
           style={{ left: `${targetPct}%` }}
-          title={`Objectif : ${format(target)}`}
+          title={t("target", { target: format(target) })}
         />
       </div>
     </div>

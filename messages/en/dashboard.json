@@ -1,1 +1,72 @@
-{}
+{
+  "panels": {
+    "loading": "Loading",
+    "noData": "No data yet.",
+    "noOrdersInRange": "No orders in this period."
+  },
+  "kpi": {
+    "new": "New"
+  },
+  "breakdown": {
+    "title": "Breakdown",
+    "provider": "By store",
+    "destination": "By destination",
+    "failed": "Couldn't load the breakdown",
+    "mostUsed": "Most used",
+    "total": "Total"
+  },
+  "trend": {
+    "title": "Orders created vs delivered",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "failed": "Couldn't load the trend",
+    "created": "Created",
+    "delivered": "Delivered",
+    "createdBefore": "Created (previous period)"
+  },
+  "queue": {
+    "title": "Time at each stage",
+    "subtitle": "Open orders, since they reached the stage.",
+    "empty": "No open orders.",
+    "failed": "Couldn't load the waiting times",
+    "slower": "Slower than usual",
+    "average": "{hours} on average",
+    "p90": "9 in 10 under {hours}"
+  },
+  "statsFailed": "Couldn't load the statistics.",
+  "noHub": "No hub set up",
+  "admin": {
+    "nothingToHandle": "nothing to handle right now.",
+    "toHandle": "{count, plural, one {# order to handle.} other {# orders to handle.}}",
+    "setupHub": "Set up your hub to get started",
+    "setupHubCta": "Set up my hub"
+  },
+  "quick": {
+    "newIntent": "New intent",
+    "newIntentHint": "Create a customer order",
+    "products": "Search products",
+    "productsHint": "Find and reserve",
+    "stores": "Stores",
+    "storesHint": "Manage stores",
+    "hub": "My hub",
+    "hubHint": "View or change hub"
+  },
+  "attention": {
+    "title": "Needs your attention",
+    "empty": "Nothing needs your attention right now."
+  },
+  "recent": {
+    "title": "Recent orders",
+    "empty": "No orders yet."
+  },
+  "seeAll": "See all",
+  "carrier": {
+    "recent": "Recent parcels",
+    "allDeliveries": "All deliveries"
+  },
+  "bullet": {
+    "ofTarget": "/ target {target}",
+    "target": "Target: {target}"
+  }
+}

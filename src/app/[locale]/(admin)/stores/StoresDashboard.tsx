@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import { StoreForm } from "@/components/tracecart/StoreForm";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -24,6 +25,8 @@ const TD = "border-b border-line px-3 py-2 align-middle";
  * store beside it. A disabled store says so in its status instead of fading.
  */
 export function StoresDashboard({ initialStores }: { initialStores: Provider[] }) {
+  const t = useTranslations("stores");
+  const tl = useTranslations("labels");
   const [stores, setStores] = useState<Provider[]>(initialStores);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Provider | null>(null);
@@ -39,7 +42,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
         if (!cancelled) setRanking(data);
       })
       .catch((err) => {
-        if (!cancelled) setRankingError(err instanceof Error ? err.message : "Impossible de charger le classement");
+        if (!cancelled) setRankingError(err instanceof Error ? err.message : t("rankingFailed"));
       })
       .finally(() => {
         if (!cancelled) setRankingLoading(false);
@@ -47,7 +50,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [t]);
 
   async function refresh() {
     const result = await api.get<Provider[]>("/providers?includeInactive=true");
@@ -72,7 +75,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
 
 
   const activeCount = stores.filter((s) => s.isActive).length;
-  const typeLabel = (s: Provider) => (s.type === "LOCAL_MARKETPLACE" ? "Marché local" : "International");
+  const typeLabel = (s: Provider) => (s.type === "LOCAL_MARKETPLACE" ? t("type.local") : t("type.intl"));
 
   function storeActions(store: Provider) {
     return (
@@ -85,10 +88,10 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
             setShowForm(true);
           }}
         >
-          Modifier
+          {t("edit")}
         </Button>
         <Button variant="ghost" size="s" onClick={() => toggleActive(store)} loading={busyId === store.id}>
-          {store.isActive ? "Désactiver" : "Activer"}
+          {store.isActive ? t("disable") : t("enable")}
         </Button>
       </div>
     );
@@ -108,14 +111,14 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
   }
 
   const statusBadge = (store: Provider) =>
-    store.isActive ? <Badge variant="positive">Active</Badge> : <Badge variant="outline">Désactivée</Badge>;
+    store.isActive ? <Badge variant="positive">{t("active")}</Badge> : <Badge variant="outline">{t("disabled")}</Badge>;
 
   return (
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="rb-headline text-[32px]">Boutiques</h1>
-          <p className="mt-1 text-sm text-ink-muted">Gérez la détection de produits et la recherche par boutique.</p>
+          <h1 className="rb-headline text-[32px]">{t("title")}</h1>
+          <p className="mt-1 text-sm text-ink-muted">{t("subtitle")}</p>
         </div>
         <Button
           startIcon={showForm && !editing ? undefined : <DsPlusIcon width={18} height={18} />}
@@ -124,17 +127,17 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
             setShowForm((v) => !v);
           }}
         >
-          {showForm && !editing ? "Fermer" : "Nouvelle boutique"}
+          {showForm && !editing ? t("close") : t("new")}
         </Button>
       </div>
 
       <KpiStrip
         className="mt-6"
         items={[
-          { key: "active", value: activeCount, label: "Actives", note: `sur ${stores.length}` },
-          { key: "inactive", value: stores.length - activeCount, label: "Désactivées" },
-          { key: "local", value: stores.filter((s) => s.type === "LOCAL_MARKETPLACE").length, label: "Marchés locaux" },
-          { key: "intl", value: stores.filter((s) => s.type !== "LOCAL_MARKETPLACE").length, label: "Internationales" },
+          { key: "active", value: activeCount, label: t("kpi.active"), note: t("kpi.of", { total: stores.length }) },
+          { key: "inactive", value: stores.length - activeCount, label: t("kpi.disabled") },
+          { key: "local", value: stores.filter((s) => s.type === "LOCAL_MARKETPLACE").length, label: t("kpi.local") },
+          { key: "intl", value: stores.filter((s) => s.type !== "LOCAL_MARKETPLACE").length, label: t("kpi.intl") },
         ]}
       />
 
@@ -154,20 +157,20 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
       <div className="mt-6 grid gap-6 2xl:grid-cols-[minmax(0,1fr)_400px]">
         <div className="min-w-0">
           {stores.length === 0 ? (
-            <p className="text-sm text-ink-muted">Aucune boutique configurée.</p>
+            <p className="text-sm text-ink-muted">{t("empty")}</p>
           ) : (
             <>
               <div className="hidden w-full overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised sm:block">
                 <table className="w-full min-w-[680px] border-separate border-spacing-0 text-sm leading-5">
-                  <caption className="sr-only">Boutiques</caption>
+                  <caption className="sr-only">{t("caption")}</caption>
                   <thead>
                     <tr>
-                      <th scope="col" className={TH}>Boutique</th>
-                      <th scope="col" className={TH}>Type</th>
-                      <th scope="col" className={TH}>Domaines</th>
-                      <th scope="col" className={TH}>Statut</th>
+                      <th scope="col" className={TH}>{t("th.store")}</th>
+                      <th scope="col" className={TH}>{t("th.type")}</th>
+                      <th scope="col" className={TH}>{t("th.domains")}</th>
+                      <th scope="col" className={TH}>{t("th.status")}</th>
                       <th scope="col" className={TH}>
-                        <span className="sr-only">Actions</span>
+                        <span className="sr-only">{t("th.actions")}</span>
                       </th>
                     </tr>
                   </thead>
@@ -201,7 +204,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
                 </table>
               </div>
 
-              <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label="Boutiques">
+              <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label={t("caption")}>
                 {stores.map((store) => (
                   <li key={store.id} className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-4">
                     <div className="flex items-center gap-3">
@@ -222,14 +225,14 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
         </div>
 
         <PanelShell
-          title="Commandes par boutique"
+          title={t("ranking.title")}
           loading={rankingLoading}
           error={rankingError}
           empty={!!ranking && ranking.slices.length === 0}
-          emptyLabel="Aucune commande sur les 90 derniers jours."
+          emptyLabel={t("ranking.empty")}
         >
           {ranking && (
-            <RankingBars items={ranking.slices.map((s) => ({ key: s.key, label: s.label, value: s.count, logoUrl: s.logoUrl }))} />
+            <RankingBars items={ranking.slices.map((s) => ({ key: s.key, label: s.key === "unassigned" ? tl("unassigned") : s.label, value: s.count, logoUrl: s.logoUrl }))} />
           )}
         </PanelShell>
       </div>

@@ -1,36 +1,36 @@
 "use client";
 
 import { Fragment, ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import { CorridorTracker } from "./CorridorTracker";
 import { OrderStatusTag } from "@/components/ui/status/Status";
 import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { DsArrowRightIcon } from "@/icons";
 import { Order } from "@/lib/types";
+import { Format, useFormat } from "@/lib/format";
 
 /** The customer total — admins only; the API omits it for partners. */
-export function customerTotal(order: Order): string | null {
+export function customerTotal(order: Order, f: Format): string | null {
   if (order.customerQuoteTotal == null) return null;
-  return `${order.customerQuoteTotal.toLocaleString("fr-FR")} ${order.currency ?? order.hub.currency}`;
+  return f.money(order.customerQuoteTotal, order.currency ?? order.hub.currency);
 }
 
 /** The partner's own accepted logistics quote — safe to show to them. */
-export function logisticsAmount(order: Order): string | null {
+export function logisticsAmount(order: Order, f: Format): string | null {
   const value = order.logisticsQuote?.amount ?? order.logisticsCost;
   if (value == null) return null;
-  return `${Number(value).toLocaleString("fr-FR")} ${order.logisticsQuote?.currency ?? order.hub.currency}`;
+  return f.money(value, order.logisticsQuote?.currency ?? order.hub.currency);
 }
 
-function formatDay(iso: string): string {
-  return new Date(iso).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" });
-}
-
-function sourceLabel(order: Order): string {
-  if (order.intakeType === "CUSTOMER_OWNED") return "Transport seul";
-  return order.provider?.name ?? "Boutique inconnue";
+/** Where the goods come from: the store, or "transport only" when the customer owns them. */
+export function sourceLabel(order: Order, t: (key: "source.customerOwned" | "source.unknownStore") => string): string {
+  if (order.intakeType === "CUSTOMER_OWNED") return t("source.customerOwned");
+  return order.provider?.name ?? t("source.unknownStore");
 }
 
 function OrderDetail({ order, children }: { order: Order; children?: ReactNode }) {
+  const t = useTranslations("orders");
   return (
     <div className="grid gap-4">
       <CorridorTracker status={order.status} hubCity={order.hub.city} destinationCity={order.destinationCity} />
@@ -39,7 +39,7 @@ function OrderDetail({ order, children }: { order: Order; children?: ReactNode }
           {order.customerName} · {order.customerPhone}
         </p>
         <Button href={`/orders/${order.id}`} size="s" variant="secondary" endIcon={<DsArrowRightIcon width={16} height={16} />}>
-          Ouvrir la fiche
+          {t("table.openOrder")}
         </Button>
       </div>
       {children}
@@ -65,16 +65,18 @@ export function OrdersTable({
   renderDetail,
   caption,
   amountOf = customerTotal,
-  amountLabel = "Montant",
+  amountLabel,
 }: {
   orders: Order[];
   openId: string | null;
   onToggle: (id: string) => void;
   renderDetail: (order: Order) => ReactNode;
   caption: string;
-  amountOf?: (order: Order) => string | null;
+  amountOf?: (order: Order, f: Format) => string | null;
   amountLabel?: string;
 }) {
+  const t = useTranslations("orders");
+  const f = useFormat();
   return (
     <>
       {/* sm and up: the table */}
@@ -83,13 +85,13 @@ export function OrdersTable({
           <caption className="sr-only">{caption}</caption>
           <thead>
             <tr>
-              <th scope="col" className={`${TH} left-0 z-10 lg:static`}>Commande</th>
-              <th scope="col" className={`${TH} min-w-[200px]`}>Produit / client</th>
-              <th scope="col" className={TH}>Trajet</th>
-              <th scope="col" className={TH}>Statut</th>
+              <th scope="col" className={`${TH} left-0 z-10 lg:static`}>{t("table.order")}</th>
+              <th scope="col" className={`${TH} min-w-[200px]`}>{t("table.productCustomer")}</th>
+              <th scope="col" className={TH}>{t("table.route")}</th>
+              <th scope="col" className={TH}>{t("table.status")}</th>
               <th scope="col" className={`${TH} text-right`}>
-                {amountLabel}
-                <span className="sr-only"> et date de mise à jour</span>
+                {amountLabel ?? t("table.amount")}
+                <span className="sr-only">{t("table.amountSuffix")}</span>
               </th>
             </tr>
           </thead>
@@ -98,7 +100,7 @@ export function OrdersTable({
               const open = order.id === openId;
               const last = i === orders.length - 1;
               const td = `${TD} ${last && !open ? "border-b-0" : ""}`;
-              const amount = amountOf(order);
+              const amount = amountOf(order, f);
               return (
                 <Fragment key={order.id}>
                   <tr
@@ -121,12 +123,12 @@ export function OrdersTable({
                       >
                         {order.reference}
                       </button>
-                      <span className="block max-w-[140px] truncate text-[13px] text-ink-muted">{sourceLabel(order)}</span>
+                      <span className="block max-w-[140px] truncate text-[13px] text-ink-muted">{sourceLabel(order, t)}</span>
                     </td>
                     <td className={td}>
                       <b className="font-semibold">
                         {order.productName}
-                        {order.quantity > 1 ? ` × ${order.quantity}` : ""}
+                        {order.quantity > 1 ? ` × ${f.number(order.quantity)}` : ""}
                       </b>
                       <span className="block text-[13px] text-ink-muted">{order.customerName}</span>
                     </td>
@@ -138,13 +140,13 @@ export function OrdersTable({
                       <OrderStatusTag status={order.status} />
                       {order.status === "QUOTE_SENT" && order.quoteAcceptedAt && (
                         <span className="mt-1 block">
-                          <Badge variant="positive">Accepté par le client</Badge>
+                          <Badge variant="positive">{t("table.acceptedByCustomer")}</Badge>
                         </span>
                       )}
                     </td>
                     <td className={`${td} whitespace-nowrap text-right tabular-nums`}>
                       <span className="font-semibold">{amount ?? <span className="font-normal text-ink-muted">—</span>}</span>
-                      <span className="block text-[13px] text-ink-muted">{formatDay(order.updatedAt)}</span>
+                      <span className="block text-[13px] text-ink-muted">{f.day(order.updatedAt)}</span>
                     </td>
                   </tr>
                   {open && (
@@ -165,7 +167,7 @@ export function OrdersTable({
       <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label={caption}>
         {orders.map((order) => {
           const open = order.id === openId;
-          const amount = amountOf(order);
+          const amount = amountOf(order, f);
           return (
             <li
               key={order.id}
@@ -187,7 +189,7 @@ export function OrdersTable({
                 </span>
                 <span className="font-semibold text-ink">
                   {order.productName}
-                  {order.quantity > 1 ? ` × ${order.quantity}` : ""}
+                  {order.quantity > 1 ? ` × ${f.number(order.quantity)}` : ""}
                 </span>
                 <span className="flex justify-between gap-3 text-sm text-ink-muted">
                   <span>

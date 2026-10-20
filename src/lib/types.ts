@@ -17,12 +17,6 @@ export type OrderStatus =
 
 export type VolumeTier = "SMALL_UNITS" | "MID_QUANTITY" | "LARGE_STOCK";
 
-export const VOLUME_TIER_LABELS: Record<VolumeTier, string> = {
-  SMALL_UNITS: "Quelques unités",
-  MID_QUANTITY: "Quantité moyenne",
-  LARGE_STOCK: "Gros stock",
-};
-
 // The main path through the lifecycle — used to render the corridor tracker.
 // DECLINED/UNAVAILABLE are terminal off-ramps, shown separately (see Status).
 export const STATUS_SEQUENCE: OrderStatus[] = [
@@ -38,22 +32,6 @@ export const STATUS_SEQUENCE: OrderStatus[] = [
   "IN_TRANSIT",
   "DELIVERED",
 ];
-
-export const STATUS_LABELS: Record<OrderStatus, string> = {
-  INTENT_SUBMITTED: "Intention reçue",
-  QUOTING: "En cotation",
-  QUOTED: "Coté",
-  QUOTE_SENT: "Devis envoyé",
-  PAID: "Payé",
-  PURCHASED: "Acheté",
-  RECEIVED_HUB: "Reçu au hub",
-  CONFIRMED_HUB: "Confirmé (hub)",
-  PICKED_UP: "Pris en charge",
-  IN_TRANSIT: "En route",
-  DELIVERED: "Livré",
-  DECLINED: "Refusé",
-  UNAVAILABLE: "Indisponible",
-};
 
 // Admin can move an order to most statuses manually (a required note is
 // enforced server-side); QUOTE_SENT and PAID only happen via their dedicated
@@ -75,12 +53,6 @@ export const PARTNER_NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
   CONFIRMED_HUB: "PICKED_UP",
   PICKED_UP: "IN_TRANSIT",
   IN_TRANSIT: "DELIVERED",
-};
-
-export const PARTNER_NEXT_ACTION_LABELS: Partial<Record<OrderStatus, string>> = {
-  CONFIRMED_HUB: "Marquer pris en charge",
-  PICKED_UP: "Marquer en route",
-  IN_TRANSIT: "Marquer livré",
 };
 
 export interface Hub {

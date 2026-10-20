@@ -1,12 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import { DsUploadIcon } from "@/icons";
 import { Order } from "@/lib/types";
 
 /** Photos of the physical goods for a CUSTOMER_OWNED order — real uploads, not pasted URLs. */
 export function OrderPhotoUploader({ order, onChanged }: { order: Order; onChanged: () => void }) {
+  const t = useTranslations("orders.photos");
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export function OrderPhotoUploader({ order, onChanged }: { order: Order; onChang
       await api.postForm(`/orders/${order.id}/photos`, formData);
       onChanged();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible d'envoyer les photos");
+      setError(err instanceof Error ? err.message : t("failed"));
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -48,7 +50,7 @@ export function OrderPhotoUploader({ order, onChanged }: { order: Order; onChang
 
       <label className="flex cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-m)] border border-dashed border-line-strong bg-surface-raised px-4 py-4 text-sm text-ink-muted hover:bg-surface-sunken">
         <DsUploadIcon />
-        {uploading ? "Envoi..." : "Ajouter des photos de l'article"}
+        {uploading ? t("uploading") : t("add")}
         <input
           ref={inputRef}
           type="file"

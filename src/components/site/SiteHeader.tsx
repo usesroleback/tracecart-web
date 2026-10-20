@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Logo } from "@/components/common/Logo";
 import Button from "@/components/ui/button/Button";
+import { LocaleSwitcher } from "@/components/common/LocaleSwitcher";
 
 export function SiteHeader() {
   const t = useTranslations('site.header');
@@ -24,6 +25,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LocaleSwitcher size="s" />
           <Link href="/login" className="hidden text-sm font-medium text-ink-muted hover:text-ink sm:block">
             {t('signIn')}
           </Link>

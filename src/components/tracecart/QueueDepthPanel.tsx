@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { PanelShell } from "./PanelShell";
 import { fetchQueueDepth } from "@/lib/kpi/adapter";
 import { QueueStage } from "@/lib/kpi/types";
-import { STATUS_LABELS, STATUS_SEQUENCE } from "@/lib/types";
-
-const hours = (h: number) => `${h.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} h`;
+import { STATUS_SEQUENCE } from "@/lib/types";
+import { useFormat } from "@/lib/format";
 
 /**
  * How long open orders have been sitting at each stage, in the brand's
@@ -17,6 +17,9 @@ const hours = (h: number) => `${h.toLocaleString("fr-FR", { maximumFractionDigit
  * colour alone. Stages follow the order lifecycle.
  */
 export function QueueDepthPanel() {
+  const t = useTranslations("dashboard.queue");
+  const tl = useTranslations("labels");
+  const f = useFormat();
   const [stages, setStages] = useState<QueueStage[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +31,7 @@ export function QueueDepthPanel() {
         if (!cancelled) setStages(data);
       })
       .catch((err) => {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Impossible de charger les temps d'attente");
+        if (!cancelled) setError(err instanceof Error ? err.message : t("failed"));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -36,39 +39,37 @@ export function QueueDepthPanel() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [t]);
 
   const ordered = stages ? [...stages].sort((a, b) => STATUS_SEQUENCE.indexOf(a.status) - STATUS_SEQUENCE.indexOf(b.status)) : null;
   const longest = ordered ? Math.max(1, ...ordered.map((s) => s.avgAgeHours)) : 1;
 
   return (
     <PanelShell
-      title="Temps à chaque étape"
+      title={t("title")}
       loading={loading}
       error={error}
       empty={!!ordered && ordered.length === 0}
-      emptyLabel="Aucune commande en cours."
+      emptyLabel={t("empty")}
     >
-      <p className="-mt-2 mb-4 text-[13px] text-ink-muted">Commandes en cours, depuis leur arrivée à l&apos;étape.</p>
+      <p className="-mt-2 mb-4 text-[13px] text-ink-muted">{t("subtitle")}</p>
       <ol className="grid gap-3.5">
         {ordered?.map((stage) => (
           <li key={stage.status}>
             <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 text-sm">
               <span className="font-semibold text-ink">
-                {STATUS_LABELS[stage.status]}
+                {tl(`status.${stage.status}`)}
                 {stage.isBottleneck && (
                   <span className="ml-2 rounded-[var(--radius-xs)] bg-attn-soft px-1.5 py-0.5 text-[12px] font-semibold text-attn">
-                    Plus lent que d&apos;habitude
+                    {t("slower")}
                   </span>
                 )}
               </span>
               <span className="tabular-nums text-ink-muted">
-                <b className="font-semibold text-ink">
-                  {stage.count} commande{stage.count > 1 ? "s" : ""}
-                </b>{" "}
-                · {hours(stage.avgAgeHours)} en moyenne
+                <b className="font-semibold text-ink">{tl("orderCount", { count: stage.count })}</b> ·{" "}
+                {t("average", { hours: f.hours(stage.avgAgeHours) })}
                 {/* The spread only says something when it differs from the average. */}
-                {stage.p90AgeHours > stage.avgAgeHours * 1.1 && ` · 9 sur 10 sous ${hours(stage.p90AgeHours)}`}
+                {stage.p90AgeHours > stage.avgAgeHours * 1.1 && ` · ${t("p90", { hours: f.hours(stage.p90AgeHours) })}`}
               </span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-[var(--radius-xs)] bg-surface-sunken" aria-hidden>

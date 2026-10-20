@@ -1,9 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
-import { Provider, ResolveResult, VolumeTier, VOLUME_TIER_LABELS } from "@/lib/types";
+import { Provider, ResolveResult, VolumeTier } from "@/lib/types";
+
+const VOLUME_TIERS: VolumeTier[] = ["SMALL_UNITS", "MID_QUANTITY", "LARGE_STOCK"];
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -26,6 +29,8 @@ export function IntentForm({
   onCancel: () => void;
   initialProduct?: IntentFormInitialProduct;
 }) {
+  const t = useTranslations("orders");
+  const tl = useTranslations("labels");
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
@@ -59,7 +64,7 @@ export function IntentForm({
       if (result.product.title && !productName) setProductName(result.product.title);
       if (result.product.imageUrl && !productImageUrl) setProductImageUrl(result.product.imageUrl);
     } catch {
-      setResolveError("Aperçu indisponible, vous pouvez renseigner les champs manuellement.");
+      setResolveError(t("intent.previewFailed"));
     } finally {
       setResolving(false);
     }
@@ -88,7 +93,7 @@ export function IntentForm({
       });
       onCreated();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible de créer l'intention");
+      setError(err instanceof Error ? err.message : t("intent.failed"));
     } finally {
       setSubmitting(false);
     }
@@ -99,17 +104,16 @@ export function IntentForm({
       onSubmit={handleSubmit}
       className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
-      <h2 className="rb-title-l text-[20px]">Nouvelle intention</h2>
+      <h2 className="rb-title-l text-[20px]">{t("intent.title")}</h2>
       <p className="mt-1 text-sm text-ink-muted">
-        Collez le lien du produit, renseignez la destination et les informations client. La cotation (coût produit,
-        logistique, frais) se fait à l&apos;étape suivante.
+        {t("intent.intro")}
       </p>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Field label="Nom du client">
+        <Field label={t("form.customerName")}>
           <input required value={customerName} onChange={(e) => setCustomerName(e.target.value)} className={inputClasses} />
         </Field>
-        <Field label="Téléphone du client">
+        <Field label={t("form.customerPhone")}>
           <input
             required
             value={customerPhone}
@@ -118,7 +122,7 @@ export function IntentForm({
             className={inputClasses}
           />
         </Field>
-        <Field label="Email du client (optionnel)">
+        <Field label={t("form.customerEmail")}>
           <input
             type="email"
             value={customerEmail}
@@ -126,7 +130,7 @@ export function IntentForm({
             className={inputClasses}
           />
         </Field>
-        <Field label="Quantité">
+        <Field label={t("form.quantity")}>
           <input
             type="number"
             min="1"
@@ -135,10 +139,10 @@ export function IntentForm({
             className={inputClasses}
           />
         </Field>
-        <Field label="Ville de destination">
+        <Field label={t("form.destinationCity")}>
           <input required value={destinationCity} onChange={(e) => setDestinationCity(e.target.value)} className={inputClasses} />
         </Field>
-        <Field label="Pays de destination">
+        <Field label={t("form.destinationCountry")}>
           <input
             required
             value={destinationCountry}
@@ -146,11 +150,11 @@ export function IntentForm({
             className={inputClasses}
           />
         </Field>
-        <Field label="Volume estimé" className="sm:col-span-2">
+        <Field label={t("form.volume")} className="sm:col-span-2">
           <select value={volumeTier} onChange={(e) => setVolumeTier(e.target.value as VolumeTier)} className={inputClasses}>
-            {(Object.keys(VOLUME_TIER_LABELS) as VolumeTier[]).map((tier) => (
+            {VOLUME_TIERS.map((tier) => (
               <option key={tier} value={tier}>
-                {VOLUME_TIER_LABELS[tier]}
+                {tl(`volumeTier.${tier}`)}
               </option>
             ))}
           </select>
@@ -158,7 +162,7 @@ export function IntentForm({
       </div>
 
       <div className="mt-4">
-        <Field label="Lien du produit">
+        <Field label={t("intent.productUrl")}>
           <div className="flex gap-2">
             <input
               required
@@ -170,12 +174,12 @@ export function IntentForm({
               className={`flex-1 ${inputClasses}`}
             />
             <Button type="button" variant="secondary" size="m" onClick={handleResolve} disabled={resolving || !productUrl}>
-              {resolving ? "Analyse..." : "Détecter"}
+              {resolving ? t("intent.detecting") : t("intent.detect")}
             </Button>
           </div>
           {provider && (
             <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-positive">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Boutique détectée : {provider.name}
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {t("intent.storeDetected", { name: provider.name })}
             </p>
           )}
           {resolveError && <p className="mt-1.5 text-xs text-ink-muted">{resolveError}</p>}
@@ -191,18 +195,18 @@ export function IntentForm({
             className="h-20 w-20 rounded-[var(--radius-s)] border border-line object-cover"
           />
         )}
-        <Field label="Nom du produit">
+        <Field label={t("intent.productName")}>
           <input
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            placeholder="À confirmer manuellement si non détecté"
+            placeholder={t("intent.productNamePlaceholder")}
             className={inputClasses}
           />
         </Field>
       </div>
 
       <div className="mt-4">
-        <Field label="Notes internes">
+        <Field label={t("form.notes")}>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -216,10 +220,10 @@ export function IntentForm({
 
       <div className="mt-5 flex justify-end gap-2">
         <Button type="button" variant="secondary" onClick={onCancel}>
-          Annuler
+          {t("form.cancel")}
         </Button>
         <Button type="submit" loading={submitting}>
-          {submitting ? "Création..." : "Créer l'intention"}
+          {submitting ? t("intent.creating") : t("intent.create")}
         </Button>
       </div>
     </form>

@@ -17,6 +17,7 @@ import { isBottleneck, statusFor } from "./thresholds";
 // This file is the only place that knows the raw API JSON shape — every
 // component downstream only ever sees the typed shapes from ./types.
 
+// label is a French fallback: KpiRow shows labels.kpi.<key> from the messages.
 const KPI_META: Record<string, { label: string; format: KpiFormat }> = {
   ordersCreated: { label: "Intentions créées", format: "count" },
   ordersDelivered: { label: "Livrées", format: "count" },

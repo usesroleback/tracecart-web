@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link, useRouter } from '@/i18n/navigation';
 
 import { useSession } from "@/context/SessionContext";
@@ -17,7 +18,8 @@ import { ExceptionCard } from "@/components/ui/exception-card/ExceptionCard";
 import { KpiStrip } from "@/components/ui/kpi-strip/KpiStrip";
 import Button from "@/components/ui/button/Button";
 import { DsSearchIcon, DsBuildingIcon, DsHubIcon, DsPackageIcon } from "@/icons";
-import { ROLE_LABELS, nameFromEmail } from "@/lib/people";
+import { nameFromEmail } from "@/lib/people";
+import { useFormat } from "@/lib/format";
 import { Order, OrderStatus } from "@/lib/types";
 import { DashboardStats } from "@/lib/kpi/types";
 
@@ -41,8 +43,10 @@ function QuickAction({ href, icon, label, description }: { href: string; icon: R
 
 export function DashboardHome({ initialOrders, initialStats }: { initialOrders: Order[]; initialStats: DashboardStats | null }) {
   const user = useSession();
+  const t = useTranslations("dashboard");
+  const tr = useTranslations("labels.role");
   const orders = initialOrders;
-  const statsError = initialStats ? null : "Impossible de charger les statistiques.";
+  const statsError = initialStats ? null : t("statsFailed");
   // The headline is who's signed in, taken from their email; no greeting.
   const name = nameFromEmail(user.email);
 
@@ -55,20 +59,19 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
     return (
       <div>
         <div className="mb-6">
-          <p className="rb-overline">{user.hub ? `${user.hub.city}, ${user.hub.country}` : "Hub non configuré"}</p>
+          <p className="rb-overline">{user.hub ? `${user.hub.city}, ${user.hub.country}` : t("noHub")}</p>
           <h1 className="rb-headline text-[32px]">{name}</h1>
           <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
-            {ROLE_LABELS[user.role]} · {needsAttention.length === 0
-              ? "rien à traiter pour le moment."
-              : `${needsAttention.length} commande${needsAttention.length > 1 ? "s" : ""} à traiter.`}
+            {tr(user.role)} ·{" "}
+            {needsAttention.length === 0 ? t("admin.nothingToHandle") : t("admin.toHandle", { count: needsAttention.length })}
           </p>
         </div>
 
         {!user.hubId && (
           <div className="mb-6 rounded-[var(--radius-m)] border border-dashed border-line-strong bg-surface-raised p-8 text-center">
-            <p className="text-sm font-medium text-ink">Configurez votre hub pour commencer</p>
+            <p className="text-sm font-medium text-ink">{t("admin.setupHub")}</p>
             <Button href="/hub-setup" size="s" className="mt-3">
-              Configurer mon hub
+              {t("admin.setupHubCta")}
             </Button>
           </div>
         )}
@@ -78,10 +81,10 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
         </div>
 
         <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <QuickAction href="/orders" icon={<DsPackageIcon />} label="Nouvelle intention" description="Créer une commande client" />
-          <QuickAction href="/products" icon={<DsSearchIcon />} label="Rechercher des produits" description="Chercher et réserver" />
-          <QuickAction href="/stores" icon={<DsBuildingIcon />} label="Boutiques" description="Gérer les boutiques" />
-          <QuickAction href="/hub-setup" icon={<DsHubIcon />} label="Mon hub" description="Voir ou changer de hub" />
+          <QuickAction href="/orders" icon={<DsPackageIcon />} label={t("quick.newIntent")} description={t("quick.newIntentHint")} />
+          <QuickAction href="/products" icon={<DsSearchIcon />} label={t("quick.products")} description={t("quick.productsHint")} />
+          <QuickAction href="/stores" icon={<DsBuildingIcon />} label={t("quick.stores")} description={t("quick.storesHint")} />
+          <QuickAction href="/hub-setup" icon={<DsHubIcon />} label={t("quick.hub")} description={t("quick.hubHint")} />
         </div>
 
         <div className="mb-6 grid gap-4 lg:grid-cols-3">
@@ -97,25 +100,25 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
 
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="rb-title text-[14px]">Nécessite votre attention</h2>
+            <h2 className="rb-title text-[14px]">{t("attention.title")}</h2>
             <Link href="/orders" className="rb-link text-xs font-medium">
-              Voir tout
+              {t("seeAll")}
             </Link>
           </div>
           <Card>
-            <AttentionTable orders={needsAttention} loading={false} emptyLabel="Rien ne nécessite votre attention pour le moment." />
+            <AttentionTable orders={needsAttention} loading={false} emptyLabel={t("attention.empty")} />
           </Card>
         </div>
 
         <div>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="rb-title text-[14px]">Commandes récentes</h2>
+            <h2 className="rb-title text-[14px]">{t("recent.title")}</h2>
             <Link href="/orders" className="rb-link text-xs font-medium">
-              Voir tout
+              {t("seeAll")}
             </Link>
           </div>
           <div className="space-y-3">
-            {recent.length === 0 && <p className="text-sm text-ink-muted">Aucune commande pour le moment.</p>}
+            {recent.length === 0 && <p className="text-sm text-ink-muted">{t("recent.empty")}</p>}
             {recent.map((order) => (
               <OrderCard key={order.id} order={order} />
             ))}
@@ -128,11 +131,12 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
   return <CarrierHome orders={orders} name={name} />;
 }
 
-const CARRIER_STAGES: { key: string; label: string; statuses: OrderStatus[] }[] = [
-  { key: "quote", label: "À coter", statuses: ["QUOTING", "QUOTED"] },
-  { key: "ready", label: "À gérer", statuses: ["CONFIRMED_HUB"] },
-  { key: "moving", label: "En route", statuses: ["PICKED_UP", "IN_TRANSIT"] },
-  { key: "delivered", label: "Livrés", statuses: ["DELIVERED"] },
+// Keys are deliveries.stages.* (the Livraisons tabs).
+const CARRIER_STAGES: { key: string; statuses: OrderStatus[] }[] = [
+  { key: "quote", statuses: ["QUOTING", "QUOTED"] },
+  { key: "ready", statuses: ["CONFIRMED_HUB"] },
+  { key: "moving", statuses: ["PICKED_UP", "IN_TRANSIT"] },
+  { key: "delivered", statuses: ["DELIVERED"] },
 ];
 
 /**
@@ -141,6 +145,10 @@ const CARRIER_STAGES: { key: string; label: string; statuses: OrderStatus[] }[] 
  */
 function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
   const router = useRouter();
+  const t = useTranslations("dashboard");
+  const td = useTranslations("deliveries");
+  const tr = useTranslations("labels.role");
+  const f = useFormat();
   const [openId, setOpenId] = useState<string | null>(null);
   const toQuote = orders.filter((o) => o.status === "QUOTING");
   const toCollect = orders.filter((o) => o.status === "CONFIRMED_HUB");
@@ -149,14 +157,14 @@ function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
   return (
     <div>
       <div className="mb-6">
-        <p className="rb-overline">{ROLE_LABELS.LOGISTICS_PARTNER}</p>
+        <p className="rb-overline">{tr("LOGISTICS_PARTNER")}</p>
         <h1 className="rb-headline text-[32px]">{name}</h1>
         <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
           {todo === 0
-            ? "Rien à coter ni à gérer pour le moment."
+            ? td("todo.none")
             : [
-                toQuote.length > 0 && `${toQuote.length} cotation${toQuote.length > 1 ? "s" : ""} à soumettre`,
-                toCollect.length > 0 && `${toCollect.length} colis à gérer`,
+                toQuote.length > 0 && td("todo.summaryQuotes", { count: toQuote.length }),
+                toCollect.length > 0 && td("todo.summaryParcels", { count: toCollect.length }),
               ]
                 .filter(Boolean)
                 .join(" · ") + "."}
@@ -167,7 +175,7 @@ function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
         className="mb-6"
         items={CARRIER_STAGES.map((stage) => ({
           key: stage.key,
-          label: stage.label,
+          label: td(`stages.${stage.key}`),
           value: orders.filter((o) => stage.statuses.includes(o.status)).length,
         }))}
       />
@@ -175,9 +183,9 @@ function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
       {todo > 0 && (
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="rb-title">À faire</h2>
+            <h2 className="rb-title">{td("todo.title")}</h2>
             <Link href="/deliveries" className="rb-link text-sm font-medium">
-              Toutes les livraisons
+              {t("carrier.allDeliveries")}
             </Link>
           </div>
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -185,30 +193,30 @@ function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
               <ExceptionCard
                 key={order.id}
                 severity="held"
-                title={`Cotation attendue · ${order.productName}`}
+                title={td("todo.quoteTitle", { product: order.productName })}
                 meta={`${order.reference} · ${order.hub.city} → ${order.destinationCity}`}
                 actions={
                   <Button size="s" variant="secondary" href={`/orders/${order.id}`}>
-                    Coter
+                    {td("todo.quote")}
                   </Button>
                 }
               >
-                Quantité {order.quantity.toLocaleString("fr-FR")}.
+                {td("todo.quantity", { quantity: f.number(order.quantity) })}
               </ExceptionCard>
             ))}
             {toCollect.map((order) => (
               <ExceptionCard
                 key={order.id}
                 severity="held"
-                title={`Prêt au hub · ${order.productName}`}
+                title={td("todo.readyTitle", { product: order.productName })}
                 meta={`${order.reference} · ${order.hub.city} → ${order.destinationCity}`}
                 actions={
                   <Button size="s" variant="secondary" href={`/orders/${order.id}`}>
-                    Ouvrir
+                    {td("todo.open")}
                   </Button>
                 }
               >
-                Le hub a confirmé le colis : il attend votre prise en charge.
+                {td("todo.readyBody")}
               </ExceptionCard>
             ))}
           </div>
@@ -221,21 +229,21 @@ function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
 
       <div>
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="rb-title">Colis récents</h2>
+          <h2 className="rb-title">{t("carrier.recent")}</h2>
           <Link href="/deliveries" className="rb-link text-sm font-medium">
-            Voir tout
+            {t("seeAll")}
           </Link>
         </div>
         {orders.length === 0 ? (
-          <p className="text-sm text-ink-muted">Aucun colis assigné pour le moment.</p>
+          <p className="text-sm text-ink-muted">{td("empty")}</p>
         ) : (
           <OrdersTable
-            caption="Colis récents"
+            caption={t("carrier.recent")}
             orders={orders.slice(0, 8)}
             openId={openId}
             onToggle={(id) => setOpenId((cur) => (cur === id ? null : id))}
             amountOf={logisticsAmount}
-            amountLabel="Votre devis"
+            amountLabel={td("yourQuote")}
             renderDetail={(order) => <OrderPartnerPanel order={order} onChanged={() => router.refresh()} />}
           />
         )}

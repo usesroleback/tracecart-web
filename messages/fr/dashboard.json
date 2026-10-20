@@ -1,1 +1,72 @@
-{}
+{
+  "panels": {
+    "loading": "Chargement",
+    "noData": "Aucune donnée pour le moment.",
+    "noOrdersInRange": "Aucune commande sur cette période."
+  },
+  "kpi": {
+    "new": "Nouveau"
+  },
+  "breakdown": {
+    "title": "Répartition",
+    "provider": "Par boutique",
+    "destination": "Par destination",
+    "failed": "Impossible de charger la répartition",
+    "mostUsed": "Le plus utilisé",
+    "total": "Total"
+  },
+  "trend": {
+    "title": "Commandes créées vs livrées",
+    "day": "Jour",
+    "week": "Semaine",
+    "month": "Mois",
+    "failed": "Impossible de charger la tendance",
+    "created": "Créées",
+    "delivered": "Livrées",
+    "createdBefore": "Créées (période précédente)"
+  },
+  "queue": {
+    "title": "Temps à chaque étape",
+    "subtitle": "Commandes en cours, depuis leur arrivée à l'étape.",
+    "empty": "Aucune commande en cours.",
+    "failed": "Impossible de charger les temps d'attente",
+    "slower": "Plus lent que d'habitude",
+    "average": "{hours} en moyenne",
+    "p90": "9 sur 10 sous {hours}"
+  },
+  "statsFailed": "Impossible de charger les statistiques.",
+  "noHub": "Hub non configuré",
+  "admin": {
+    "nothingToHandle": "rien à traiter pour le moment.",
+    "toHandle": "{count, plural, one {# commande à traiter.} other {# commandes à traiter.}}",
+    "setupHub": "Configurez votre hub pour commencer",
+    "setupHubCta": "Configurer mon hub"
+  },
+  "quick": {
+    "newIntent": "Nouvelle intention",
+    "newIntentHint": "Créer une commande client",
+    "products": "Rechercher des produits",
+    "productsHint": "Chercher et réserver",
+    "stores": "Boutiques",
+    "storesHint": "Gérer les boutiques",
+    "hub": "Mon hub",
+    "hubHint": "Voir ou changer de hub"
+  },
+  "attention": {
+    "title": "Nécessite votre attention",
+    "empty": "Rien ne nécessite votre attention pour le moment."
+  },
+  "recent": {
+    "title": "Commandes récentes",
+    "empty": "Aucune commande pour le moment."
+  },
+  "seeAll": "Voir tout",
+  "carrier": {
+    "recent": "Colis récents",
+    "allDeliveries": "Toutes les livraisons"
+  },
+  "bullet": {
+    "ofTarget": "/ objectif {target}",
+    "target": "Objectif : {target}"
+  }
+}

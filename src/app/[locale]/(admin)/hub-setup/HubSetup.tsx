@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from '@/i18n/navigation';
 
 import { api } from "@/lib/apiClient";
@@ -14,6 +15,7 @@ const inputClasses =
 
 export function HubSetup({ currentHub }: { currentHub: { id: string; name: string; city: string } | null }) {
   const router = useRouter();
+  const t = useTranslations("hubSetup");
   const [hubs, setHubs] = useState<Hub[]>([]);
   const [detect, setDetect] = useState<GeoDetectResult | null>(null);
   const [selectedHubId, setSelectedHubId] = useState<string>(currentHub?.id ?? "");
@@ -61,7 +63,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
       router.push("/orders");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible d'enregistrer le hub");
+      setError(err instanceof Error ? err.message : t("saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -75,29 +77,28 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
       router.push("/orders");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible de créer le hub");
+      setError(err instanceof Error ? err.message : t("createFailed"));
     } finally {
       setSaving(false);
     }
   }
 
   if (loading) {
-    return <p className="text-sm text-ink-muted">Détection de votre position...</p>;
+    return <p className="text-sm text-ink-muted">{t("detecting")}</p>;
   }
 
   return (
     <div className="mx-auto max-w-xl">
       <h1 className="rb-headline text-[32px]">
-        {currentHub ? "Mon hub" : "Configurez votre hub"}
+        {currentHub ? t("titleMine") : t("titleSetup")}
       </h1>
       <p className="mt-1 text-sm text-ink-muted">
-        Le hub est le point de réception de l&apos;opérateur — l&apos;origine de chaque commande. Toutes vos commandes
-        seront rattachées à ce hub.
+        {t("intro")}
       </p>
 
       {detect?.location && (
         <p className="mt-4 rounded-[var(--radius-s)] bg-positive-soft px-3 py-2 text-xs text-positive">
-          Position détectée : {detect.location.city}, {detect.location.country}
+          {t("detected", { city: detect.location.city, country: detect.location.country })}
         </p>
       )}
 
@@ -123,7 +124,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
                   {hub.name}
                   {detect?.nearestHubId === hub.id && (
                     <Badge variant="positive" className="ml-2">
-                      Le plus proche
+                      {t("nearest")}
                     </Badge>
                   )}
                 </p>
@@ -142,37 +143,37 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
               onClick={() => setCreatingNew(true)}
               className="rb-link text-sm font-medium"
             >
-              + Créer un nouveau hub
+              {t("createNew")}
             </button>
             <Button onClick={confirmExisting} disabled={!selectedHubId} loading={saving}>
-              Confirmer ce hub
+              {t("confirm")}
             </Button>
           </div>
         </div>
       ) : (
         <Card as="div" className="mt-5 space-y-4">
           <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Nom">
+            <Field label={t("field.name")}>
               <input value={newHub.name} onChange={(e) => setNewHub((h) => ({ ...h, name: e.target.value }))} className={inputClasses} />
             </Field>
-            <Field label="Devise">
+            <Field label={t("field.currency")}>
               <input
                 value={newHub.currency}
                 onChange={(e) => setNewHub((h) => ({ ...h, currency: e.target.value }))}
                 className={inputClasses}
               />
             </Field>
-            <Field label="Ville">
+            <Field label={t("field.city")}>
               <input value={newHub.city} onChange={(e) => setNewHub((h) => ({ ...h, city: e.target.value }))} className={inputClasses} />
             </Field>
-            <Field label="Pays">
+            <Field label={t("field.country")}>
               <input
                 value={newHub.country}
                 onChange={(e) => setNewHub((h) => ({ ...h, country: e.target.value }))}
                 className={inputClasses}
               />
             </Field>
-            <Field label="Code pays (2 lettres)">
+            <Field label={t("field.countryCode")}>
               <input
                 maxLength={2}
                 value={newHub.countryCode}
@@ -180,14 +181,14 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
                 className={inputClasses}
               />
             </Field>
-            <Field label="Fuseau horaire">
+            <Field label={t("field.timezone")}>
               <input
                 value={newHub.timezone}
                 onChange={(e) => setNewHub((h) => ({ ...h, timezone: e.target.value }))}
                 className={inputClasses}
               />
             </Field>
-            <Field label="Latitude">
+            <Field label={t("field.latitude")}>
               <input
                 type="number"
                 value={newHub.latitude}
@@ -195,7 +196,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
                 className={inputClasses}
               />
             </Field>
-            <Field label="Longitude">
+            <Field label={t("field.longitude")}>
               <input
                 type="number"
                 value={newHub.longitude}
@@ -209,14 +210,14 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
 
           <div className="flex justify-between">
             <Button type="button" variant="secondary" onClick={() => setCreatingNew(false)}>
-              Annuler
+              {t("cancel")}
             </Button>
             <Button
               onClick={createAndConfirm}
               disabled={!newHub.name || !newHub.city || !newHub.country || !newHub.countryCode}
               loading={saving}
             >
-              Créer et confirmer
+              {t("createConfirm")}
             </Button>
           </div>
         </Card>

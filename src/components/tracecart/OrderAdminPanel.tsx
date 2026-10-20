@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { QuotingDesk } from "./QuotingDesk";
 import { FulfillmentPanel } from "./FulfillmentPanel";
 import { ManualTransitionForm } from "./ManualTransitionForm";
@@ -19,18 +20,19 @@ export function OrderAdminPanel({
   onChanged: () => void;
   showLocations?: boolean;
 }) {
+  const t = useTranslations("orders");
   return (
     <div className="space-y-4">
       {QUOTING_PHASE.has(order.status) && <QuotingDesk order={order} onChanged={onChanged} />}
       {FULFILLMENT_PHASE.has(order.status) && <FulfillmentPanel order={order} onChanged={onChanged} />}
       {showLocations && PARTNER_SEQUENCE.includes(order.status) && (
         <div>
-          <p className="rb-overline mb-1.5">Où est le colis</p>
+          <p className="rb-overline mb-1.5">{t("location.title")}</p>
           <LocationTimeline updates={order.locationUpdates} />
         </div>
       )}
       {(order.status === "DECLINED" || order.status === "UNAVAILABLE") && (
-        <p className="text-sm text-ink-muted">Commande close.</p>
+        <p className="text-sm text-ink-muted">{t("closed")}</p>
       )}
       <div className="border-t border-line pt-3">
         <ManualTransitionForm order={order} onChanged={onChanged} />

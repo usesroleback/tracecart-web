@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Link, usePathname } from '@/i18n/navigation';
 import { useSidebar } from "../context/SidebarContext";
 import { useSession } from "../context/SessionContext";
 import { api } from "../lib/apiClient";
 import { fetchStatusCounts } from "../lib/kpi/adapter";
-import { ROLE_LABELS, nameFromEmail } from "../lib/people";
+import { nameFromEmail } from "../lib/people";
 import { OrderStatus } from "../lib/types";
 import {
   DsAlertIcon,
@@ -24,6 +25,7 @@ import { Logo } from "../components/common/Logo";
 type Counts = Partial<Record<OrderStatus, number>> & { sourcing?: number; reservations?: number };
 
 type NavItem = {
+  /** Key under common.nav. */
   name: string;
   icon: React.ReactNode;
   /** Path plus an optional tab query (the page reads it, see Orders/Deliveries). */
@@ -32,7 +34,7 @@ type NavItem = {
   count?: (c: Counts) => number | undefined;
 };
 
-type NavGroup = { title?: string; items: NavItem[] };
+type NavGroup = { /** Key under common.nav.groups. */ title?: string; items: NavItem[] };
 
 const sum = (c: Counts, statuses: OrderStatus[]) => statuses.reduce((n, s) => n + (c[s] ?? 0), 0);
 const ACTIVE: OrderStatus[] = ["INTENT_SUBMITTED", "QUOTING", "QUOTED", "QUOTE_SENT", "PAID", "PURCHASED", "RECEIVED_HUB", "CONFIRMED_HUB", "PICKED_UP", "IN_TRANSIT"];
@@ -41,23 +43,23 @@ const ACTIVE: OrderStatus[] = ["INTENT_SUBMITTED", "QUOTING", "QUOTED", "QUOTE_S
 // (Requests → Orders → Exceptions), then what the hub manages.
 const ADMIN_NAV: NavGroup[] = [
   {
-    title: "Opérations",
+    title: "operations",
     items: [
-      { icon: <DsHomeIcon />, name: "Vue d'ensemble", path: "/dashboard" },
-      { icon: <DsChatIcon />, name: "Demandes", path: "/sourcing", count: (c) => c.sourcing },
-      { icon: <DsPackageIcon />, name: "Commandes", path: "/orders", count: (c) => sum(c, ACTIVE) },
-      { icon: <DsAlertIcon />, name: "Exceptions", path: "/orders", query: { statut: "exceptions" } },
+      { icon: <DsHomeIcon />, name: "overview", path: "/dashboard" },
+      { icon: <DsChatIcon />, name: "requests", path: "/sourcing", count: (c) => c.sourcing },
+      { icon: <DsPackageIcon />, name: "orders", path: "/orders", count: (c) => sum(c, ACTIVE) },
+      { icon: <DsAlertIcon />, name: "exceptions", path: "/orders", query: { statut: "exceptions" } },
     ],
   },
   {
-    title: "Catalogue",
+    title: "catalogue",
     items: [
-      { icon: <DsSearchIcon />, name: "Produits", path: "/products" },
-      { icon: <DsBookmarkIcon />, name: "Réservations", path: "/reservations", count: (c) => c.reservations },
-      { icon: <DsBuildingIcon />, name: "Boutiques", path: "/stores" },
+      { icon: <DsSearchIcon />, name: "products", path: "/products" },
+      { icon: <DsBookmarkIcon />, name: "reservations", path: "/reservations", count: (c) => c.reservations },
+      { icon: <DsBuildingIcon />, name: "stores", path: "/stores" },
     ],
   },
-  { title: "Réseau", items: [{ icon: <DsHubIcon />, name: "Mon hub", path: "/hub-setup" }] },
+  { title: "network", items: [{ icon: <DsHubIcon />, name: "hub", path: "/hub-setup" }] },
 ];
 
 // Two entries: the steps (à coter, à gérer, en route…) are tabs on Livraisons.
@@ -65,8 +67,8 @@ const ADMIN_NAV: NavGroup[] = [
 const CARRIER_NAV: NavGroup[] = [
   {
     items: [
-      { icon: <DsHomeIcon />, name: "Vue d'ensemble", path: "/dashboard" },
-      { icon: <DsTruckIcon />, name: "Livraisons", path: "/deliveries", count: (c) => sum(c, ["QUOTING", "CONFIRMED_HUB"]) },
+      { icon: <DsHomeIcon />, name: "overview", path: "/dashboard" },
+      { icon: <DsTruckIcon />, name: "deliveries", path: "/deliveries", count: (c) => sum(c, ["QUOTING", "CONFIRMED_HUB"]) },
     ],
   },
 ];
@@ -81,6 +83,8 @@ const AppSidebar: React.FC = () => {
   const pathname = usePathname();
   const search = useSearchParams();
   const user = useSession();
+  const t = useTranslations("common.nav");
+  const tr = useTranslations("labels.role");
   const [counts, setCounts] = useState<Counts>({});
   const isAdmin = user.role === "SUPER_ADMIN";
   const groups = isAdmin ? ADMIN_NAV : CARRIER_NAV;
@@ -130,12 +134,12 @@ const AppSidebar: React.FC = () => {
         {showLabel ? <Logo variant="lockup" href="/dashboard" /> : <Logo variant="symbol" height={24} href="/dashboard" />}
       </div>
 
-      <nav aria-label={isAdmin ? "Opérations" : "Livraisons"} className="no-scrollbar flex-1 overflow-y-auto px-2 pb-4">
+      <nav aria-label={t("label")} className="no-scrollbar flex-1 overflow-y-auto px-2 pb-4">
         {groups.map((group, gi) => (
           <div key={group.title ?? gi} className={gi > 0 ? "mt-5" : ""}>
             {group.title &&
               (showLabel ? (
-                <p className="rb-overline mb-1.5 px-3">{group.title}</p>
+                <p className="rb-overline mb-1.5 px-3">{t(`groups.${group.title}`)}</p>
               ) : (
                 <div className="mx-auto mb-2 h-px w-6 bg-line" aria-hidden />
               ))}
@@ -149,17 +153,17 @@ const AppSidebar: React.FC = () => {
                     <Link
                       href={href}
                       aria-current={active ? "page" : undefined}
-                      title={showLabel ? undefined : item.name}
+                      title={showLabel ? undefined : t(item.name)}
                       className={`menu-item group ${active ? "menu-item-active" : "menu-item-inactive"} ${!showLabel ? "lg:justify-center" : ""}`}
                     >
                       <span className={active ? "menu-item-icon-active" : "menu-item-icon-inactive"}>{item.icon}</span>
-                      {showLabel && <span className="menu-item-text">{item.name}</span>}
+                      {showLabel && <span className="menu-item-text">{t(item.name)}</span>}
                       {showLabel && count != null && count > 0 && (
                         <span className={`ml-auto text-xs font-[650] tabular-nums ${active ? "text-ink-inverse" : "text-ink-muted"}`}>
                           {count}
                         </span>
                       )}
-                      {!showLabel && <span className="sr-only">{item.name}</span>}
+                      {!showLabel && <span className="sr-only">{t(item.name)}</span>}
                     </Link>
                   </li>
                 );
@@ -177,7 +181,7 @@ const AppSidebar: React.FC = () => {
         {showLabel && (
           <span className="min-w-0 text-sm">
             <b className="block truncate font-semibold">{name}</b>
-            <span className="block text-xs text-ink-muted">{ROLE_LABELS[user.role]}</span>
+            <span className="block text-xs text-ink-muted">{tr(user.role)}</span>
           </span>
         )}
       </div>

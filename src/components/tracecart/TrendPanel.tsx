@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { PanelShell } from "./PanelShell";
 import { TrendChart } from "@/components/charts/TrendChart";
 import { fetchTrend } from "@/lib/kpi/adapter";
 import { Granularity, TrendSeries } from "@/lib/kpi/types";
 
-const GRANULARITY_LABELS: Record<Granularity, string> = { day: "Jour", week: "Semaine", month: "Mois" };
+const GRANULARITIES: Granularity[] = ["day", "week", "month"];
 
 export function TrendPanel({ rangeDays }: { rangeDays: number }) {
+  const t = useTranslations("dashboard");
   const [granularity, setGranularity] = useState<Granularity>("day");
   // What was last loaded, and for which selection: loading is "the result
   // isn't for the current selection yet", so nothing resets state in the effect.
@@ -21,12 +23,12 @@ export function TrendPanel({ rangeDays }: { rangeDays: number }) {
       (trend) => !cancelled && setResult({ key, trend, error: null }),
       (err) =>
         !cancelled &&
-        setResult({ key, trend: null, error: err instanceof Error ? err.message : "Impossible de charger la tendance" })
+        setResult({ key, trend: null, error: err instanceof Error ? err.message : t("trend.failed") })
     );
     return () => {
       cancelled = true;
     };
-  }, [granularity, rangeDays, key]);
+  }, [granularity, rangeDays, key, t]);
 
   const current = result?.key === key ? result : null;
   const loading = current === null;
@@ -35,14 +37,14 @@ export function TrendPanel({ rangeDays }: { rangeDays: number }) {
 
   return (
     <PanelShell
-      title="Commandes créées vs livrées"
+      title={t("trend.title")}
       loading={loading}
       error={error}
       empty={!!trend && trend.points.length === 0}
-      emptyLabel="Aucune commande sur cette période."
+      emptyLabel={t("panels.noOrdersInRange")}
       action={
         <div className="flex gap-1 rounded-[var(--radius-s)] border border-line p-0.5">
-          {(Object.keys(GRANULARITY_LABELS) as Granularity[]).map((g) => (
+          {GRANULARITIES.map((g) => (
             <button
               key={g}
               onClick={() => setGranularity(g)}
@@ -50,7 +52,7 @@ export function TrendPanel({ rangeDays }: { rangeDays: number }) {
                 granularity === g ? "bg-ink text-ink-inverse" : "text-ink-muted hover:bg-surface-sunken"
               }`}
             >
-              {GRANULARITY_LABELS[g]}
+              {t(`trend.${g}`)}
             </button>
           ))}
         </div>

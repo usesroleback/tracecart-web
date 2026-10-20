@@ -1,6 +1,7 @@
 "use client";
 
 import { useApexTheme } from "./ChartTheme";
+import { useFormat } from "@/lib/format";
 
 export interface RankingBarItem {
   key: string;
@@ -18,6 +19,7 @@ export interface RankingBarItem {
  */
 export function RankingBars({ items, valueSuffix = "" }: { items: RankingBarItem[]; valueSuffix?: string }) {
   const theme = useApexTheme();
+  const f = useFormat();
   const max = Math.max(1, ...items.map((i) => i.value));
 
   return (
@@ -37,7 +39,7 @@ export function RankingBars({ items, valueSuffix = "" }: { items: RankingBarItem
             )}
             <span className="min-w-0 flex-1 truncate text-sm text-ink">{item.label}</span>
             <span className="flex-shrink-0 text-xs tabular-nums text-ink-muted">
-              {item.value.toLocaleString("fr-FR")}
+              {f.number(item.value)}
               {valueSuffix}
             </span>
           </div>

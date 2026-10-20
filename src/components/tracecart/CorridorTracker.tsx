@@ -1,4 +1,5 @@
-import { OrderStatus, STATUS_LABELS, STATUS_SEQUENCE } from "@/lib/types";
+import { useTranslations } from "next-intl";
+import { OrderStatus, STATUS_SEQUENCE } from "@/lib/types";
 
 export type CorridorPhase = "origin" | "handoff" | "transit";
 
@@ -28,11 +29,12 @@ const RING_CLASSES: Record<CorridorPhase, string> = {
 };
 
 export function CorridorTracker({ status, hubCity, destinationCity }: { status: OrderStatus; hubCity: string; destinationCity: string }) {
+  const t = useTranslations("labels.status");
   if (status === "DECLINED" || status === "UNAVAILABLE") {
     return (
       <div className="flex items-center gap-2 text-xs text-critical">
         <span className="h-2 w-2 rounded-full bg-critical" />
-        {STATUS_LABELS[status]}
+        {t(status)}
       </div>
     );
   }
@@ -50,7 +52,7 @@ export function CorridorTracker({ status, hubCity, destinationCity }: { status: 
           return (
             <div key={step} className="flex flex-1 items-center last:flex-none">
               <div
-                title={STATUS_LABELS[step]}
+                title={t(step)}
                 className={`h-3 w-3 flex-shrink-0 rounded-full border-2 transition ${
                   isFilled ? FILLED_CLASSES[color] : "border-line bg-surface-raised"
                 } ${isCurrent ? `ring-2 ring-offset-2 ring-offset-[var(--color-surface-raised)] ${RING_CLASSES[color]}` : ""}`}

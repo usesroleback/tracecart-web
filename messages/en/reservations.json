@@ -1,1 +1,28 @@
-{}
+{
+  "title": "Reserved products",
+  "subtitle": "Products set aside from search. Turn them into an order as soon as a customer is ready.",
+  "showing": "Showing the {shown} most recent of {total}.",
+  "statsFailed": "Couldn't load the statistics",
+  "rankingFailed": "Couldn't load the ranking",
+  "removeFailed": "Couldn't remove this reservation",
+  "conversion": {
+    "title": "Conversion rate",
+    "label": "Reservations turned into orders"
+  },
+  "ranking": {
+    "title": "Most reserved store",
+    "empty": "No reservations in the last 30 days."
+  },
+  "tabs": {
+    "label": "Reservations",
+    "reserved": "Waiting",
+    "converted": "Turned into orders"
+  },
+  "emptyReserved": "No reserved products.",
+  "searchProducts": "Search products",
+  "untitled": "Untitled product",
+  "createOrder": "Create an order",
+  "remove": "Remove {title} from reservations",
+  "thisProduct": "this product",
+  "emptyConverted": "No reservations turned into orders yet."
+}

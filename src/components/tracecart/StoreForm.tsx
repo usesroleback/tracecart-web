@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Provider } from "@/lib/types";
@@ -17,6 +18,7 @@ export function StoreForm({
   onSaved: () => void;
   onCancel: () => void;
 }) {
+  const t = useTranslations("stores");
   const [name, setName] = useState(store?.name ?? "");
   const [slug, setSlug] = useState(store?.slug ?? "");
   const [domains, setDomains] = useState(store?.domains.join(", ") ?? "");
@@ -53,7 +55,7 @@ export function StoreForm({
       }
       onSaved();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible d'enregistrer la boutique");
+      setError(err instanceof Error ? err.message : t("form.failed"));
     } finally {
       setSubmitting(false);
     }
@@ -65,14 +67,14 @@ export function StoreForm({
       className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
       <h2 className="rb-title-l text-[20px]">
-        {store ? `Modifier ${store.name}` : "Nouvelle boutique"}
+        {store ? t("form.editTitle", { name: store.name }) : t("new")}
       </h2>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Field label="Nom">
+        <Field label={t("form.name")}>
           <input required value={name} onChange={(e) => setName(e.target.value)} className={inputClasses} />
         </Field>
-        <Field label="Slug">
+        <Field label={t("form.slug")}>
           <input
             required
             value={slug}
@@ -83,7 +85,7 @@ export function StoreForm({
             className={`${inputClasses} disabled:opacity-60`}
           />
         </Field>
-        <Field label="Domaines (séparés par des virgules)" className="sm:col-span-2">
+        <Field label={t("form.domains")} className="sm:col-span-2">
           <input
             required
             value={domains}
@@ -92,17 +94,17 @@ export function StoreForm({
             className={inputClasses}
           />
         </Field>
-        <Field label="Type">
+        <Field label={t("form.type")}>
           <select
             value={type}
             onChange={(e) => setType(e.target.value as Provider["type"])}
             className={inputClasses}
           >
-            <option value="LOCAL_MARKETPLACE">Marché local</option>
-            <option value="INTERNATIONAL">International</option>
+            <option value="LOCAL_MARKETPLACE">{t("type.local")}</option>
+            <option value="INTERNATIONAL">{t("type.intl")}</option>
           </select>
         </Field>
-        <Field label="Devise par défaut">
+        <Field label={t("form.currency")}>
           <input
             required
             value={defaultCurrency}
@@ -111,15 +113,15 @@ export function StoreForm({
             className={inputClasses}
           />
         </Field>
-        <Field label="Logo (URL ou chemin local, ex : /images/brand/jumia.svg)" className="sm:col-span-2">
+        <Field label={t("form.logo")} className="sm:col-span-2">
           <input
             value={logoUrl}
             onChange={(e) => setLogoUrl(e.target.value)}
-            placeholder="/images/brand/jumia.svg ou https://..."
+            placeholder={t("form.logoPlaceholder")}
             className={inputClasses}
           />
         </Field>
-        <Field label="Notes internes" className="sm:col-span-2">
+        <Field label={t("form.notes")} className="sm:col-span-2">
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -129,7 +131,7 @@ export function StoreForm({
         </Field>
         <label className="flex items-center gap-2 text-sm text-ink sm:col-span-2">
           <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />
-          Boutique active
+          {t("form.active")}
         </label>
       </div>
 
@@ -137,10 +139,10 @@ export function StoreForm({
 
       <div className="mt-5 flex justify-end gap-2">
         <Button type="button" variant="secondary" onClick={onCancel}>
-          Annuler
+          {t("form.cancel")}
         </Button>
         <Button type="submit" loading={submitting}>
-          {store ? "Enregistrer" : "Créer la boutique"}
+          {store ? t("form.save") : t("form.create")}
         </Button>
       </div>
     </form>

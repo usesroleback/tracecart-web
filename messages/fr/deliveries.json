@@ -1,1 +1,32 @@
-{}
+{
+  "title": "Livraisons",
+  "subtitle": "Demandes de cotation et colis confirmés, prêts à prendre la route.",
+  "stages": {
+    "all": "Tous",
+    "quote": "À coter",
+    "waiting": "En attente du hub",
+    "ready": "À gérer",
+    "moving": "En route",
+    "delivered": "Livrés"
+  },
+  "stageLabel": "Étape",
+  "loading": "Chargement des livraisons...",
+  "empty": "Aucun colis assigné pour le moment.",
+  "emptyStage": "Aucun colis « {stage} » pour le moment.",
+  "caption": "Livraisons — {stage}",
+  "yourQuote": "Votre devis",
+  "showing": "Les {shown} colis les plus récents sur {total}.",
+  "todo": {
+    "title": "À faire",
+    "none": "Rien à coter ni à gérer pour le moment.",
+    "summaryQuotes": "{count, plural, one {# cotation à soumettre} other {# cotations à soumettre}}",
+    "summaryParcels": "{count, plural, one {# colis à gérer} other {# colis à gérer}}",
+    "quoteTitle": "Cotation attendue · {product}",
+    "quantity": "Quantité {quantity}.",
+    "quote": "Coter",
+    "readyTitle": "Prêt au hub · {product}",
+    "readyBody": "Le hub a confirmé le colis : il attend votre prise en charge.",
+    "open": "Ouvrir"
+  },
+  "notifications": "Dernières notifications"
+}

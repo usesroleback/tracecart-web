@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { LocationTimeline } from "./LocationTimeline";
@@ -11,6 +12,7 @@ const inputClasses =
 
 /** Partner-facing: report where the shipment currently is, and see the history of past reports. */
 export function LocationUpdateForm({ order, onChanged }: { order: Order; onChanged: () => void }) {
+  const t = useTranslations("orders.location");
   const [city, setCity] = useState("");
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -30,7 +32,7 @@ export function LocationUpdateForm({ order, onChanged }: { order: Order; onChang
       setNote("");
       onChanged();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Impossible d'enregistrer la position");
+      setError(err instanceof Error ? err.message : t("failed"));
     } finally {
       setSubmitting(false);
     }
@@ -38,13 +40,13 @@ export function LocationUpdateForm({ order, onChanged }: { order: Order; onChang
 
   return (
     <div className="@container space-y-3">
-      <p className="rb-overline">Où est le colis</p>
+      <p className="rb-overline">{t("title")}</p>
       <LocationTimeline updates={order.locationUpdates} />
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 @md:flex-row">
-        <input value={city} onChange={(e) => setCity(e.target.value)} aria-label="Ville ou lieu actuel" placeholder="Ville / lieu actuel" className={`flex-1 ${inputClasses}`} />
-        <input value={note} onChange={(e) => setNote(e.target.value)} aria-label="Note (optionnel)" placeholder="Note (optionnel)" className={`flex-1 ${inputClasses}`} />
+        <input value={city} onChange={(e) => setCity(e.target.value)} aria-label={t("city")} placeholder={t("cityPlaceholder")} className={`flex-1 ${inputClasses}`} />
+        <input value={note} onChange={(e) => setNote(e.target.value)} aria-label={t("note")} placeholder={t("note")} className={`flex-1 ${inputClasses}`} />
         <Button type="submit" size="s" loading={submitting} disabled={!city.trim() && !note.trim()}>
-          Signaler
+          {t("report")}
         </Button>
       </form>
       {error && <p className="text-xs text-critical">{error}</p>}

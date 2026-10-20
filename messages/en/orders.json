@@ -1,1 +1,245 @@
-{}
+{
+  "manual": {
+    "open": "Change the status manually",
+    "title": "Manual status change",
+    "note": "Note (required)",
+    "override": "Force it even if unpaid",
+    "apply": "Apply",
+    "failed": "Couldn't change the status"
+  },
+  "cancel": "Cancel",
+  "actionFailed": "Couldn't do that",
+  "partner": {
+    "waitingHub": "Waiting for the hub to confirm the handover.",
+    "delivered": "Delivered."
+  },
+  "source": {
+    "customerOwned": "Transport only",
+    "unknownStore": "Unknown store"
+  },
+  "table": {
+    "openOrder": "Open the order",
+    "order": "Order",
+    "productCustomer": "Product / customer",
+    "route": "Route",
+    "status": "Status",
+    "amount": "Amount",
+    "amountSuffix": " and last update",
+    "acceptedByCustomer": "Accepted by the customer",
+    "destination": "Destination",
+    "updated": "Updated"
+  },
+  "route": {
+    "label": "Route",
+    "labelFor": "Route of {reference}",
+    "legs": {
+      "order": "Order",
+      "hub": "Hub",
+      "moving": "On the road",
+      "delivery": "Delivery"
+    },
+    "state": {
+      "done": "done",
+      "now": "current leg",
+      "held": "held",
+      "exception": "exception",
+      "planned": "not started"
+    }
+  },
+  "card": {
+    "showDetails": "Show details",
+    "hideDetails": "Hide details"
+  },
+  "title": "Orders",
+  "summary": "{role} · {city} hub · {active} active",
+  "updatedAt": " · updated {time}",
+  "close": "Close",
+  "newIntent": "New intent",
+  "transportOnly": "Transport only",
+  "noHub": {
+    "title": "Set up your hub to get started",
+    "body": "Every order belongs to the hub of the operator who creates it. Set up yours before creating an intent.",
+    "cta": "Set up my hub"
+  },
+  "kpi": {
+    "active": "Active",
+    "preparing": "Preparing",
+    "hub": "Ready at the hub",
+    "moving": "On the road",
+    "delivered": "Delivered"
+  },
+  "segments": {
+    "all": "All",
+    "preparing": "Preparing",
+    "hub": "At the hub",
+    "moving": "On the road",
+    "delivered": "Delivered",
+    "exceptions": "Exceptions"
+  },
+  "statusLabel": "Status",
+  "loading": "Loading orders...",
+  "empty": "No orders yet.",
+  "emptySegment": "No orders in “{segment}” right now.",
+  "caption": "Orders — {segment}",
+  "showing": "The {shown} most recent orders of {total}.",
+  "decision": {
+    "title": "Needs a decision",
+    "none": "No declined or unavailable orders waiting.",
+    "open": "Open the order"
+  },
+  "detail": {
+    "breadcrumb": "Breadcrumb",
+    "back": {
+      "admin": "Orders",
+      "carrier": "Deliveries"
+    },
+    "updated": "Updated {when}",
+    "productPage": "Product page",
+    "copyLink": "Copy the customer link",
+    "copied": "Link copied",
+    "declined": "Order declined.",
+    "unavailable": "Order unavailable.",
+    "noNextStep": "No further step is planned for this order.",
+    "stoppedBy": " — {name}, {when}.",
+    "accepted": {
+      "title": "The customer accepted the quote.",
+      "body": "On {when}. Record the payment as soon as it arrives."
+    },
+    "sent": {
+      "title": "Quote sent to the customer.",
+      "body": "Waiting for their answer. You can send them the link again."
+    },
+    "cargo": "Cargo",
+    "product": "Product",
+    "quantity": "Quantity",
+    "volume": "Volume",
+    "source": "Source",
+    "notes": "Notes",
+    "customer": "Customer",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "destination": "Destination",
+    "hubCarrier": "Hub and carrier",
+    "hub": "Hub",
+    "carrier": "Carrier",
+    "createdBy": "Created by",
+    "payment": "Payment",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "amountsCaption": "Amounts for order {reference}",
+    "logistics": "Logistics",
+    "fee": "TraceCart fee",
+    "yourLogisticsQuote": "Your logistics quote",
+    "customerTotal": "Customer total",
+    "notQuoted": "Not quoted yet",
+    "history": "History",
+    "noHistory": "No status changes recorded.",
+    "positions": "Positions",
+    "nextStep": "Next step",
+    "photos": "Photos",
+    "noPhotos": "No photos of the goods yet.",
+    "photoOf": "Photo of {product}"
+  },
+  "form": {
+    "customerName": "Customer name",
+    "customerPhone": "Customer phone",
+    "customerEmail": "Customer email (optional)",
+    "quantity": "Quantity",
+    "destinationCity": "Destination city",
+    "destinationCountry": "Destination country",
+    "volume": "Estimated volume",
+    "notes": "Internal notes",
+    "cancel": "Cancel"
+  },
+  "intent": {
+    "title": "New intent",
+    "intro": "Paste the product link, then fill in the destination and the customer. Quoting (product cost, logistics, fees) comes next.",
+    "productUrl": "Product link",
+    "detect": "Detect",
+    "detecting": "Checking...",
+    "storeDetected": "Store detected: {name}",
+    "previewFailed": "No preview available; you can fill in the fields yourself.",
+    "productName": "Product name",
+    "productNamePlaceholder": "Confirm it yourself if it isn't detected",
+    "failed": "Couldn't create the intent",
+    "creating": "Creating...",
+    "create": "Create the intent"
+  },
+  "owned": {
+    "title": "Transport for goods already bought",
+    "intro": "The customer already bought this item — TraceCart only moves it. Fill in the customer, the destination and what needs to move; you'll add photos next.",
+    "what": "What needs to move",
+    "whatPlaceholder": "E.g. Samsung Galaxy A17 5G",
+    "failed": "Couldn't create the transport request",
+    "continue": "Continue",
+    "photosTitle": "Photos of the item",
+    "photosIntro": "Add photos of {product} before you finish — the carrier uses them to prepare their quote.",
+    "finish": "Finish"
+  },
+  "quote": {
+    "defaultTransport": "Transport",
+    "defaultHandling": "Handling",
+    "failed": "Couldn't send the quote",
+    "title": "Logistics quote",
+    "titleEdit": "Logistics quote (edit)",
+    "lineLabel": "Label (e.g. Transport)",
+    "lineAmount": "Amount",
+    "removeLine": "Remove the line",
+    "addLine": "+ Add a line",
+    "currency": "Currency",
+    "note": "Note (optional)",
+    "total": "Total",
+    "update": "Update the quote",
+    "send": "Send the quote"
+  },
+  "location": {
+    "title": "Where the parcel is",
+    "failed": "Couldn't save the position",
+    "city": "Current city or place",
+    "cityPlaceholder": "City / current place",
+    "note": "Note (optional)",
+    "report": "Report",
+    "none": "No position reported yet.",
+    "manual": "Manual"
+  },
+  "photos": {
+    "failed": "Couldn't upload the photos",
+    "uploading": "Uploading...",
+    "add": "Add photos of the item"
+  },
+  "closed": "Order closed.",
+  "desk": {
+    "photos": "Photos of the item",
+    "quote": "Logistics quote",
+    "carrierQuote": "The carrier's logistics quote",
+    "waiting": "Waiting for the quote.",
+    "waitingCarrier": "Waiting for the carrier's quote.",
+    "revise": "Revise the quote",
+    "propose": "Propose a quote",
+    "productCost": "Product cost",
+    "currency": "Currency",
+    "feeOptional": "Platform fee (optional)",
+    "feeDefault": "Platform fee (12% if left empty)",
+    "feePlaceholder": "Calculated automatically",
+    "saveCost": "Save the cost",
+    "saveFee": "Save the fee",
+    "estimatedTotal": "Estimated customer total",
+    "sendQuote": "Send the quote to the customer",
+    "quoteSent": "Quote sent",
+    "acceptedOn": "Accepted by the customer on {when} — payment to confirm",
+    "waitingCustomer": "Waiting for the customer's answer",
+    "paymentStatus": "Payment status: {status}",
+    "paid": "Paid",
+    "pending": "Pending",
+    "markPaid": "Mark paid"
+  },
+  "fulfil": {
+    "markPurchased": "Mark purchased",
+    "markReceived": "Mark received at the hub",
+    "confirm": "Confirm and hand over to the carrier",
+    "delivering": "The carrier is delivering it.",
+    "delivered": "Delivered.",
+    "updating": "Updating..."
+  }
+}
