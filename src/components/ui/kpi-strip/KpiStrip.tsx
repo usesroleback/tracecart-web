@@ -12,6 +12,9 @@ export type KpiStripItem = {
   aside?: ReactNode;
 };
 
+// Amounts like "3 788 680 XOF" step down a size so they stay on one line.
+const long = (v: ReactNode) => typeof v === "string" && v.length > 9;
+
 /**
  * TraceCartOps KPI strip (project/components/TraceCartOps/preview.html .kpis):
  * a 2px ink rule on top, 1px hairlines between cells, large light numerals —
@@ -31,7 +34,13 @@ export function KpiStrip({ items, className = "" }: { items: KpiStripItem[]; cla
           } max-lg:even:pl-4 max-lg:even:border-l`}
         >
           <div className="min-w-0">
-            <div className={`rb-numeral text-[32px] lg:text-[44px] ${item.critical ? "text-critical" : "text-ink"}`}>{item.value}</div>
+            <div
+              className={`rb-numeral ${long(item.value) ? "text-[26px] lg:text-[32px]" : "text-[32px] lg:text-[44px]"} ${
+                item.critical ? "text-critical" : "text-ink"
+              }`}
+            >
+              {typeof item.value === "string" ? item.value.replace(/\u202f/g, "\u00a0") : item.value}
+            </div>
             <div className="mt-1.5 text-[13px] text-ink-muted">{item.label}</div>
             {item.note && (
               <div className={`mt-0.5 text-xs font-semibold ${item.critical ? "text-critical" : "text-ink"}`}>{item.note}</div>

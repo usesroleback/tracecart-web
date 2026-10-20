@@ -4,7 +4,8 @@ import { DsAlertIcon, DsBorderIcon } from "@/icons";
 type Severity = "critical" | "held";
 
 const SEVERITY_CLASSES: Record<Severity, { card: string; glyph: string }> = {
-  critical: { card: "shadow-[inset_0_3px_0_var(--color-critical)]", glyph: "bg-critical text-white" },
+  // surface-raised, not white: dark mode's critical is a light coral, where white fails 3:1.
+  critical: { card: "shadow-[inset_0_3px_0_var(--color-critical)]", glyph: "bg-critical text-surface-raised" },
   held: { card: "shadow-[inset_0_3px_0_var(--color-signal)]", glyph: "bg-signal text-black" },
 };
 

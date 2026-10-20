@@ -16,13 +16,13 @@ export function sideColor(status: OrderStatus): CorridorPhase {
 }
 
 const FILLED_CLASSES: Record<CorridorPhase, string> = {
-  origin: "bg-origin-500 border-origin-500",
+  origin: "bg-ink border-ink",
   handoff: "bg-handoff-500 border-handoff-500",
   transit: "bg-transit-500 border-transit-500",
 };
 
 const RING_CLASSES: Record<CorridorPhase, string> = {
-  origin: "ring-origin-500",
+  origin: "ring-ink",
   handoff: "ring-handoff-500",
   transit: "ring-transit-500",
 };

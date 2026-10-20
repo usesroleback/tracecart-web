@@ -58,7 +58,7 @@ const Button: React.FC<ButtonProps> = ({
   href,
   "aria-label": ariaLabel,
 }) => {
-  const classes = `group/btn relative isolate inline-flex min-w-[var(--control-m)] items-center justify-center gap-2 font-semibold leading-none transition-[background-color,border-color,color,transform] duration-[var(--duration-quick)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-ink-muted disabled:border-line after:pointer-events-none after:absolute after:-inset-px after:rounded-[inherit] after:opacity-0 after:transition-opacity after:duration-[var(--duration-quick)] after:ease-[var(--ease-out)] hover:not-disabled:after:opacity-[0.08] ${
+  const classes = `group/btn relative isolate inline-flex min-w-[var(--control-m)] items-center justify-center gap-2 whitespace-nowrap font-semibold leading-none transition-[background-color,border-color,color,transform] duration-[var(--duration-quick)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-ink-muted disabled:border-line after:pointer-events-none after:absolute after:-inset-px after:rounded-[inherit] after:opacity-0 after:transition-opacity after:duration-[var(--duration-quick)] after:ease-[var(--ease-out)] hover:not-disabled:after:opacity-[0.08] ${
     corner ? "rounded-[var(--radius-m)_0_var(--radius-m)_var(--radius-m)]" : "rounded-[var(--radius-s)]"
   } ${block ? "w-full" : ""} ${SIZE_CLASSES[size]} ${VARIANT_CLASSES[variant]} ${className}`;
 

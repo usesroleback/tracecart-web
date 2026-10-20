@@ -79,16 +79,18 @@ export function OrdersTable({
     <>
       {/* sm and up: the table */}
       <div className="hidden w-full overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised sm:block">
-        <table className="w-full min-w-[760px] border-separate border-spacing-0 text-sm leading-5">
+        <table className="w-full min-w-[680px] border-separate border-spacing-0 text-sm leading-5">
           <caption className="sr-only">{caption}</caption>
           <thead>
             <tr>
               <th scope="col" className={`${TH} left-0 z-10 lg:static`}>Commande</th>
-              <th scope="col" className={TH}>Produit / client</th>
+              <th scope="col" className={`${TH} min-w-[200px]`}>Produit / client</th>
               <th scope="col" className={TH}>Trajet</th>
               <th scope="col" className={TH}>Statut</th>
-              <th scope="col" className={`${TH} text-right`}>{amountLabel}</th>
-              <th scope="col" className={TH}>Mis à jour</th>
+              <th scope="col" className={`${TH} text-right`}>
+                {amountLabel}
+                <span className="sr-only"> et date de mise à jour</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -119,7 +121,7 @@ export function OrdersTable({
                       >
                         {order.reference}
                       </button>
-                      <span className="block text-[13px] text-ink-muted">{sourceLabel(order)}</span>
+                      <span className="block max-w-[140px] truncate text-[13px] text-ink-muted">{sourceLabel(order)}</span>
                     </td>
                     <td className={td}>
                       <b className="font-semibold">
@@ -128,7 +130,7 @@ export function OrdersTable({
                       </b>
                       <span className="block text-[13px] text-ink-muted">{order.customerName}</span>
                     </td>
-                    <td className={`${td} whitespace-nowrap`}>
+                    <td className={`${td} min-w-[150px]`}>
                       {order.hub.city} → {order.destinationCity}
                       <span className="block text-[13px] text-ink-muted">{order.destinationCountry}</span>
                     </td>
@@ -140,14 +142,14 @@ export function OrdersTable({
                         </span>
                       )}
                     </td>
-                    <td className={`${td} whitespace-nowrap text-right font-semibold tabular-nums`}>
-                      {amount ?? <span className="font-normal text-ink-muted">—</span>}
+                    <td className={`${td} whitespace-nowrap text-right tabular-nums`}>
+                      <span className="font-semibold">{amount ?? <span className="font-normal text-ink-muted">—</span>}</span>
+                      <span className="block text-[13px] text-ink-muted">{formatDay(order.updatedAt)}</span>
                     </td>
-                    <td className={`${td} whitespace-nowrap tabular-nums text-ink-muted`}>{formatDay(order.updatedAt)}</td>
                   </tr>
                   {open && (
                     <tr id={`order-detail-${order.id}`}>
-                      <td colSpan={6} className={`${TD} ${last ? "border-b-0" : ""} bg-surface-raised px-4 py-5`}>
+                      <td colSpan={5} className={`${TD} ${last ? "border-b-0" : ""} bg-surface-raised px-4 py-5`}>
                         <OrderDetail order={order}>{renderDetail(order)}</OrderDetail>
                       </td>
                     </tr>
@@ -160,7 +162,7 @@ export function OrdersTable({
       </div>
 
       {/* Below sm: a card list — ID, route, status, amount */}
-      <ul className="grid gap-2 sm:hidden" aria-label={caption}>
+      <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label={caption}>
         {orders.map((order) => {
           const open = order.id === openId;
           const amount = amountOf(order);

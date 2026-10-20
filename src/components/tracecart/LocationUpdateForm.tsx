@@ -37,12 +37,12 @@ export function LocationUpdateForm({ order, onChanged }: { order: Order; onChang
   }
 
   return (
-    <div className="space-y-3">
+    <div className="@container space-y-3">
       <p className="rb-overline">Où est le colis</p>
       <LocationTimeline updates={order.locationUpdates} />
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
-        <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ville / lieu actuel" className={`flex-1 ${inputClasses}`} />
-        <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note (optionnel)" className={`flex-1 ${inputClasses}`} />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 @md:flex-row">
+        <input value={city} onChange={(e) => setCity(e.target.value)} aria-label="Ville ou lieu actuel" placeholder="Ville / lieu actuel" className={`flex-1 ${inputClasses}`} />
+        <input value={note} onChange={(e) => setNote(e.target.value)} aria-label="Note (optionnel)" placeholder="Note (optionnel)" className={`flex-1 ${inputClasses}`} />
         <Button type="submit" size="s" loading={submitting} disabled={!city.trim() && !note.trim()}>
           Signaler
         </Button>

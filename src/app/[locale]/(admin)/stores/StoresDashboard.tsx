@@ -151,7 +151,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
         </div>
       )}
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="mt-6 grid gap-6 2xl:grid-cols-[minmax(0,1fr)_400px]">
         <div className="min-w-0">
           {stores.length === 0 ? (
             <p className="text-sm text-ink-muted">Aucune boutique configurée.</p>
@@ -201,7 +201,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
                 </table>
               </div>
 
-              <ul className="grid gap-2 sm:hidden" aria-label="Boutiques">
+              <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label="Boutiques">
                 {stores.map((store) => (
                   <li key={store.id} className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-4">
                     <div className="flex items-center gap-3">

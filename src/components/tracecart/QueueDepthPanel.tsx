@@ -7,7 +7,7 @@ import { QueueStage } from "@/lib/kpi/types";
 import { STATUS_LABELS } from "@/lib/types";
 
 const PHASE_BAR: Record<QueueStage["phase"], string> = {
-  origin: "bg-origin-500",
+  origin: "bg-ink",
   handoff: "bg-handoff-500",
   transit: "bg-transit-500",
 };

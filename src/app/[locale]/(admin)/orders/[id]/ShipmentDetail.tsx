@@ -147,7 +147,7 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start">
         <div className="grid min-w-0 gap-4">
-          <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             <Card padding={24}>
               <h2 className="rb-title">Marchandise</h2>
               <Facts
@@ -171,7 +171,7 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
                 ]}
               />
             </Card>
-            <Card padding={24}>
+            <Card padding={24} className="md:col-span-2 xl:col-span-1">
               <h2 className="rb-title">Hub et partenaire</h2>
               <Facts
                 items={[
@@ -255,7 +255,8 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
           </div>
         </div>
 
-        <div className="grid gap-4 lg:sticky lg:top-24">
+        {/* Actions first on small screens (they are why the page is opened), beside the facts from lg. */}
+        <div className="order-first grid gap-4 lg:sticky lg:top-24 lg:order-none">
           <Card padding={24}>
             <h2 className="rb-title">Prochaine étape</h2>
             <div className="mt-4">

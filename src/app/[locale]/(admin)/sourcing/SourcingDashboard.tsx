@@ -292,7 +292,7 @@ export function SourcingDashboard({
             <>
               {/* sm and up: dense table, a row opens its candidates in place */}
               <div className="hidden w-full overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised sm:block">
-                <table className="w-full min-w-[760px] border-separate border-spacing-0 text-sm leading-5">
+                <table className="w-full min-w-[680px] border-separate border-spacing-0 text-sm leading-5">
                   <caption className="sr-only">Demandes de sourcing — {SEGMENT_LABELS[segment]}</caption>
                   <thead>
                     <tr>
@@ -352,7 +352,7 @@ export function SourcingDashboard({
               </div>
 
               {/* Below sm: a card list */}
-              <ul className="grid gap-2 sm:hidden" aria-label={`Demandes de sourcing — ${SEGMENT_LABELS[segment]}`}>
+              <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:hidden" aria-label={`Demandes de sourcing — ${SEGMENT_LABELS[segment]}`}>
                 {visible.map((r) => (
                   <li
                     key={r.id}

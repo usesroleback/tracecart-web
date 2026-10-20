@@ -20,6 +20,8 @@ export function useApexTheme() {
         // project/tokens.json) — ApexCharts bakes colors into SVG options, so
         // these stay literal hex rather than CSS vars.
         brand: "#19d36b", // accent
+        // Single-series marks (rankings): ink, since green means moving.
+        ink: isDark ? "#f2f3f1" : "#0d0f0e",
         origin: "#2440e0", // ds-info
         handoff: "#ffd60a", // signal — the "held" state
         transit: "#19d36b",
