@@ -1,1 +1,33 @@
-{}
+{
+  "loading": "Chargement de votre devis…",
+  "total": "Total",
+  "statusLine": "Statut : {status}",
+  "status": {
+    "INTENT_SUBMITTED": "Demande reçue",
+    "QUOTING": "Devis en préparation",
+    "QUOTED": "Devis en préparation",
+    "QUOTE_SENT": "Devis envoyé",
+    "PAID": "Payé",
+    "PURCHASED": "Acheté",
+    "RECEIVED_HUB": "Reçu à notre entrepôt",
+    "CONFIRMED_HUB": "Prêt pour l'expédition",
+    "PICKED_UP": "Pris en charge",
+    "IN_TRANSIT": "En route",
+    "DELIVERED": "Livré",
+    "DECLINED": "Refusé",
+    "UNAVAILABLE": "Indisponible"
+  },
+  "accept": "Accepter",
+  "decline": "Refuser",
+  "accepted": "Merci ! Un opérateur vous contactera pour finaliser le paiement.",
+  "paid": "Paiement confirmé — votre commande est en préparation.",
+  "declined": "Vous avez refusé ce devis.",
+  "retry": "Réessayer",
+  "errors": {
+    "notFound": "Ce lien de devis est invalide ou a expiré.",
+    "rateLimited": "Trop de tentatives. Patientez une minute, puis réessayez.",
+    "unavailable": "Impossible d'afficher votre devis pour le moment. Vérifiez votre connexion et réessayez.",
+    "alreadyAnswered": "Ce devis a déjà reçu une réponse. Voici son état actuel.",
+    "decisionFailed": "Votre réponse n'a pas pu être enregistrée. Réessayez."
+  }
+}

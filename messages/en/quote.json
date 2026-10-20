@@ -1,1 +1,33 @@
-{}
+{
+  "loading": "Loading your quote…",
+  "total": "Total",
+  "statusLine": "Status: {status}",
+  "status": {
+    "INTENT_SUBMITTED": "Request received",
+    "QUOTING": "Quote in preparation",
+    "QUOTED": "Quote in preparation",
+    "QUOTE_SENT": "Quote sent",
+    "PAID": "Paid",
+    "PURCHASED": "Purchased",
+    "RECEIVED_HUB": "Received at our warehouse",
+    "CONFIRMED_HUB": "Ready to ship",
+    "PICKED_UP": "Picked up",
+    "IN_TRANSIT": "In transit",
+    "DELIVERED": "Delivered",
+    "DECLINED": "Declined",
+    "UNAVAILABLE": "Unavailable"
+  },
+  "accept": "Accept",
+  "decline": "Decline",
+  "accepted": "Thank you! An operator will contact you to complete the payment.",
+  "paid": "Payment confirmed — your order is being prepared.",
+  "declined": "You declined this quote.",
+  "retry": "Try again",
+  "errors": {
+    "notFound": "This quote link is invalid or has expired.",
+    "rateLimited": "Too many attempts. Please wait a minute and try again.",
+    "unavailable": "We can't show your quote right now. Check your connection and try again.",
+    "alreadyAnswered": "This quote has already been answered. Here is its current status.",
+    "decisionFailed": "Your answer couldn't be saved. Please try again."
+  }
+}
