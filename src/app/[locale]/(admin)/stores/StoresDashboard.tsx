@@ -4,17 +4,25 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
 import { StoreForm } from "@/components/tracecart/StoreForm";
 import { Badge } from "@/components/ui/badge/Badge";
-import { Card } from "@/components/ui/card/Card";
+import { KpiStrip } from "@/components/ui/kpi-strip/KpiStrip";
 import Button from "@/components/ui/button/Button";
 import { PanelShell } from "@/components/tracecart/PanelShell";
 import { RankingBars } from "@/components/charts/RankingBars";
-import { GaugeCard } from "@/components/charts/GaugeCard";
+import { DsPlusIcon } from "@/icons";
 import { fetchBreakdown } from "@/lib/kpi/adapter";
 import { Breakdown } from "@/lib/kpi/types";
 import { Provider } from "@/lib/types";
 
 const RANKING_RANGE_DAYS = 90;
 
+const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
+const TD = "border-b border-line px-3 py-2 align-middle";
+
+/**
+ * Stores on the console layout: ruled counts instead of a gauge (the
+ * system's "calm, not a cockpit"), a dense table of stores, and orders per
+ * store beside it. A disabled store says so in its status instead of fading.
+ */
 export function StoresDashboard({ initialStores }: { initialStores: Provider[] }) {
   const [stores, setStores] = useState<Provider[]>(initialStores);
   const [showForm, setShowForm] = useState(false);
@@ -62,51 +70,76 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
     }
   }
 
+
   const activeCount = stores.filter((s) => s.isActive).length;
+  const typeLabel = (s: Provider) => (s.type === "LOCAL_MARKETPLACE" ? "Marché local" : "International");
+
+  function storeActions(store: Provider) {
+    return (
+      <div className="flex justify-end gap-2">
+        <Button
+          variant="secondary"
+          size="s"
+          onClick={() => {
+            setEditing(store);
+            setShowForm(true);
+          }}
+        >
+          Modifier
+        </Button>
+        <Button variant="ghost" size="s" onClick={() => toggleActive(store)} loading={busyId === store.id}>
+          {store.isActive ? "Désactiver" : "Activer"}
+        </Button>
+      </div>
+    );
+  }
+
+  function storeMark(store: Provider) {
+    return (
+      <span className="flex h-9 w-9 flex-none items-center justify-center rounded-[var(--radius-s)] bg-surface-sunken p-1.5">
+        {store.logoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={store.logoUrl} alt="" className="h-full w-full object-contain" />
+        ) : (
+          <span className="text-xs font-semibold text-ink-muted">{store.name.slice(0, 2).toUpperCase()}</span>
+        )}
+      </span>
+    );
+  }
+
+  const statusBadge = (store: Provider) =>
+    store.isActive ? <Badge variant="positive">Active</Badge> : <Badge variant="outline">Désactivée</Badge>;
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="rb-headline text-[32px]">Boutiques</h1>
-          <p className="mt-1 text-sm text-ink-muted">
-            {activeCount} boutique{activeCount !== 1 ? "s" : ""} active{activeCount !== 1 ? "s" : ""} sur{" "}
-            {stores.length} — gérez la détection de produits et la recherche par boutique.
-          </p>
+          <p className="mt-1 text-sm text-ink-muted">Gérez la détection de produits et la recherche par boutique.</p>
         </div>
         <Button
+          startIcon={showForm && !editing ? undefined : <DsPlusIcon width={18} height={18} />}
           onClick={() => {
             setEditing(null);
             setShowForm((v) => !v);
           }}
         >
-          {showForm && !editing ? "Fermer" : "+ Nouvelle boutique"}
+          {showForm && !editing ? "Fermer" : "Nouvelle boutique"}
         </Button>
       </div>
 
-      <div className="mb-6 grid gap-4 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <PanelShell
-            title="Commandes par boutique"
-            loading={rankingLoading}
-            error={rankingError}
-            empty={!!ranking && ranking.slices.length === 0}
-            emptyLabel="Aucune commande sur les 90 derniers jours."
-          >
-            {ranking && (
-              <RankingBars items={ranking.slices.map((s) => ({ key: s.key, label: s.label, value: s.count, logoUrl: s.logoUrl }))} />
-            )}
-          </PanelShell>
-        </div>
-        <PanelShell title="Boutiques actives" loading={false} error={null} empty={stores.length === 0} emptyLabel="Aucune boutique configurée.">
-          <div className="flex justify-center">
-            <GaugeCard label="Actives" value={stores.filter((s) => s.isActive).length} total={stores.length} height={160} />
-          </div>
-        </PanelShell>
-      </div>
+      <KpiStrip
+        className="mt-6"
+        items={[
+          { key: "active", value: activeCount, label: "Actives", note: `sur ${stores.length}` },
+          { key: "inactive", value: stores.length - activeCount, label: "Désactivées" },
+          { key: "local", value: stores.filter((s) => s.type === "LOCAL_MARKETPLACE").length, label: "Marchés locaux" },
+          { key: "intl", value: stores.filter((s) => s.type !== "LOCAL_MARKETPLACE").length, label: "Internationales" },
+        ]}
+      />
 
       {showForm && (
-        <div className="mb-6">
+        <div className="mt-6">
           <StoreForm
             store={editing ?? undefined}
             onSaved={handleSaved}
@@ -118,54 +151,87 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
         </div>
       )}
 
-      {stores.length === 0 && <p className="text-sm text-ink-muted">Aucune boutique configurée.</p>}
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {stores.map((store) => (
-          <Card key={store.id} className={`flex flex-col ${store.isActive ? "" : "opacity-60"}`}>
-            <div className="flex items-start justify-between">
-              <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-s)] bg-surface-sunken p-2.5">
-                {store.logoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={store.logoUrl} alt="" className="h-full w-full object-contain" />
-                ) : (
-                  <span className="text-sm font-semibold text-ink-muted">{store.name.slice(0, 2).toUpperCase()}</span>
-                )}
+      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
+        <div className="min-w-0">
+          {stores.length === 0 ? (
+            <p className="text-sm text-ink-muted">Aucune boutique configurée.</p>
+          ) : (
+            <>
+              <div className="hidden w-full overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised sm:block">
+                <table className="w-full min-w-[680px] border-separate border-spacing-0 text-sm leading-5">
+                  <caption className="sr-only">Boutiques</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col" className={TH}>Boutique</th>
+                      <th scope="col" className={TH}>Type</th>
+                      <th scope="col" className={TH}>Domaines</th>
+                      <th scope="col" className={TH}>Statut</th>
+                      <th scope="col" className={TH}>
+                        <span className="sr-only">Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stores.map((store, i) => {
+                      const td = `${TD} ${i === stores.length - 1 ? "border-b-0" : ""}`;
+                      return (
+                        <tr key={store.id}>
+                          <td className={td}>
+                            <span className="flex items-center gap-3">
+                              {storeMark(store)}
+                              <span className="min-w-0">
+                                <b className="font-semibold">{store.name}</b>
+                                {store.notes && <span className="block max-w-[280px] truncate text-[13px] text-ink-muted">{store.notes}</span>}
+                              </span>
+                            </span>
+                          </td>
+                          <td className={`${td} whitespace-nowrap`}>
+                            {typeLabel(store)}
+                            <span className="block text-[13px] text-ink-muted">{store.defaultCurrency}</span>
+                          </td>
+                          <td className={`${td} max-w-[260px]`}>
+                            <span className="rb-mono-s block truncate text-ink-muted">{store.domains.join(", ")}</span>
+                          </td>
+                          <td className={td}>{statusBadge(store)}</td>
+                          <td className={td}>{storeActions(store)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
-              <Badge variant={store.isActive ? "positive" : "default"}>{store.isActive ? "Active" : "Désactivée"}</Badge>
-            </div>
 
-            <p className="mt-3 text-sm font-semibold text-ink">{store.name}</p>
-            <p className="mt-0.5 text-xs text-ink-muted">
-              {store.type === "LOCAL_MARKETPLACE" ? "Marché local" : "International"} · {store.defaultCurrency}
-            </p>
-            <p className="mt-1 truncate text-xs text-ink-muted">{store.domains.join(", ")}</p>
-            {store.notes && <p className="mt-2 line-clamp-2 text-xs text-ink-muted">{store.notes}</p>}
+              <ul className="grid gap-2 sm:hidden" aria-label="Boutiques">
+                {stores.map((store) => (
+                  <li key={store.id} className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-4">
+                    <div className="flex items-center gap-3">
+                      {storeMark(store)}
+                      <b className="min-w-0 flex-1 truncate font-semibold">{store.name}</b>
+                      {statusBadge(store)}
+                    </div>
+                    <p className="mt-2 text-[13px] text-ink-muted">
+                      {typeLabel(store)} · {store.defaultCurrency}
+                    </p>
+                    <p className="rb-mono-s mt-0.5 truncate text-ink-muted">{store.domains.join(", ")}</p>
+                    <div className="mt-3">{storeActions(store)}</div>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
 
-            <div className="mt-4 flex gap-2">
-              <Button
-                variant="secondary"
-                size="s"
-                block
-                onClick={() => toggleActive(store)}
-                disabled={busyId === store.id}
-              >
-                {store.isActive ? "Désactiver" : "Activer"}
-              </Button>
-              <Button
-                variant="secondary"
-                size="s"
-                block
-                onClick={() => {
-                  setEditing(store);
-                  setShowForm(true);
-                }}
-              >
-                Modifier
-              </Button>
-            </div>
-          </Card>
-        ))}
+        <PanelShell
+          title="Commandes par boutique"
+          loading={rankingLoading}
+          error={rankingError}
+          empty={!!ranking && ranking.slices.length === 0}
+          emptyLabel="Aucune commande sur les 90 derniers jours."
+        >
+          {ranking && (
+            <RankingBars items={ranking.slices.map((s) => ({ key: s.key, label: s.label, value: s.count, logoUrl: s.logoUrl }))} />
+          )}
+        </PanelShell>
       </div>
     </div>
   );

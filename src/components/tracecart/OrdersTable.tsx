@@ -8,9 +8,17 @@ import Button from "@/components/ui/button/Button";
 import { DsArrowRightIcon } from "@/icons";
 import { Order } from "@/lib/types";
 
-function formatAmount(order: Order): string | null {
+/** The customer total — admins only; the API omits it for partners. */
+export function customerTotal(order: Order): string | null {
   if (order.customerQuoteTotal == null) return null;
   return `${order.customerQuoteTotal.toLocaleString("fr-FR")} ${order.currency ?? order.hub.currency}`;
+}
+
+/** The partner's own accepted logistics quote — safe to show to them. */
+export function logisticsAmount(order: Order): string | null {
+  const value = order.logisticsQuote?.amount ?? order.logisticsCost;
+  if (value == null) return null;
+  return `${Number(value).toLocaleString("fr-FR")} ${order.logisticsQuote?.currency ?? order.hub.currency}`;
 }
 
 function formatDay(iso: string): string {
@@ -56,12 +64,16 @@ export function OrdersTable({
   onToggle,
   renderDetail,
   caption,
+  amountOf = customerTotal,
+  amountLabel = "Montant",
 }: {
   orders: Order[];
   openId: string | null;
   onToggle: (id: string) => void;
   renderDetail: (order: Order) => ReactNode;
   caption: string;
+  amountOf?: (order: Order) => string | null;
+  amountLabel?: string;
 }) {
   return (
     <>
@@ -75,7 +87,7 @@ export function OrdersTable({
               <th scope="col" className={TH}>Produit / client</th>
               <th scope="col" className={TH}>Trajet</th>
               <th scope="col" className={TH}>Statut</th>
-              <th scope="col" className={`${TH} text-right`}>Montant</th>
+              <th scope="col" className={`${TH} text-right`}>{amountLabel}</th>
               <th scope="col" className={TH}>Mis à jour</th>
             </tr>
           </thead>
@@ -84,7 +96,7 @@ export function OrdersTable({
               const open = order.id === openId;
               const last = i === orders.length - 1;
               const td = `${TD} ${last && !open ? "border-b-0" : ""}`;
-              const amount = formatAmount(order);
+              const amount = amountOf(order);
               return (
                 <Fragment key={order.id}>
                   <tr
@@ -151,7 +163,7 @@ export function OrdersTable({
       <ul className="grid gap-2 sm:hidden" aria-label={caption}>
         {orders.map((order) => {
           const open = order.id === openId;
-          const amount = formatAmount(order);
+          const amount = amountOf(order);
           return (
             <li
               key={order.id}

@@ -81,7 +81,7 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
           </div>
         ))}
       </div>
-      <button type="button" onClick={addItem} className="text-xs font-medium text-accent-ink hover:underline">
+      <button type="button" onClick={addItem} className="rb-link text-xs font-medium">
         + Ajouter une ligne
       </button>
 

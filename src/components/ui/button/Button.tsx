@@ -20,6 +20,8 @@ interface ButtonProps {
   className?: string;
   /** Renders an <a> instead of a <button> (same chrome) — for CTAs that navigate, so a <button> never ends up nested inside a surrounding <a>. */
   href?: string;
+  /** Required when the button shows only an icon. */
+  "aria-label"?: string;
 }
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
@@ -54,6 +56,7 @@ const Button: React.FC<ButtonProps> = ({
   block = false,
   type = "button",
   href,
+  "aria-label": ariaLabel,
 }) => {
   const classes = `group/btn relative isolate inline-flex min-w-[var(--control-m)] items-center justify-center gap-2 font-semibold leading-none transition-[background-color,border-color,color,transform] duration-[var(--duration-quick)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-ink-muted disabled:border-line after:pointer-events-none after:absolute after:-inset-px after:rounded-[inherit] after:opacity-0 after:transition-opacity after:duration-[var(--duration-quick)] after:ease-[var(--ease-out)] hover:not-disabled:after:opacity-[0.08] ${
     corner ? "rounded-[var(--radius-m)_0_var(--radius-m)_var(--radius-m)]" : "rounded-[var(--radius-s)]"
@@ -78,7 +81,7 @@ const Button: React.FC<ButtonProps> = ({
   // URLs stay plain, external ones opening in a new tab.
   if (href && href.startsWith("/") && !href.startsWith("//")) {
     return (
-      <Link href={href} className={classes} onClick={onClick}>
+      <Link href={href} className={classes} onClick={onClick} aria-label={ariaLabel}>
         {content}
       </Link>
     );
@@ -86,14 +89,14 @@ const Button: React.FC<ButtonProps> = ({
   if (href) {
     const external = /^https?:\/\//.test(href);
     return (
-      <a href={href} className={classes} onClick={onClick} {...(external ? { target: "_blank", rel: "noreferrer" } : {})}>
+      <a href={href} className={classes} onClick={onClick} aria-label={ariaLabel} {...(external ? { target: "_blank", rel: "noreferrer" } : {})}>
         {content}
       </a>
     );
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} disabled={disabled || loading} aria-busy={loading || undefined}>
+    <button type={type} className={classes} onClick={onClick} disabled={disabled || loading} aria-busy={loading || undefined} aria-label={ariaLabel}>
       {content}
     </button>
   );

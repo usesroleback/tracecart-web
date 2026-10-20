@@ -184,7 +184,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
         <h1 className="rb-headline text-[32px]">Rechercher &amp; réserver</h1>
         <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
           Parcourez une boutique ou cherchez un produit, puis réservez-le pour le retrouver dans{" "}
-          <Link href="/reservations" className="text-accent-ink underline">
+          <Link href="/reservations" className="rb-link">
             Réservations
           </Link>
           .
@@ -329,7 +329,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
           </p>
           <Link
             href="/orders"
-            className="mt-3 inline-block text-xs font-medium text-accent-ink underline"
+            className="rb-link mt-3 inline-block text-xs font-medium"
           >
             Coller un lien produit dans une nouvelle commande
           </Link>
@@ -368,7 +368,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     {item.title ?? "Produit sans titre"}
                   </p>
                   {item.price != null && (
-                    <p className="mt-2 text-base font-semibold text-accent-ink">
+                    <p className="mt-2 text-base font-semibold tabular-nums text-ink">
                       {item.price.toLocaleString("fr-FR")}{" "}
                       <span className="text-xs font-normal text-ink-muted">{item.currency} · prix source, à titre indicatif</span>
                     </p>

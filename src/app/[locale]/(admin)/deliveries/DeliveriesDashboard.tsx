@@ -2,30 +2,70 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
-import { OrderCard } from "@/components/tracecart/OrderCard";
+import { OrdersTable, logisticsAmount } from "@/components/tracecart/OrdersTable";
 import { OrderPartnerPanel } from "@/components/tracecart/OrderPartnerPanel";
 import { QueueDepthPanel } from "@/components/tracecart/QueueDepthPanel";
+import { Badge } from "@/components/ui/badge/Badge";
+import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
+import { ExceptionCard } from "@/components/ui/exception-card/ExceptionCard";
+import { KpiStrip } from "@/components/ui/kpi-strip/KpiStrip";
+import { SegmentedTabs } from "@/components/ui/tabs/Tabs";
 import { fetchStatusCounts } from "@/lib/kpi/adapter";
-import { Notification, Order, OrderStatus, Paginated, STATUS_LABELS } from "@/lib/types";
+import { ORDERS_PAGE_LIMIT } from "@/lib/ordersQuery";
+import { Notification, Order, OrderStatus, Paginated } from "@/lib/types";
 
-const PARTNER_STAGES = ["QUOTING", "CONFIRMED_HUB", "PICKED_UP", "IN_TRANSIT", "DELIVERED"] as const;
+type Segment = "all" | "quote" | "waiting" | "ready" | "moving" | "delivered";
 
-export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] }) {
+// The partner's side of the lifecycle: quote it, wait for the hub, collect
+// it, drive it, deliver it. Declined/unavailable orders fall under "all" only.
+const SEGMENT_STATUSES: Record<Exclude<Segment, "all">, OrderStatus[]> = {
+  quote: ["QUOTING", "QUOTED"],
+  waiting: ["INTENT_SUBMITTED", "QUOTE_SENT", "PAID", "PURCHASED", "RECEIVED_HUB"],
+  ready: ["CONFIRMED_HUB"],
+  moving: ["PICKED_UP", "IN_TRANSIT"],
+  delivered: ["DELIVERED"],
+};
+
+const SEGMENT_LABELS: Record<Segment, string> = {
+  all: "Tous",
+  quote: "À coter",
+  waiting: "En attente du hub",
+  ready: "À prendre en charge",
+  moving: "En route",
+  delivered: "Livrés",
+};
+
+const inSegment = (status: OrderStatus, segment: Segment) =>
+  segment === "all" || SEGMENT_STATUSES[segment].includes(status);
+
+const sumOf = (counts: Partial<Record<OrderStatus, number>>, statuses: OrderStatus[]) =>
+  statuses.reduce((n, s) => n + (counts[s] ?? 0), 0);
+
+/**
+ * The logistics partner's console, on the TraceCartOps layout: what needs a
+ * quote or a pickup surfaces first in the right column; the table carries
+ * the partner's own logistics quote, never the customer's total.
+ */
+export function DeliveriesDashboard({ initialOrders, initialTotal }: { initialOrders: Order[]; initialTotal: number }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [total, setTotal] = useState(initialTotal);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [counts, setCounts] = useState<Partial<Record<OrderStatus, number>>>({});
+  const [segment, setSegment] = useState<Segment>("all");
+  const [openId, setOpenId] = useState<string | null>(null);
   // True from the start: the first load begins as soon as the page mounts.
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
     try {
       const [result, notifs, statusCounts] = await Promise.all([
-        api.get<{ items: Order[] }>("/orders"),
+        api.get<{ items: Order[]; total: number }>(`/orders?limit=${ORDERS_PAGE_LIMIT}`),
         api.get<Paginated<Notification>>("/notifications?limit=5"),
         fetchStatusCounts(),
       ]);
       setOrders(result.items);
+      setTotal(result.total);
       setNotifications(notifs.items);
       setCounts(statusCounts);
     } finally {
@@ -42,56 +82,126 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
     await load();
   }
 
+  const visible = orders.filter((o) => inSegment(o.status, segment));
+  const toQuote = orders.filter((o) => inSegment(o.status, "quote"));
+  const toCollect = orders.filter((o) => inSegment(o.status, "ready"));
+  const inApp = notifications.filter((n) => n.channel === "IN_APP");
+
   return (
     <div>
-      <div className="mb-6">
+      <div>
         <h1 className="rb-headline text-[32px]">Livraisons</h1>
-        <p className="mt-1 text-sm text-ink-muted">
-          Demandes de cotation et colis confirmés, prêts à prendre la route.
-        </p>
+        <p className="mt-1 text-sm text-ink-muted">Demandes de cotation et colis confirmés, prêts à prendre la route.</p>
       </div>
 
-      <div className="mb-6 grid grid-cols-3 border-t-[var(--border-strong)] border-b border-t-ink border-b-line sm:grid-cols-5">
-        {PARTNER_STAGES.map((status, i) => (
-          <div key={status} className={`py-4 pr-3 ${i > 0 ? "border-l border-line pl-3" : ""}`}>
-            <p className="rb-numeral-l text-[28px]">{counts[status] ?? 0}</p>
-            <p className="mt-1 text-[12px] text-ink-muted">{STATUS_LABELS[status]}</p>
+      <KpiStrip
+        className="mt-6"
+        items={[
+          { key: "quote", value: sumOf(counts, SEGMENT_STATUSES.quote), label: "À coter" },
+          { key: "waiting", value: sumOf(counts, SEGMENT_STATUSES.waiting), label: "En attente du hub" },
+          { key: "ready", value: sumOf(counts, SEGMENT_STATUSES.ready), label: "À prendre en charge" },
+          { key: "moving", value: sumOf(counts, SEGMENT_STATUSES.moving), label: "En route" },
+          { key: "delivered", value: sumOf(counts, SEGMENT_STATUSES.delivered), label: "Livrés" },
+        ]}
+      />
+
+      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="min-w-0">
+          <SegmentedTabs
+            label="Étape"
+            className="mb-3"
+            value={segment}
+            onChange={setSegment}
+            tabs={(Object.keys(SEGMENT_LABELS) as Segment[]).map((id) => ({
+              id,
+              label: SEGMENT_LABELS[id],
+              count: orders.filter((o) => inSegment(o.status, id)).length,
+            }))}
+          />
+
+          {loading && orders.length === 0 && <p className="text-sm text-ink-muted">Chargement des livraisons...</p>}
+          {!loading && orders.length === 0 && <p className="text-sm text-ink-muted">Aucun colis assigné pour le moment.</p>}
+          {orders.length > 0 && visible.length === 0 && (
+            <p className="text-sm text-ink-muted">Aucun colis « {SEGMENT_LABELS[segment].toLowerCase()} » pour le moment.</p>
+          )}
+          {visible.length > 0 && (
+            <OrdersTable
+              caption={`Livraisons — ${SEGMENT_LABELS[segment]}`}
+              orders={visible}
+              openId={openId}
+              onToggle={(id) => setOpenId((cur) => (cur === id ? null : id))}
+              amountOf={logisticsAmount}
+              amountLabel="Votre devis"
+              renderDetail={(order) => <OrderPartnerPanel order={order} onChanged={refresh} />}
+            />
+          )}
+          {total > orders.length && (
+            <p className="mt-3 text-[13px] text-ink-muted">
+              Les {orders.length} colis les plus récents sur {total}.
+            </p>
+          )}
+        </div>
+
+        <aside className="grid content-start gap-3" aria-label="À faire">
+          <div className="flex items-center justify-between">
+            <h2 className="rb-title">À faire</h2>
+            {toQuote.length + toCollect.length > 0 && <Badge variant="attn">{toQuote.length + toCollect.length}</Badge>}
           </div>
-        ))}
-      </div>
-
-      <div className="mb-6">
-        <QueueDepthPanel />
-      </div>
-
-      {notifications.filter((n) => n.channel === "IN_APP").length > 0 && (
-        <Card className="mb-6">
-          <h2 className="rb-title text-[14px] mb-3">Dernières notifications</h2>
-          <ul className="space-y-2">
-            {notifications
-              .filter((n) => n.channel === "IN_APP")
-              .map((n) => (
-                <li key={n.id} className="text-sm">
-                  <span className="font-medium text-ink">{n.title}</span>
-                  <span className="ml-2 text-ink-muted">{n.body}</span>
-                </li>
+          {toQuote.length + toCollect.length === 0 ? (
+            <p className="text-sm text-ink-muted">Rien à coter ni à prendre en charge pour le moment.</p>
+          ) : (
+            <>
+              {toQuote.map((order) => (
+                <ExceptionCard
+                  key={order.id}
+                  severity="held"
+                  title={`Cotation attendue · ${order.productName}`}
+                  meta={`${order.reference} · ${order.hub.city} → ${order.destinationCity}`}
+                  actions={
+                    <Button size="s" variant="secondary" href={`/orders/${order.id}`}>
+                      Coter
+                    </Button>
+                  }
+                >
+                  Quantité {order.quantity.toLocaleString("fr-FR")}.
+                </ExceptionCard>
               ))}
-          </ul>
-        </Card>
-      )}
+              {toCollect.map((order) => (
+                <ExceptionCard
+                  key={order.id}
+                  severity="held"
+                  title={`Prêt au hub · ${order.productName}`}
+                  meta={`${order.reference} · ${order.hub.city} → ${order.destinationCity}`}
+                  actions={
+                    <Button size="s" variant="secondary" href={`/orders/${order.id}`}>
+                      Ouvrir
+                    </Button>
+                  }
+                >
+                  Le hub a confirmé le colis : il attend votre prise en charge.
+                </ExceptionCard>
+              ))}
+            </>
+          )}
 
-      <div className="space-y-3">
-        {loading && orders.length === 0 && (
-          <p className="text-sm text-ink-muted">Chargement des livraisons...</p>
-        )}
-        {!loading && orders.length === 0 && (
-          <p className="text-sm text-ink-muted">Aucun colis assigné pour le moment.</p>
-        )}
-        {orders.map((order) => (
-          <OrderCard key={order.id} order={order}>
-            <OrderPartnerPanel order={order} onChanged={refresh} />
-          </OrderCard>
-        ))}
+          {inApp.length > 0 && (
+            <Card className="mt-3">
+              <h2 className="rb-title text-[16px]">Dernières notifications</h2>
+              <ul className="mt-3 grid gap-3">
+                {inApp.map((n) => (
+                  <li key={n.id} className="text-sm">
+                    <span className="block font-medium text-ink">{n.title}</span>
+                    <span className="text-ink-muted">{n.body}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )}
+
+          <div className="mt-3">
+            <QueueDepthPanel />
+          </div>
+        </aside>
       </div>
     </div>
   );

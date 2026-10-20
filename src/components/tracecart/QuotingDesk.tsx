@@ -147,10 +147,10 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
       </div>
 
       {total != null && order.status === "QUOTED" && (
-        <div className="rounded-[var(--radius-s)] bg-accent-soft p-3 text-sm">
+        <div className="rounded-[var(--radius-s)] bg-surface-sunken p-3 text-sm">
           <div className="flex justify-between">
             <span className="text-ink-muted">Total client estimé</span>
-            <span className="font-semibold text-accent-ink">
+            <span className="font-semibold tabular-nums text-ink">
               {total.toLocaleString("fr-FR")} {currency}
             </span>
           </div>
@@ -170,10 +170,10 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
 
       {order.status === "QUOTE_SENT" && (
         <div className="space-y-2">
-          <div className="rounded-[var(--radius-s)] bg-accent-soft p-3 text-sm">
+          <div className="rounded-[var(--radius-s)] bg-surface-sunken p-3 text-sm">
             <div className="flex justify-between">
               <span className="text-ink-muted">Devis envoyé</span>
-              <span className="font-semibold text-accent-ink">
+              <span className="font-semibold tabular-nums text-ink">
                 {order.customerQuoteTotal?.toLocaleString("fr-FR")} {order.currency ?? order.hub.currency}
               </span>
             </div>

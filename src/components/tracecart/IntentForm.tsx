@@ -174,7 +174,7 @@ export function IntentForm({
             </Button>
           </div>
           {provider && (
-            <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-accent-ink">
+            <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-positive">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Boutique détectée : {provider.name}
             </p>
           )}

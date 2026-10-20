@@ -173,9 +173,9 @@ function QuoteDetails({
       <p className="mt-1 text-center text-sm text-ink-muted">{quote.route}</p>
 
       {quote.customerQuoteTotal != null && (
-        <div className="mt-5 rounded-[var(--radius-s)] bg-accent-soft p-4 text-center">
+        <div className="mt-5 rounded-[var(--radius-s)] bg-surface-sunken p-4 text-center">
           <p className="text-xs text-ink-muted">{t("total")}</p>
-          <p className="text-2xl font-semibold text-accent-ink">
+          <p className="text-2xl font-semibold tabular-nums text-ink">
             {new Intl.NumberFormat(locale).format(quote.customerQuoteTotal)} {quote.currency}
           </p>
         </div>

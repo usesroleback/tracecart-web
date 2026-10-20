@@ -65,7 +65,7 @@ export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlic
               <span className="min-w-0 flex-1 truncate text-sm text-ink">
                 {slice.label}
                 {i === 0 && slices.length > 1 && (
-                  <span className="ml-1.5 rounded-full bg-accent-soft px-1.5 py-0.5 text-[10px] font-medium text-accent-ink">
+                  <span className="ml-1.5 rounded-[var(--radius-xs)] bg-surface-sunken px-1.5 py-0.5 text-[11px] font-semibold text-ink">
                     Le plus utilisé
                   </span>
                 )}

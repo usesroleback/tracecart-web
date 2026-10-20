@@ -96,7 +96,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
       </p>
 
       {detect?.location && (
-        <p className="mt-4 rounded-[var(--radius-s)] bg-accent-soft px-3 py-2 text-xs text-accent-ink">
+        <p className="mt-4 rounded-[var(--radius-s)] bg-positive-soft px-3 py-2 text-xs text-positive">
           Position détectée : {detect.location.city}, {detect.location.country}
         </p>
       )}
@@ -140,7 +140,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
             <button
               type="button"
               onClick={() => setCreatingNew(true)}
-              className="text-sm font-medium text-accent-ink hover:underline"
+              className="rb-link text-sm font-medium"
             >
               + Créer un nouveau hub
             </button>

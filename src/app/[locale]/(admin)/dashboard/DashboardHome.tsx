@@ -93,7 +93,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="rb-title text-[14px]">Nécessite votre attention</h2>
-            <Link href="/orders" className="text-xs font-medium text-accent-ink hover:underline">
+            <Link href="/orders" className="rb-link text-xs font-medium">
               Voir tout
             </Link>
           </div>
@@ -105,7 +105,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="rb-title text-[14px]">Commandes récentes</h2>
-            <Link href="/orders" className="text-xs font-medium text-accent-ink hover:underline">
+            <Link href="/orders" className="rb-link text-xs font-medium">
               Voir tout
             </Link>
           </div>
@@ -152,7 +152,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
       <div className="mb-6">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="rb-title text-[14px]">Nécessite votre attention</h2>
-          <Link href="/deliveries" className="text-xs font-medium text-accent-ink hover:underline">
+          <Link href="/deliveries" className="rb-link text-xs font-medium">
             Voir tout
           </Link>
         </div>
@@ -164,7 +164,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
       <div>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="rb-title text-[14px]">Colis récents</h2>
-          <Link href="/deliveries" className="text-xs font-medium text-accent-ink hover:underline">
+          <Link href="/deliveries" className="rb-link text-xs font-medium">
             Voir tout
           </Link>
         </div>

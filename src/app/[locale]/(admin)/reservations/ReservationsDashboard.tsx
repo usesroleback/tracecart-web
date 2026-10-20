@@ -6,9 +6,12 @@ import { Link } from '@/i18n/navigation';
 import { api } from "@/lib/apiClient";
 import { useSession } from "@/context/SessionContext";
 import { IntentForm } from "@/components/tracecart/IntentForm";
-import { Badge } from "@/components/ui/badge/Badge";
+import { Alert } from "@/components/ui/alert/Alert";
 import { Card } from "@/components/ui/card/Card";
 import Button from "@/components/ui/button/Button";
+import { SegmentedTabs } from "@/components/ui/tabs/Tabs";
+import { OrderStatusTag } from "@/components/ui/status/Status";
+import { DsCloseIcon } from "@/icons";
 import { KpiRow } from "@/components/tracecart/KpiRow";
 import { PanelShell } from "@/components/tracecart/PanelShell";
 import { RankingBars } from "@/components/charts/RankingBars";
@@ -35,6 +38,7 @@ export function ReservationsDashboard({
   const [converting, setConverting] = useState<Reservation | null>(null);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [view, setView] = useState<"reserved" | "converted">("reserved");
   const [stats, setStats] = useState<ReservationStats | null>(null);
   const [statsError, setStatsError] = useState<string | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
@@ -148,7 +152,7 @@ export function ReservationsDashboard({
         </div>
       </div>
 
-      {error && <p className="mb-4 rounded-[var(--radius-s)] bg-critical-soft px-3 py-2 text-sm text-critical">{error}</p>}
+      {error && <Alert tone="critical" title={error} className="mb-4" />}
 
       {converting && (
         <div className="mb-6">
@@ -166,88 +170,100 @@ export function ReservationsDashboard({
         </div>
       )}
 
-      <div className="mb-8">
-        <p className="rb-overline mb-3 flex items-center gap-2">
-          En attente <Badge variant="attn">{reserved.length}</Badge>
-        </p>
-        {reserved.length === 0 ? (
-          <p className="text-sm text-ink-muted">
-            Aucun produit réservé.{" "}
-            <Link href="/products" className="font-medium text-accent-ink underline">
-              Rechercher des produits
-            </Link>
-          </p>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {reserved.map((r) => (
-              <Card key={r.id} padding={0} className="flex flex-col overflow-hidden">
-                <div className="relative aspect-square w-full overflow-hidden bg-surface-sunken">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={r.imageUrl || productPlaceholder(r.id)}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                  {r.provider?.logoUrl && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={r.provider.logoUrl}
-                      alt=""
-                      className="absolute left-2 top-2 h-6 w-6 rounded-[var(--radius-s)] bg-surface-raised/90 object-contain p-1 shadow-[var(--shadow-1)]"
-                    />
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col p-3.5">
-                  <p className="line-clamp-2 flex-1 text-sm font-medium text-ink">
-                    {r.title ?? "Produit sans titre"}
-                  </p>
-                  {r.price != null && (
-                    <p className="mt-2 text-base font-semibold text-accent-ink">
-                      {Number(r.price).toLocaleString("fr-FR")} <span className="text-xs font-normal text-ink-muted">{r.currency}</span>
-                    </p>
-                  )}
-                  <div className="mt-3 flex gap-2">
-                    <Button size="s" block onClick={() => setConverting(r)}>
-                      Créer une commande
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="s"
-                      onClick={() => remove(r.id)}
-                      disabled={removingId === r.id}
-                    >
-                      ✕
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
+      <SegmentedTabs
+        label="Réservations"
+        className="mb-4"
+        value={view}
+        onChange={setView}
+        tabs={[
+          { id: "reserved", label: "En attente", count: reserved.length },
+          { id: "converted", label: "Transformées en commande", count: converted.length },
+        ]}
+      />
 
-      {converted.length > 0 && (
-        <div>
-          <p className="rb-overline mb-3 flex items-center gap-2">
-            Transformées en commande <Badge variant="positive">{converted.length}</Badge>
-          </p>
-          <div className="space-y-2">
-            {converted.map((r) => (
-              <div
-                key={r.id}
-                className="flex items-center justify-between rounded-[var(--radius-m)] border border-line bg-surface-raised px-4 py-2.5 text-sm"
-              >
-                <span className="text-ink">{r.title ?? "Produit sans titre"}</span>
-                {r.order && (
-                  <Link href="/orders" className="font-medium text-accent-ink hover:underline">
-                    {r.order.reference}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
+      {view === "reserved" && (
+        <div className="mb-8">
+          {reserved.length === 0 ? (
+            <p className="text-sm text-ink-muted">
+              Aucun produit réservé.{" "}
+              <Link href="/products" className="rb-link">
+                Rechercher des produits
+              </Link>
+            </p>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {reserved.map((r) => (
+                <Card key={r.id} padding={0} className="flex flex-col overflow-hidden">
+                  <div className="relative aspect-square w-full overflow-hidden bg-surface-sunken">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={r.imageUrl || productPlaceholder(r.id)}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                    {r.provider?.logoUrl && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={r.provider.logoUrl}
+                        alt=""
+                        className="absolute left-2 top-2 h-6 w-6 rounded-[var(--radius-s)] bg-surface-raised/90 object-contain p-1 shadow-[var(--shadow-1)]"
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col p-3.5">
+                    <p className="line-clamp-2 flex-1 text-sm font-medium text-ink">
+                      {r.title ?? "Produit sans titre"}
+                    </p>
+                    {r.price != null && (
+                      <p className="mt-2 text-base font-semibold tabular-nums text-ink">
+                        {Number(r.price).toLocaleString("fr-FR")} <span className="text-xs font-normal text-ink-muted">{r.currency}</span>
+                      </p>
+                    )}
+                    <div className="mt-3 flex gap-2">
+                      <Button size="s" block onClick={() => setConverting(r)}>
+                        Créer une commande
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="s"
+                        onClick={() => remove(r.id)}
+                        loading={removingId === r.id}
+                        aria-label={`Retirer ${r.title ?? "ce produit"} des réservations`}
+                      >
+                        {removingId !== r.id && <DsCloseIcon width={16} height={16} aria-hidden />}
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       )}
+
+      {view === "converted" &&
+        (converted.length === 0 ? (
+          <p className="text-sm text-ink-muted">Aucune réservation transformée en commande pour le moment.</p>
+        ) : (
+          <ul className="overflow-hidden rounded-[var(--radius-m)] border border-line bg-surface-raised">
+            {converted.map((r) => (
+              <li
+                key={r.id}
+                className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line px-4 py-2.5 text-sm last:border-b-0"
+              >
+                <span className="min-w-0 flex-1 truncate text-ink">{r.title ?? "Produit sans titre"}</span>
+                {r.order && (
+                  <span className="flex items-center gap-4">
+                    <OrderStatusTag status={r.order.status} />
+                    <Link href={`/orders/${r.order.id}`} className="rb-mono rb-link">
+                      {r.order.reference}
+                    </Link>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        ))}
     </div>
   );
 }
