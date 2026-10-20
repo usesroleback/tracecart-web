@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
@@ -17,22 +17,25 @@ function stripLocale(pathname: string): string {
 }
 
 /**
- * No sign-in needed: the marketing site, the login page, the customer quote
- * page (/q/*) and the legal pages. Everything else is the console.
+ * Pages that never involve sign-in: the marketing site, the customer quote
+ * page (/q/*) and the legal pages. They skip Clerk entirely — with a
+ * development Clerk key, Clerk otherwise redirects a browser's first visit
+ * through Clerk's servers, even on pages that don't use it.
  */
-function isPublic(bare: string): boolean {
-  return bare === "/" || bare === "/login" || bare.startsWith("/q/") || bare.startsWith("/legal/");
+function isAnonymousPage(bare: string): boolean {
+  return bare === "/" || bare.startsWith("/q/") || bare.startsWith("/legal/");
 }
 
-export default clerkMiddleware(async (auth, req) => {
+const withClerk = clerkMiddleware(async (auth, req) => {
   const { pathname } = req.nextUrl;
 
   // Route handlers need Clerk's session (the API proxy calls auth()), but not
   // locale routing.
   if (pathname.startsWith("/api")) return NextResponse.next();
 
+  // The login page reads the session itself (to explain "no access" etc.).
   const bare = stripLocale(pathname);
-  if (!isPublic(bare)) {
+  if (bare !== "/login") {
     const { userId } = await auth();
     if (!userId) {
       const locale = pathname.match(LOCALE_PATTERN)?.[1] ?? routing.defaultLocale;
@@ -43,6 +46,14 @@ export default clerkMiddleware(async (auth, req) => {
   // Roles are checked by each console section's layout (see lib/session.ts).
   return intlMiddleware(req);
 });
+
+export default function middleware(req: NextRequest, event: NextFetchEvent) {
+  const { pathname } = req.nextUrl;
+  if (!pathname.startsWith("/api") && isAnonymousPage(stripLocale(pathname))) {
+    return intlMiddleware(req);
+  }
+  return withClerk(req, event);
+}
 
 export const config = {
   // Clerk's recommended matcher: everything except Next internals and static
