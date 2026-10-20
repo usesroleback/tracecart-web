@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TRACECART_API_URL } from "@/lib/apiBase";
+import { SERVER_API_URL } from "@/lib/apiBase";
 import { SESSION_COOKIE, decodeToken } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const apiRes = await fetch(`${TRACECART_API_URL}/auth/login`, {
+  const apiRes = await fetch(`${SERVER_API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
