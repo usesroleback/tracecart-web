@@ -27,14 +27,23 @@ export default function NotificationDropdown() {
       const res = await api.get<{ count: number }>("/notifications/unread-count");
       setCount(res.count);
     } catch {
-      // best-effort polling; ignore transient failures
+      // best-effort; ignore transient failures
     }
   }
 
   useEffect(() => {
-    refreshCount();
-    const interval = setInterval(refreshCount, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
+    let cancelled = false;
+    const poll = () =>
+      api.get<{ count: number }>("/notifications/unread-count").then(
+        (res) => !cancelled && setCount(res.count),
+        () => {} // best-effort polling; ignore transient failures
+      );
+    poll();
+    const interval = setInterval(poll, POLL_INTERVAL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, []);
 
   async function toggleDropdown() {

@@ -10,28 +10,28 @@ const DIMENSION_LABELS: Record<BreakdownDimension, string> = { provider: "Par bo
 
 export function BreakdownPanel({ rangeDays }: { rangeDays: number }) {
   const [dimension, setDimension] = useState<BreakdownDimension>("provider");
-  const [breakdown, setBreakdown] = useState<Breakdown | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // What was last loaded, and for which selection: loading is "the result
+  // isn't for the current selection yet", so nothing resets state in the effect.
+  const key = `${dimension}:${rangeDays}`;
+  const [result, setResult] = useState<{ key: string; breakdown: Breakdown | null; error: string | null } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError(null);
-    fetchBreakdown(dimension, rangeDays)
-      .then((data) => {
-        if (!cancelled) setBreakdown(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Impossible de charger la répartition");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+    fetchBreakdown(dimension, rangeDays).then(
+      (breakdown) => !cancelled && setResult({ key, breakdown, error: null }),
+      (err) =>
+        !cancelled &&
+        setResult({ key, breakdown: null, error: err instanceof Error ? err.message : "Impossible de charger la répartition" })
+    );
     return () => {
       cancelled = true;
     };
-  }, [dimension, rangeDays]);
+  }, [dimension, rangeDays, key]);
+
+  const current = result?.key === key ? result : null;
+  const loading = current === null;
+  const breakdown = current?.breakdown ?? null;
+  const error = current?.error ?? null;
 
   return (
     <PanelShell

@@ -10,28 +10,28 @@ const GRANULARITY_LABELS: Record<Granularity, string> = { day: "Jour", week: "Se
 
 export function TrendPanel({ rangeDays }: { rangeDays: number }) {
   const [granularity, setGranularity] = useState<Granularity>("day");
-  const [trend, setTrend] = useState<TrendSeries | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // What was last loaded, and for which selection: loading is "the result
+  // isn't for the current selection yet", so nothing resets state in the effect.
+  const key = `${granularity}:${rangeDays}`;
+  const [result, setResult] = useState<{ key: string; trend: TrendSeries | null; error: string | null } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    setError(null);
-    fetchTrend(granularity, rangeDays)
-      .then((data) => {
-        if (!cancelled) setTrend(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Impossible de charger la tendance");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+    fetchTrend(granularity, rangeDays).then(
+      (trend) => !cancelled && setResult({ key, trend, error: null }),
+      (err) =>
+        !cancelled &&
+        setResult({ key, trend: null, error: err instanceof Error ? err.message : "Impossible de charger la tendance" })
+    );
     return () => {
       cancelled = true;
     };
-  }, [granularity, rangeDays]);
+  }, [granularity, rangeDays, key]);
+
+  const current = result?.key === key ? result : null;
+  const loading = current === null;
+  const trend = current?.trend ?? null;
+  const error = current?.error ?? null;
 
   return (
     <PanelShell

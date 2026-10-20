@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
 import { IntentForm } from "@/components/tracecart/IntentForm";
 import { CustomerOwnedIntentForm } from "@/components/tracecart/CustomerOwnedIntentForm";
@@ -18,10 +18,10 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [counts, setCounts] = useState<Partial<Record<OrderStatus, number>>>({});
   const [formMode, setFormMode] = useState<"none" | "buy" | "customer_owned">("none");
-  const [loading, setLoading] = useState(false);
+  // True from the start: the first load begins as soon as the page mounts.
+  const [loading, setLoading] = useState(true);
 
-  async function refresh() {
-    setLoading(true);
+  const load = useCallback(async () => {
     try {
       const [result, statusCounts] = await Promise.all([api.get<{ items: Order[] }>("/orders"), fetchStatusCounts()]);
       setOrders(result.items);
@@ -29,11 +29,16 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
-    refresh();
-  }, []);
+    load();
+  }, [load]);
+
+  async function refresh() {
+    setLoading(true);
+    await load();
+  }
 
   async function handleCreated() {
     setFormMode("none");

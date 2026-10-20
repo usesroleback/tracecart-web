@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/apiClient";
 import { OrderCard } from "@/components/tracecart/OrderCard";
 import { OrderPartnerPanel } from "@/components/tracecart/OrderPartnerPanel";
@@ -15,10 +15,10 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [counts, setCounts] = useState<Partial<Record<OrderStatus, number>>>({});
-  const [loading, setLoading] = useState(false);
+  // True from the start: the first load begins as soon as the page mounts.
+  const [loading, setLoading] = useState(true);
 
-  async function refresh() {
-    setLoading(true);
+  const load = useCallback(async () => {
     try {
       const [result, notifs, statusCounts] = await Promise.all([
         api.get<{ items: Order[] }>("/orders"),
@@ -31,11 +31,16 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
-    refresh();
-  }, []);
+    load();
+  }, [load]);
+
+  async function refresh() {
+    setLoading(true);
+    await load();
+  }
 
   return (
     <div>

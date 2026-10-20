@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { Link } from '@/i18n/navigation';
 
 import { api } from "@/lib/apiClient";
@@ -24,6 +24,20 @@ const DEFAULT_QUERY = " ";
 const EMPTY_FACETS: SearchFacets = { categories: [], brands: [], priceRange: null };
 const EMPTY_PAGINATION: SearchPagination = { page: 1, totalResults: null, hasMore: false };
 
+function searchProducts(provider: Provider, q: string, filters: SearchFilters) {
+  const params = new URLSearchParams({ provider: provider.slug, q });
+  if (filters.category) params.set("category", filters.category);
+  if (filters.brand) params.set("brand", filters.brand);
+  if (filters.priceMin != null) params.set("priceMin", String(filters.priceMin));
+  if (filters.priceMax != null) params.set("priceMax", String(filters.priceMax));
+  if (filters.page && filters.page > 1) params.set("page", String(filters.page));
+  return api.get<ProductSearchResponse>(`/providers/search?${params.toString()}`);
+}
+
+function searchErrorMessage(err: unknown) {
+  return err instanceof Error ? err.message : "La recherche a échoué";
+}
+
 export function ProductSearch({ providers }: { providers: Provider[] }) {
   const [providerId, setProviderId] = useState(providers[0]?.id ?? "");
   const [query, setQuery] = useState("");
@@ -32,7 +46,8 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
   const [pagination, setPagination] = useState<SearchPagination>(EMPTY_PAGINATION);
   const [supported, setSupported] = useState(true);
   const [searched, setSearched] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // A general listing loads as soon as the page opens (see the effect below).
+  const [loading, setLoading] = useState(providers.length > 0);
   const [error, setError] = useState<string | null>(null);
   const [reservingKey, setReservingKey] = useState<string | null>(null);
   const [reservedKeys, setReservedKeys] = useState<Set<string>>(new Set());
@@ -44,26 +59,22 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
 
   const selectedProvider = providers.find((p) => p.id === providerId) ?? null;
 
+  const showResult = useCallback((result: ProductSearchResponse) => {
+    setResults(result.results);
+    setFacets(result.facets ?? EMPTY_FACETS);
+    setPagination(result.pagination ?? EMPTY_PAGINATION);
+    setSupported(result.supported);
+    setSearched(true);
+  }, []);
+
   async function runSearch(providerToUse: Provider | null, q: string, filters: SearchFilters) {
     if (!providerToUse) return;
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams({ provider: providerToUse.slug, q });
-      if (filters.category) params.set("category", filters.category);
-      if (filters.brand) params.set("brand", filters.brand);
-      if (filters.priceMin != null) params.set("priceMin", String(filters.priceMin));
-      if (filters.priceMax != null) params.set("priceMax", String(filters.priceMax));
-      if (filters.page && filters.page > 1) params.set("page", String(filters.page));
-
-      const result = await api.get<ProductSearchResponse>(`/providers/search?${params.toString()}`);
-      setResults(result.results);
-      setFacets(result.facets ?? EMPTY_FACETS);
-      setPagination(result.pagination ?? EMPTY_PAGINATION);
-      setSupported(result.supported);
-      setSearched(true);
+      showResult(await searchProducts(providerToUse, q, filters));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "La recherche a échoué");
+      setError(searchErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -78,17 +89,36 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
     };
   }
 
-  // Show a general listing as soon as a supported store is selected, before the admin types anything.
+  // Show a general listing for the first store as soon as the page opens,
+  // before the admin types anything.
+  const [initialProvider] = useState<Provider | null>(providers[0] ?? null);
   useEffect(() => {
+    if (!initialProvider) return;
+    let cancelled = false;
+    searchProducts(initialProvider, DEFAULT_QUERY, {})
+      .then(
+        (result) => !cancelled && showResult(result),
+        (err) => !cancelled && setError(searchErrorMessage(err))
+      )
+      .finally(() => !cancelled && setLoading(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [initialProvider, showResult]);
+
+  // Switching store starts over: clear the previous store's results and
+  // filters, then show its general listing.
+  function selectProvider(provider: Provider) {
+    if (provider.id === providerId) return;
+    setProviderId(provider.id);
     setResults([]);
     setSearched(false);
     setCategory("");
     setBrand("");
     setPriceMin("");
     setPriceMax("");
-    runSearch(selectedProvider, query.trim() || DEFAULT_QUERY, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [providerId]);
+    runSearch(provider, query.trim() || DEFAULT_QUERY, {});
+  }
 
   function handleSearch(e: FormEvent) {
     e.preventDefault();
@@ -170,7 +200,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
               <button
                 key={p.id}
                 type="button"
-                onClick={() => setProviderId(p.id)}
+                onClick={() => selectProvider(p)}
                 className={`flex items-center gap-2.5 rounded-[var(--radius-s)] border px-4 py-2.5 text-sm font-medium transition ${
                   active
                     ? "border-ink bg-surface-sunken text-ink"
