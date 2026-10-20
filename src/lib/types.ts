@@ -366,4 +366,6 @@ export interface PublicQuote {
   customerQuoteTotal: number | null;
   currency: string;
   paymentStatus: "UNPAID" | "PAID";
+  /** Set once the customer accepts; the status stays QUOTE_SENT until payment. */
+  quoteAcceptedAt: string | null;
 }

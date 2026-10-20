@@ -155,6 +155,8 @@ function QuoteDetails({
   onDecide: (decision: "accept" | "decline") => void;
 }) {
   const t = useTranslations("quote");
+  // From this visit's click, or recorded earlier (after a reload or a second visit).
+  const isAccepted = quote.status === "QUOTE_SENT" && (accepted || quote.quoteAcceptedAt != null);
 
   return (
     <div>
@@ -190,13 +192,13 @@ function QuoteDetails({
         </p>
       )}
 
-      {accepted && (
+      {isAccepted && (
         <p className="mt-4 rounded-[var(--radius-s)] bg-positive-soft px-3 py-2 text-center text-sm text-positive">
           {t("accepted")}
         </p>
       )}
 
-      {quote.status === "QUOTE_SENT" && !accepted && (
+      {quote.status === "QUOTE_SENT" && !isAccepted && (
         <div className="mt-5 flex gap-2">
           <Button variant="secondary" block onClick={() => onDecide("decline")} disabled={deciding}>
             {t("decline")}
