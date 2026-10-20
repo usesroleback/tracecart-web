@@ -1,34 +1,35 @@
 import { OrderStatus, ReservationStatus, SourcingRequestStatus, STATUS_LABELS } from "@/lib/types";
 import { sideColor } from "@/components/tracecart/CorridorTracker";
+import { DsCheckIcon, DsCloseIcon } from "@/icons";
 
 export type StatusState = "planned" | "moving" | "held" | "exception" | "done";
 
 const GLYPH_CLASSES: Record<StatusState, string> = {
-  planned: "shadow-[inset_0_0_0_1.5px_var(--color-line-strong)]",
-  moving: "bg-accent",
-  held: "bg-signal text-black",
-  exception: "rounded-[var(--radius-xs)] bg-critical text-white",
-  done: "bg-ink text-ink-inverse",
+  planned: "rounded-full shadow-[inset_0_0_0_1.5px_var(--color-line-strong)]",
+  moving: "rounded-full bg-accent",
+  held: "rounded-full bg-signal text-black",
+  exception: "rounded-[var(--radius-xs)] bg-critical text-surface-raised",
+  done: "rounded-full bg-ink text-ink-inverse",
 };
 
 /**
- * Terravia .sq-status (bundle.css L180-191): status is always shape + word,
+ * Design system .rb-status (bundle.css L180-191): status is always shape + word,
  * never color alone. planned = ring, moving = pulsing dot, held = minus,
  * exception = critical square x, done = ink check.
  */
 export function Status({ state, label, meta }: { state: StatusState; label: string; meta?: string }) {
   return (
     <span className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-[580] text-ink">
-      <span className={`relative grid h-[18px] w-[18px] flex-none place-items-center rounded-full ${GLYPH_CLASSES[state]}`}>
+      <span className={`relative grid h-[18px] w-[18px] flex-none place-items-center ${GLYPH_CLASSES[state]}`}>
         {state === "moving" && (
           <>
             <span className="h-1.5 w-1.5 rounded-full bg-black" />
-            <span className="absolute -inset-[3px] animate-[sq-pulse_1800ms_var(--ease-out)_infinite] rounded-full border-[1.5px] border-accent opacity-0" />
+            <span className="absolute -inset-[3px] animate-[rb-pulse_1800ms_var(--ease-out)_infinite] rounded-full border-[1.5px] border-accent opacity-0" />
           </>
         )}
         {state === "held" && <span className="h-[2px] w-2.5 bg-black" />}
-        {state === "exception" && <span className="text-[10px] leading-none">×</span>}
-        {state === "done" && <span className="text-[10px] leading-none">✓</span>}
+        {state === "exception" && <DsCloseIcon width={12} height={12} strokeWidth={2.5} aria-hidden />}
+        {state === "done" && <DsCheckIcon width={12} height={12} strokeWidth={2.5} aria-hidden />}
       </span>
       {label}
       {meta && <span className="font-normal text-ink-muted">{meta}</span>}

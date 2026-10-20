@@ -38,7 +38,7 @@ export function LocationUpdateForm({ order, onChanged }: { order: Order; onChang
 
   return (
     <div className="space-y-3">
-      <p className="sq-overline">Où est le colis</p>
+      <p className="rb-overline">Où est le colis</p>
       <LocationTimeline updates={order.locationUpdates} />
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
         <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ville / lieu actuel" className={`flex-1 ${inputClasses}`} />

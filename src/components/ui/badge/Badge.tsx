@@ -14,7 +14,7 @@ const VARIANT_CLASSES: Record<BadgeVariant, string> = {
   info: "bg-ds-info-soft text-ds-info",
 };
 
-/** Terravia .sq-badge (bundle.css L169-178). */
+/** Design system .rb-badge (bundle.css L169-178). */
 export function Badge({ children, variant = "default", className = "" }: { children: ReactNode; variant?: BadgeVariant; className?: string }) {
   return (
     <span

@@ -9,7 +9,7 @@ const fieldClasses = "w-full bg-transparent text-sm font-medium text-ink placeho
 function Field({ label, placeholder, value, onChange }: { label: string; placeholder: string; value: string; onChange: (v: string) => void }) {
   return (
     <label className="block px-5 py-3">
-      <span className="sq-overline">{label}</span>
+      <span className="rb-overline">{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -46,7 +46,7 @@ export function QuoteBar() {
         id="quote"
         className="rounded-[var(--radius-m)] border border-line bg-surface-raised px-6 py-8 text-center shadow-[var(--shadow-1)]"
       >
-        <p className="sq-title text-[18px]">{t("submittedTitle")}</p>
+        <p className="rb-title text-[18px]">{t("submittedTitle")}</p>
         <p className="mt-1 text-sm text-ink-muted">{t("submittedBody", { from, to })}</p>
       </div>
     );

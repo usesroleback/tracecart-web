@@ -21,7 +21,7 @@ export function Corridors() {
   return (
     <section id="corridors" className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
       <div className="flex items-end justify-between gap-4">
-        <h2 className="sq-headline">{t("title")}</h2>
+        <h2 className="rb-headline">{t("title")}</h2>
         <span className="hidden text-sm text-ink-muted sm:block">{t("allCorridors")}</span>
       </div>
 
@@ -36,7 +36,7 @@ export function Corridors() {
                 {t("dayRange", { min: c.daysMin, max: c.daysMax })}
               </p>
             </div>
-            <p className="sq-mono-s whitespace-nowrap text-ink-muted">{c.coords}</p>
+            <p className="rb-mono-s whitespace-nowrap text-ink-muted">{c.coords}</p>
           </div>
         ))}
       </div>

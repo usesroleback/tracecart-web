@@ -166,8 +166,8 @@ function QuoteDetails({
         alt=""
         className="mx-auto h-32 w-32 rounded-[var(--radius-s)] border border-line object-cover"
       />
-      <p className="mt-4 text-center sq-overline">{quote.reference}</p>
-      <h1 className="mt-1 text-center sq-title text-[18px]">
+      <p className="mt-4 text-center rb-overline">{quote.reference}</p>
+      <h1 className="mt-1 text-center rb-title text-[18px]">
         {quote.productName} {quote.quantity > 1 ? `× ${quote.quantity}` : ""}
       </h1>
       <p className="mt-1 text-center text-sm text-ink-muted">{quote.route}</p>

@@ -66,7 +66,7 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
     <div>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <h1 className="sq-headline text-[32px]">Commandes</h1>
+          <h1 className="rb-headline text-[32px]">Commandes</h1>
           <p className="mt-1 text-sm text-ink-muted">
             Gérant · {user.hub?.city} — de la demande client à la confirmation au hub.
           </p>
@@ -87,7 +87,7 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
       <div className="mt-6 grid grid-cols-3 border-t-[var(--border-strong)] border-b border-t-ink border-b-line sm:grid-cols-6">
         {STATUS_SEQUENCE.map((status, i) => (
           <div key={status} className={`py-4 pr-3 ${i > 0 ? "border-l border-line pl-3" : ""}`}>
-            <p className="sq-numeral-l text-[28px]">{counts[status] ?? 0}</p>
+            <p className="rb-numeral-l text-[28px]">{counts[status] ?? 0}</p>
             <p className="mt-1 text-[12px] text-ink-muted">{STATUS_LABELS[status]}</p>
           </div>
         ))}
@@ -122,7 +122,7 @@ export function OrdersDashboard({ initialOrders }: { initialOrders: Order[] }) {
         </div>
 
         <div className="grid content-start gap-3">
-          <h2 className="sq-title">Besoin d&apos;une action</h2>
+          <h2 className="rb-title">Besoin d&apos;une action</h2>
           {exceptions.length === 0 ? (
             <p className="text-sm text-ink-muted">Aucune commande déclinée ou indisponible en attente.</p>
           ) : (

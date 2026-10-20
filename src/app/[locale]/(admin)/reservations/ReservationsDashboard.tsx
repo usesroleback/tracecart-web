@@ -101,7 +101,7 @@ export function ReservationsDashboard({
   return (
     <div>
       <div className="mb-6">
-        <h1 className="sq-headline text-[32px]">Produits réservés</h1>
+        <h1 className="rb-headline text-[32px]">Produits réservés</h1>
         <p className="mt-1 text-sm text-ink-muted">
           Produits mis de côté depuis la recherche. Transformez-les en commande dès qu&apos;un client est prêt.
         </p>
@@ -167,7 +167,7 @@ export function ReservationsDashboard({
       )}
 
       <div className="mb-8">
-        <p className="sq-overline mb-3 flex items-center gap-2">
+        <p className="rb-overline mb-3 flex items-center gap-2">
           En attente <Badge variant="attn">{reserved.length}</Badge>
         </p>
         {reserved.length === 0 ? (
@@ -228,7 +228,7 @@ export function ReservationsDashboard({
 
       {converted.length > 0 && (
         <div>
-          <p className="sq-overline mb-3 flex items-center gap-2">
+          <p className="rb-overline mb-3 flex items-center gap-2">
             Transformées en commande <Badge variant="positive">{converted.length}</Badge>
           </p>
           <div className="space-y-2">

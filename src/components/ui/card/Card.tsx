@@ -5,9 +5,9 @@ type CardVariant = "default" | "flat" | "sunken" | "inverse";
 interface CardProps {
   children: ReactNode;
   variant?: CardVariant;
-  /** The broken corner (.sq-card--route): top-left 16px, the rest 2px. Max 1-2 per view. */
+  /** The broken corner (.rb-card--route): top-left 16px, the rest 2px. Max 1-2 per view. */
   route?: boolean;
-  /** .sq-card--corner: top-right broken instead — the Jobs-style corner, rarely needed here. */
+  /** .rb-card--corner: top-right broken instead — Roleback's Turn corner, rarely needed here. */
   corner?: boolean;
   interactive?: boolean;
   selected?: boolean;
@@ -22,7 +22,7 @@ const VARIANT_CLASSES: Record<CardVariant, string> = {
   inverse: "bg-surface-inverse text-ink-inverse border-0",
 };
 
-/** Terravia .sq-card (bundle.css L155-164): borders first, shadow only on hover/interactive. */
+/** Design system .rb-card (bundle.css L155-164): borders first, shadow only on hover/interactive. */
 export function Card({
   children,
   variant = "default",
@@ -37,7 +37,7 @@ export function Card({
   const radius = route
     ? "rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)]"
     : corner
-      ? "rounded-[var(--radius-m)] rounded-tr-none"
+      ? "rounded-[var(--radius-l)_0_var(--radius-l)_var(--radius-l)]"
       : "rounded-[var(--radius-m)]";
 
   return (

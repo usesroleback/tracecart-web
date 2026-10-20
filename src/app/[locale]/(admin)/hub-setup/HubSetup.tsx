@@ -87,7 +87,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="sq-headline text-[32px]">
+      <h1 className="rb-headline text-[32px]">
         {currentHub ? "Mon hub" : "Configurez votre hub"}
       </h1>
       <p className="mt-1 text-sm text-ink-muted">
@@ -228,7 +228,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block text-sm">
-      <span className="sq-label mb-1 block text-ink">{label}</span>
+      <span className="rb-label mb-1 block text-ink">{label}</span>
       {children}
     </label>
   );

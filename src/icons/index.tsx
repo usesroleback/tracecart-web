@@ -52,7 +52,7 @@ import ChatIcon from "./chat.svg";
 import MoreDotIcon from "./more-dot.svg";
 import BellIcon from "./bell.svg";
 
-// Terravia design-system icon set (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
+// TraceCart design-system icon set (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
 // project/components/bundle.js "ICONS" — 24px grid, 1.75px stroke, round
 // caps/joins). Additive alongside the template icons above so nothing
 // unseen breaks; new call sites should use these.

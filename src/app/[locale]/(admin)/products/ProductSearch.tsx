@@ -180,8 +180,8 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
   return (
     <div>
       <div className="mb-6">
-        <p className="sq-overline">Sourcing produits</p>
-        <h1 className="sq-headline text-[32px]">Rechercher &amp; réserver</h1>
+        <p className="rb-overline">Sourcing produits</p>
+        <h1 className="rb-headline text-[32px]">Rechercher &amp; réserver</h1>
         <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
           Parcourez une boutique ou cherchez un produit, puis réservez-le pour le retrouver dans{" "}
           <Link href="/reservations" className="text-accent-ink underline">
@@ -192,7 +192,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
       </div>
 
       <div className="mb-6">
-        <p className="sq-overline mb-2.5">Boutique</p>
+        <p className="rb-overline mb-2.5">Boutique</p>
         <div className="flex flex-wrap gap-2.5">
           {providers.map((p) => {
             const active = p.id === providerId;
@@ -243,7 +243,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
         <Card className="mb-8 space-y-3">
           {facets.categories.length > 0 && (
             <div>
-              <p className="sq-overline mb-1.5">Catégorie</p>
+              <p className="rb-overline mb-1.5">Catégorie</p>
               <div className="flex flex-wrap gap-1.5">
                 {facets.categories.map((c) => (
                   <button
@@ -266,7 +266,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
           <div className="flex flex-wrap items-end gap-4">
             {facets.brands.length > 0 && (
               <label className="text-sm">
-                <span className="sq-overline mb-1 block">Marque</span>
+                <span className="rb-overline mb-1 block">Marque</span>
                 <select
                   value={brand}
                   onChange={(e) => handleBrandChange(e.target.value)}
@@ -284,7 +284,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
 
             {facets.priceRange && (
               <div className="text-sm">
-                <span className="sq-overline mb-1 block">
+                <span className="rb-overline mb-1 block">
                   Prix ({selectedProvider?.defaultCurrency}, {facets.priceRange.min.toLocaleString("fr-FR")}–{facets.priceRange.max.toLocaleString("fr-FR")})
                 </span>
                 <div className="flex items-center gap-2">

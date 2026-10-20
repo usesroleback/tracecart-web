@@ -8,8 +8,8 @@ export function HowItWorks() {
 
   return (
     <section id="how-it-works" className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
-      <p className="sq-overline">{t("overline")}</p>
-      <h2 className="sq-headline mt-2 max-w-xl">{t("title")}</h2>
+      <p className="rb-overline">{t("overline")}</p>
+      <h2 className="rb-headline mt-2 max-w-xl">{t("title")}</h2>
 
       <div className="mt-10 grid border-t border-ink sm:grid-cols-5">
         {STEP_KEYS.map((key, i) => (
@@ -19,8 +19,8 @@ export function HowItWorks() {
               STEP_NUMBERS[i] === "03" ? "relative before:absolute before:-top-px before:left-0 before:h-0.5 before:w-full before:bg-accent" : ""
             }`}
           >
-            <p className="sq-mono-s text-ink-muted">{STEP_NUMBERS[i]}</p>
-            <p className="sq-title mt-2 text-[18px]">{t(`steps.${key}.title`)}</p>
+            <p className="rb-mono-s text-ink-muted">{STEP_NUMBERS[i]}</p>
+            <p className="rb-title mt-2 text-[18px]">{t(`steps.${key}.title`)}</p>
             <p className="mt-1.5 text-sm text-ink-muted">{t(`steps.${key}.body`)}</p>
           </div>
         ))}

@@ -12,7 +12,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
-    ? "lg:ml-[290px]"
+    ? "lg:ml-[240px]"
     : "lg:ml-[90px]";
 
   return (
@@ -21,7 +21,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       <Backdrop />
       <div className={`flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}>
         <AppHeader />
-        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
+        {/* The ops console caps at container-wide (1440px); main padding 28/32px on desktop. */}
+        <main className="px-4 py-6 mx-auto max-w-[1440px] md:px-6 lg:px-8 lg:py-7">{children}</main>
       </div>
     </div>
   );

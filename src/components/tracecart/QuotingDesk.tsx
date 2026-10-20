@@ -48,13 +48,13 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
     <div className="space-y-4">
       {isCustomerOwned && (
         <div>
-          <p className="sq-overline mb-1.5">Photos de l&apos;article</p>
+          <p className="rb-overline mb-1.5">Photos de l&apos;article</p>
           <OrderPhotoUploader order={order} onChanged={onChanged} />
         </div>
       )}
 
       <div>
-        <p className="sq-overline mb-1.5">Cotation logistique{isCustomerOwned ? "" : " du partenaire"}</p>
+        <p className="rb-overline mb-1.5">Cotation logistique{isCustomerOwned ? "" : " du partenaire"}</p>
         {quote ? (
           <div className="rounded-[var(--radius-s)] bg-surface-sunken p-3 text-sm">
             <div className="flex justify-between font-medium text-ink">
@@ -80,7 +80,7 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
 
       {isCustomerOwned && (order.status === "QUOTING" || order.status === "QUOTED") && (
         <div className="border-t border-line pt-3">
-          <p className="sq-overline mb-1.5">{quote ? "Réviser la cotation" : "Proposer une cotation"}</p>
+          <p className="rb-overline mb-1.5">{quote ? "Réviser la cotation" : "Proposer une cotation"}</p>
           <LogisticsQuoteForm order={order} onChanged={onChanged} />
         </div>
       )}
@@ -88,7 +88,7 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
       <div className="grid gap-3 sm:grid-cols-2">
         {!isCustomerOwned && (
           <label className="block text-sm">
-            <span className="sq-label mb-1 block text-ink">Coût produit</span>
+            <span className="rb-label mb-1 block text-ink">Coût produit</span>
             <div className="flex gap-2">
               <input
                 type="number"
@@ -107,7 +107,7 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
           </label>
         )}
         <label className="block text-sm">
-          <span className="sq-label mb-1 block text-ink">
+          <span className="rb-label mb-1 block text-ink">
             Frais plateforme {isCustomerOwned ? "(optionnel)" : "(défaut 12% si vide)"}
           </span>
           <input

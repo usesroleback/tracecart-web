@@ -50,8 +50,8 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
     return (
       <div>
         <div className="mb-6">
-          <p className="sq-overline">{user.hub ? `${user.hub.city}, ${user.hub.country}` : "Hub non configuré"}</p>
-          <h1 className="sq-headline text-[32px]">
+          <p className="rb-overline">{user.hub ? `${user.hub.city}, ${user.hub.country}` : "Hub non configuré"}</p>
+          <h1 className="rb-headline text-[32px]">
             {greeting}, {firstName}
           </h1>
           <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
@@ -92,7 +92,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
 
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="sq-title text-[14px]">Nécessite votre attention</h2>
+            <h2 className="rb-title text-[14px]">Nécessite votre attention</h2>
             <Link href="/orders" className="text-xs font-medium text-accent-ink hover:underline">
               Voir tout
             </Link>
@@ -104,7 +104,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
 
         <div>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="sq-title text-[14px]">Commandes récentes</h2>
+            <h2 className="rb-title text-[14px]">Commandes récentes</h2>
             <Link href="/orders" className="text-xs font-medium text-accent-ink hover:underline">
               Voir tout
             </Link>
@@ -128,8 +128,8 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
   return (
     <div>
       <div className="mb-6">
-        <p className="sq-overline">Partenaire logistique</p>
-        <h1 className="sq-headline text-[32px]">
+        <p className="rb-overline">Partenaire logistique</p>
+        <h1 className="rb-headline text-[32px]">
           {greeting}, {firstName}
         </h1>
         <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
@@ -151,7 +151,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
 
       <div className="mb-6">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="sq-title text-[14px]">Nécessite votre attention</h2>
+          <h2 className="rb-title text-[14px]">Nécessite votre attention</h2>
           <Link href="/deliveries" className="text-xs font-medium text-accent-ink hover:underline">
             Voir tout
           </Link>
@@ -163,7 +163,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
 
       <div>
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="sq-title text-[14px]">Colis récents</h2>
+          <h2 className="rb-title text-[14px]">Colis récents</h2>
           <Link href="/deliveries" className="text-xs font-medium text-accent-ink hover:underline">
             Voir tout
           </Link>

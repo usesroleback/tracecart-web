@@ -37,10 +37,10 @@ export function RouteDrawing({
       <circle cx="60" cy="230" r="6" fill="var(--color-ink)" />
       <rect x="350" y="62" width="16" height="16" rx="2" fill="var(--color-accent)" />
 
-      <text x="60" y="256" className="sq-mono-s" fill="var(--color-ink-muted)" textAnchor="middle">
+      <text x="60" y="256" className="rb-mono-s" fill="var(--color-ink-muted)" textAnchor="middle">
         {originLabel}
       </text>
-      <text x="358" y="52" className="sq-mono-s" fill="var(--color-ink-muted)" textAnchor="middle">
+      <text x="358" y="52" className="rb-mono-s" fill="var(--color-ink-muted)" textAnchor="middle">
         {destinationLabel}
       </text>
     </svg>

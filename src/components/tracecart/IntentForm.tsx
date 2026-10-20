@@ -99,7 +99,7 @@ export function IntentForm({
       onSubmit={handleSubmit}
       className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
-      <h2 className="sq-title-l text-[20px]">Nouvelle intention</h2>
+      <h2 className="rb-title-l text-[20px]">Nouvelle intention</h2>
       <p className="mt-1 text-sm text-ink-muted">
         Collez le lien du produit, renseignez la destination et les informations client. La cotation (coût produit,
         logistique, frais) se fait à l&apos;étape suivante.
@@ -229,7 +229,7 @@ export function IntentForm({
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={`block text-sm ${className ?? ""}`}>
-      <span className="sq-label mb-1 block text-ink">{label}</span>
+      <span className="rb-label mb-1 block text-ink">{label}</span>
       {children}
     </label>
   );

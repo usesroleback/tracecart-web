@@ -55,7 +55,7 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
 
   return (
     <div className="space-y-3">
-      <p className="sq-overline">
+      <p className="rb-overline">
         {existing ? "Cotation logistique (modifier)" : "Cotation logistique"}
       </p>
       <div className="space-y-2">

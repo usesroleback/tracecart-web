@@ -65,7 +65,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
   if (createdOrder) {
     return (
       <div className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5">
-        <h2 className="sq-title-l text-[20px]">Photos de l&apos;article</h2>
+        <h2 className="rb-title-l text-[20px]">Photos de l&apos;article</h2>
         <p className="mt-1 text-sm text-ink-muted">
           Ajoutez des photos de {createdOrder.productName} avant de terminer — le partenaire logistique s&apos;en sert
           pour préparer sa cotation.
@@ -85,7 +85,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
       onSubmit={handleSubmit}
       className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
-      <h2 className="sq-title-l text-[20px]">Transport d&apos;un article déjà acheté</h2>
+      <h2 className="rb-title-l text-[20px]">Transport d&apos;un article déjà acheté</h2>
       <p className="mt-1 text-sm text-ink-muted">
         Le client a déjà acheté cet article — TraceCart s&apos;occupe uniquement du transport. Renseignez le client, la
         destination et ce qui doit être transporté ; vous ajouterez des photos à l&apos;étape suivante.
@@ -183,7 +183,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={`block text-sm ${className ?? ""}`}>
-      <span className="sq-label mb-1 block text-ink">{label}</span>
+      <span className="rb-label mb-1 block text-ink">{label}</span>
       {children}
     </label>
   );

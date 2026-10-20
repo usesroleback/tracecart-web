@@ -45,7 +45,7 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="sq-headline text-[32px]">Livraisons</h1>
+        <h1 className="rb-headline text-[32px]">Livraisons</h1>
         <p className="mt-1 text-sm text-ink-muted">
           Demandes de cotation et colis confirmés, prêts à prendre la route.
         </p>
@@ -54,7 +54,7 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
       <div className="mb-6 grid grid-cols-3 border-t-[var(--border-strong)] border-b border-t-ink border-b-line sm:grid-cols-5">
         {PARTNER_STAGES.map((status, i) => (
           <div key={status} className={`py-4 pr-3 ${i > 0 ? "border-l border-line pl-3" : ""}`}>
-            <p className="sq-numeral-l text-[28px]">{counts[status] ?? 0}</p>
+            <p className="rb-numeral-l text-[28px]">{counts[status] ?? 0}</p>
             <p className="mt-1 text-[12px] text-ink-muted">{STATUS_LABELS[status]}</p>
           </div>
         ))}
@@ -66,7 +66,7 @@ export function DeliveriesDashboard({ initialOrders }: { initialOrders: Order[] 
 
       {notifications.filter((n) => n.channel === "IN_APP").length > 0 && (
         <Card className="mb-6">
-          <h2 className="sq-title text-[14px] mb-3">Dernières notifications</h2>
+          <h2 className="rb-title text-[14px] mb-3">Dernières notifications</h2>
           <ul className="space-y-2">
             {notifications
               .filter((n) => n.channel === "IN_APP")

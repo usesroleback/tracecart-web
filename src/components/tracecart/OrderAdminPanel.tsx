@@ -16,7 +16,7 @@ export function OrderAdminPanel({ order, onChanged }: { order: Order; onChanged:
       {FULFILLMENT_PHASE.has(order.status) && <FulfillmentPanel order={order} onChanged={onChanged} />}
       {PARTNER_SEQUENCE.includes(order.status) && (
         <div>
-          <p className="sq-overline mb-1.5">Où est le colis</p>
+          <p className="rb-overline mb-1.5">Où est le colis</p>
           <LocationTimeline updates={order.locationUpdates} />
         </div>
       )}

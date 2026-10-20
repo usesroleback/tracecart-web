@@ -54,7 +54,7 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
       onSubmit={handleSubmit}
       className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
-      <h2 className="sq-title-l text-[20px]">Nouvelle demande de sourcing</h2>
+      <h2 className="rb-title-l text-[20px]">Nouvelle demande de sourcing</h2>
       <p className="mt-1 text-sm text-ink-muted">
         Décrivez ce que le client recherche — pas besoin d&apos;un lien produit. On cherchera des candidats dans le
         catalogue une fois la demande créée.
@@ -150,7 +150,7 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
 function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={`block text-sm ${className ?? ""}`}>
-      <span className="sq-label mb-1 block text-ink">{label}</span>
+      <span className="rb-label mb-1 block text-ink">{label}</span>
       {children}
     </label>
   );

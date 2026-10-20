@@ -11,7 +11,7 @@ export default function NotFound() {
     <div className="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1">
       <GridShape />
       <div className="mx-auto w-full max-w-[242px] text-center sm:max-w-[472px]">
-        <h1 className="sq-display-l mb-8">
+        <h1 className="rb-display-l mb-8">
           ERROR
         </h1>
 

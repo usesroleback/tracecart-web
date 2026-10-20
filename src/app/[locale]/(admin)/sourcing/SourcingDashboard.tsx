@@ -92,7 +92,7 @@ export function SourcingDashboard({
     <div>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <h1 className="sq-headline text-[32px]">Sourcing</h1>
+          <h1 className="rb-headline text-[32px]">Sourcing</h1>
           <p className="mt-1 text-sm text-ink-muted">
             Ce que les clients recherchent, avant même d&apos;avoir trouvé un lien produit précis.
           </p>
@@ -108,7 +108,7 @@ export function SourcingDashboard({
           { label: "Transformées", value: requests.filter((r) => r.status === "CONVERTED").length },
         ].map((k, i) => (
           <div key={k.label} className={`py-4 pr-4 ${i > 0 ? "border-l border-line pl-4" : ""}`}>
-            <p className="sq-numeral-l text-[32px]">{k.value}</p>
+            <p className="rb-numeral-l text-[32px]">{k.value}</p>
             <p className="mt-1 text-[13px] text-ink-muted">{k.label}</p>
           </div>
         ))}
@@ -142,7 +142,7 @@ export function SourcingDashboard({
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div>
-          <p className="sq-overline mb-3">En cours ({open.length})</p>
+          <p className="rb-overline mb-3">En cours ({open.length})</p>
           {open.length === 0 ? (
             <p className="text-sm text-ink-muted">Aucune demande en cours.</p>
           ) : (
@@ -233,7 +233,7 @@ export function SourcingDashboard({
 
           {closed.length > 0 && (
             <div className="mt-8">
-              <p className="sq-overline mb-3">Terminées ({closed.length})</p>
+              <p className="rb-overline mb-3">Terminées ({closed.length})</p>
               <div className="space-y-2">
                 {closed.map((r) => (
                   <div key={r.id} className="flex items-center justify-between rounded-[var(--radius-m)] border border-line bg-surface-raised px-4 py-2.5 text-sm">
@@ -241,7 +241,7 @@ export function SourcingDashboard({
                       {r.customerName} — {r.description}
                     </span>
                     {r.order ? (
-                      <Link href="/orders" className="sq-link">
+                      <Link href="/orders" className="rb-link">
                         {r.order.reference}
                       </Link>
                     ) : (
@@ -256,7 +256,7 @@ export function SourcingDashboard({
 
         <div className="grid content-start gap-3">
           <div className="flex items-center justify-between">
-            <h2 className="sq-title">Besoin d&apos;une action</h2>
+            <h2 className="rb-title">Besoin d&apos;une action</h2>
             <Badge variant="attn">{needsDecision.length}</Badge>
           </div>
           {needsDecision.length === 0 ? (

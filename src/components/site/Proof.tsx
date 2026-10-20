@@ -23,7 +23,7 @@ export function Proof() {
         <div className="space-y-8">
           {STAT_KEYS.map((key) => (
             <div key={key}>
-              <p className="sq-numeral-l">{t(`stats.${key}.value`)}</p>
+              <p className="rb-numeral-l">{t(`stats.${key}.value`)}</p>
               <p className="mt-1 text-sm text-ink-muted">{t(`stats.${key}.label`)}</p>
             </div>
           ))}

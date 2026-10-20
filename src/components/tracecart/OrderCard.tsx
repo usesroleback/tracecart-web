@@ -27,7 +27,7 @@ export function OrderCard({ order, children }: { order: Order; children?: React.
           />
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="sq-mono text-ink">{order.reference}</span>
+              <span className="rb-mono text-ink">{order.reference}</span>
               {order.intakeType === "CUSTOMER_OWNED" ? <Badge>Transport seul</Badge> : <ProviderBadge provider={order.provider} />}
               <OrderStatusTag status={order.status} />
               {order.status === "QUOTE_SENT" && order.quoteAcceptedAt && (

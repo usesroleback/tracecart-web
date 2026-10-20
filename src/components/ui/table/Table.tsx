@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 /**
- * Terravia dense ops table (bundle.css .sq-table-wrap/.sq-table, L195-210).
+ * Design system dense ops table (bundle.css .rb-table-wrap/.rb-table, L195-210).
  * Thin styling wrapper around native <table> — not a data-grid abstraction.
  */
 export function TableWrap({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -14,7 +14,9 @@ export function TableWrap({ children, className = "" }: { children: ReactNode; c
 
 export function Table({ children, dense = false, className = "" }: { children: ReactNode; dense?: boolean; className?: string }) {
   return (
-    <table className={`w-full border-separate border-spacing-0 text-sm leading-5 ${className}`} data-dense={dense || undefined}>
+    <table
+      className={`w-full border-separate border-spacing-0 text-sm leading-5 [&[data-dense]_td]:px-3 [&[data-dense]_td]:py-2 [&[data-dense]_th]:px-3 [&[data-dense]_th]:py-2 ${className}`}
+      data-dense={dense || undefined}>
       {children}
     </table>
   );
@@ -45,7 +47,7 @@ export function Td({
 }) {
   return (
     <td
-      className={`border-b border-line px-4 py-3.5 align-middle last:border-0 ${mono ? "font-mono text-[13px]" : ""} ${
+      className={`border-b border-line px-4 py-3.5 align-middle ${mono ? "font-mono text-[13px]" : ""} ${
         align === "right" ? "text-right tabular-nums" : ""
       } ${className}`}
     >
@@ -56,7 +58,7 @@ export function Td({
 
 export function Tr({ children, selected = false, className = "" }: { children: ReactNode; selected?: boolean; className?: string }) {
   return (
-    <tr className={`transition-colors duration-[var(--duration-quick)] ease-[var(--ease-out)] hover:bg-surface-sunken ${selected ? "bg-accent-soft" : ""} ${className}`}>
+    <tr className={`[&:last-child>td]:border-b-0 transition-colors duration-[var(--duration-quick)] ease-[var(--ease-out)] hover:bg-surface-sunken ${selected ? "bg-accent-soft" : ""} ${className}`}>
       {children}
     </tr>
   );

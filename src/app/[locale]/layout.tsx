@@ -8,18 +8,21 @@ import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import '../globals.css';
 
-// Full variable weight range (tokens.json: 200-800) fed into the
-// --font-bricolage var the .sq-display/.sq-headline/.sq-title utilities and
-// font-bricolage utility read, instead of overriding body via .className.
+// The variable font (tokens.json: weight 200-800, width 75-100, optical size
+// 12-96), not static instances: the type scale uses in-between weights (540,
+// 580, 640, 720, 760) and "opsz" settings that static cuts can't render. Fed
+// into the --font-bricolage var the .rb-display/.rb-headline/.rb-title
+// utilities and font-bricolage utility read, instead of overriding body via
+// .className. Latin Ext + Vietnamese match the design system's bundled subsets.
 const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700', '800'],
+  subsets: ['latin', 'latin-ext', 'vietnamese'],
+  axes: ['opsz', 'wdth'],
   variable: '--font-bricolage',
 });
 
-// Geist Mono — identifiers, coordinates, order references (.sq-mono).
+// Geist Mono — identifiers, coordinates, order references (.rb-mono).
 const geistMono = Geist_Mono({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-mono',
 });
 

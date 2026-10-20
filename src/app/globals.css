@@ -25,8 +25,8 @@
   --color-black: #0e0e0c;
   --color-signal: #ffd60a;
 
-  /* Terravia design-system tokens (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
-     project/tokens.json "terravia-light"/"terravia-dark"). Components use
+  /* TraceCart design-system tokens (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
+     project/tokens.json "tracecart-light"/"tracecart-dark"). Components use
      these semantic tokens: bg-surface, text-ink, border-line and so on.
      The old template color scales have been removed. */
   --color-ink: #0d0f0e;
@@ -157,7 +157,7 @@
   --z-index-999999: 999999;
 }
 
-/* Dark mode: terravia-dark values for every semantic token above. CSS custom
+/* Dark mode: tracecart-dark values for every semantic token above. CSS custom
    properties inherit, so redefining them wherever .dark lands (see
    ThemeContext) recolors every bg-surface/text-ink/etc. utility for free. */
 .dark {
@@ -186,42 +186,48 @@
 }
 
 /* Display/text scale (project/tokens.json "type.groups", bundle.css L15-23).
-   Named sq-* to match the design system's own class names exactly.
+   Named rb-* to match the design system's own class names exactly.
    Wrapped in @layer components: Tailwind's own stylesheet (index.css) opens
    with `@layer theme, base, components, utilities;`, which makes ANY
    unlayered CSS rule win over every layered one regardless of source order —
-   so a bare `.sq-title { font-size: 20px }` here would always beat a
+   so a bare `.rb-title { font-size: 20px }` here would always beat a
    `text-[14px]` utility placed after it in a className. Layering these under
    components keeps them overridable by one-off Tailwind size utilities, the
-   same way call sites already combine them (e.g. `sq-title text-[14px]`). */
+   same way call sites already combine them (e.g. `rb-title text-[14px]`). */
 @layer components {
-  .sq-display-2xl, .sq-display-xl, .sq-display-l {
+  .rb-display, .rb-display-2xl, .rb-display-xl, .rb-display-l {
     font-family: var(--font-bricolage);
     font-weight: 800;
+    font-variation-settings: "opsz" 96;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
     margin: 0;
     text-wrap: balance;
   }
-  .sq-display-2xl { font-size: clamp(56px, 4px + 7.2vw, 112px); line-height: 0.9; letter-spacing: -0.04em; }
-  .sq-display-xl { font-size: clamp(44px, 8px + 5.2vw, 80px); line-height: 0.92; letter-spacing: -0.035em; }
-  .sq-display-l { font-size: clamp(36px, 12px + 3.4vw, 56px); line-height: 0.96; letter-spacing: -0.03em; font-weight: 760; }
-  .sq-headline { font-family: var(--font-bricolage); font-size: clamp(30px, 22px + 1.2vw, 40px); line-height: 1.02; letter-spacing: -0.02em; font-weight: 720; margin: 0; }
-  .sq-title-l { font-family: var(--font-bricolage); font-size: clamp(24px, 20px + 0.6vw, 28px); line-height: 1.12; letter-spacing: -0.012em; font-weight: 660; margin: 0; }
-  .sq-title { font-family: var(--font-bricolage); font-size: 20px; line-height: 1.2; letter-spacing: -0.006em; font-weight: 640; margin: 0; }
-  .sq-body-l { font-size: 18px; line-height: 1.56; }
-  .sq-body-s { font-size: 14px; line-height: 1.43; }
-  .sq-label { font-size: 14px; line-height: 1.29; font-weight: 580; letter-spacing: 0.004em; }
-  .sq-caption { font-size: 12px; line-height: 1.33; font-weight: 500; letter-spacing: 0.012em; }
-  .sq-overline { font-size: 12px; line-height: 1.33; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-muted); }
-  .sq-numeral-xl { font-size: 96px; font-weight: 300; letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums; }
-  .sq-numeral-l { font-size: 48px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
-  .sq-mono { font-family: var(--font-mono); font-size: 13px; line-height: 1.54; font-weight: 450; }
-  .sq-mono-s { font-family: var(--font-mono); font-size: 11px; line-height: 1.45; font-weight: 500; letter-spacing: 0.02em; }
+  .rb-display-2xl { font-size: clamp(56px, 4px + 7.2vw, 112px); line-height: 0.9; letter-spacing: -0.04em; }
+  .rb-display-xl { font-size: clamp(44px, 8px + 5.2vw, 80px); line-height: 0.92; letter-spacing: -0.035em; }
+  .rb-display-l { font-size: clamp(36px, 12px + 3.4vw, 56px); line-height: 0.96; letter-spacing: -0.03em; font-weight: 760; }
+  .rb-headline { font-family: var(--font-bricolage); font-size: clamp(30px, 22px + 1.2vw, 40px); line-height: 1.02; letter-spacing: -0.02em; font-weight: 720; margin: 0; font-variation-settings: "opsz" 72; }
+  .rb-title-l { font-family: var(--font-bricolage); font-size: clamp(24px, 20px + 0.6vw, 28px); line-height: 1.12; letter-spacing: -0.012em; font-weight: 660; margin: 0; }
+  .rb-title { font-family: var(--font-bricolage); font-size: 20px; line-height: 1.2; letter-spacing: -0.006em; font-weight: 640; margin: 0; }
+  .rb-body-l { font-size: 18px; line-height: 1.56; }
+  .rb-body-s { font-size: 14px; line-height: 1.43; }
+  .rb-label { font-size: 14px; line-height: 1.29; font-weight: 580; letter-spacing: 0.004em; }
+  .rb-caption { font-size: 12px; line-height: 1.33; font-weight: 500; letter-spacing: 0.012em; }
+  .rb-overline { font-size: 12px; line-height: 1.33; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-muted); }
+  .rb-numeral-xl { font-size: 96px; font-weight: 300; letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 96; }
+  .rb-numeral-l { font-size: 48px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 96; }
+  /* bundle.css L11-12: links are ink with a quiet underline that turns accent on hover. */
+  .rb-link { color: var(--color-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: var(--color-line-strong); transition: text-decoration-color var(--duration-quick) var(--ease-out); }
+  .rb-link:hover { text-decoration-color: var(--color-accent); text-decoration-thickness: 2px; }
+  .rb-mono { font-family: var(--font-mono); font-size: 13px; line-height: 1.54; font-weight: 450; }
+  .rb-mono-s { font-family: var(--font-mono); font-size: 11px; line-height: 1.45; font-weight: 500; letter-spacing: 0.02em; }
 }
 
-/* Status "moving" pulse (project/components/bundle.css .sq-status--moving::after). */
-@keyframes sq-pulse {
-  0% { opacity: 0.5; transform: scale(0.9); }
-  70%, 100% { opacity: 0; transform: scale(1.4); }
+/* Status "moving" pulse (project/components/bundle.css .rb-status--moving::after). */
+@keyframes rb-pulse {
+  0% { opacity: 0.9; transform: scale(0.8); }
+  100% { opacity: 0; transform: scale(1.6); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
@@ -253,17 +259,18 @@
 }
 
 @utility menu-item {
-  @apply relative flex items-center w-full gap-3 px-3 py-2 font-medium rounded-lg text-sm;
+  /* TraceCartOps side nav item (.nl in project/components/TraceCartOps/preview.html):
+     40px tall, 12px gap, radius-s, 15px at weight 540. */
+  @apply relative flex items-center w-full gap-3 px-3 h-10 rounded-[var(--radius-s)] text-[15px] font-[540];
 }
 
 @utility menu-item-active {
-  /* TerraviaOps nav: the active item is an ink-filled pill (.nl[aria-current=page]
-     in project/components/TerraviaOps/preview.html), not a tinted background. */
+  /* The active item is an ink fill (.nl[aria-current=page]), not a tinted background. */
   @apply bg-surface-inverse text-ink-inverse;
 }
 
 @utility menu-item-inactive {
-  @apply text-ink hover:bg-surface-sunken;
+  @apply text-ink-muted hover:bg-surface-sunken hover:text-ink;
 }
 
 @utility menu-item-icon {

@@ -68,7 +68,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="sq-headline text-[32px]">Boutiques</h1>
+          <h1 className="rb-headline text-[32px]">Boutiques</h1>
           <p className="mt-1 text-sm text-ink-muted">
             {activeCount} boutique{activeCount !== 1 ? "s" : ""} active{activeCount !== 1 ? "s" : ""} sur{" "}
             {stores.length} — gérez la détection de produits et la recherche par boutique.

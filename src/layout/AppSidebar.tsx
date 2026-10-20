@@ -77,20 +77,13 @@ const AppSidebar: React.FC = () => {
       onMouseEnter={() => !isExpanded && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"} px-2`}>
-        <Logo href="/dashboard" />
+      <div className={`pt-6 pb-6 flex items-center h-[76px] ${!showLabel ? "lg:justify-center" : "justify-start"} px-3`}>
+        {showLabel ? <Logo variant="lockup" href="/dashboard" /> : <Logo variant="symbol" height={24} href="/dashboard" />}
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
-        <nav className="mb-6">
+        <nav className="mb-6" aria-label="Operations">
           <div className="flex flex-col gap-4">
             <div>
-              <h2
-                className={`sq-overline mb-3 flex ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start px-3"
-                }`}
-              >
-                Menu
-              </h2>
               <ul className="flex flex-col gap-1">
                 {navItems.map((nav) => {
                   const count = nav.countKey ? counts[nav.countKey] : undefined;

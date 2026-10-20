@@ -48,7 +48,7 @@ export function ManualTransitionForm({ order, onChanged }: { order: Order; onCha
 
   return (
     <div className="rounded-[var(--radius-s)] border border-line p-3">
-      <p className="sq-overline mb-2">Changement de statut manuel</p>
+      <p className="rb-overline mb-2">Changement de statut manuel</p>
       <div className="grid gap-2 sm:grid-cols-2">
         <select value={toStatus} onChange={(e) => setToStatus(e.target.value as OrderStatus)} className={inputClasses}>
           {targets.map((s) => (

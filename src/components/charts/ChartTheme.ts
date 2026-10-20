@@ -16,7 +16,7 @@ export function useApexTheme() {
     () => ({
       mode: isDark ? ("dark" as const) : ("light" as const),
       colors: {
-        // Exact Terravia token values (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
+        // Exact TraceCart token values (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
         // project/tokens.json) — ApexCharts bakes colors into SVG options, so
         // these stay literal hex rather than CSS vars.
         brand: "#19d36b", // accent

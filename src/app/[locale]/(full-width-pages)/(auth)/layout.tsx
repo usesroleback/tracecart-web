@@ -26,9 +26,9 @@ export default function AuthLayout({
               <div className="flex flex-col items-center max-w-xs">
                 <Link href="/" className="block mb-4">
                   <Image
-                    width={48}
-                    height={48}
-                    src="/images/logo/terravia-symbol-white.svg"
+                    width={232}
+                    height={32}
+                    src="/images/logo/tracecart-lockup-white.svg"
                     alt="TraceCart"
                   />
                 </Link>

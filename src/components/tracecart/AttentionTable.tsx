@@ -33,7 +33,7 @@ export function AttentionTable({ orders, loading, emptyLabel }: { orders: Order[
     <div className="overflow-x-auto">
       <table className="w-full text-left text-sm">
         <thead>
-          <tr className="sq-overline">
+          <tr className="rb-overline">
             <th className="pb-2 font-medium normal-case tracking-normal">Commande</th>
             <th className="pb-2 font-medium normal-case tracking-normal">Statut</th>
             <th className="pb-2 font-medium normal-case tracking-normal">Destination</th>

@@ -12,7 +12,7 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   loading?: boolean;
-  /** The broken corner (.sq-btn--corner) — top-right only, at most once per view. */
+  /** The broken corner (.rb-btn--corner) — top-right only, at most once per view. */
   corner?: boolean;
   block?: boolean;
   type?: "button" | "submit";
@@ -33,11 +33,12 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   secondary: "bg-surface-raised text-ink border border-line-strong after:bg-ink",
   ghost: "bg-transparent text-ink after:bg-ink",
   inverse: "bg-surface-inverse text-ink-inverse after:bg-ink-inverse",
-  danger: "bg-critical text-white dark:text-ink after:bg-ink",
+  danger: "bg-critical text-surface-raised after:bg-ink",
 };
 
-/** Terravia .sq-btn (bundle.css L37-56): borders-first chrome, 8% ink overlay
- * on hover via the ::after pseudo, translateY(1px) on press, 2px focus-ring. */
+/** Design system .rb-btn (bundle.css L37-56): borders-first chrome, 8% ink overlay
+ * on hover via the ::after pseudo, translateY(1px) on press, 2px focus-ring,
+ * trailing icon nudges 3px on hover. */
 const Button: React.FC<ButtonProps> = ({
   children,
   size = "m",
@@ -53,8 +54,8 @@ const Button: React.FC<ButtonProps> = ({
   type = "button",
   href,
 }) => {
-  const classes = `relative isolate inline-flex min-w-[var(--control-m)] items-center justify-center gap-2 rounded-[var(--radius-s)] font-semibold leading-none transition-[background-color,border-color,color,transform] duration-[var(--duration-quick)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-ink-muted disabled:border-line after:pointer-events-none after:absolute after:-inset-px after:rounded-[inherit] after:opacity-0 after:transition-opacity after:duration-[var(--duration-quick)] after:ease-[var(--ease-out)] hover:not-disabled:after:opacity-[0.08] ${
-    corner ? "rounded-tr-none" : ""
+  const classes = `group/btn relative isolate inline-flex min-w-[var(--control-m)] items-center justify-center gap-2 font-semibold leading-none transition-[background-color,border-color,color,transform] duration-[var(--duration-quick)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring active:not-disabled:translate-y-px disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-ink-muted disabled:border-line after:pointer-events-none after:absolute after:-inset-px after:rounded-[inherit] after:opacity-0 after:transition-opacity after:duration-[var(--duration-quick)] after:ease-[var(--ease-out)] hover:not-disabled:after:opacity-[0.08] ${
+    corner ? "rounded-[var(--radius-m)_0_var(--radius-m)_var(--radius-m)]" : "rounded-[var(--radius-s)]"
   } ${block ? "w-full" : ""} ${SIZE_CLASSES[size]} ${VARIANT_CLASSES[variant]} ${className}`;
 
   const content = (
@@ -65,7 +66,9 @@ const Button: React.FC<ButtonProps> = ({
         startIcon && <span className="flex items-center">{startIcon}</span>
       )}
       {children}
-      {!loading && endIcon && <span className="flex items-center">{endIcon}</span>}
+      {!loading && endIcon && (
+        <span className="flex items-center transition-transform duration-[var(--duration-quick)] ease-[var(--ease-out)] group-hover/btn:translate-x-[3px]">{endIcon}</span>
+      )}
     </>
   );
 

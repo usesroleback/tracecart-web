@@ -14,7 +14,7 @@ export function SiteFooter() {
             <p className="text-xs text-ink-muted">{t("byline")}</p>
           </div>
         </div>
-        <p className="sq-mono-s text-ink-muted">{t("cities")}</p>
+        <p className="rb-mono-s text-ink-muted">{t("cities")}</p>
       </div>
     </footer>
   );

@@ -11,7 +11,7 @@ export function AccessProblem({ kind }: { kind: "noAccount" | "unavailable" }) {
 
   return (
     <div className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-6">
-      <h1 className="sq-title text-ink">{t(`${kind}.title`)}</h1>
+      <h1 className="rb-title text-ink">{t(`${kind}.title`)}</h1>
       <p className="mt-2 text-sm text-ink-muted">{t(`${kind}.body`)}</p>
       <div className="mt-6 flex flex-wrap gap-3">
         {kind === "unavailable" && (

@@ -22,7 +22,7 @@ export function PanelShell({
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="sq-title text-[14px]">{title}</h2>
+        <h2 className="rb-title text-[14px]">{title}</h2>
         {action}
       </div>
 

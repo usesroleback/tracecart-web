@@ -52,7 +52,7 @@ const AppHeader: React.FC = () => {
             )}
           </button>
 
-          <Logo variant="symbol" href="/dashboard" className="lg:hidden" />
+          <Logo variant="lockup" height={22} href="/dashboard" className="lg:hidden" />
 
           <button
             onClick={toggleApplicationMenu}
