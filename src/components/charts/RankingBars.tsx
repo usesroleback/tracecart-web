@@ -17,14 +17,26 @@ export interface RankingBarItem {
  * Callers are expected to pass items already sorted (every backend ranking
  * endpoint in this app sorts server-side).
  */
-export function RankingBars({ items, valueSuffix = "" }: { items: RankingBarItem[]; valueSuffix?: string }) {
+export function RankingBars({
+  items,
+  valueSuffix = "",
+  formatValue,
+  topBadge,
+}: {
+  items: RankingBarItem[];
+  valueSuffix?: string;
+  /** Replaces the plain number, e.g. "8 · 53 %". */
+  formatValue?: (item: RankingBarItem) => string;
+  /** A word beside the first item when there are several (e.g. "Most used"). */
+  topBadge?: string;
+}) {
   const theme = useApexTheme();
   const f = useFormat();
   const max = Math.max(1, ...items.map((i) => i.value));
 
   return (
     <ul className="space-y-3">
-      {items.map((item) => (
+      {items.map((item, i) => (
         <li key={item.key}>
           <div className="mb-1 flex items-center gap-2">
             {item.logoUrl ? (
@@ -37,10 +49,16 @@ export function RankingBars({ items, valueSuffix = "" }: { items: RankingBarItem
             ) : (
               <span className="h-2 w-2 flex-shrink-0 rounded-full" style={{ backgroundColor: theme.colors.ink }} />
             )}
-            <span className="min-w-0 flex-1 truncate text-sm text-ink">{item.label}</span>
+            <span className="min-w-0 flex-1 truncate text-sm text-ink">
+              {item.label}
+              {topBadge && i === 0 && items.length > 1 && (
+                <span className="ml-1.5 rounded-[var(--radius-xs)] bg-surface-sunken px-1.5 py-0.5 text-[11px] font-semibold text-ink">
+                  {topBadge}
+                </span>
+              )}
+            </span>
             <span className="flex-shrink-0 text-xs tabular-nums text-ink-muted">
-              {f.number(item.value)}
-              {valueSuffix}
+              {formatValue ? formatValue(item) : `${f.number(item.value)}${valueSuffix}`}
             </span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-surface-sunken">

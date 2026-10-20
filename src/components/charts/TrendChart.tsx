@@ -35,16 +35,16 @@ export function TrendChart({
   const options: ApexOptions = useMemo(
     () => ({
       chart: {
-        type: "area",
+        type: "line",
         toolbar: { show: false },
         fontFamily: theme.fontFamily,
         background: "transparent",
         animations: { enabled: false },
       },
       theme: { mode: theme.mode },
-      colors: [theme.colors.brand, theme.colors.origin, theme.colors.gray],
-      stroke: { curve: "smooth", width: [2, 2, 1.5], dashArray: [0, 0, 5] },
-      fill: { type: ["gradient", "gradient", "solid"], opacity: [0.15, 0.15, 0] },
+      colors: [theme.colors.series.created, theme.colors.series.delivered, theme.colors.series.previous],
+      stroke: { curve: "smooth", width: [2, 2, 2], dashArray: [0, 0, 5] },
+      markers: { size: 0, hover: { size: 5 } },
       grid: { borderColor: theme.gridColor, strokeDashArray: 4 },
       dataLabels: { enabled: false },
       xaxis: {
@@ -55,10 +55,10 @@ export function TrendChart({
       },
       yaxis: { labels: { style: { colors: theme.axisLabelColor, fontSize: "11px" } } },
       legend: { position: "top", horizontalAlign: "left", labels: { colors: theme.axisLabelColor } },
-      tooltip: { theme: theme.tooltipTheme },
+      tooltip: { theme: theme.tooltipTheme, shared: true, intersect: false },
     }),
     [theme, points]
   );
 
-  return <ReactApexChart options={options} series={series} type="area" height={height} />;
+  return <ReactApexChart options={options} series={series} type="line" height={height} />;
 }

@@ -154,7 +154,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
         </div>
       )}
 
-      <div className="mt-6 grid gap-6 2xl:grid-cols-[minmax(0,1fr)_400px]">
+      <div className="mt-6 grid gap-6 @min-[1104px]/main:grid-cols-[minmax(0,1fr)_400px]">
         <div className="min-w-0">
           {stores.length === 0 ? (
             <p className="text-sm text-ink-muted">{t("empty")}</p>

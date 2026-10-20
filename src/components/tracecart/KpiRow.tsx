@@ -39,7 +39,7 @@ export function KpiRow({
   const f = useFormat();
   if (loading) {
     return (
-      <div className="grid grid-cols-2 gap-px border-t-[length:var(--border-strong)] border-t-ink lg:grid-cols-5" aria-busy="true">
+      <div className="grid grid-cols-2 gap-px border-t-[length:var(--border-strong)] border-t-ink @min-[860px]/main:grid-cols-5" aria-busy="true">
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="my-4 mr-4 h-16 animate-pulse rounded-[var(--radius-s)] bg-surface-sunken" />
         ))}

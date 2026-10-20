@@ -24,6 +24,9 @@ export const useSidebar = () => {
   return context;
 };
 
+/** The fixed sidebar replaces the drawer from the lg breakpoint (bp-lg, 1200px). */
+export const DESKTOP_MIN_WIDTH = 1200;
+
 export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -36,7 +39,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile = window.innerWidth < DESKTOP_MIN_WIDTH;
       setIsMobile(mobile);
       if (!mobile) {
         setIsMobileOpen(false);

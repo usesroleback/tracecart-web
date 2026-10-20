@@ -2,7 +2,7 @@
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
 import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
-import { useSidebar } from "@/context/SidebarContext";
+import { DESKTOP_MIN_WIDTH, useSidebar } from "@/context/SidebarContext";
 import { Logo } from "@/components/common/Logo";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -13,7 +13,7 @@ const AppHeader: React.FC = () => {
   const t = useTranslations("common.header");
 
   const handleToggle = () => {
-    if (window.innerWidth >= 1024) {
+    if (window.innerWidth >= DESKTOP_MIN_WIDTH) {
       toggleSidebar();
     } else {
       toggleMobileSidebar();

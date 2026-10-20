@@ -13,11 +13,13 @@
   --breakpoint-2xsm: 375px;
   --breakpoint-xsm: 425px;
   --breakpoint-3xl: 2000px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
+  /* The system's bp-sm/md/lg/xl (tokens.json): tablet, small desktop, desktop,
+     large desktop. Layouts that depend on the room a component has use container
+     queries instead. */
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1600px;
 
   --color-current: currentColor;
   --color-transparent: transparent;

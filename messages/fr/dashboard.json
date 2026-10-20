@@ -12,8 +12,7 @@
     "provider": "Par boutique",
     "destination": "Par destination",
     "failed": "Impossible de charger la répartition",
-    "mostUsed": "Le plus utilisé",
-    "total": "Total"
+    "mostUsed": "Le plus utilisé"
   },
   "trend": {
     "title": "Commandes créées vs livrées",

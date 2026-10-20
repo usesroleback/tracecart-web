@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { PanelShell } from "./PanelShell";
-import { DonutBreakdown } from "@/components/charts/DonutBreakdown";
+import { RankingBars } from "@/components/charts/RankingBars";
+import { useFormat } from "@/lib/format";
 import { fetchBreakdown } from "@/lib/kpi/adapter";
 import { Breakdown, BreakdownDimension } from "@/lib/kpi/types";
 
@@ -11,6 +12,8 @@ const DIMENSIONS: BreakdownDimension[] = ["provider", "destination"];
 
 export function BreakdownPanel({ rangeDays }: { rangeDays: number }) {
   const t = useTranslations("dashboard");
+  const tl = useTranslations("labels");
+  const f = useFormat();
   const [dimension, setDimension] = useState<BreakdownDimension>("provider");
   // What was last loaded, and for which selection: loading is "the result
   // isn't for the current selection yet", so nothing resets state in the effect.
@@ -58,7 +61,23 @@ export function BreakdownPanel({ rangeDays }: { rangeDays: number }) {
         </div>
       }
     >
-      {breakdown && <DonutBreakdown slices={breakdown.slices} />}
+      {/* Ranked bars in ink, not a multi-colour donut: comparing a handful of
+          stores reads better as lengths, and the brand keeps its hues for status. */}
+      {breakdown && (
+        <RankingBars
+          topBadge={t("breakdown.mostUsed")}
+          items={breakdown.slices.map((s) => ({
+            key: s.key,
+            label: s.key === "unassigned" ? tl("unassigned") : s.label,
+            value: s.count,
+            logoUrl: s.logoUrl,
+          }))}
+          formatValue={(item) => {
+            const total = breakdown.slices.reduce((sum, s) => sum + s.count, 0);
+            return `${f.number(item.value)} · ${f.percent(total ? Math.round((item.value / total) * 100) : 0)}`;
+          }}
+        />
+      )}
     </PanelShell>
   );
 }

@@ -273,7 +273,7 @@ export function SourcingDashboard({
         </div>
       )}
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="mt-6 grid gap-6 @min-[1064px]/main:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0">
           <SegmentedTabs
             label={t("statusLabel")}

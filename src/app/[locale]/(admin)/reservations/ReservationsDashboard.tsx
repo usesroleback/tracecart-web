@@ -36,6 +36,7 @@ export function ReservationsDashboard({
 }) {
   const user = useSession();
   const t = useTranslations("reservations");
+  const tl = useTranslations("labels");
   const f = useFormat();
   const [reservations, setReservations] = useState<Reservation[]>(initialReservations);
   const [total, setTotal] = useState(initialTotal);
@@ -150,7 +151,7 @@ export function ReservationsDashboard({
             emptyLabel={t("ranking.empty")}
           >
             {ranking && (
-              <RankingBars items={ranking.map((r) => ({ key: r.key, label: r.label, value: r.count, logoUrl: r.logoUrl }))} />
+              <RankingBars items={ranking.map((r) => ({ key: r.key, label: r.key === "unassigned" ? tl("unassigned") : r.label, value: r.count, logoUrl: r.logoUrl }))} />
             )}
           </PanelShell>
         </div>

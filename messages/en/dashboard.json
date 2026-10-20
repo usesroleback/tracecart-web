@@ -12,8 +12,7 @@
     "provider": "By store",
     "destination": "By destination",
     "failed": "Couldn't load the breakdown",
-    "mostUsed": "Most used",
-    "total": "Total"
+    "mostUsed": "Most used"
   },
   "trend": {
     "title": "Orders created vs delivered",

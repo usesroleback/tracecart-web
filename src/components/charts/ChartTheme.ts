@@ -30,6 +30,14 @@ export function useApexTheme() {
         error: "#c41d14", // critical
         info: "#2440e0",
         gray: "#6b675f", // stone
+        // Ordinary data series carry no status, so no brand hue (green is
+        // "moving", yellow "held", red "exception", cobalt "info"): they differ
+        // in lightness and line style. Delivered is ink, as "done" is in the
+        // brand. Pairs checked with the dataviz validator (--ordinal) against
+        // surface-raised in each mode.
+        series: isDark
+          ? { delivered: "#f2f3f1", created: "#6f7671", previous: "#454b47" }
+          : { delivered: "#0d0f0e", created: "#8a908b", previous: "#c4c8c3" },
       },
       axisLabelColor: isDark ? "#a3aaa5" : "#575d59", // ink-muted
       gridColor: isDark ? "#2e3330" : "#d9dcd7", // line
@@ -42,6 +50,3 @@ export function useApexTheme() {
 
 export type ApexTheme = ReturnType<typeof useApexTheme>;
 
-// A small qualitative palette for categorical breakdowns (provider/destination),
-// not tied to corridor-phase semantics since those dimensions aren't phases.
-export const QUALITATIVE_PALETTE = ["#19d36b", "#2440e0", "#ffd60a", "#c41d14", "#6b675f", "#858b86"];
