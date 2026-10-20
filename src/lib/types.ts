@@ -184,6 +184,8 @@ export interface Order {
   customerQuoteTotal?: number | null;
   paymentStatus?: "UNPAID" | "PAID";
   paidAt?: string | null;
+  /** When the customer accepted the current quote via their link (admin view only). */
+  quoteAcceptedAt?: string | null;
   notes?: string | null;
   status: OrderStatus;
   createdByUserId?: string;

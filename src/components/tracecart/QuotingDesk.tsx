@@ -175,6 +175,15 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
                 {order.customerQuoteTotal?.toLocaleString("fr-FR")} {order.currency ?? order.hub.currency}
               </span>
             </div>
+            {order.quoteAcceptedAt ? (
+              <p className="mt-1 text-xs font-medium text-positive">
+                Accepté par le client le{" "}
+                {new Date(order.quoteAcceptedAt).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" })}
+                {" "}— paiement à confirmer
+              </p>
+            ) : (
+              <p className="mt-1 text-xs text-ink-muted">En attente de la réponse du client</p>
+            )}
             <p className="mt-1 text-xs text-ink-muted">
               Statut paiement : {order.paymentStatus === "PAID" ? "Payé" : "En attente"}
             </p>
