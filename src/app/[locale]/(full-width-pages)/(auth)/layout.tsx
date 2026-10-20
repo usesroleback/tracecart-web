@@ -2,6 +2,7 @@ import GridShape from "@/components/common/GridShape";
 import ThemeTogglerTwo from "@/components/common/ThemeTogglerTwo";
 
 import { ThemeProvider } from "@/context/ThemeContext";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import Image from "next/image";
 import { Link } from '@/i18n/navigation';
 
@@ -16,7 +17,7 @@ export default function AuthLayout({
     <div className="relative p-6 bg-surface z-1 sm:p-0">
       <ThemeProvider>
         <div className="relative flex lg:flex-row w-full h-screen justify-center flex-col sm:p-0">
-          {children}
+          <AuthProvider>{children}</AuthProvider>
           <div className="lg:w-1/2 w-full h-full bg-ink lg:grid items-center hidden">
             <div className="relative items-center justify-center  flex z-1">
               {/* <!-- ===== Common Grid Shape Start ===== --> */}

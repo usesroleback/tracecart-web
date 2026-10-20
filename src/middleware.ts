@@ -1,73 +1,54 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
-import { SESSION_COOKIE, decodeToken } from "./lib/session";
 
 const intlMiddleware = createIntlMiddleware(routing);
-
-const ROLE_HOME: Record<string, string> = {
-  SUPER_ADMIN: "/orders",
-  LOGISTICS_PARTNER: "/deliveries",
-};
 
 const LOCALE_PATTERN = /^\/(fr|en)(\/.*|$)/;
 
 /**
- * Strips a leading /fr or /en so the role/session checks below can keep
- * comparing against the same bare paths they always have ("/", "/login",
- * "/orders", ...), regardless of which locale prefix the request arrived
- * under.
+ * Strips a leading /fr or /en so the checks below can compare against bare
+ * paths ("/", "/login", "/orders", ...) whatever locale prefix the request has.
  */
 function stripLocale(pathname: string): string {
   const match = pathname.match(LOCALE_PATTERN);
   return match ? match[2] || "/" : pathname;
 }
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  // By the time this function needs to build a redirect URL itself (login
-  // bounce, role bounce), the request is already inside a locale-prefixed
-  // URL — falling back to the default locale only covers the rare case of
-  // a request matching the middleware matcher without one yet, which the
-  // intlMiddleware delegate below handles via its own locale negotiation.
-  const locale = pathname.match(LOCALE_PATTERN)?.[1] ?? routing.defaultLocale;
-  const localized = (path: string) => `/${locale}${path}`;
-  const bare = stripLocale(pathname);
-
-  // Public surfaces — no session, no login redirect. "/" is the public
-  // marketing site (TraceCartSite); /q/* is the customer-facing quote page;
-  // /legal/* are the privacy/terms pages. The authenticated console lives
-  // at /dashboard and the other admin/partner paths below.
-  if (bare === "/" || bare.startsWith("/q/") || bare.startsWith("/legal/")) {
-    return intlMiddleware(req);
-  }
-
-  const token = req.cookies.get(SESSION_COOKIE)?.value;
-  const session = token ? decodeToken(token) : null;
-
-  if (bare === "/login") {
-    if (session) {
-      return NextResponse.redirect(new URL(localized("/dashboard"), req.url));
-    }
-    return intlMiddleware(req);
-  }
-
-  if (!session) {
-    return NextResponse.redirect(new URL(localized("/login"), req.url));
-  }
-
-  const adminOnlyPaths = ["/orders", "/products", "/stores", "/hub-setup", "/reservations"];
-  if (adminOnlyPaths.some((p) => bare.startsWith(p)) && session.role !== "SUPER_ADMIN") {
-    return NextResponse.redirect(new URL(localized(ROLE_HOME[session.role] ?? "/login"), req.url));
-  }
-
-  if (bare.startsWith("/deliveries") && session.role !== "LOGISTICS_PARTNER") {
-    return NextResponse.redirect(new URL(localized(ROLE_HOME[session.role] ?? "/login"), req.url));
-  }
-
-  return intlMiddleware(req);
+/**
+ * No sign-in needed: the marketing site, the login page, the customer quote
+ * page (/q/*) and the legal pages. Everything else is the console.
+ */
+function isPublic(bare: string): boolean {
+  return bare === "/" || bare === "/login" || bare.startsWith("/q/") || bare.startsWith("/legal/");
 }
 
+export default clerkMiddleware(async (auth, req) => {
+  const { pathname } = req.nextUrl;
+
+  // Route handlers need Clerk's session (the API proxy calls auth()), but not
+  // locale routing.
+  if (pathname.startsWith("/api")) return NextResponse.next();
+
+  const bare = stripLocale(pathname);
+  if (!isPublic(bare)) {
+    const { userId } = await auth();
+    if (!userId) {
+      const locale = pathname.match(LOCALE_PATTERN)?.[1] ?? routing.defaultLocale;
+      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+    }
+  }
+
+  // Roles are checked by each console section's layout (see lib/session.ts).
+  return intlMiddleware(req);
+});
+
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // Clerk's recommended matcher: everything except Next internals and static
+  // files, plus all API routes.
+  matcher: [
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)",
+  ],
 };

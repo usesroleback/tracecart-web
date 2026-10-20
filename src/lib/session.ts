@@ -1,43 +1,55 @@
-import { cookies } from "next/headers";
-import { Role } from "./types";
+import { cache } from "react";
+import { auth } from "@clerk/nextjs/server";
+import { getLocale } from "next-intl/server";
+import { redirect } from "@/i18n/navigation";
+import { SERVER_API_URL } from "./apiBase";
+import { Role, SessionUser } from "./types";
 
-export const SESSION_COOKIE = "tracecart_token";
+export const ROLE_HOME: Record<Role, string> = {
+  SUPER_ADMIN: "/orders",
+  LOGISTICS_PARTNER: "/deliveries",
+};
 
-export interface TokenPayload {
-  sub: string;
-  role: Role;
-  exp?: number;
-}
-
-// atob/TextDecoder (not Buffer) so this also works in the Edge runtime, where
-// middleware.ts calls this without Node.js globals available.
-function base64UrlDecode(input: string): string {
-  const base64 = input.replace(/-/g, "+").replace(/_/g, "/");
-  const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
-  const binary = atob(padded);
-  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
-  return new TextDecoder("utf-8").decode(bytes);
-}
-
-// The cookie is httpOnly so the browser's JS can never read it; this decode
-// is server-only and used purely for routing/UX. The Express API is the only
-// place the JWT signature is actually verified for authorization.
-export function decodeToken(token: string): TokenPayload | null {
-  try {
-    const payload = token.split(".")[1];
-    return JSON.parse(base64UrlDecode(payload)) as TokenPayload;
-  } catch {
-    return null;
-  }
-}
-
+/** Clerk session token for calling the API as the signed-in user; null when signed out. */
 export async function getServerToken(): Promise<string | null> {
-  const store = await cookies();
-  return store.get(SESSION_COOKIE)?.value ?? null;
+  const { getToken } = await auth();
+  return getToken();
 }
 
-export async function getServerSession(): Promise<TokenPayload | null> {
+export type SessionState =
+  | { status: "signed-out" }
+  | { status: "ok"; user: SessionUser }
+  // Signed in with Clerk, but the API has no TraceCart account for them.
+  | { status: "no-account" }
+  // Signed in, but the API couldn't confirm who they are (down, misconfigured).
+  | { status: "unavailable" };
+
+/** The signed-in TraceCart user. Cached per request, so layouts and pages can share it. */
+export const getSessionState = cache(async (): Promise<SessionState> => {
   const token = await getServerToken();
-  if (!token) return null;
-  return decodeToken(token);
+  if (!token) return { status: "signed-out" };
+
+  try {
+    const res = await fetch(`${SERVER_API_URL}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (res.ok) return { status: "ok", user: (await res.json()) as SessionUser };
+    if (res.status === 403) return { status: "no-account" };
+    return { status: "unavailable" };
+  } catch {
+    return { status: "unavailable" };
+  }
+});
+
+/**
+ * Keeps each console section to the role it's built for, sending everyone
+ * else to their own home. UX only — the API enforces roles on every request.
+ */
+export async function requireRole(role: Role): Promise<SessionUser> {
+  const state = await getSessionState();
+  const locale = await getLocale();
+  if (state.status !== "ok") return redirect({ href: "/login", locale });
+  if (state.user.role !== role) return redirect({ href: ROLE_HOME[state.user.role], locale });
+  return state.user;
 }

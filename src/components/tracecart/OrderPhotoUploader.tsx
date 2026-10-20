@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { api } from "@/lib/apiClient";
-import { TRACECART_API_URL } from "@/lib/apiBase";
 import { DsUploadIcon } from "@/icons";
 import { Order } from "@/lib/types";
 
@@ -39,7 +38,7 @@ export function OrderPhotoUploader({ order, onChanged }: { order: Order; onChang
             // eslint-disable-next-line @next/next/no-img-element
             <img
               key={photo.id}
-              src={`${TRACECART_API_URL}${photo.url}`}
+              src={`/api/tracecart${photo.url}`}
               alt={photo.originalName ?? ""}
               className="h-14 w-14 flex-shrink-0 rounded-[var(--radius-s)] border border-line object-cover"
             />

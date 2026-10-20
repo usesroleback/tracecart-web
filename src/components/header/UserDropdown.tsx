@@ -1,5 +1,6 @@
 "use client";
-import { useRouter } from '@/i18n/navigation';
+import { useClerk } from "@clerk/nextjs";
+import { useLocale } from "next-intl";
 
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
@@ -15,7 +16,8 @@ function roleLabel(user: SessionUser): string {
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
+  const { signOut } = useClerk();
+  const locale = useLocale();
   const user = useSession();
 
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -29,9 +31,7 @@ export default function UserDropdown() {
 
   async function handleLogout() {
     closeDropdown();
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
-    router.refresh();
+    await signOut({ redirectUrl: `/${locale}/login` });
   }
 
   const initial = user.name.charAt(0).toUpperCase();

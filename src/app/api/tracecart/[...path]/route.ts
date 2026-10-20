@@ -29,7 +29,18 @@ async function forward(req: NextRequest, pathParts: string[]) {
     }
   }
 
-  const apiRes = await fetch(targetUrl, init);
+  // Hand redirects to the browser rather than following them here: photo
+  // routes redirect to a signed storage URL, and fetching the image through
+  // this text-based proxy would corrupt it.
+  const apiRes = await fetch(targetUrl, { ...init, redirect: "manual" });
+  const location = apiRes.headers.get("location");
+  if (apiRes.status >= 300 && apiRes.status < 400 && location) {
+    return new NextResponse(null, {
+      status: apiRes.status,
+      headers: { location, "cache-control": apiRes.headers.get("cache-control") ?? "no-store" },
+    });
+  }
+
   const text = await apiRes.text();
   const contentType = apiRes.headers.get("content-type") ?? "application/json";
 

@@ -1,9 +1,11 @@
 # syntax=docker/dockerfile:1
 # Build from the repo root (npm workspaces share one lockfile):
 #   docker build -f apps/web/Dockerfile \
-#     --build-arg NEXT_PUBLIC_API_URL=https://api.example.com -t tracecart-web .
-# NEXT_PUBLIC_API_URL is compiled into the browser bundle, so changing it
+#     --build-arg NEXT_PUBLIC_API_URL=https://api.example.com \
+#     --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_... -t tracecart-web .
+# NEXT_PUBLIC_* values are compiled into the browser bundle, so changing them
 # means rebuilding the image, not just restarting the container.
+# At runtime the container also needs CLERK_SECRET_KEY.
 
 ARG NODE_VERSION=24
 
@@ -19,8 +21,11 @@ COPY apps/web/package.json apps/web/
 RUN npm ci --workspace apps/web
 COPY apps/web apps/web
 ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 RUN test -n "$NEXT_PUBLIC_API_URL" || (echo "NEXT_PUBLIC_API_URL build arg is required" && exit 1)
+RUN test -n "$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" || (echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY build arg is required" && exit 1)
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY \
     NEXT_OUTPUT=standalone \
     NEXT_TELEMETRY_DISABLED=1
 RUN npm run build --workspace apps/web
