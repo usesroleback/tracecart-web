@@ -53,12 +53,9 @@ export function QuoteBar() {
   }
 
   return (
-    <form
-      id="quote"
-      onSubmit={handleSubmit}
-      className="overflow-hidden rounded-[var(--radius-m)] border border-ink shadow-[var(--shadow-1)]"
-    >
-      <div className="grid divide-y divide-line bg-surface-raised sm:grid-cols-[1fr_1fr_1fr_1fr_auto] sm:divide-x sm:divide-y-0">
+    <form id="quote" onSubmit={handleSubmit}>
+      {/* bundle.css .rb-quote: 2px ink border and the route corner, no shadow. */}
+      <div className="grid divide-y divide-line overflow-hidden rounded-[var(--radius-l)_var(--radius-xs)_var(--radius-xs)_var(--radius-xs)] border-2 border-ink bg-surface-raised sm:grid-cols-[1fr_1fr_1fr_1fr_auto] sm:divide-x sm:divide-y-0">
         <Field label={t("from")} placeholder={t("fromPlaceholder")} value={from} onChange={setFrom} />
         <Field label={t("to")} placeholder={t("toPlaceholder")} value={to} onChange={setTo} />
         <Field label={t("what")} placeholder={t("whatPlaceholder")} value={what} onChange={setWhat} />
