@@ -7,8 +7,9 @@ import { LogisticsQuoteForm } from "./LogisticsQuoteForm";
 import { OrderPhotoUploader } from "./OrderPhotoUploader";
 import { Order } from "@/lib/types";
 
-const inputClasses =
-  "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
+const inputBase =
+  "h-10 rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
+const inputClasses = `${inputBase} w-full`;
 
 export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () => void }) {
   const [productCost, setProductCost] = useState(order.productCost ?? "");
@@ -94,12 +95,13 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
                 min="0"
                 value={productCost}
                 onChange={(e) => setProductCost(e.target.value)}
-                className={inputClasses}
+                className={`${inputBase} min-w-0 flex-1`}
               />
               <input
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className={`${inputClasses} w-20 flex-shrink-0`}
+                aria-label="Devise"
+                className={`${inputBase} w-20 flex-shrink-0`}
               />
             </div>
           </label>

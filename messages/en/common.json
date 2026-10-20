@@ -6,5 +6,9 @@
   "notFound": {
     "message": "Cette page est introuvable.",
     "cta": "Retour à l'accueil"
+  },
+  "theme": {
+    "toDark": "Switch to dark mode",
+    "toLight": "Switch to light mode"
   }
 }

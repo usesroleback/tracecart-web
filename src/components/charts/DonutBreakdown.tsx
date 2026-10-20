@@ -36,8 +36,11 @@ export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlic
     [theme, slices]
   );
 
+  // Side by side only when the panel itself is wide enough (container query):
+  // the chart often sits in a narrow column on a wide screen.
   return (
-    <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
+    <div className="@container">
+    <div className="flex flex-col items-center gap-4 @md:flex-row @md:items-center">
       <div className="w-full max-w-[220px] flex-shrink-0">
         <ReactApexChart options={options} series={slices.map((s) => s.count)} type="donut" height={height} />
       </div>
@@ -74,6 +77,7 @@ export function DonutBreakdown({ slices, height = 220 }: { slices: BreakdownSlic
           );
         })}
       </ul>
+    </div>
     </div>
   );
 }

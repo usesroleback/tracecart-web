@@ -1,12 +1,18 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { useTheme } from "../../context/ThemeContext";
 
 export const ThemeToggleButton: React.FC = () => {
-  const { toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
+  const t = useTranslations("common.theme");
+  const label = theme === "dark" ? t("toLight") : t("toDark");
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
+      aria-label={label}
+      title={label}
       className="relative flex items-center justify-center text-ink-muted transition-colors bg-surface-raised border border-line rounded-full h-11 w-11 hover:bg-surface-sunken hover:text-ink"
     >
       <svg

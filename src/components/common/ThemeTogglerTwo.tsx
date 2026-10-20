@@ -1,12 +1,18 @@
 "use client";
 import { useTheme } from "@/context/ThemeContext";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 export default function ThemeTogglerTwo() {
-  const { toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
+  const t = useTranslations("common.theme");
+  const label = theme === "dark" ? t("toLight") : t("toDark");
   return (
     <button
+      type="button"
       onClick={toggleTheme}
+      aria-label={label}
+      title={label}
       className="inline-flex size-14 items-center justify-center rounded-full bg-ink text-ink-inverse transition-colors hover:opacity-90"
     >
       <svg
