@@ -67,7 +67,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
       <div className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5">
         <h2 className="rb-title-l text-[20px]">Photos de l&apos;article</h2>
         <p className="mt-1 text-sm text-ink-muted">
-          Ajoutez des photos de {createdOrder.productName} avant de terminer — le partenaire logistique s&apos;en sert
+          Ajoutez des photos de {createdOrder.productName} avant de terminer — le transporteur s&apos;en sert
           pour préparer sa cotation.
         </p>
         <div className="mt-4">

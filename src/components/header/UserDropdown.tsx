@@ -5,14 +5,7 @@ import { useLocale } from "next-intl";
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useSession } from "@/context/SessionContext";
-import { SessionUser } from "@/lib/types";
-
-function roleLabel(user: SessionUser): string {
-  if (user.role === "SUPER_ADMIN") {
-    return user.hub ? `Gérant · ${user.hub.city}` : "Gérant";
-  }
-  return "Partenaire logistique";
-}
+import { ROLE_LABELS, nameFromEmail } from "@/lib/people";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +27,8 @@ export default function UserDropdown() {
     await signOut({ redirectUrl: `/${locale}/login` });
   }
 
-  const initial = user.name.charAt(0).toUpperCase();
+  const name = nameFromEmail(user.email);
+  const initial = name.charAt(0).toUpperCase();
 
   return (
     <div className="relative">
@@ -46,9 +40,9 @@ export default function UserDropdown() {
           {initial}
         </span>
         <span className="mr-1 hidden text-left sm:block">
-          <span className="block font-medium text-sm">{user.name}</span>
+          <span className="block font-medium text-sm">{name}</span>
           <span className="block text-xs text-ink-muted">
-            {roleLabel(user)}
+            {ROLE_LABELS[user.role]}
           </span>
         </span>
         <svg
@@ -77,7 +71,7 @@ export default function UserDropdown() {
         className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 shadow-[var(--shadow-2)]"
       >
         <div className="px-1 pb-3">
-          <span className="block font-medium text-ink text-sm">{user.name}</span>
+          <span className="block font-medium text-ink text-sm">{name}</span>
           <span className="mt-0.5 block text-xs text-ink-muted">{user.email}</span>
         </div>
         <button

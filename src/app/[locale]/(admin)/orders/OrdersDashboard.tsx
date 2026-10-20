@@ -17,6 +17,7 @@ import { useSession } from "@/context/SessionContext";
 import { fetchStatusCounts } from "@/lib/kpi/adapter";
 import { ORDERS_PAGE_LIMIT } from "@/lib/ordersQuery";
 import { DsPlusIcon } from "@/icons";
+import { ROLE_LABELS } from "@/lib/people";
 import { Order, OrderStatus, STATUS_LABELS } from "@/lib/types";
 
 type Segment = "all" | "preparing" | "hub" | "moving" | "delivered" | "exceptions";
@@ -125,7 +126,7 @@ export function OrdersDashboard({ initialOrders, initialTotal }: { initialOrders
         <div>
           <h1 className="rb-headline text-[32px]">Commandes</h1>
           <p className="mt-1 text-sm text-ink-muted">
-            Gérant · {user.hub?.city} · {active} actives
+            {ROLE_LABELS[user.role]} · hub de {user.hub?.city} · {active} actives
             {updatedAt && (
               <> · mis à jour {updatedAt.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}</>
             )}

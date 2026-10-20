@@ -1,6 +1,7 @@
 "use client";
 
-import { Link } from '@/i18n/navigation';
+import { useState } from "react";
+import { Link, useRouter } from '@/i18n/navigation';
 
 import { useSession } from "@/context/SessionContext";
 import { OrderCard } from "@/components/tracecart/OrderCard";
@@ -9,10 +10,15 @@ import { KpiRow } from "@/components/tracecart/KpiRow";
 import { TrendPanel } from "@/components/tracecart/TrendPanel";
 import { BreakdownPanel } from "@/components/tracecart/BreakdownPanel";
 import { QueueDepthPanel } from "@/components/tracecart/QueueDepthPanel";
+import { OrdersTable, logisticsAmount } from "@/components/tracecart/OrdersTable";
+import { OrderPartnerPanel } from "@/components/tracecart/OrderPartnerPanel";
 import { Card } from "@/components/ui/card/Card";
+import { ExceptionCard } from "@/components/ui/exception-card/ExceptionCard";
+import { KpiStrip } from "@/components/ui/kpi-strip/KpiStrip";
 import Button from "@/components/ui/button/Button";
-import { DsSearchIcon, DsBuildingIcon, DsHubIcon, DsPackageIcon, DsTruckIcon } from "@/icons";
-import { Order } from "@/lib/types";
+import { DsSearchIcon, DsBuildingIcon, DsHubIcon, DsPackageIcon } from "@/icons";
+import { ROLE_LABELS, nameFromEmail } from "@/lib/people";
+import { Order, OrderStatus } from "@/lib/types";
 import { DashboardStats } from "@/lib/kpi/types";
 
 const DASHBOARD_RANGE_DAYS = 30;
@@ -37,9 +43,8 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
   const user = useSession();
   const orders = initialOrders;
   const statsError = initialStats ? null : "Impossible de charger les statistiques.";
-  const firstName = user.name.split(" ")[0];
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Bonjour" : hour < 18 ? "Bon après-midi" : "Bonsoir";
+  // The headline is who's signed in, taken from their email; no greeting.
+  const name = nameFromEmail(user.email);
 
   if (user.role === "SUPER_ADMIN") {
     const needsAttention = orders
@@ -51,11 +56,11 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
       <div>
         <div className="mb-6">
           <p className="rb-overline">{user.hub ? `${user.hub.city}, ${user.hub.country}` : "Hub non configuré"}</p>
-          <h1 className="rb-headline text-[32px]">
-            {greeting}, {firstName}
-          </h1>
+          <h1 className="rb-headline text-[32px]">{name}</h1>
           <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
-            Voici un aperçu de votre activité. Créez une intention, suivez vos cotations et gérez vos boutiques.
+            {ROLE_LABELS[user.role]} · {needsAttention.length === 0
+              ? "rien à traiter pour le moment."
+              : `${needsAttention.length} commande${needsAttention.length > 1 ? "s" : ""} à traiter.`}
           </p>
         </div>
 
@@ -120,60 +125,120 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
     );
   }
 
-  // LOGISTICS_PARTNER
-  const needsAttention = orders
-    .filter((o) => o.status === "QUOTING" || o.status === "CONFIRMED_HUB")
-    .slice(0, 5);
-  const recent = orders.slice(0, 5);
+  return <CarrierHome orders={orders} name={name} />;
+}
+
+const CARRIER_STAGES: { key: string; label: string; statuses: OrderStatus[] }[] = [
+  { key: "quote", label: "À coter", statuses: ["QUOTING", "QUOTED"] },
+  { key: "ready", label: "À prendre en charge", statuses: ["CONFIRMED_HUB"] },
+  { key: "moving", label: "En route", statuses: ["PICKED_UP", "IN_TRANSIT"] },
+  { key: "delivered", label: "Livrés", statuses: ["DELIVERED"] },
+];
+
+/**
+ * The carrier's home: their own stages (not the admin's revenue KPIs), what
+ * is waiting on them first, then their recent parcels in the ops table.
+ */
+function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
+  const router = useRouter();
+  const [openId, setOpenId] = useState<string | null>(null);
+  const toQuote = orders.filter((o) => o.status === "QUOTING");
+  const toCollect = orders.filter((o) => o.status === "CONFIRMED_HUB");
+  const todo = toQuote.length + toCollect.length;
+
   return (
     <div>
       <div className="mb-6">
-        <p className="rb-overline">Partenaire logistique</p>
-        <h1 className="rb-headline text-[32px]">
-          {greeting}, {firstName}
-        </h1>
+        <p className="rb-overline">{ROLE_LABELS.LOGISTICS_PARTNER}</p>
+        <h1 className="rb-headline text-[32px]">{name}</h1>
         <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
-          Voici vos colis assignés : cotations à soumettre et livraisons en cours.
+          {todo === 0
+            ? "Rien à coter ni à prendre en charge pour le moment."
+            : [
+                toQuote.length > 0 && `${toQuote.length} cotation${toQuote.length > 1 ? "s" : ""} à soumettre`,
+                toCollect.length > 0 && `${toCollect.length} colis à prendre en charge`,
+              ]
+                .filter(Boolean)
+                .join(" · ") + "."}
         </p>
       </div>
 
-      <div className="mb-6">
-        <KpiRow stats={initialStats} loading={false} error={statsError} currency={user.hub?.currency ?? ""} />
-      </div>
+      <KpiStrip
+        className="mb-6"
+        items={CARRIER_STAGES.map((stage) => ({
+          key: stage.key,
+          label: stage.label,
+          value: orders.filter((o) => stage.statuses.includes(o.status)).length,
+        }))}
+      />
 
-      <div className="mb-6">
-        <QuickAction href="/deliveries" icon={<DsTruckIcon />} label="Mes livraisons" description="Voir toutes les livraisons assignées" />
-      </div>
+      {todo > 0 && (
+        <div className="mb-6">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="rb-title">À faire</h2>
+            <Link href="/deliveries" className="rb-link text-sm font-medium">
+              Toutes les livraisons
+            </Link>
+          </div>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {toQuote.map((order) => (
+              <ExceptionCard
+                key={order.id}
+                severity="held"
+                title={`Cotation attendue · ${order.productName}`}
+                meta={`${order.reference} · ${order.hub.city} → ${order.destinationCity}`}
+                actions={
+                  <Button size="s" variant="secondary" href={`/orders/${order.id}`}>
+                    Coter
+                  </Button>
+                }
+              >
+                Quantité {order.quantity.toLocaleString("fr-FR")}.
+              </ExceptionCard>
+            ))}
+            {toCollect.map((order) => (
+              <ExceptionCard
+                key={order.id}
+                severity="held"
+                title={`Prêt au hub · ${order.productName}`}
+                meta={`${order.reference} · ${order.hub.city} → ${order.destinationCity}`}
+                actions={
+                  <Button size="s" variant="secondary" href={`/orders/${order.id}`}>
+                    Ouvrir
+                  </Button>
+                }
+              >
+                Le hub a confirmé le colis : il attend votre prise en charge.
+              </ExceptionCard>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mb-6">
         <QueueDepthPanel />
       </div>
 
-      <div className="mb-6">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="rb-title text-[14px]">Nécessite votre attention</h2>
-          <Link href="/deliveries" className="rb-link text-xs font-medium">
-            Voir tout
-          </Link>
-        </div>
-        <Card>
-          <AttentionTable orders={needsAttention} loading={false} emptyLabel="Rien ne nécessite votre attention pour le moment." />
-        </Card>
-      </div>
-
       <div>
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="rb-title text-[14px]">Colis récents</h2>
-          <Link href="/deliveries" className="rb-link text-xs font-medium">
+          <h2 className="rb-title">Colis récents</h2>
+          <Link href="/deliveries" className="rb-link text-sm font-medium">
             Voir tout
           </Link>
         </div>
-        <div className="space-y-3">
-          {recent.length === 0 && <p className="text-sm text-ink-muted">Aucun colis assigné pour le moment.</p>}
-          {recent.map((order) => (
-            <OrderCard key={order.id} order={order} />
-          ))}
-        </div>
+        {orders.length === 0 ? (
+          <p className="text-sm text-ink-muted">Aucun colis assigné pour le moment.</p>
+        ) : (
+          <OrdersTable
+            caption="Colis récents"
+            orders={orders.slice(0, 8)}
+            openId={openId}
+            onToggle={(id) => setOpenId((cur) => (cur === id ? null : id))}
+            amountOf={logisticsAmount}
+            amountLabel="Votre devis"
+            renderDetail={(order) => <OrderPartnerPanel order={order} onChanged={() => router.refresh()} />}
+          />
+        )}
       </div>
     </div>
   );

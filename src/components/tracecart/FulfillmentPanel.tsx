@@ -8,14 +8,14 @@ import { Order, OrderStatus } from "@/lib/types";
 const STEP_BUY_ON_BEHALF: Partial<Record<OrderStatus, { toStatus: OrderStatus; label: string }>> = {
   PAID: { toStatus: "PURCHASED", label: "Marquer acheté" },
   PURCHASED: { toStatus: "RECEIVED_HUB", label: "Marquer reçu au hub" },
-  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "Confirmer et transmettre au partenaire" },
+  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "Confirmer et transmettre au transporteur" },
 };
 
 // No purchase for TraceCart to make — the customer already owns the goods,
 // so PAID (for the shipping) goes straight to RECEIVED_HUB.
 const STEP_CUSTOMER_OWNED: Partial<Record<OrderStatus, { toStatus: OrderStatus; label: string }>> = {
   PAID: { toStatus: "RECEIVED_HUB", label: "Marquer reçu au hub" },
-  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "Confirmer et transmettre au partenaire" },
+  RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "Confirmer et transmettre au transporteur" },
 };
 
 export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged: () => void }) {
@@ -29,7 +29,7 @@ export function FulfillmentPanel({ order, onChanged }: { order: Order; onChanged
     return (
       <p className="text-sm text-ink-muted">
         {order.status === "PICKED_UP" || order.status === "IN_TRANSIT"
-          ? "En cours de livraison par le partenaire."
+          ? "En cours de livraison par le transporteur."
           : order.status === "DELIVERED"
             ? "Livré."
             : null}

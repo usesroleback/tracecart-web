@@ -172,11 +172,11 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
               />
             </Card>
             <Card padding={24} className="md:col-span-2 xl:col-span-1">
-              <h2 className="rb-title">Hub et partenaire</h2>
+              <h2 className="rb-title">Hub et transporteur</h2>
               <Facts
                 items={[
                   ["Hub", `${order.hub.name} · ${order.hub.city}, ${order.hub.country}`],
-                  ["Partenaire", order.assignedPartner?.name ?? "Non assigné"],
+                  ["Transporteur", order.assignedPartner?.name ?? "Non assigné"],
                   ["Téléphone", order.assignedPartner?.phone, { mono: true }],
                   ["Créée par", isAdmin ? order.createdByUser?.name : undefined],
                 ]}

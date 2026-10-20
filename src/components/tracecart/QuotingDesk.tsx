@@ -54,7 +54,7 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
       )}
 
       <div>
-        <p className="rb-overline mb-1.5">Cotation logistique{isCustomerOwned ? "" : " du partenaire"}</p>
+        <p className="rb-overline mb-1.5">Cotation logistique{isCustomerOwned ? "" : " du transporteur"}</p>
         {quote ? (
           <div className="rounded-[var(--radius-s)] bg-surface-sunken p-3 text-sm">
             <div className="flex justify-between font-medium text-ink">
@@ -74,7 +74,7 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
             {quote.note && <p className="mt-1.5 text-xs italic text-ink-muted">{quote.note}</p>}
           </div>
         ) : (
-          <p className="text-sm text-ink-muted">En attente de la cotation{isCustomerOwned ? "" : " du partenaire"}.</p>
+          <p className="text-sm text-ink-muted">En attente de la cotation{isCustomerOwned ? "" : " du transporteur"}.</p>
         )}
       </div>
 
