@@ -215,6 +215,7 @@
   .rb-label { font-size: 14px; line-height: 1.29; font-weight: 580; letter-spacing: 0.004em; }
   .rb-caption { font-size: 12px; line-height: 1.33; font-weight: 500; letter-spacing: 0.012em; }
   .rb-overline { font-size: 12px; line-height: 1.33; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-muted); }
+  .rb-numeral { font-weight: 300; letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 96; }
   .rb-numeral-xl { font-size: 96px; font-weight: 300; letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 96; }
   .rb-numeral-l { font-size: 48px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 96; }
   /* bundle.css L11-12: links are ink with a quiet underline that turns accent on hover. */
