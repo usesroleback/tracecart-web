@@ -92,7 +92,7 @@
     "PLATFORM_FEE": "TraceCart fee (purchase)",
     "CUSTOMS_DUTIES": "Customs duties and taxes",
     "CUSTOMS_BROKER": "Customs broker charges",
-    "SERVICE": "Goods and delivery",
+    "SERVICE": "Delivered price",
     "PICKUP": "Pickup",
     "HUB_HANDLING": "Hub handling",
     "STORAGE": "Storage",
