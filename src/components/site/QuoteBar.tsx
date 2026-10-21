@@ -79,6 +79,7 @@ export function QuoteBar() {
   const [contact, setContact] = useState({ name: "", phone: "", email: "" });
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -160,43 +161,71 @@ export function QuoteBar() {
     <div id="quote">
       <form onSubmit={search}>
         {/* bundle.css .rb-quote: 2px ink border and the route corner, no shadow. */}
-        <div className="grid divide-y divide-line overflow-hidden rounded-[var(--radius-l)_var(--radius-xs)_var(--radius-xs)_var(--radius-xs)] border-2 border-ink bg-surface-raised sm:grid-cols-[1fr_1fr_1.4fr_1fr_auto] sm:divide-x sm:divide-y-0">
-          <Field label={t("from")} placeholder={t("fromPlaceholder")} value={from} onChange={setFrom} />
-          <Field label={t("to")} placeholder={t("toPlaceholder")} value={to} onChange={setTo} />
-          <Field label={t("what")} placeholder={t("whatPlaceholder")} value={what} onChange={setWhat}>
-            {preview ? (
-              <span className="relative flex-none">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={preview} alt="" className="h-8 w-8 rounded-[var(--radius-xs)] border border-line object-cover" />
+        <div className="grid divide-y divide-line overflow-hidden rounded-[var(--radius-l)_var(--radius-xs)_var(--radius-xs)_var(--radius-xs)] border-2 border-ink bg-surface-raised sm:grid-cols-[1.8fr_1fr_1fr_1fr_auto] sm:divide-x sm:divide-y-0">
+          {/* What comes first: the product is the request. Words, a photo, or both; the field also takes a dropped image. */}
+          <div
+            className={`px-5 py-3 transition-colors ${dragging ? "bg-accent-soft" : ""}`}
+            onDragOver={(e) => {
+              if (e.dataTransfer.types.includes("Files")) {
+                e.preventDefault();
+                setDragging(true);
+              }
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragging(false);
+              pickPhoto(e.dataTransfer.files?.[0]);
+            }}
+          >
+            <label htmlFor="quote-what" className="rb-overline">
+              {t("what")}
+            </label>
+            <span className="mt-1 flex items-center gap-2">
+              <input
+                id="quote-what"
+                value={what}
+                onChange={(e) => setWhat(e.target.value)}
+                placeholder={dragging ? t("dropHere") : t("whatPlaceholder")}
+                className={fieldClasses}
+              />
+              {preview ? (
+                <span className="relative flex-none">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={preview} alt="" className="h-9 w-9 rounded-[var(--radius-xs)] border border-line object-cover" />
+                  <button
+                    type="button"
+                    onClick={removePhoto}
+                    aria-label={t("removePhoto")}
+                    className="absolute -right-2 -top-2 grid h-5 w-5 place-items-center rounded-full border border-line bg-surface-raised text-[10px] text-ink"
+                  >
+                    ✕
+                  </button>
+                </span>
+              ) : (
                 <button
                   type="button"
-                  onClick={removePhoto}
-                  aria-label={t("removePhoto")}
-                  className="absolute -right-2 -top-2 grid h-5 w-5 place-items-center rounded-full border border-line bg-surface-raised text-[10px] text-ink"
+                  onClick={() => fileRef.current?.click()}
+                  aria-label={t("attach")}
+                  title={t("photoHint")}
+                  className="inline-flex h-9 flex-none items-center gap-1.5 rounded-[var(--radius-s)] border border-line-strong px-2.5 text-xs font-semibold text-ink hover:bg-surface-sunken focus-visible:outline-2 focus-visible:outline-focus-ring"
                 >
-                  ✕
+                  <CameraIcon />
+                  {t("photo")}
                 </button>
-              </span>
-            ) : (
-              <button
-                type="button"
-                onClick={() => fileRef.current?.click()}
-                aria-label={t("attach")}
-                title={`${t("attach")} · ${t("photoHint")}`}
-                className="grid h-9 w-9 flex-none place-items-center rounded-[var(--radius-s)] text-ink-muted hover:bg-surface-sunken hover:text-ink focus-visible:outline-2 focus-visible:outline-focus-ring"
-              >
-                <CameraIcon />
-              </button>
-            )}
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              className="sr-only"
-              tabIndex={-1}
-              onChange={(e) => pickPhoto(e.target.files?.[0])}
-            />
-          </Field>
+              )}
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                className="sr-only"
+                tabIndex={-1}
+                onChange={(e) => pickPhoto(e.target.files?.[0])}
+              />
+            </span>
+          </div>
+          <Field label={t("from")} placeholder={t("fromPlaceholder")} value={from} onChange={setFrom} />
+          <Field label={t("to")} placeholder={t("toPlaceholder")} value={to} onChange={setTo} />
           <Field label={t("when")} placeholder={t("whenPlaceholder")} value={when} onChange={setWhen} />
           <div className="flex items-center p-3 sm:pl-0">
             <Button type="submit" block className="sm:w-auto" loading={searching}>

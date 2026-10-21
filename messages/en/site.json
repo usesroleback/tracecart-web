@@ -75,7 +75,7 @@
     "to": "To",
     "toPlaceholder": "Where it needs to go",
     "what": "What",
-    "whatPlaceholder": "e.g. 2 solar inverters, 1.4 t",
+    "whatPlaceholder": "Describe it, or add a photo",
     "when": "When",
     "whenPlaceholder": "Within 3 weeks",
     "cta": "Get a quote →",
@@ -110,7 +110,9 @@
     "sending": "Sending…",
     "chosenSummary": "Chosen product: {product}",
     "failed": "The request couldn't be sent. Try again in a moment.",
-    "submittedBodyNoFrom": "A person who knows the route to {to} will reply within 4 working hours."
+    "submittedBodyNoFrom": "A person who knows the route to {to} will reply within 4 working hours.",
+    "photo": "Photo",
+    "dropHere": "Drop the photo here"
   },
   "footer": {
     "brand": "TraceCart",

@@ -75,7 +75,7 @@
     "to": "Destination",
     "toPlaceholder": "Où ça doit aller",
     "what": "Quoi",
-    "whatPlaceholder": "ex. 2 onduleurs solaires, 1,4 t",
+    "whatPlaceholder": "Décrivez-le, ou ajoutez une photo",
     "when": "Quand",
     "whenPlaceholder": "Dans les 3 semaines",
     "cta": "Demander un devis →",
@@ -110,7 +110,9 @@
     "sending": "Envoi…",
     "chosenSummary": "Produit choisi : {product}",
     "failed": "La demande n'a pas pu partir. Réessayez dans un instant.",
-    "submittedBodyNoFrom": "Une personne qui connaît la route vers {to} vous répondra sous 4 heures ouvrées."
+    "submittedBodyNoFrom": "Une personne qui connaît la route vers {to} vous répondra sous 4 heures ouvrées.",
+    "photo": "Photo",
+    "dropHere": "Déposez la photo ici"
   },
   "footer": {
     "brand": "TraceCart",
