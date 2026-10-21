@@ -242,12 +242,18 @@ export interface SourcingRequest {
   description: string;
   category: string | null;
   brand: string | null;
+  model: string | null;
+  partNumber: string | null;
+  productUrl: string | null;
   budgetMin: string | null;
   budgetMax: string | null;
   quantity: number;
   destinationCity: string;
   destinationCountry: string;
   status: SourcingRequestStatus;
+  /** The listing chosen in product discovery (at most one). */
+  candidates?: SourcingCandidate[];
+  _count?: { candidates: number; attachments: number };
   selectedProductId: string | null;
   selectedProduct: {
     id: string;
@@ -358,4 +364,76 @@ export interface PublicQuote {
   history: { fromStatus: OrderStatus | null; toStatus: OrderStatus; createdAt: string }[];
   /** Where the carrier reported the parcel, newest first. */
   positions: { id: string; city: string; recordedAt: string }[];
+}
+
+// ---- Product discovery (apps/api/src/modules/discovery)
+
+export type SpecSource = "observed" | "stated" | "inferred";
+export type SpecConfidence = "high" | "medium" | "low";
+export interface SpecField {
+  value: string | null;
+  source: SpecSource | null;
+  confidence: SpecConfidence | null;
+}
+export interface DiscoverySpec {
+  title: string | null;
+  category: string | null;
+  productType: string | null;
+  intendedUse: string | null;
+  brand: SpecField;
+  manufacturer: SpecField;
+  model: SpecField;
+  partNumbers: string[];
+  attributes: { name: string; value: string; unit: string | null; source: SpecSource; confidence: SpecConfidence }[];
+  includedItems: string[];
+  requiredAccessories: string[];
+  shippingFlags: { issue: string; reason: string }[];
+  hazardous: "yes" | "no" | "unknown";
+  identification: "exact_model" | "product_family" | "product_type" | "unclear";
+  uncertainties: string[];
+  missingInformation: string[];
+  searchQueries: string[];
+}
+
+export type CandidateStatus = "PROPOSED" | "SELECTED" | "REJECTED";
+export interface SourcingCandidate {
+  id: string;
+  provider: string;
+  url: string;
+  title: string;
+  merchant: string | null;
+  imageUrl: string | null;
+  price: string | null;
+  currency: string | null;
+  availability: string | null;
+  brand: string | null;
+  model: string | null;
+  partNumber: string | null;
+  evidence: Record<string, unknown> | null;
+  retrievedAt: string;
+  score: number;
+  scoreReasons: { key: string; points: number; detail?: string }[] | null;
+  status: CandidateStatus;
+  productId: string | null;
+  note: string | null;
+}
+
+export interface ProviderOutcome {
+  id: string;
+  label: string;
+  status: "ok" | "unavailable" | "failed" | "timeout" | "disabled";
+  results?: number;
+  ms?: number;
+  detail?: string;
+}
+
+export interface DiscoveryState {
+  request: SourcingRequest;
+  ai: { configured: boolean };
+  spec: DiscoverySpec | null;
+  extraction: { status: "NONE" | "DONE" | "FAILED"; error: string | null; at: string | null; model: string | null; editedAt: string | null };
+  attachments: { id: string; kind: "IMAGE" | "DOCUMENT"; originalName: string | null; mimeType: string; sizeBytes: number; url: string }[];
+  providers: ProviderOutcome[];
+  candidates: SourcingCandidate[];
+  lastRun: { id: string; query: string; providers: ProviderOutcome[]; startedAt: string; finishedAt: string | null } | null;
 }

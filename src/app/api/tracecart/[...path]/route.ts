@@ -76,6 +76,11 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
   return forward(req, path);
 }
 
+export async function PUT(req: NextRequest, { params }: RouteParams) {
+  const { path } = await params;
+  return forward(req, path);
+}
+
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
   const { path } = await params;
   return forward(req, path);

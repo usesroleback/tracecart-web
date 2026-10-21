@@ -52,6 +52,161 @@
     "budgetMax": "Budget max (optionnel)",
     "failed": "Impossible de créer la demande",
     "creating": "Création...",
-    "create": "Créer la demande"
+    "create": "Créer la demande",
+    "brand": "Marque (optionnel)",
+    "model": "Modèle (optionnel)",
+    "partNumber": "Référence / SKU (optionnel)",
+    "productUrl": "Lien produit (optionnel)"
+  },
+  "findProduct": "Rechercher le produit",
+  "d": {
+    "back": "Demandes",
+    "title": "Recherche produit",
+    "customer": "{name} · {city}, {country} · qté {quantity}",
+    "inputs": {
+      "title": "Ce que le client a montré",
+      "description": "Description",
+      "brand": "Marque",
+      "model": "Modèle",
+      "partNumber": "Référence",
+      "productUrl": "Lien",
+      "category": "Catégorie",
+      "budget": "Budget",
+      "files": "Photos et fiches techniques",
+      "add": "Ajouter des photos ou un PDF",
+      "uploading": "Envoi…",
+      "hint": "JPEG, PNG, WebP, GIF ou PDF · 10 Mo max · 8 fichiers",
+      "remove": "Retirer {name}",
+      "noFiles": "Aucun fichier."
+    },
+    "spec": {
+      "title": "Fiche produit",
+      "read": "Lire avec Claude",
+      "reread": "Relire",
+      "reading": "Lecture en cours, jusqu'à une minute…",
+      "notConfigured": "La lecture automatique n'est pas configurée sur ce serveur (ANTHROPIC_API_KEY). Remplissez la fiche à la main.",
+      "none": "Pas encore de fiche. Claude la lit dans la description, les photos et les fiches techniques. Il n'invente rien : ce qu'il ne voit pas reste vide.",
+      "failed": "La lecture a échoué : {error}",
+      "readBy": "Lue par {model} · {when}",
+      "edited": "Corrigée {when}",
+      "identification": {
+        "exact_model": "Modèle exact",
+        "product_family": "Famille de produit",
+        "product_type": "Type de produit",
+        "unclear": "Pas identifié"
+      },
+      "source": {
+        "observed": "Vu",
+        "stated": "Indiqué",
+        "inferred": "Déduit"
+      },
+      "confidence": {
+        "high": "sûr",
+        "medium": "probable",
+        "low": "incertain"
+      },
+      "f": {
+        "title": "Produit",
+        "brand": "Marque",
+        "manufacturer": "Fabricant",
+        "model": "Modèle",
+        "partNumbers": "Références",
+        "category": "Catégorie",
+        "productType": "Type",
+        "identification": "Identification"
+      },
+      "unknown": "Inconnu",
+      "attributes": "Caractéristiques",
+      "shipping": "À vérifier pour l'expédition",
+      "hazardous": {
+        "yes": "Marchandise dangereuse",
+        "unknown": "Marchandise dangereuse : à vérifier"
+      },
+      "missing": "Manquant",
+      "uncertain": "Incertain",
+      "queries": "Recherches proposées",
+      "edit": "Corriger",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "editHint": "Ce que vous saisissez est marqué « Indiqué ». Séparez les références par des virgules.",
+      "attrName": "Caractéristique",
+      "attrValue": "Valeur",
+      "attrUnit": "Unité",
+      "addAttr": "+ Ajouter une caractéristique",
+      "removeAttr": "Retirer"
+    },
+    "search": {
+      "title": "Recherche chez les vendeurs",
+      "run": "Rechercher",
+      "again": "Relancer la recherche",
+      "running": "Recherche en cours…",
+      "last": "Dernière recherche {when} · « {query} »",
+      "never": "Pas encore de recherche. Lisez d'abord la fiche pour des résultats plus précis.",
+      "status": {
+        "ok": "{count, plural, =0 {aucun résultat} one {# résultat} other {# résultats}}",
+        "ready": "prêt",
+        "unavailable": "indisponible",
+        "failed": "en échec",
+        "timeout": "trop lent",
+        "disabled": "désactivé"
+      }
+    },
+    "candidates": {
+      "title": "Produits trouvés",
+      "empty": "Aucun produit pour le moment. Lancez une recherche ou ajoutez une offre.",
+      "score": "Pertinence {score}",
+      "why": "Pourquoi ce rang",
+      "choose": "Choisir",
+      "chosen": "Choisi",
+      "reject": "Écarter",
+      "rejected": "Écarté",
+      "restore": "Rétablir",
+      "unchoose": "Annuler le choix",
+      "open": "Voir la page",
+      "priceUnknown": "Prix à vérifier",
+      "found": "Trouvé {when}",
+      "provider": {
+        "catalog": "Catalogue TraceCart",
+        "google_shopping": "Google Shopping",
+        "web_search": "Web",
+        "manual": "Offre saisie",
+        "customer_link": "Lien du client"
+      }
+    },
+    "reasons": {
+      "partNumber": "Même référence",
+      "model": "Même modèle",
+      "brand": "Même marque",
+      "otherBrand": "Autre marque",
+      "titleMatch": "Mots en commun",
+      "specMatch": "Même caractéristique",
+      "specConflict": "Caractéristique différente",
+      "priced": "Prix indiqué",
+      "image": "Photo",
+      "staffOffer": "Offre saisie par l'équipe",
+      "catalog": "Catalogue TraceCart",
+      "customerLink": "Indiqué par le client",
+      "outOfStock": "Indisponible",
+      "withinBudget": "Dans le budget",
+      "overBudget": "Au-dessus du budget"
+    },
+    "manual": {
+      "title": "Ajouter une offre fournisseur",
+      "open": "+ Ajouter une offre",
+      "url": "Lien de l'offre",
+      "product": "Produit",
+      "merchant": "Vendeur (optionnel)",
+      "price": "Prix (optionnel)",
+      "currency": "Devise",
+      "note": "Note (optionnel)",
+      "add": "Ajouter l'offre",
+      "cancel": "Annuler"
+    },
+    "order": {
+      "title": "Créer la commande",
+      "hint": "À partir du produit choisi. Rien n'est acheté avant que le client ait accepté et payé le devis.",
+      "done": "Cette demande est devenue la commande {reference}."
+    },
+    "failed": "L'action a échoué."
   }
 }

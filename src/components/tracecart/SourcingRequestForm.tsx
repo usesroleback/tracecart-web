@@ -16,6 +16,10 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
   const [customerEmail, setCustomerEmail] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [partNumber, setPartNumber] = useState("");
+  const [productUrl, setProductUrl] = useState("");
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
   const [quantity, setQuantity] = useState("1");
@@ -37,6 +41,10 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
         customerEmail: customerEmail || undefined,
         description,
         category: category || undefined,
+        brand: brand || undefined,
+        model: model || undefined,
+        partNumber: partNumber || undefined,
+        productUrl: productUrl || undefined,
         budgetMin: budgetMin ? Number(budgetMin) : undefined,
         budgetMax: budgetMax ? Number(budgetMax) : undefined,
         quantity: quantity ? Number(quantity) : undefined,
@@ -109,6 +117,21 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
             placeholder={t("whatPlaceholder")}
             className="w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring"
           />
+        </Field>
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <Field label={t("brand")}>
+          <input value={brand} onChange={(e) => setBrand(e.target.value)} className={inputClasses} />
+        </Field>
+        <Field label={t("model")}>
+          <input value={model} onChange={(e) => setModel(e.target.value)} className={inputClasses} />
+        </Field>
+        <Field label={t("partNumber")}>
+          <input value={partNumber} onChange={(e) => setPartNumber(e.target.value)} className={inputClasses} />
+        </Field>
+        <Field label={t("productUrl")}>
+          <input type="url" value={productUrl} onChange={(e) => setProductUrl(e.target.value)} placeholder="https://…" className={inputClasses} />
         </Field>
       </div>
 

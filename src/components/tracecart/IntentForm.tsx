@@ -26,28 +26,40 @@ export interface IntentFormInitialProduct {
   sourcingRequestId?: string;
 }
 
+/** A customer already known (e.g. from a sourcing request), to pre-fill the form. */
+export interface IntentFormInitialCustomer {
+  name: string;
+  phone: string;
+  email?: string | null;
+  destinationCity: string;
+  destinationCountry: string;
+  quantity?: number;
+}
+
 export function IntentForm({
   onCreated,
   onCancel,
   initialProduct,
+  initialCustomer,
 }: {
   onCreated: () => void;
   onCancel: () => void;
   initialProduct?: IntentFormInitialProduct;
+  initialCustomer?: IntentFormInitialCustomer;
 }) {
   const t = useTranslations("orders");
   const tl = useTranslations("labels");
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerName, setCustomerName] = useState(initialCustomer?.name ?? "");
+  const [customerPhone, setCustomerPhone] = useState(initialCustomer?.phone ?? "");
+  const [customerEmail, setCustomerEmail] = useState(initialCustomer?.email ?? "");
   // The customer's SMS, emails and quote page; the console's language until changed.
   const [customerLocale, setCustomerLocale] = useState<Locale>(useLocale() as Locale);
-  const [destinationCity, setDestinationCity] = useState("");
-  const [destinationCountry, setDestinationCountry] = useState("");
+  const [destinationCity, setDestinationCity] = useState(initialCustomer?.destinationCity ?? "");
+  const [destinationCountry, setDestinationCountry] = useState(initialCustomer?.destinationCountry ?? "");
   const [productUrl, setProductUrl] = useState(initialProduct?.url ?? "");
   const [productName, setProductName] = useState(initialProduct?.name ?? "");
   const [productImageUrl, setProductImageUrl] = useState(initialProduct?.imageUrl ?? "");
-  const [quantity, setQuantity] = useState("1");
+  const [quantity, setQuantity] = useState(String(initialCustomer?.quantity ?? 1));
   const [volumeTier, setVolumeTier] = useState<VolumeTier>("SMALL_UNITS");
   const [notes, setNotes] = useState("");
 

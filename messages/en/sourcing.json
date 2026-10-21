@@ -52,6 +52,161 @@
     "budgetMax": "Maximum budget (optional)",
     "failed": "Couldn't create the request",
     "creating": "Creating...",
-    "create": "Create the request"
+    "create": "Create the request",
+    "brand": "Brand (optional)",
+    "model": "Model (optional)",
+    "partNumber": "Part number / SKU (optional)",
+    "productUrl": "Product link (optional)"
+  },
+  "findProduct": "Find the product",
+  "d": {
+    "back": "Requests",
+    "title": "Product search",
+    "customer": "{name} · {city}, {country} · qty {quantity}",
+    "inputs": {
+      "title": "What the customer showed us",
+      "description": "Description",
+      "brand": "Brand",
+      "model": "Model",
+      "partNumber": "Part number",
+      "productUrl": "Link",
+      "category": "Category",
+      "budget": "Budget",
+      "files": "Photos and datasheets",
+      "add": "Add photos or a PDF",
+      "uploading": "Uploading…",
+      "hint": "JPEG, PNG, WebP, GIF or PDF · 10 MB max · 8 files",
+      "remove": "Remove {name}",
+      "noFiles": "No files."
+    },
+    "spec": {
+      "title": "Product spec",
+      "read": "Read with Claude",
+      "reread": "Read again",
+      "reading": "Reading, up to a minute…",
+      "notConfigured": "Automatic reading isn't set up on this server (ANTHROPIC_API_KEY). Fill in the spec by hand.",
+      "none": "No spec yet. Claude reads it from the description, photos and datasheets. It invents nothing: what it can't see stays empty.",
+      "failed": "Reading failed: {error}",
+      "readBy": "Read by {model} · {when}",
+      "edited": "Corrected {when}",
+      "identification": {
+        "exact_model": "Exact model",
+        "product_family": "Product family",
+        "product_type": "Product type",
+        "unclear": "Not identified"
+      },
+      "source": {
+        "observed": "Seen",
+        "stated": "Stated",
+        "inferred": "Inferred"
+      },
+      "confidence": {
+        "high": "sure",
+        "medium": "likely",
+        "low": "unsure"
+      },
+      "f": {
+        "title": "Product",
+        "brand": "Brand",
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "partNumbers": "Part numbers",
+        "category": "Category",
+        "productType": "Type",
+        "identification": "Identification"
+      },
+      "unknown": "Unknown",
+      "attributes": "Specifications",
+      "shipping": "Check before shipping",
+      "hazardous": {
+        "yes": "Dangerous goods",
+        "unknown": "Dangerous goods: to check"
+      },
+      "missing": "Missing",
+      "uncertain": "Uncertain",
+      "queries": "Suggested searches",
+      "edit": "Correct",
+      "save": "Save",
+      "cancel": "Cancel",
+      "editHint": "What you enter is marked “Stated”. Separate part numbers with commas.",
+      "attrName": "Specification",
+      "attrValue": "Value",
+      "attrUnit": "Unit",
+      "addAttr": "+ Add a specification",
+      "removeAttr": "Remove"
+    },
+    "search": {
+      "title": "Search sellers",
+      "run": "Search",
+      "again": "Search again",
+      "running": "Searching…",
+      "last": "Last search {when} · “{query}”",
+      "never": "No search yet. Read the spec first for more precise results.",
+      "status": {
+        "ok": "{count, plural, =0 {no results} one {# result} other {# results}}",
+        "ready": "ready",
+        "unavailable": "unavailable",
+        "failed": "failed",
+        "timeout": "too slow",
+        "disabled": "disabled"
+      }
+    },
+    "candidates": {
+      "title": "Listings found",
+      "empty": "No listings yet. Run a search or add an offer.",
+      "score": "Relevance {score}",
+      "why": "Why this rank",
+      "choose": "Choose",
+      "chosen": "Chosen",
+      "reject": "Set aside",
+      "rejected": "Set aside",
+      "restore": "Restore",
+      "unchoose": "Undo choice",
+      "open": "Open the page",
+      "priceUnknown": "Price to check",
+      "found": "Found {when}",
+      "provider": {
+        "catalog": "TraceCart catalogue",
+        "google_shopping": "Google Shopping",
+        "web_search": "Web",
+        "manual": "Offer entered",
+        "customer_link": "Customer's link"
+      }
+    },
+    "reasons": {
+      "partNumber": "Same part number",
+      "model": "Same model",
+      "brand": "Same brand",
+      "otherBrand": "Other brand",
+      "titleMatch": "Words in common",
+      "specMatch": "Same specification",
+      "specConflict": "Different specification",
+      "priced": "Price shown",
+      "image": "Photo",
+      "staffOffer": "Offer entered by staff",
+      "catalog": "TraceCart catalogue",
+      "customerLink": "Given by the customer",
+      "outOfStock": "Out of stock",
+      "withinBudget": "Within budget",
+      "overBudget": "Over budget"
+    },
+    "manual": {
+      "title": "Add a supplier offer",
+      "open": "+ Add an offer",
+      "url": "Offer link",
+      "product": "Product",
+      "merchant": "Seller (optional)",
+      "price": "Price (optional)",
+      "currency": "Currency",
+      "note": "Note (optional)",
+      "add": "Add the offer",
+      "cancel": "Cancel"
+    },
+    "order": {
+      "title": "Create the order",
+      "hint": "From the chosen listing. Nothing is bought before the customer accepts and pays the quote.",
+      "done": "This request became order {reference}."
+    },
+    "failed": "That didn't work."
   }
 }

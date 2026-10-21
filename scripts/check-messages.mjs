@@ -13,8 +13,9 @@ const flatten = (obj, prefix = "") =>
     v && typeof v === "object" ? flatten(v, `${prefix}${k}.`) : [[`${prefix}${k}`, String(v)]],
   );
 
-// Argument names, ignoring ICU plural/select branch bodies' literal text.
-const placeholders = (msg) => [...msg.matchAll(/\{\s*([A-Za-z_][\w]*)/g)].map((m) => m[1]).sort().join(",");
+// Argument names ({name} or {name, plural…}); plural/select branch text such
+// as "{no results}" isn't an argument and is ignored.
+const placeholders = (msg) => [...new Set([...msg.matchAll(/\{\s*([A-Za-z_]\w*)\s*[,}]/g)].map((m) => m[1]))].sort().join(",");
 
 const load = (locale) =>
   Object.fromEntries(

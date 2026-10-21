@@ -40,6 +40,14 @@ function budget(r: SourcingRequest, f: Format): string | null {
   return null;
 }
 
+/** What a matched request converts into: the listing chosen in discovery, else the catalogue product chosen here. */
+function chosenProduct(r: SourcingRequest): { url: string; title: string; imageUrl: string | null } | null {
+  const candidate = r.candidates?.[0];
+  if (candidate) return { url: candidate.url, title: candidate.title, imageUrl: candidate.imageUrl };
+  if (r.selectedProduct) return { url: r.selectedProduct.canonicalUrl, title: r.selectedProduct.title, imageUrl: r.selectedProduct.imageUrl };
+  return null;
+}
+
 const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
 const TD = "border-b border-line px-3 py-2 align-middle";
 
@@ -144,13 +152,18 @@ export function SourcingDashboard({
   function actions(r: SourcingRequest) {
     return (
       <div className="flex flex-wrap justify-end gap-2">
-        {r.status === "MATCHED" && r.selectedProduct && (
+        {r.status === "MATCHED" && chosenProduct(r) && (
           <Button size="s" onClick={() => setConverting(r)}>
             {t("createOrder")}
           </Button>
         )}
         {(r.status === "OPEN" || r.status === "MATCHED") && (
-          <Button size="s" variant="secondary" onClick={() => toggleMatches(r)}>
+          <Button size="s" variant={r.status === "OPEN" ? "primary" : "secondary"} href={`/sourcing/${r.id}`}>
+            {t("findProduct")}
+          </Button>
+        )}
+        {(r.status === "OPEN" || r.status === "MATCHED") && (
+          <Button size="s" variant="ghost" onClick={() => toggleMatches(r)}>
             {expandedId === r.id ? t("hide") : t("seeCandidates")}
           </Button>
         )}
@@ -257,17 +270,25 @@ export function SourcingDashboard({
         </div>
       )}
 
-      {converting?.selectedProduct && (
+      {converting && chosenProduct(converting) && (
         <div className="mt-6">
           <IntentForm
             onCreated={handleConverted}
             onCancel={() => setConverting(null)}
             initialProduct={{
-              url: converting.selectedProduct.canonicalUrl,
-              name: converting.selectedProduct.title,
-              imageUrl: converting.selectedProduct.imageUrl ?? undefined,
+              url: chosenProduct(converting)!.url,
+              name: chosenProduct(converting)!.title,
+              imageUrl: chosenProduct(converting)!.imageUrl ?? undefined,
               provider: null,
               sourcingRequestId: converting.id,
+            }}
+            initialCustomer={{
+              name: converting.customerName,
+              phone: converting.customerPhone,
+              email: converting.customerEmail,
+              destinationCity: converting.destinationCity,
+              destinationCountry: converting.destinationCountry,
+              quantity: converting.quantity,
             }}
           />
         </div>
