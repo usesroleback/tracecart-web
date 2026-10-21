@@ -1,0 +1,282 @@
+{
+  "meta": {
+    "title": "TraceCart — Get it there.",
+    "description": "Sourcing, freight and customs under one roof, for goods that need to reach hard places. One delivered price, an honest arrival date, proof at the door."
+  },
+  "nav": {
+    "label": "Main",
+    "home": "Home",
+    "services": "What we do",
+    "process": "How it works",
+    "ship": "Ship",
+    "more": "Field notes",
+    "results": "Results",
+    "work": "Selected work",
+    "insights": "Insights",
+    "account": "My account",
+    "cta": "Get a delivered price",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu",
+    "language": "Français",
+    "languageHref": "fr"
+  },
+  "hero": {
+    "eyebrow": "Sourcing and logistics for hard-to-reach places",
+    "titleBefore": "What if every",
+    "titleAfter": "shipment knew the road to your door?",
+    "subtitleChip1": "Sourcing",
+    "subtitleChip2": "Freight",
+    "subtitleChip3": "Customs",
+    "subtitleRest": "under one roof, built for goods delivered, not goods “in transit”.",
+    "cta": "Get a delivered price",
+    "secondary": "Ship goods you already have",
+    "imageAlt": "Goods handed over at the door, seen from below against a bright sky",
+    "cardLabel": "On-time arrival",
+    "cardDotsLabel": "{on} of {total} shipments on time",
+    "cardBody": "Built for visibility, control and arrival dates you can plan around.",
+    "cardRowLabel": "Border wait, 90 days",
+    "cardChartLabel": "Shipments per week, last twelve weeks"
+  },
+  "finder": {
+    "title": "Tell us what needs to move.",
+    "body": "A photo or a few words is enough. A person replies within 4 working hours with a delivered price."
+  },
+  "trust": {
+    "text": "Trusted by {customers}+ importers, clinics and builders across {corridors} corridors",
+    "avatarAlt": "Customer portrait",
+    "logoAlt": "Customer logo"
+  },
+  "pov": {
+    "eyebrow": "Our point of view",
+    "before": "Most forwarders sell a booking. We sell an arrival.",
+    "accent": "Every shipment has a price, a date and a person attached,",
+    "after": "and when something slips, you hear it from us first.",
+    "teamAlt": "Coordinator portrait",
+    "team": "One coordinator owns your shipment from supplier to door. No hand-offs between agents, no “it's with customs” and then silence."
+  },
+  "services": {
+    "eyebrow": "Four disciplines, one route",
+    "title": "Where should your next shipment start?",
+    "tabsLabel": "What we do",
+    "items": {
+      "sourcing": {
+        "title": "Sourcing",
+        "body": "We find the product from a photo or a few words, confirm the supplier and check the goods before anything is paid.",
+        "imageAlt": "A coordinator checking goods at a supplier"
+      },
+      "freight": {
+        "title": "Freight & routing",
+        "body": "Sea, rail and road planned as one route, with the carrier that fits the load and the deadline.",
+        "imageAlt": "A truck loaded at a consolidation hub"
+      },
+      "customs": {
+        "title": "Customs",
+        "body": "Duties estimated up front, papers ready before the border, broker fees shown apart, and no coordination fee if you clear it yourself.",
+        "imageAlt": "A broker with documents at a land border"
+      },
+      "tracking": {
+        "title": "Tracking & delivery",
+        "body": "Milestones as they happen, an arrival window that's honest, and photographed proof at the door.",
+        "imageAlt": "Goods signed for at delivery"
+      }
+    }
+  },
+  "corridors": {
+    "label": "Corridors we run every week",
+    "days": "{min}–{max} days"
+  },
+  "results": {
+    "eyebrow": "Results",
+    "title": "Delivery you can point at.",
+    "subtitle": "Every shipment starts with a quote and ends with a signature. Here's the last twelve months.",
+    "onTimeChip": "On time",
+    "onTimeCaption": "Arrived within the quoted window, Lomé → Ouagadougou",
+    "borderLabel": "Border wait",
+    "borderChip": "90-day pilot",
+    "borderCaption": "71 h → 42 h median wait at the border",
+    "savingLabel": "Avg. landed-cost saving vs. buying locally",
+    "savingImageAlt": "Customer portrait",
+    "savingLogoAlt": "Customer logo",
+    "savingCta": "Read the case study"
+  },
+  "work": {
+    "title": "Selected work",
+    "all": "All case studies",
+    "cta": "View the full case study",
+    "items": {
+      "construction": {
+        "client": "[Client A] Construction supplies",
+        "sector": "Construction",
+        "service": "Sourcing + freight",
+        "summary": "Tile adhesive sourced in Türkiye, 6.2 t consolidated at Mersin and moved by sea and road to Niamey.",
+        "resultLabel": "days door to door, quoted 21–24",
+        "imageAlt": "Pallets of tile adhesive being unloaded"
+      },
+      "clinic": {
+        "client": "[Client B] Clinic network",
+        "sector": "Healthcare",
+        "service": "Freight + customs",
+        "summary": "400 glucometers reviewed as medical devices before quoting, cleared in two days and delivered to N'Djamena.",
+        "resultLabel": "units lost or damaged",
+        "imageAlt": "Boxes of medical devices in a clinic store room"
+      },
+      "agri": {
+        "client": "[Client C] Agri importer",
+        "sector": "Agriculture",
+        "service": "Sourcing + freight + customs",
+        "summary": "Irrigation pumps bought from the manufacturer, landed at Antofagasta and trucked to Santa Cruz.",
+        "resultLabel": "landed cost vs. local resale",
+        "imageAlt": "Irrigation pumps installed in a field"
+      }
+    }
+  },
+  "stats": {
+    "eyebrow": "The numbers behind the route",
+    "shipments": "Shipments delivered to hard-to-reach destinations",
+    "corridors": "Corridors run every week",
+    "delivered": "Delivered complete and undamaged"
+  },
+  "process": {
+    "title": "How we get it there.",
+    "subtitle": "A coordinator and a route plan, not a tracking number and a shrug.",
+    "imageAlt": "The TraceCart team planning a route",
+    "yearsCaption": "Years of combined experience moving goods on these corridors.",
+    "stepsLabel": "3 simple steps",
+    "previous": "Previous step",
+    "next": "Next step",
+    "goTo": "Step {n}",
+    "steps": {
+      "tell": {
+        "title": "Tell us",
+        "body": "A photo, a description, or goods you already have. Pickup and delivery addresses, and when you need it."
+      },
+      "price": {
+        "title": "Get one price",
+        "body": "Route, customs and arrival window worked out. One delivered price, valid for a week."
+      },
+      "follow": {
+        "title": "Follow it home",
+        "body": "Milestones as they happen, delays with a reason, and proof at the door."
+      }
+    }
+  },
+  "compare": {
+    "eyebrow": "Why importers switch",
+    "title": "Same cargo. Different arrival.",
+    "them": "The typical forwarder",
+    "vs": "vs",
+    "rows": {
+      "price": {
+        "them": "Quoted in pieces: freight now, customs “on arrival”",
+        "us": "One delivered price before you commit, customs shown apart"
+      },
+      "tracking": {
+        "them": "A tracking number that stops at the port",
+        "us": "Milestones to the door, every delay with a reason"
+      },
+      "contact": {
+        "them": "You chase the agent",
+        "us": "One coordinator who calls you first"
+      },
+      "space": {
+        "them": "Pay for a full container or wait",
+        "us": "Hub consolidation: pay for the space you use"
+      }
+    },
+    "no": "Not with them",
+    "yes": "With TraceCart",
+    "quote": "Getting goods to a hard place isn't about the fastest truck. It's knowing, every day, where they are and when they'll arrive.",
+    "founder": "[Name]",
+    "founderRole": "Founder, TraceCart",
+    "founderAlt": "Portrait of the founder"
+  },
+  "testimonials": {
+    "eyebrow": "Our customers",
+    "title": "Delivered, in their words.",
+    "pick": "Show the quote from {name}",
+    "stars": "5 out of 5",
+    "logoAlt": "Customer logo",
+    "items": {
+      "hardware": {
+        "name": "[Name A]",
+        "role": "Owner",
+        "company": "Hardware importer, Niamey",
+        "quote": "I used to learn the real price when the truck arrived. Now I know it before I pay, and the date has held three times out of three."
+      },
+      "clinic": {
+        "name": "[Name B]",
+        "role": "Procurement lead",
+        "company": "Clinic network, N'Djamena",
+        "quote": "They checked our devices before quoting and had the papers ready at the border. Nothing sat in a warehouse waiting for us."
+      },
+      "ngo": {
+        "name": "[Name C]",
+        "role": "Logistics officer",
+        "company": "Humanitarian programme, Almaty",
+        "quote": "When the border closed for two days, they told us before we noticed, with a new date. That's the whole job, done properly."
+      },
+      "agri": {
+        "name": "[Name D]",
+        "role": "Operations director",
+        "company": "Agri importer, Santa Cruz",
+        "quote": "One coordinator, one price, one route. We stopped running three suppliers and a spreadsheet to get pumps inland."
+      }
+    }
+  },
+  "insights": {
+    "eyebrow": "Notes from the corridor",
+    "title": "Field notes",
+    "all": "View all notes",
+    "featured": "Featured note",
+    "readTime": "{minutes} min read",
+    "items": {
+      "landed": {
+        "category": "Pricing",
+        "title": "Why the landed price is the only price that matters",
+        "imageAlt": "A quote laid out next to goods on a pallet"
+      },
+      "border": {
+        "category": "Customs",
+        "title": "What actually happens at a land border at 4 a.m.",
+        "imageAlt": "Trucks queuing at a border crossing before dawn"
+      },
+      "consolidation": {
+        "category": "Freight",
+        "title": "How consolidation cuts the cost of a half-load",
+        "imageAlt": "Mixed cargo being consolidated at a hub"
+      }
+    }
+  },
+  "closing": {
+    "title": "Tell us where it needs to go.",
+    "cta": "Get a delivered price"
+  },
+  "footer": {
+    "stayTitle": "Stay connected",
+    "stayBody": "One note a month on corridors, borders and landed costs. No noise.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@company.com",
+    "subscribe": "Subscribe",
+    "subscribeSoon": "Sign-up opens soon",
+    "follow": "Follow us on:",
+    "pages": "Pages",
+    "support": "Support",
+    "contact": "Contact",
+    "home": "Home",
+    "howItWorks": "How it works",
+    "ship": "Ship",
+    "insights": "Field notes",
+    "faq": "FAQ",
+    "contactUs": "Contact us",
+    "privacy": "Privacy policy",
+    "terms": "Terms",
+    "email": "hello@tracecart.com",
+    "phone": "+000 00 00 00 00",
+    "cities": "Lomé · Mersin · Antofagasta · Rotterdam",
+    "copyright": "© {year} TraceCart",
+    "byline": "A Roleback company",
+    "badgesLabel": "Certifications and memberships",
+    "badgeAlt": "Certification badge",
+    "disclaimer": "Transit times and prices are estimates until quoted, and a quote holds until the date shown on it. Customs duties and taxes are set by the authorities and passed on at cost. Figures and customer stories on this page are illustrative. Trademarks belong to their owners."
+  }
+}

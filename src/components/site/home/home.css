@@ -1,0 +1,207 @@
+/*
+  Homepage design tokens and motion. Every colour and font the new homepage
+  uses is defined here, mapped onto the TraceCart theme where one exists.
+
+  Reference role (template)     TraceCart token
+  primary (lime)                --hp-primary       Trace Green, a fill with ink on it
+  primary as text on light      --hp-primary-ink   green ink
+  secondary (soft pink)         --hp-secondary     soft blue, with --hp-secondary-ink for marks
+  tertiary (yellow card)        --hp-tertiary      signal yellow
+  dark surface                  --hp-dark          near-black panels
+  light background              --hp-light         concrete
+*/
+
+.hp {
+  --hp-primary: #19d36b;
+  --hp-on-primary: #0e0e0c;
+  --hp-primary-ink: var(--color-accent-ink);
+  --hp-secondary: #e3e8ff;
+  --hp-secondary-ink: #2440e0;
+  --hp-tertiary: #ffd60a;
+  --hp-on-tertiary: #0e0e0c;
+  --hp-dark: #0d0f0e;
+  --hp-dark-raised: #1b1f1d;
+  --hp-dark-deep: #14201d;
+  --hp-secondary-on-dark: #aebbfc;
+  --hp-dark-line: rgb(255 255 255 / 0.06);
+  --hp-on-dark: #f2f3f1;
+  --hp-on-dark-muted: #a3aaa5;
+  --hp-light: var(--color-surface);
+  --hp-light-raised: var(--color-surface-raised);
+  --hp-light-sunken: var(--color-surface-sunken);
+  --hp-text: var(--color-ink);
+  --hp-text-muted: var(--color-ink-muted);
+  --hp-slot: #d9dcd7;
+  --hp-slot-dark: #2a2f2c;
+
+  --hp-font: var(--font-bricolage);
+  --hp-mono: var(--font-mono);
+
+  --hp-radius-panel: 32px;
+  --hp-radius-card: 24px;
+  --hp-gutter: 20px;
+  --hp-shadow: 0 10px 30px -12px rgb(13 15 14 / 0.35);
+
+  font-family: var(--hp-font);
+  color: var(--hp-text);
+  background: var(--hp-light);
+}
+
+:is(.dark) .hp {
+  --hp-dark: #171a18;
+  --hp-dark-raised: #222724;
+  --hp-secondary: #1c2556;
+  --hp-secondary-ink: #8da0ff;
+  --hp-slot: #2e3330;
+}
+
+/* Type scale. The brand caps display type at 80px. */
+.hp-h1 {
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+.hp-h2 {
+  font-size: clamp(32px, 4.2vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  font-weight: 660;
+}
+.hp-statement {
+  font-size: clamp(26px, 3.2vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 560;
+}
+.hp-numeral {
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Dark panels float on the light page, with faint quarter lines. */
+.hp-panel {
+  margin-inline: var(--hp-gutter);
+  border-radius: var(--hp-radius-panel);
+  background: var(--hp-dark);
+  color: var(--hp-on-dark);
+  position: relative;
+  isolation: isolate;
+}
+.hp-grid-lines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--hp-dark-line), var(--hp-dark-line)),
+    linear-gradient(var(--hp-dark-line), var(--hp-dark-line)),
+    linear-gradient(var(--hp-dark-line), var(--hp-dark-line));
+  background-size: 1px 100%;
+  background-repeat: no-repeat;
+  background-position: 25% 0, 50% 0, 75% 0;
+}
+@media (max-width: 640px) {
+  .hp { --hp-gutter: 8px; --hp-radius-panel: 24px; }
+}
+
+/* Focus states, everywhere on the page. */
+.hp a:focus-visible,
+.hp button:focus-visible,
+.hp input:focus-visible,
+.hp [tabindex]:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+.hp-panel a:focus-visible,
+.hp-panel button:focus-visible,
+.hp-panel input:focus-visible {
+  outline-color: var(--hp-primary);
+}
+
+/* Marquees: two copies of the track, the edges faded. */
+.hp-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.hp-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: hp-marquee var(--hp-marquee-duration, 40s) linear infinite;
+}
+.hp-marquee:hover .hp-marquee__track { animation-play-state: paused; }
+@keyframes hp-marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Reveal on scroll (the Reveal component adds .is-in). */
+.hp-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.hp-reveal.is-in { opacity: 1; transform: none; }
+
+/* The point-of-view statement lights up word by word. */
+.hp-word {
+  color: var(--hp-on-dark-muted);
+  opacity: 0.35;
+  transition: opacity 400ms ease, color 400ms ease;
+}
+.hp-word.is-lit { opacity: 1; color: var(--hp-on-dark); }
+.hp-word--accent.is-lit { color: var(--hp-primary); }
+
+/* The hero card's dots fill one after another. */
+.hp-dot {
+  background: #2e3330;
+  transition: background-color 300ms ease;
+}
+.hp-dot.is-on { background: var(--hp-primary); }
+
+/* Selected work: each card sticks, the next slides over it. */
+/* Only where a card fits the screen; on phones they simply follow each other. */
+@media (min-width: 1024px) {
+  .hp-stack__card {
+    position: sticky;
+    top: calc(96px + var(--hp-stack-index) * 16px);
+  }
+}
+.hp-stack__inner { transform-origin: 50% 0; }
+@supports (animation-timeline: view()) {
+  .hp-stack__card:not(:last-child) .hp-stack__inner {
+    animation: hp-shrink linear both;
+    animation-timeline: view();
+    animation-range: exit-crossing 0% exit-crossing 100%;
+  }
+  @keyframes hp-shrink {
+    to { transform: scale(0.92); filter: brightness(0.7); }
+  }
+}
+
+/* The closing call to action, stuck on like a sticker. */
+.hp-sticker {
+  transform: rotate(-8deg);
+  box-shadow: 0 0 0 6px rgb(25 211 107 / 0.18), 0 18px 40px -10px rgb(25 211 107 / 0.55);
+  transition: transform 300ms ease;
+}
+.hp-sticker:hover { transform: rotate(-4deg) scale(1.03); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-marquee__track { animation: none; }
+  .hp-reveal { opacity: 1; transform: none; transition: none; }
+  .hp-word { opacity: 1; color: var(--hp-on-dark); transition: none; }
+  .hp-word--accent { color: var(--hp-primary); }
+  .hp-dot { transition: none; }
+  .hp-stack__card .hp-stack__inner { animation: none !important; }
+  .hp-sticker { transition: none; }
+}
+
+/* Anchors land below the sticky nav; smooth only when motion is welcome. */
+.hp [id] { scroll-margin-top: 104px; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:has(.hp) { scroll-behavior: smooth; }
+}
