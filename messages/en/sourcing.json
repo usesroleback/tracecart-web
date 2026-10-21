@@ -62,7 +62,7 @@
   "d": {
     "back": "Requests",
     "title": "Product search",
-    "customer": "{name} · {city}, {country} · qty {quantity}",
+    "customer": "{name} · {destination} · qty {quantity}",
     "inputs": {
       "title": "What the customer showed us",
       "description": "Description",
@@ -210,5 +210,6 @@
       "done": "This request became order {reference}."
     },
     "failed": "That didn't work."
-  }
+  },
+  "noDestination": "Destination to confirm"
 }

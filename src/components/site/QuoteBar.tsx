@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import Button from "@/components/ui/button/Button";
 import { TRACECART_API_URL } from "@/lib/apiBase";
 
-const fieldClasses = "w-full bg-transparent text-sm font-medium text-ink placeholder:text-ink-muted placeholder:font-normal focus:outline-none";
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
@@ -28,18 +27,6 @@ interface SuggestResult {
   limited: boolean;
 }
 
-function Field({ label, placeholder, value, onChange, children }: { label: string; placeholder: string; value: string; onChange: (v: string) => void; children?: React.ReactNode }) {
-  return (
-    <label className="block px-5 py-3">
-      <span className="rb-overline">{label}</span>
-      <span className="mt-1 flex items-center gap-2">
-        <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={fieldClasses} />
-        {children}
-      </span>
-    </label>
-  );
-}
-
 function CameraIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -57,19 +44,16 @@ async function postForm<T>(path: string, form: FormData, locale: string): Promis
 }
 
 /**
- * docs/brand/tracecart-brand-guidelines.md: "From · To · What · When → Get a
- * quote. No account required; a named person replies within 4 working
- * hours." What can be words, a photo, or both: TraceCart reads the photo,
+ * The homepage's one question: what do you need? The customer describes the
+ * product or tool in their own words and/or adds a photo; TraceCart reads it,
  * suggests real listings (docs/product-discovery.md, public endpoints), and
- * the request lands in the console as a sourcing request for staff.
+ * the request lands in the console as a sourcing request. No account. Where
+ * it goes (from / to / when) is settled later, not asked here.
  */
 export function QuoteBar() {
   const t = useTranslations("site.quoteBar");
   const locale = useLocale();
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
   const [what, setWhat] = useState("");
-  const [when, setWhen] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
@@ -107,7 +91,6 @@ export function QuoteBar() {
   async function search(e: FormEvent) {
     e.preventDefault();
     if (!what.trim() && !photo) return setProblem(t("needWhat"));
-    if (!to.trim()) return setProblem(t("needTo"));
     setProblem(null);
     setSearching(true);
     setChoice(null);
@@ -132,7 +115,7 @@ export function QuoteBar() {
     setProblem(null);
     try {
       const form = new FormData();
-      Object.entries({ what, from, to, when, ...contact, locale }).forEach(([k, v]) => form.append(k, v));
+      Object.entries({ what, ...contact, locale }).forEach(([k, v]) => form.append(k, v));
       if (choice && choice !== "none") form.append("choice", JSON.stringify(choice));
       if (photo) form.append("photo", photo);
       await postForm("/public/discovery/requests", form, locale);
@@ -148,7 +131,7 @@ export function QuoteBar() {
     return (
       <div id="quote" className="rounded-[var(--radius-m)] border border-line bg-surface-raised px-6 py-8 text-center shadow-[var(--shadow-1)]">
         <p className="rb-title text-[18px]">{t("submittedTitle")}</p>
-        <p className="mt-1 text-sm text-ink-muted">{from ? t("submittedBody", { from, to }) : t("submittedBodyNoFrom", { to })}</p>
+        <p className="mt-1 text-sm text-ink-muted">{t("submittedBody")}</p>
       </div>
     );
   }
@@ -160,75 +143,69 @@ export function QuoteBar() {
   return (
     <div id="quote">
       <form onSubmit={search}>
-        {/* bundle.css .rb-quote: 2px ink border and the route corner, no shadow. */}
-        <div className="grid divide-y divide-line overflow-hidden rounded-[var(--radius-l)_var(--radius-xs)_var(--radius-xs)_var(--radius-xs)] border-2 border-ink bg-surface-raised sm:grid-cols-[1.8fr_1fr_1fr_1fr_auto] sm:divide-x sm:divide-y-0">
-          {/* What comes first: the product is the request. Words, a photo, or both; the field also takes a dropped image. */}
-          <div
-            className={`px-5 py-3 transition-colors ${dragging ? "bg-accent-soft" : ""}`}
-            onDragOver={(e) => {
-              if (e.dataTransfer.types.includes("Files")) {
-                e.preventDefault();
-                setDragging(true);
-              }
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={(e) => {
+        {/* bundle.css .rb-quote: 2px ink border and the route corner. The whole box takes a dropped photo. */}
+        <div
+          className={`overflow-hidden rounded-[var(--radius-l)_var(--radius-xs)_var(--radius-xs)_var(--radius-xs)] border-2 border-ink bg-surface-raised transition-colors ${dragging ? "bg-accent-soft" : ""}`}
+          onDragOver={(e) => {
+            if (e.dataTransfer.types.includes("Files")) {
               e.preventDefault();
-              setDragging(false);
-              pickPhoto(e.dataTransfer.files?.[0]);
+              setDragging(true);
+            }
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDragging(false);
+            pickPhoto(e.dataTransfer.files?.[0]);
+          }}
+        >
+          <label htmlFor="quote-what" className="rb-overline block px-5 pt-4">
+            {t("what")}
+          </label>
+          <textarea
+            id="quote-what"
+            value={what}
+            onChange={(e) => setWhat(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) e.currentTarget.form?.requestSubmit();
             }}
-          >
-            <label htmlFor="quote-what" className="rb-overline">
-              {t("what")}
-            </label>
-            <span className="mt-1 flex items-center gap-2">
-              <input
-                id="quote-what"
-                value={what}
-                onChange={(e) => setWhat(e.target.value)}
-                placeholder={dragging ? t("dropHere") : t("whatPlaceholder")}
-                className={fieldClasses}
-              />
-              {preview ? (
-                <span className="relative flex-none">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={preview} alt="" className="h-9 w-9 rounded-[var(--radius-xs)] border border-line object-cover" />
-                  <button
-                    type="button"
-                    onClick={removePhoto}
-                    aria-label={t("removePhoto")}
-                    className="absolute -right-2 -top-2 grid h-5 w-5 place-items-center rounded-full border border-line bg-surface-raised text-[10px] text-ink"
-                  >
-                    ✕
-                  </button>
-                </span>
-              ) : (
+            rows={3}
+            maxLength={500}
+            placeholder={dragging ? t("dropHere") : t("whatPlaceholder")}
+            className="block w-full resize-none bg-transparent px-5 pb-2 pt-1.5 text-base text-ink placeholder:text-ink-muted focus:outline-none"
+          />
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-4 py-3">
+            {preview ? (
+              <span className="flex min-w-0 items-center gap-2.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={preview} alt="" className="h-10 w-10 flex-none rounded-[var(--radius-xs)] border border-line object-cover" />
+                <span className="truncate text-sm text-ink">{photo?.name}</span>
+                <button type="button" onClick={removePhoto} className="rb-link flex-none text-xs text-ink-muted">
+                  {t("removePhoto")}
+                </button>
+              </span>
+            ) : (
+              <span className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
-                  aria-label={t("attach")}
-                  title={t("photoHint")}
-                  className="inline-flex h-9 flex-none items-center gap-1.5 rounded-[var(--radius-s)] border border-line-strong px-2.5 text-xs font-semibold text-ink hover:bg-surface-sunken focus-visible:outline-2 focus-visible:outline-focus-ring"
+                  className="inline-flex h-10 items-center gap-2 rounded-[var(--radius-s)] border border-line-strong px-3 text-sm font-semibold text-ink hover:bg-surface-sunken focus-visible:outline-2 focus-visible:outline-focus-ring"
                 >
                   <CameraIcon />
-                  {t("photo")}
+                  {t("attach")}
                 </button>
-              )}
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                className="sr-only"
-                tabIndex={-1}
-                onChange={(e) => pickPhoto(e.target.files?.[0])}
-              />
-            </span>
-          </div>
-          <Field label={t("from")} placeholder={t("fromPlaceholder")} value={from} onChange={setFrom} />
-          <Field label={t("to")} placeholder={t("toPlaceholder")} value={to} onChange={setTo} />
-          <Field label={t("when")} placeholder={t("whenPlaceholder")} value={when} onChange={setWhen} />
-          <div className="flex items-center p-3 sm:pl-0">
-            <Button type="submit" block className="sm:w-auto" loading={searching}>
+                <span className="hidden text-xs text-ink-muted sm:inline">{t("photoHint")}</span>
+              </span>
+            )}
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="sr-only"
+              tabIndex={-1}
+              onChange={(e) => pickPhoto(e.target.files?.[0])}
+            />
+            <Button type="submit" loading={searching} className="ml-auto">
               {searching ? t("searching") : t("cta")}
             </Button>
           </div>

@@ -40,6 +40,11 @@ function budget(r: SourcingRequest, f: Format): string | null {
   return null;
 }
 
+/** "City, Country", or null for a request sent without a route (homepage finder). */
+export function destinationOf(r: Pick<SourcingRequest, "destinationCity" | "destinationCountry">): string | null {
+  return [r.destinationCity, r.destinationCountry].filter((s) => s?.trim()).join(", ") || null;
+}
+
 /** What a matched request converts into: the listing chosen in discovery, else the catalogue product chosen here. */
 function chosenProduct(r: SourcingRequest): { url: string; title: string; imageUrl: string | null } | null {
   const candidate = r.candidates?.[0];
@@ -345,7 +350,7 @@ export function SourcingDashboard({
                               )}
                             </td>
                             <td className={`${td} whitespace-nowrap`}>
-                              {r.destinationCity}
+                              {r.destinationCity || <span className="text-ink-muted">{t("noDestination")}</span>}
                               <span className="block text-[13px] text-ink-muted">{r.destinationCountry}</span>
                             </td>
                             <td className={`${td} whitespace-nowrap text-right tabular-nums`}>
@@ -387,7 +392,7 @@ export function SourcingDashboard({
                     </div>
                     <p className="mt-1 line-clamp-3 text-sm text-ink">{r.description}</p>
                     <p className="mt-1 text-[13px] text-ink-muted">
-                      {r.destinationCity}, {r.destinationCountry} · {t("qty", { quantity: f.number(r.quantity) })}
+                      {destinationOf(r) ?? t("noDestination")} · {t("qty", { quantity: f.number(r.quantity) })}
                       {budget(r, f) ? ` · ${budget(r, f)}` : ""}
                     </p>
                     <div className="mt-3">{actions(r)}</div>
@@ -412,7 +417,7 @@ export function SourcingDashboard({
                 key={r.id}
                 severity="held"
                 title={r.customerName}
-                meta={`${r.destinationCity} · ${t("qty", { quantity: f.number(r.quantity) })}`}
+                meta={`${r.destinationCity || t("noDestination")} · ${t("qty", { quantity: f.number(r.quantity) })}`}
                 actions={
                   <Button size="s" variant="secondary" onClick={() => openFromSide(r)}>
                     {t("seeCandidates")}

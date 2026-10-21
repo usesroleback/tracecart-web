@@ -11,6 +11,7 @@ import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
 import { SourcingRequestStatusTag } from "@/components/ui/status/Status";
 import { IntentForm } from "@/components/tracecart/IntentForm";
+import { destinationOf } from "../SourcingDashboard";
 import { DsChevronRightIcon, DsExternalIcon } from "@/icons";
 import { DiscoverySpec, DiscoveryState, ProviderOutcome, SourcingCandidate, SpecField } from "@/lib/types";
 
@@ -88,7 +89,7 @@ export function DiscoveryWorkspace({ initial }: { initial: DiscoveryState }) {
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
             <SourcingRequestStatusTag status={r.status} />
             <span className="text-sm text-ink-muted">
-              {t("d.customer", { name: r.customerName, city: r.destinationCity, country: r.destinationCountry, quantity: f.number(r.quantity) })}
+              {t("d.customer", { name: r.customerName, destination: destinationOf(r) ?? t("noDestination"), quantity: f.number(r.quantity) })}
             </span>
           </div>
         </div>

@@ -62,7 +62,7 @@
   "d": {
     "back": "Demandes",
     "title": "Recherche produit",
-    "customer": "{name} · {city}, {country} · qté {quantity}",
+    "customer": "{name} · {destination} · qté {quantity}",
     "inputs": {
       "title": "Ce que le client a montré",
       "description": "Description",
@@ -210,5 +210,6 @@
       "done": "Cette demande est devenue la commande {reference}."
     },
     "failed": "L'action a échoué."
-  }
+  },
+  "noDestination": "Destination à préciser"
 }
