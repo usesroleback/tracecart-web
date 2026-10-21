@@ -1,23 +1,27 @@
 import { expect, test } from "@playwright/test";
 
-// Quotes created by apps/api/scripts/seed-e2e.ts, all "Quote sent", total 1 234 568 XOF.
+// Quotes created by apps/api/scripts/seed-e2e.ts, all "Quote sent" from Abidjan to
+// Niamey, total 1 234 568 XOF. The same link is the customer's tracking page.
 const API = process.env.E2E_API_URL ?? "http://localhost:4000";
 
 test.describe("customer quote page", () => {
   test("shows the quote in French, formatted for French", async ({ page }) => {
     await page.goto("/fr/q/e2e-fr");
     await expect(page.getByRole("button", { name: "Accepter" })).toBeVisible();
-    await expect(page.getByText("Statut : Devis envoyé")).toBeVisible();
+    // The route is the headline; status is shape + word.
+    await expect(page.getByRole("heading", { level: 1, name: "Abidjan → Niamey" })).toBeVisible();
+    await expect(page.getByText("Devis envoyé", { exact: true })).toBeVisible();
     await expect(page.getByText(/1\s234\s568 XOF/)).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Perceuse Bosch GSB 18V × 2/ })).toBeVisible();
+    await expect(page.getByText("Perceuse Bosch GSB 18V × 2")).toBeVisible();
   });
 
   test("shows the quote in English, with no French left", async ({ page }) => {
     await page.goto("/en/q/e2e-en");
     await expect(page.getByRole("button", { name: "Accept", exact: true })).toBeVisible();
-    await expect(page.getByText("Status: Quote sent")).toBeVisible();
+    await expect(page.getByText("Quote sent", { exact: true })).toBeVisible();
     await expect(page.getByText("1,234,568 XOF")).toBeVisible();
-    await expect(page.locator("body")).not.toContainText(/Accepter|Refuser|Statut/);
+    await expect(page.getByText("Where your parcel is")).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(/Accepter|Refuser|Statut|Commande|Livraison|Mis à jour/);
   });
 
   test("accepting is confirmed and survives a reload", async ({ page }) => {
@@ -35,7 +39,7 @@ test.describe("customer quote page", () => {
     await page.goto("/fr/q/e2e-decline");
     await page.getByRole("button", { name: "Refuser" }).click();
     await expect(page.getByText("Vous avez refusé ce devis.")).toBeVisible();
-    await expect(page.getByText("Statut : Refusé")).toBeVisible();
+    await expect(page.getByText("Refusé", { exact: true })).toBeVisible();
   });
 
   test("an answer given elsewhere is explained, not shown as an error", async ({ page, request }) => {
@@ -47,7 +51,7 @@ test.describe("customer quote page", () => {
 
     await page.getByRole("button", { name: "Accepter" }).click();
     await expect(page.getByText("Ce devis a déjà reçu une réponse")).toBeVisible();
-    await expect(page.getByText("Statut : Refusé")).toBeVisible();
+    await expect(page.getByText("Refusé", { exact: true })).toBeVisible();
     await expect(page.locator("body")).not.toContainText("can no longer be answered");
   });
 
