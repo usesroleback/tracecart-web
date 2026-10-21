@@ -4,7 +4,7 @@
 # yourself the same way (see README "Tests").
 #
 # Needs: DATABASE_URL (database name must contain "test"), REDIS_URL, and
-# Playwright's Chromium (`npx playwright install --with-deps chromium`).
+# Playwright's Chromium (`pnpm exec playwright install --with-deps chromium`, from apps/web).
 set -eu
 
 : "${DATABASE_URL:?set DATABASE_URL to a disposable database}"
@@ -23,14 +23,14 @@ export CLERK_SECRET_KEY="${CLERK_SECRET_KEY:-sk_test_e2e_placeholder}"
 export CORS_ORIGIN="${CORS_ORIGIN:-http://localhost:3000}"
 export NODE_ENV=production
 
-npm run migrate:deploy --workspace apps/api
-npm run seed:e2e --workspace apps/api
-npm run build --workspace apps/api
-npm run build --workspace apps/web
+pnpm --filter @tracecart/api migrate:deploy
+pnpm --filter @tracecart/api seed:e2e
+pnpm --filter @tracecart/api build
+pnpm --filter @tracecart/web build
 
 node apps/api/dist/index.js > e2e-api.log 2>&1 &
 API_PID=$!
-(cd apps/web && npx next start -p 3000 > ../../e2e-web.log 2>&1) &
+(cd apps/web && pnpm exec next start -p 3000 > ../../e2e-web.log 2>&1) &
 WEB_PID=$!
 trap 'kill $API_PID $WEB_PID 2>/dev/null || true' EXIT
 
@@ -40,4 +40,4 @@ for i in $(seq 1 60); do
   sleep 1
 done
 
-cd apps/web && npx playwright test "$@"
+cd apps/web && pnpm exec playwright test "$@"

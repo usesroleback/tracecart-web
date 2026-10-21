@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# Build from the repo root (npm workspaces share one lockfile):
+# Build from the repo root (pnpm workspaces share one lockfile):
 #   docker build -f apps/web/Dockerfile \
 #     --build-arg NEXT_PUBLIC_API_URL=https://api.example.com \
 #     --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_... -t tracecart-web .
@@ -12,13 +12,13 @@ ARG NODE_VERSION=24
 FROM node:${NODE_VERSION}-bookworm-slim AS base
 WORKDIR /app
 
-# Every workspace manifest is copied because `npm ci` validates the whole
-# lockfile, but only apps/web's dependencies are installed.
+# Only apps/web's dependencies are installed.
 FROM base AS build
-COPY package.json package-lock.json ./
-COPY apps/api/package.json apps/api/
+# pnpm, at the version in package.json's packageManager.
+RUN corepack enable
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json apps/web/
-RUN npm ci --workspace apps/web
+RUN pnpm install --frozen-lockfile --filter @tracecart/web
 COPY apps/web apps/web
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
@@ -28,7 +28,7 @@ ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY \
     NEXT_OUTPUT=standalone \
     NEXT_TELEMETRY_DISABLED=1
-RUN npm run build --workspace apps/web
+RUN pnpm --filter @tracecart/web build
 
 FROM base AS runtime
 ENV NODE_ENV=production \

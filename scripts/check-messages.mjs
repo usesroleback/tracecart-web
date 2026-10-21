@@ -1,6 +1,6 @@
 // Fails when the locales' message files drift apart: a namespace or key in
 // one locale but not the other, or a message whose {placeholders} differ.
-// Run with `npm run i18n:check`.
+// Run with `pnpm i18n:check` (from apps/web).
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 

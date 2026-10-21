@@ -19,9 +19,9 @@ const nextConfig: NextConfig = {
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   // NEXT_BUILD_CPUS caps build workers on low-memory machines (unset: Next's default).
   experimental: process.env.NEXT_BUILD_CPUS ? { cpus: Number(process.env.NEXT_BUILD_CPUS) } : undefined,
-  // NEXT_SKIP_TYPECHECK=1 skips the build's own type check (run `npm run typecheck` instead), for the same machines.
+  // NEXT_SKIP_TYPECHECK=1 skips the build's own type check (run `pnpm typecheck` instead), for the same machines.
   typescript: { ignoreBuildErrors: process.env.NEXT_SKIP_TYPECHECK === "1" },
-  // npm workspace: trace dependencies from the repo root, where they're hoisted.
+  // pnpm workspace: trace dependencies from the repo root, where pnpm's store lives.
   outputFileTracingRoot: path.join(__dirname, "../.."),
   webpack(config) {
     config.module.rules.push({

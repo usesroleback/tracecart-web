@@ -3,7 +3,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
 import { Status, StatusState } from "@/components/ui/status/Status";
