@@ -36,7 +36,8 @@
     "hub": "My hub",
     "deliveries": "Deliveries",
     "label": "Main navigation",
-    "pricing": "Pricing"
+    "pricing": "Pricing",
+    "carriers": "Carriers"
   },
   "notifications": {
     "title": "Notifications",

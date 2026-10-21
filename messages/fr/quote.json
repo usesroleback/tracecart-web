@@ -55,6 +55,7 @@
     "provisional": "Certains montants sont estimés : nous vous confirmerons le montant final avant de l'engager.",
     "estimated": "estimé",
     "notes": "Bon à savoir",
-    "expired": "Ce devis a expiré. Contactez-nous pour en recevoir un nouveau."
+    "expired": "Ce devis a expiré. Contactez-nous pour en recevoir un nouveau.",
+    "eta": "Livraison estimée {window}"
   }
 }

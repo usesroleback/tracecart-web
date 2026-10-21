@@ -12,6 +12,7 @@ import { ShipmentFile } from "@/components/tracecart/ShipmentFile";
 import { QuoteBreakdown } from "@/components/tracecart/QuoteBreakdown";
 import { ShipmentTracking } from "@/components/tracecart/ShipmentTracking";
 import { OrderExceptions } from "@/components/tracecart/OrderExceptions";
+import { RouteCard } from "@/components/tracecart/RouteCard";
 import { RouteTimeline, orderRouteSteps } from "@/components/tracecart/RouteTimeline";
 import { Alert } from "@/components/ui/alert/Alert";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -201,6 +202,8 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
           </div>
 
           <ShipmentFile order={order} isAdmin={isAdmin} onChanged={refresh} />
+
+          {isAdmin && <RouteCard order={order} onChanged={refresh} />}
 
           <Card padding={24}>
             <div className="flex flex-wrap items-center justify-between gap-2">

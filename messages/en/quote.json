@@ -55,6 +55,7 @@
     "provisional": "Some amounts are estimates: we'll confirm the final amount before committing to it.",
     "estimated": "estimate",
     "notes": "Good to know",
-    "expired": "This quote has expired. Contact us for a new one."
+    "expired": "This quote has expired. Contact us for a new one.",
+    "eta": "Estimated delivery {window}"
   }
 }

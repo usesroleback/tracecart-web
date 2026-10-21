@@ -44,6 +44,20 @@
       "held": "held",
       "exception": "exception",
       "planned": "not started"
+    },
+    "card": {
+      "title": "Route",
+      "current": "Routed with: {name}",
+      "none": "Not routed yet.",
+      "noServices": "No carrier services. Add some under Carriers to route orders.",
+      "caption": "Possible services",
+      "arrival": "Arrives {window}",
+      "onTime": "On time",
+      "late": "Misses the date",
+      "choose": "Choose",
+      "chosen": "Chosen",
+      "newQuote": "Another carrier will need to quote again.",
+      "frozen": "The route doesn't change once the quote is out."
     }
   },
   "card": {
@@ -383,5 +397,46 @@
     },
     "nobody": "Nobody",
     "declined": "Declined or unavailable orders"
+  },
+  "carriersPage": {
+    "title": "Carrier services",
+    "subtitle": "What each carrier offers: from which hub, to which country, by what mode, within which limits, in how many days. An order only goes to a service that fits it.",
+    "new": "New service",
+    "empty": "No services yet. Without any, new orders go to the carrier account, as before.",
+    "caption": "Carrier services",
+    "col": {
+      "service": "Service",
+      "corridor": "Corridor",
+      "limits": "Limits",
+      "transit": "Transit",
+      "actions": "Actions"
+    },
+    "anyHub": "Any hub",
+    "days": "{min}–{max} d",
+    "handling": "+ {days} d handling",
+    "noLimit": "No known limit",
+    "refuses": "Refuses: {flags}",
+    "inactive": "Off",
+    "edit": "Edit",
+    "disable": "Switch off",
+    "enable": "Switch on",
+    "save": "Save",
+    "cancel": "Cancel",
+    "field": {
+      "name": "Service name",
+      "carrier": "Carrier",
+      "originHub": "Departure hub",
+      "destinationCountry": "Destination country",
+      "mode": "Mode",
+      "maxWeightKg": "Max weight (kg)",
+      "maxLengthCm": "Max package length (cm)",
+      "refused": "Goods refused",
+      "transitMin": "Transit min (days)",
+      "transitMax": "Transit max (days)",
+      "handlingDays": "Handling (days)",
+      "priority": "Priority",
+      "notes": "Notes"
+    },
+    "myHub": "My hub ({city})"
   }
 }

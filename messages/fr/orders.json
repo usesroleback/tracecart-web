@@ -44,6 +44,20 @@
       "held": "en attente",
       "exception": "exception",
       "planned": "pas commencé"
+    },
+    "card": {
+      "title": "Itinéraire",
+      "current": "Acheminé avec : {name}",
+      "none": "Pas encore d'itinéraire.",
+      "noServices": "Aucun service transporteur. Ajoutez-en dans Transporteurs pour router les commandes.",
+      "caption": "Services possibles",
+      "arrival": "Arrivée {window}",
+      "onTime": "À temps",
+      "late": "En retard sur la date",
+      "choose": "Choisir",
+      "chosen": "Choisi",
+      "newQuote": "Un autre transporteur devra refaire sa cotation.",
+      "frozen": "L'itinéraire ne change plus une fois le devis envoyé."
     }
   },
   "card": {
@@ -383,5 +397,46 @@
     },
     "nobody": "Personne",
     "declined": "Commandes refusées ou indisponibles"
+  },
+  "carriersPage": {
+    "title": "Services transporteurs",
+    "subtitle": "Ce que chaque transporteur propose : de quel hub, vers quel pays, par quel mode, dans quelles limites et en combien de jours. Une commande n'est confiée qu'à un service qui lui convient.",
+    "new": "Nouveau service",
+    "empty": "Aucun service. Sans service, les nouvelles commandes vont au compte transporteur, comme avant.",
+    "caption": "Services transporteurs",
+    "col": {
+      "service": "Service",
+      "corridor": "Trajet",
+      "limits": "Limites",
+      "transit": "Délai",
+      "actions": "Actions"
+    },
+    "anyHub": "Tout hub",
+    "days": "{min}–{max} j",
+    "handling": "+ {days} j de préparation",
+    "noLimit": "Sans limite connue",
+    "refuses": "Refuse : {flags}",
+    "inactive": "Désactivé",
+    "edit": "Modifier",
+    "disable": "Désactiver",
+    "enable": "Réactiver",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "field": {
+      "name": "Nom du service",
+      "carrier": "Transporteur",
+      "originHub": "Hub de départ",
+      "destinationCountry": "Pays de destination",
+      "mode": "Mode",
+      "maxWeightKg": "Poids max (kg)",
+      "maxLengthCm": "Longueur max d'un colis (cm)",
+      "refused": "Marchandises refusées",
+      "transitMin": "Transit min (jours)",
+      "transitMax": "Transit max (jours)",
+      "handlingDays": "Préparation (jours)",
+      "priority": "Priorité",
+      "notes": "Notes"
+    },
+    "myHub": "Mon hub ({city})"
   }
 }

@@ -65,6 +65,7 @@ const ADMIN_NAV: NavGroup[] = [
     items: [
       { icon: <DsHubIcon />, name: "hub", path: "/hub-setup" },
       { icon: <DsCoinIcon />, name: "pricing", path: "/pricing" },
+      { icon: <DsTruckIcon />, name: "carriers", path: "/carriers" },
     ],
   },
 ];

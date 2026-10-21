@@ -205,8 +205,53 @@ export interface Order {
   shipmentEvents: ShipmentEvent[];
   /** Newest first. */
   exceptions: OrderException[];
+  /** The carrier service the order is routed with (admin: the whole service; carrier: name and mode). */
+  carrierServiceId?: string | null;
+  carrierService: Pick<CarrierService, "id" | "name" | "mode"> | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export const TRANSPORT_MODES = ["ROAD", "AIR", "SEA", "RAIL", "MULTIMODAL"] as const;
+export type TransportMode = (typeof TRANSPORT_MODES)[number];
+
+export interface CarrierService {
+  id: string;
+  name: string;
+  partnerUserId: string;
+  partner: { id: string; name: string; phone: string | null };
+  originHubId: string | null;
+  originHub: { id: string; name: string; city: string } | null;
+  destinationCountry: string;
+  mode: TransportMode;
+  active: boolean;
+  maxWeightKg: string | null;
+  maxLengthCm: string | null;
+  refusedFlags: HandlingFlag[];
+  transitDaysMin: number;
+  transitDaysMax: number;
+  handlingDays: number;
+  priority: number;
+  notes: string | null;
+}
+
+export type RouteBlocker = "inactive" | "otherHub" | "otherCountry" | "tooHeavy" | "tooLong" | "refusedGoods";
+
+/** GET /orders/:id/route-options */
+export interface RouteOptions {
+  current: string | null;
+  requiredBy: string | null;
+  requiredByIsHard: boolean;
+  options: {
+    serviceId: string;
+    eligible: boolean;
+    blockers: RouteBlocker[];
+    unchecked: ("weight" | "size")[];
+    etaFrom: string;
+    etaTo: string;
+    meetsDeadline: boolean | null;
+    service: { id: string; name: string; mode: TransportMode; destinationCountry: string; partner: { id: string; name: string; phone: string | null }; originHub: { id: string; name: string; city: string } | null };
+  }[];
 }
 
 export const MILESTONES = [
@@ -360,6 +405,8 @@ export interface PricedQuote {
   total: number;
   provisional: boolean;
   currency: string;
+  etaFrom: string | null;
+  etaTo: string | null;
 }
 
 export interface CustomerQuote {
@@ -372,6 +419,8 @@ export interface CustomerQuote {
   notes: QuoteNote[];
   provisional: boolean;
   validUntil: string;
+  etaFrom: string | null;
+  etaTo: string | null;
   decidedAt: string | null;
   createdAt: string;
 }
@@ -608,6 +657,8 @@ export interface PublicQuote {
     notes: QuoteNote[];
     provisional: boolean;
     validUntil: string;
+    /** The delivery window the quote was given with: an estimate. */
+    eta: { from: string | null; to: string | null } | null;
   } | null;
   /** Milestones that concern the customer, newest first. */
   events: { id: string; milestone: Milestone; occurredAt: string; city: string | null; customerNote: string | null; reason: string | null }[];

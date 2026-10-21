@@ -36,7 +36,8 @@
     "hub": "Mon hub",
     "deliveries": "Livraisons",
     "label": "Navigation principale",
-    "pricing": "Tarifs"
+    "pricing": "Tarifs",
+    "carriers": "Transporteurs"
   },
   "notifications": {
     "title": "Notifications",

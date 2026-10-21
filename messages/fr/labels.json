@@ -136,7 +136,8 @@
     "ruleCurrency": "{component} : tarif en {currency} non converti, laissé de côté.",
     "missingData": "{component} : il manque {field}.",
     "missingWeight": "{component} : il manque le poids.",
-    "cargoUnmeasured": "Colis et poids pas encore mesurés."
+    "cargoUnmeasured": "Colis et poids pas encore mesurés.",
+    "deadlineNotMet": "L'itinéraire choisi ne permet pas de livrer avant la date souhaitée."
   },
   "milestone": {
     "PICKUP_SCHEDULED": "Enlèvement programmé",
@@ -182,5 +183,24 @@
     "STAFF": "Équipe",
     "CARRIER": "Transporteur",
     "INTEGRATION": "Flux automatique"
+  },
+  "transportMode": {
+    "ROAD": "Route",
+    "AIR": "Aérien",
+    "SEA": "Maritime",
+    "RAIL": "Rail",
+    "MULTIMODAL": "Multimodal"
+  },
+  "routeBlocker": {
+    "inactive": "désactivé",
+    "otherHub": "part d'un autre hub",
+    "otherCountry": "autre pays de destination",
+    "tooHeavy": "trop lourd",
+    "tooLong": "colis trop long",
+    "refusedGoods": "refuse ces marchandises"
+  },
+  "routeUnchecked": {
+    "weight": "poids pas encore vérifié",
+    "size": "taille pas encore vérifiée"
   }
 }

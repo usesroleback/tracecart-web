@@ -392,6 +392,16 @@ function Breakdown({ quote }: { quote: NonNullable<PublicQuote["quote"]> }) {
         <span className="text-sm text-ink-muted">{t("total")}</span>
         <span className="text-xl font-semibold tabular-nums text-ink">{f.money(quote.total, quote.currency)}</span>
       </div>
+      {quote.eta && (quote.eta.from || quote.eta.to) && (
+        <p className="mt-2 text-[13px] text-ink">
+          {t("breakdown.eta", {
+            window:
+              quote.eta.from && quote.eta.to && quote.eta.from.slice(0, 10) !== quote.eta.to.slice(0, 10)
+                ? t("tracking.etaRange", { from: f.date(quote.eta.from), to: f.date(quote.eta.to) })
+                : f.date((quote.eta.from ?? quote.eta.to)!),
+          })}
+        </p>
+      )}
       {quote.provisional && <p className="mt-2 text-[13px] text-attn">{t("breakdown.provisional")}</p>}
       {quote.notes.length > 0 && (
         <div className="mt-3">

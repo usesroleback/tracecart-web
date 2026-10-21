@@ -136,7 +136,8 @@
     "ruleCurrency": "{component}: rate in {currency} isn't converted, left out.",
     "missingData": "{component}: needs {field}.",
     "missingWeight": "{component}: needs the weight.",
-    "cargoUnmeasured": "Packages and weight not measured yet."
+    "cargoUnmeasured": "Packages and weight not measured yet.",
+    "deadlineNotMet": "The chosen route can't deliver by the date wanted."
   },
   "milestone": {
     "PICKUP_SCHEDULED": "Pickup scheduled",
@@ -182,5 +183,24 @@
     "STAFF": "Staff",
     "CARRIER": "Carrier",
     "INTEGRATION": "Automatic feed"
+  },
+  "transportMode": {
+    "ROAD": "Road",
+    "AIR": "Air",
+    "SEA": "Sea",
+    "RAIL": "Rail",
+    "MULTIMODAL": "Multimodal"
+  },
+  "routeBlocker": {
+    "inactive": "switched off",
+    "otherHub": "leaves from another hub",
+    "otherCountry": "another destination country",
+    "tooHeavy": "too heavy",
+    "tooLong": "package too long",
+    "refusedGoods": "refuses these goods"
+  },
+  "routeUnchecked": {
+    "weight": "weight not checked yet",
+    "size": "size not checked yet"
   }
 }
