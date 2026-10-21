@@ -170,7 +170,8 @@
         "google_shopping": "Google Shopping",
         "web_search": "Web",
         "manual": "Offer entered",
-        "customer_link": "Customer's link"
+        "customer_link": "Customer's link",
+        "customer_choice": "Customer's pick"
       }
     },
     "reasons": {
@@ -188,7 +189,8 @@
       "customerLink": "Given by the customer",
       "outOfStock": "Out of stock",
       "withinBudget": "Within budget",
-      "overBudget": "Over budget"
+      "overBudget": "Over budget",
+      "customerChoice": "Picked by the customer"
     },
     "manual": {
       "title": "Add a supplier offer",

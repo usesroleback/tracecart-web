@@ -21,19 +21,43 @@
     "overline": "How it works",
     "title": "Five steps. You only see one: delivered.",
     "steps": {
-      "source": { "title": "Source", "body": "We find the supplier, check the goods, and pay them safely." },
-      "consolidate": { "title": "Consolidate", "body": "Your cargo joins others at a hub, so you only pay for the space you use." },
-      "move": { "title": "Move", "body": "Sea, rail and road, planned as one route and tracked as one shipment." },
-      "clear": { "title": "Clear", "body": "Our brokers handle customs and border papers before the truck arrives." },
-      "deliver": { "title": "Deliver", "body": "To the door, with a signed, photographed proof of delivery." }
+      "source": {
+        "title": "Source",
+        "body": "We find the supplier, check the goods, and pay them safely."
+      },
+      "consolidate": {
+        "title": "Consolidate",
+        "body": "Your cargo joins others at a hub, so you only pay for the space you use."
+      },
+      "move": {
+        "title": "Move",
+        "body": "Sea, rail and road, planned as one route and tracked as one shipment."
+      },
+      "clear": {
+        "title": "Clear",
+        "body": "Our brokers handle customs and border papers before the truck arrives."
+      },
+      "deliver": {
+        "title": "Deliver",
+        "body": "To the door, with a signed, photographed proof of delivery."
+      }
     }
   },
   "proof": {
     "photoCaption": "Documentary photo: the Dakola border crossing at 4 a.m. — a TraceCart broker walking the queue with a clipboard. Real place, real people, no staging.",
     "stats": {
-      "shipments": { "value": "1,284", "label": "Shipments delivered to landlocked destinations this year" },
-      "dwellTime": { "value": "42h", "label": "Median border dwell time, down from 71 hours" },
-      "delivered": { "value": "97.6%", "label": "Delivered complete and undamaged" }
+      "shipments": {
+        "value": "1,284",
+        "label": "Shipments delivered to landlocked destinations this year"
+      },
+      "dwellTime": {
+        "value": "42h",
+        "label": "Median border dwell time, down from 71 hours"
+      },
+      "delivered": {
+        "value": "97.6%",
+        "label": "Delivered complete and undamaged"
+      }
     }
   },
   "corridors": {
@@ -57,7 +81,36 @@
     "cta": "Get a quote →",
     "disclaimer": "A person who knows the corridor replies within 4 hours. No account needed.",
     "submittedTitle": "Thanks — that's on its way.",
-    "submittedBody": "A person who knows the {from} → {to} corridor will reply within 4 working hours."
+    "submittedBody": "A person who knows the {from} → {to} corridor will reply within 4 working hours.",
+    "attach": "Add a photo of the product",
+    "removePhoto": "Remove the photo",
+    "photoHint": "PNG, JPEG or WebP, 5 MB max",
+    "photoInvalid": "Choose a PNG, JPEG or WebP image of 5 MB or less.",
+    "needWhat": "Describe the product or add a photo.",
+    "needTo": "Say where it needs to go.",
+    "searching": "Looking for the product…",
+    "looksLike": "Looks like: {product}",
+    "pickTitle": "Is it one of these?",
+    "pickHint": "Pick the closest one; we check the exact model, price and delivery before we reply.",
+    "noneTitle": "We couldn't find this product online.",
+    "noneBody": "That's fine: send the request and someone will look for it for you.",
+    "needsDescription": "We couldn't read the photo. Add a few words about the product.",
+    "limited": "Partial search today: someone will complete it.",
+    "priceToConfirm": "Price to confirm",
+    "thisOne": "This one",
+    "chosen": "Chosen",
+    "none": "None of these",
+    "viewPage": "Open the page for {product}",
+    "back": "← Edit the request",
+    "contactTitle": "Where should we reply?",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email (optional)",
+    "send": "Send the request →",
+    "sending": "Sending…",
+    "chosenSummary": "Chosen product: {product}",
+    "failed": "The request couldn't be sent. Try again in a moment.",
+    "submittedBodyNoFrom": "A person who knows the route to {to} will reply within 4 working hours."
   },
   "footer": {
     "brand": "TraceCart",

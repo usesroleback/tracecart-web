@@ -21,19 +21,43 @@
     "overline": "Comment ça marche",
     "title": "Cinq étapes. Vous n'en voyez qu'une : livré.",
     "steps": {
-      "source": { "title": "Sourcer", "body": "Nous trouvons le fournisseur, vérifions la marchandise et le payons en toute sécurité." },
-      "consolidate": { "title": "Consolider", "body": "Votre cargaison rejoint d'autres au hub, vous ne payez donc que l'espace que vous utilisez." },
-      "move": { "title": "Transporter", "body": "Mer, rail et route, planifiés comme un seul itinéraire et suivis comme un seul envoi." },
-      "clear": { "title": "Dédouaner", "body": "Nos courtiers gèrent les douanes et les papiers frontaliers avant l'arrivée du camion." },
-      "deliver": { "title": "Livrer", "body": "Jusqu'à la porte, avec une preuve de livraison signée et photographiée." }
+      "source": {
+        "title": "Sourcer",
+        "body": "Nous trouvons le fournisseur, vérifions la marchandise et le payons en toute sécurité."
+      },
+      "consolidate": {
+        "title": "Consolider",
+        "body": "Votre cargaison rejoint d'autres au hub, vous ne payez donc que l'espace que vous utilisez."
+      },
+      "move": {
+        "title": "Transporter",
+        "body": "Mer, rail et route, planifiés comme un seul itinéraire et suivis comme un seul envoi."
+      },
+      "clear": {
+        "title": "Dédouaner",
+        "body": "Nos courtiers gèrent les douanes et les papiers frontaliers avant l'arrivée du camion."
+      },
+      "deliver": {
+        "title": "Livrer",
+        "body": "Jusqu'à la porte, avec une preuve de livraison signée et photographiée."
+      }
     }
   },
   "proof": {
     "photoCaption": "Photo documentaire : le passage frontalier de Dakola à 4 h du matin — un courtier TraceCart parcourt la file avec un bloc-notes. Lieu réel, personnes réelles, aucune mise en scène.",
     "stats": {
-      "shipments": { "value": "1 284", "label": "Envois livrés vers des destinations enclavées cette année" },
-      "dwellTime": { "value": "42 h", "label": "Temps d'attente médian à la frontière, contre 71 heures auparavant" },
-      "delivered": { "value": "97,6 %", "label": "Livrés complets et sans dommage" }
+      "shipments": {
+        "value": "1 284",
+        "label": "Envois livrés vers des destinations enclavées cette année"
+      },
+      "dwellTime": {
+        "value": "42 h",
+        "label": "Temps d'attente médian à la frontière, contre 71 heures auparavant"
+      },
+      "delivered": {
+        "value": "97,6 %",
+        "label": "Livrés complets et sans dommage"
+      }
     }
   },
   "corridors": {
@@ -57,7 +81,36 @@
     "cta": "Demander un devis →",
     "disclaimer": "Une personne qui connaît le corridor répond en moins de 4 heures. Aucun compte requis.",
     "submittedTitle": "Merci — c'est en route.",
-    "submittedBody": "Une personne qui connaît le corridor {from} → {to} vous répondra dans les 4 heures ouvrées."
+    "submittedBody": "Une personne qui connaît le corridor {from} → {to} vous répondra dans les 4 heures ouvrées.",
+    "attach": "Ajouter une photo du produit",
+    "removePhoto": "Retirer la photo",
+    "photoHint": "PNG, JPEG ou WebP, 5 Mo max",
+    "photoInvalid": "Choisissez une image PNG, JPEG ou WebP de 5 Mo maximum.",
+    "needWhat": "Décrivez le produit ou ajoutez une photo.",
+    "needTo": "Indiquez où la marchandise doit aller.",
+    "searching": "Recherche du produit…",
+    "looksLike": "On dirait : {product}",
+    "pickTitle": "Est-ce l'un de ceux-ci ?",
+    "pickHint": "Choisissez le plus proche ; nous vérifions le modèle exact, le prix et la livraison avant de vous répondre.",
+    "noneTitle": "Nous n'avons pas trouvé ce produit en ligne.",
+    "noneBody": "Ce n'est pas un problème : envoyez la demande, quelqu'un le cherche pour vous.",
+    "needsDescription": "Nous n'avons pas pu lire la photo. Ajoutez quelques mots sur le produit.",
+    "limited": "Recherche partielle aujourd'hui : quelqu'un complétera.",
+    "priceToConfirm": "Prix à confirmer",
+    "thisOne": "C'est celui-ci",
+    "chosen": "Choisi",
+    "none": "Aucun de ceux-là",
+    "viewPage": "Voir la page de {product}",
+    "back": "← Modifier la demande",
+    "contactTitle": "Où vous répondre ?",
+    "name": "Nom",
+    "phone": "Téléphone",
+    "email": "E-mail (optionnel)",
+    "send": "Envoyer la demande →",
+    "sending": "Envoi…",
+    "chosenSummary": "Produit choisi : {product}",
+    "failed": "La demande n'a pas pu partir. Réessayez dans un instant.",
+    "submittedBodyNoFrom": "Une personne qui connaît la route vers {to} vous répondra sous 4 heures ouvrées."
   },
   "footer": {
     "brand": "TraceCart",

@@ -170,7 +170,8 @@
         "google_shopping": "Google Shopping",
         "web_search": "Web",
         "manual": "Offre saisie",
-        "customer_link": "Lien du client"
+        "customer_link": "Lien du client",
+        "customer_choice": "Choix du client"
       }
     },
     "reasons": {
@@ -188,7 +189,8 @@
       "customerLink": "Indiqué par le client",
       "outOfStock": "Indisponible",
       "withinBudget": "Dans le budget",
-      "overBudget": "Au-dessus du budget"
+      "overBudget": "Au-dessus du budget",
+      "customerChoice": "Choisi par le client"
     },
     "manual": {
       "title": "Ajouter une offre fournisseur",
