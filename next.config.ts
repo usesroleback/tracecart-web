@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
   // Self-contained server bundle, enabled only by apps/web/Dockerfile —
   // `next start` warns when this is on, so local builds keep the default.
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
+  // NEXT_BUILD_CPUS caps build workers on low-memory machines (unset: Next's default).
+  experimental: process.env.NEXT_BUILD_CPUS ? { cpus: Number(process.env.NEXT_BUILD_CPUS) } : undefined,
   // npm workspace: trace dependencies from the repo root, where they're hoisted.
   outputFileTracingRoot: path.join(__dirname, "../.."),
   webpack(config) {
