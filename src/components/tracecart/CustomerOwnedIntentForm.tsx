@@ -25,18 +25,30 @@ const inputClasses =
  * physical item. Mirrors IntentForm's shape (same Field/inputClasses) minus
  * the product-URL/"Détecter" step.
  */
-export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: () => void; onCancel: () => void }) {
+export interface CustomerOwnedInitial {
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string | null;
+  destinationCity: string;
+  destinationCountry: string;
+  productName: string;
+  quantity: number;
+  /** A customer's "ship my product" request: its addresses, cargo and customs come with it. */
+  sourcingRequestId?: string;
+}
+
+export function CustomerOwnedIntentForm({ onCreated, onCancel, initial }: { onCreated: () => void; onCancel: () => void; initial?: CustomerOwnedInitial }) {
   const t = useTranslations("orders");
   const tl = useTranslations("labels");
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerName, setCustomerName] = useState(initial?.customerName ?? "");
+  const [customerPhone, setCustomerPhone] = useState(initial?.customerPhone ?? "");
+  const [customerEmail, setCustomerEmail] = useState(initial?.customerEmail ?? "");
   // The customer's SMS, emails and quote page; the console's language until changed.
   const [customerLocale, setCustomerLocale] = useState<Locale>(useLocale() as Locale);
-  const [destinationCity, setDestinationCity] = useState("");
-  const [destinationCountry, setDestinationCountry] = useState("");
-  const [productName, setProductName] = useState("");
-  const [quantity, setQuantity] = useState("1");
+  const [destinationCity, setDestinationCity] = useState(initial?.destinationCity ?? "");
+  const [destinationCountry, setDestinationCountry] = useState(initial?.destinationCountry ?? "");
+  const [productName, setProductName] = useState(initial?.productName ?? "");
+  const [quantity, setQuantity] = useState(String(initial?.quantity ?? 1));
   const [volumeTier, setVolumeTier] = useState<VolumeTier>("SMALL_UNITS");
   const [notes, setNotes] = useState("");
 
@@ -61,6 +73,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel }: { onCreated: ()
         quantity: quantity ? Number(quantity) : undefined,
         volumeTier,
         notes: notes || undefined,
+        sourcingRequestId: initial?.sourcingRequestId,
       });
       setCreatedOrder(order);
     } catch (err) {

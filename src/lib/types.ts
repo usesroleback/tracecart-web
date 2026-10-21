@@ -512,9 +512,31 @@ export interface Reservation {
 
 export type SourcingRequestStatus = "OPEN" | "MATCHED" | "CONVERTED" | "CLOSED";
 
+/** What a customer told us about goods they want moved (apps/api modules/shipment/draft.ts). */
+export interface ShipmentDraft {
+  pickup: Omit<OrderAddress, "id" | "kind">;
+  delivery: Omit<OrderAddress, "id" | "kind">;
+  packageCount?: number;
+  grossWeightKg?: number;
+  lengthCm?: number;
+  widthCm?: number;
+  heightCm?: number;
+  declaredValue?: number;
+  declaredValueCurrency?: string;
+  handlingFlags: HandlingFlag[];
+  readyAt?: string;
+  requiredBy?: string;
+  requiredByIsHard: boolean;
+  customs: CustomsResponsibility;
+  documentsNote?: string;
+}
+
 export interface SourcingRequest {
   id: string;
   hubId: string;
+  /** FIND_AND_DELIVER: find the product; SHIP_MY_PRODUCT: move goods the customer has. */
+  requestType: "FIND_AND_DELIVER" | "SHIP_MY_PRODUCT";
+  shipment: ShipmentDraft | null;
   requestedByUser: { id: string; name: string };
   customerName: string;
   customerPhone: string;

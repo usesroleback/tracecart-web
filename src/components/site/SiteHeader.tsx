@@ -24,6 +24,9 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link href="/ship" className="hidden text-sm font-medium text-ink-muted hover:text-ink sm:block">
+            {t('ship')}
+          </Link>
           <Link href="/account" className="hidden text-sm font-medium text-ink-muted hover:text-ink sm:block">
             {t('signIn')}
           </Link>

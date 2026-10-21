@@ -211,5 +211,7 @@
     },
     "failed": "L'action a échoué."
   },
-  "noDestination": "Destination à préciser"
+  "noDestination": "Destination à préciser",
+  "shipBadge": "Transport",
+  "shipRequest": "Demande d'expédition du client"
 }

@@ -36,7 +36,7 @@ const withClerk = clerkMiddleware(async (auth, req) => {
   // The login page reads the session itself (to explain "no access" etc.),
   // and the customer account page offers sign-up and sign-in itself.
   const bare = stripLocale(pathname);
-  if (bare !== "/login" && bare !== "/account") {
+  if (bare !== "/login" && bare !== "/account" && bare !== "/ship") {
     const { userId } = await auth();
     if (!userId) {
       // The path's locale, else the one last chosen (next-intl's cookie), else the default.

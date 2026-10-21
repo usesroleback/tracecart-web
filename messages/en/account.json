@@ -40,6 +40,8 @@
       "MATCHED": "Product found, quote in preparation",
       "CONVERTED": "Quote ready",
       "CLOSED": "Closed"
-    }
+    },
+    "ship": "Shipment",
+    "to": "to {destination}"
   }
 }

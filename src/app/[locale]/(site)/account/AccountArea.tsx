@@ -112,7 +112,14 @@ export function AccountArea() {
                   <div className="min-w-0">
                     <p className="font-semibold text-ink">{r.description}</p>
                     <p className="mt-0.5 text-[13px] text-ink-muted">
-                      {[t("requests.sent", { when: f.dayTime(r.createdAt) }), r.hasPhoto && t("requests.photo")].filter(Boolean).join(" · ")}
+                      {[
+                        r.requestType === "SHIP_MY_PRODUCT" && t("requests.ship"),
+                        r.destination && t("requests.to", { destination: r.destination }),
+                        t("requests.sent", { when: f.dayTime(r.createdAt) }),
+                        r.hasPhoto && t("requests.photo"),
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </p>
                     {r.choice && <p className="mt-1 text-sm text-ink">{t("requests.choice", { product: r.choice.title })}</p>}
                   </div>

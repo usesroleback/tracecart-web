@@ -8,7 +8,8 @@
     "howItWorks": "Comment ça marche",
     "corridors": "Corridors",
     "signIn": "Mon compte",
-    "getAQuote": "Demander un devis"
+    "getAQuote": "Demander un devis",
+    "ship": "Expédier"
   },
   "hero": {
     "overline": "Sourcing et logistique pour les destinations difficiles d'accès",
@@ -106,7 +107,8 @@
     "signUpNeeded": "Créez un compte gratuit pour voir les résultats : nous gardons votre description et votre photo.",
     "staffAccount": "Vous êtes connecté avec un compte de l'équipe : utilisez un compte client pour rechercher.",
     "replyTo": "Nous répondons à {email} et au numéro ci-dessous.",
-    "myRequests": "Voir mes demandes →"
+    "myRequests": "Voir mes demandes →",
+    "shipInstead": "Vous avez déjà la marchandise ? Faites-la livrer →"
   },
   "footer": {
     "brand": "TraceCart",

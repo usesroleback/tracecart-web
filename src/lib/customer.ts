@@ -15,6 +15,9 @@ export interface CustomerProfile {
 
 export interface CustomerRequest {
   id: string;
+  requestType: "FIND_AND_DELIVER" | "SHIP_MY_PRODUCT";
+  /** For a shipment: where it goes. */
+  destination: string | null;
   description: string;
   status: "OPEN" | "MATCHED" | "CONVERTED" | "CLOSED";
   createdAt: string;

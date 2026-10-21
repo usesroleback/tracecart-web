@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "title": "Expédier vos marchandises"
+  },
+  "title": "Expédier vos marchandises",
+  "intro": "Vous avez déjà la marchandise : dites-nous où la prendre, où la livrer et ce que vous savez du chargement. Nous vous répondons avec un devis détaillé, ou avec les questions qui manquent.",
+  "signedOut": "Un compte gratuit est nécessaire pour envoyer une demande : il nous permet de savoir qui la fait et de vous répondre.",
+  "signUp": "Créer un compte",
+  "signIn": "J'ai déjà un compte",
+  "loading": "Chargement…",
+  "failed": "Envoi impossible. Réessayez dans un instant.",
+  "staff": "Vous êtes connecté avec un compte de l'équipe : utilisez un compte client pour envoyer une demande.",
+  "goods": {
+    "title": "La marchandise",
+    "what": "Qu'est-ce que c'est ?",
+    "whatPlaceholder": "Ex. glucomètres en cartons",
+    "quantity": "Quantité",
+    "photo": "Une photo (facultatif)"
+  },
+  "from": "Où la prendre",
+  "fromHint": "L'adresse d'enlèvement, pas forcément la vôtre.",
+  "to": "Où la livrer",
+  "toHint": "L'adresse de livraison finale.",
+  "place": {
+    "line1": "Adresse",
+    "city": "Ville",
+    "country": "Pays",
+    "contact": "Contact sur place",
+    "phone": "Téléphone sur place"
+  },
+  "cargo": {
+    "title": "Le chargement",
+    "hint": "Remplissez ce que vous savez. Ce qui manque, nous le demanderons ou le mesurerons à l'enlèvement ; le devis restera provisoire d'ici là.",
+    "packages": "Nombre de colis",
+    "weight": "Poids total (kg)",
+    "dimensions": "Dimensions d'un colis (cm)",
+    "length": "Longueur",
+    "width": "Largeur",
+    "height": "Hauteur",
+    "value": "Valeur de la marchandise",
+    "valueHint": "Utile pour l'assurance et la douane.",
+    "currency": "Devise",
+    "readyAt": "Prête à partir le",
+    "requiredBy": "À livrer avant le",
+    "hard": "Cette date est impérative",
+    "flags": "Particularités",
+    "regulated": "Ces marchandises sont réglementées : nous vérifions qu'elles peuvent être expédiées et importées avant de vous envoyer un devis."
+  },
+  "customs": {
+    "title": "La douane",
+    "CUSTOMER_HANDLES": {
+      "label": "Je m'en occupe",
+      "hint": "Pas de frais de coordination douane de notre part."
+    },
+    "TRACECART_COORDINATES": {
+      "label": "TraceCart s'en occupe",
+      "hint": "Nous coordonnons avec un transitaire ; droits et taxes vous sont refacturés tels quels."
+    },
+    "ALREADY_CLEARED": {
+      "label": "C'est déjà dédouané",
+      "hint": "Nous pourrons vous demander la preuve de dédouanement."
+    },
+    "UNKNOWN": {
+      "label": "Je ne sais pas",
+      "hint": "Nous en parlerons avec vous."
+    },
+    "documents": "Documents disponibles",
+    "documentsHint": "Ex. facture, liste de colisage, certificat. Ne les envoyez pas maintenant."
+  },
+  "reply": {
+    "title": "Notre réponse",
+    "body": "Nous répondons à {email} et au numéro ci-dessous.",
+    "phone": "Votre téléphone"
+  },
+  "submit": "Envoyer la demande",
+  "disclaimer": "Une personne vous répond sous 4 heures ouvrées. Aucun engagement avant votre accord sur le devis.",
+  "sent": {
+    "title": "Demande envoyée",
+    "body": "Nous revenons vers vous à {email} avec un devis ou nos questions.",
+    "myRequests": "Voir mes demandes →"
+  }
+}

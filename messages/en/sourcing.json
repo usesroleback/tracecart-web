@@ -211,5 +211,7 @@
     },
     "failed": "That didn't work."
   },
-  "noDestination": "Destination to confirm"
+  "noDestination": "Destination to confirm",
+  "shipBadge": "Transport",
+  "shipRequest": "The customer's shipment request"
 }

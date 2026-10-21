@@ -40,6 +40,8 @@
       "MATCHED": "Produit trouvé, devis en préparation",
       "CONVERTED": "Devis prêt",
       "CLOSED": "Close"
-    }
+    },
+    "ship": "Expédition",
+    "to": "vers {destination}"
   }
 }

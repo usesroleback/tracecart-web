@@ -4,6 +4,8 @@ import { Fragment, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import { IntentForm } from "@/components/tracecart/IntentForm";
+import { CustomerOwnedIntentForm } from "@/components/tracecart/CustomerOwnedIntentForm";
+import { ShipmentDraftSummary } from "@/components/tracecart/ShipmentDraftSummary";
 import { SourcingRequestForm } from "@/components/tracecart/SourcingRequestForm";
 import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
@@ -80,6 +82,8 @@ export function SourcingDashboard({
   const [matchesError, setMatchesError] = useState<string | null>(null);
   const [selectingKey, setSelectingKey] = useState<string | null>(null);
   const [converting, setConverting] = useState<SourcingRequest | null>(null);
+  // A "ship my product" request: nothing to find, it becomes a transport-only order.
+  const [shipping, setShipping] = useState<SourcingRequest | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [segment, setSegment] = useState<Segment>("active");
 
@@ -162,12 +166,17 @@ export function SourcingDashboard({
             {t("createOrder")}
           </Button>
         )}
-        {(r.status === "OPEN" || r.status === "MATCHED") && (
+        {r.requestType === "SHIP_MY_PRODUCT" && r.status === "OPEN" && (
+          <Button size="s" onClick={() => setShipping(r)}>
+            {t("createOrder")}
+          </Button>
+        )}
+        {r.requestType !== "SHIP_MY_PRODUCT" && (r.status === "OPEN" || r.status === "MATCHED") && (
           <Button size="s" variant={r.status === "OPEN" ? "primary" : "secondary"} href={`/sourcing/${r.id}`}>
             {t("findProduct")}
           </Button>
         )}
-        {(r.status === "OPEN" || r.status === "MATCHED") && (
+        {r.requestType !== "SHIP_MY_PRODUCT" && (r.status === "OPEN" || r.status === "MATCHED") && (
           <Button size="s" variant="ghost" onClick={() => toggleMatches(r)}>
             {expandedId === r.id ? t("hide") : t("seeCandidates")}
           </Button>
@@ -182,6 +191,14 @@ export function SourcingDashboard({
   }
 
   function detail(r: SourcingRequest) {
+    if (r.requestType === "SHIP_MY_PRODUCT" && r.shipment) {
+      return (
+        <div className="rounded-[var(--radius-m)] bg-surface-sunken p-3">
+          <p className="rb-overline mb-2">{t("shipRequest")}</p>
+          <ShipmentDraftSummary draft={r.shipment} />
+        </div>
+      );
+    }
     return (
       <div className="grid gap-4">
         {r.status === "MATCHED" && r.selectedProduct && (
@@ -299,6 +316,28 @@ export function SourcingDashboard({
         </div>
       )}
 
+      {shipping && (
+        <div className="mt-6">
+          <CustomerOwnedIntentForm
+            onCreated={() => {
+              setShipping(null);
+              handleConverted();
+            }}
+            onCancel={() => setShipping(null)}
+            initial={{
+              customerName: shipping.customerName,
+              customerPhone: shipping.customerPhone,
+              customerEmail: shipping.customerEmail,
+              destinationCity: shipping.destinationCity,
+              destinationCountry: shipping.destinationCountry,
+              productName: shipping.description,
+              quantity: shipping.quantity,
+              sourcingRequestId: shipping.id,
+            }}
+          />
+        </div>
+      )}
+
       <div className="mt-6 grid gap-6 @min-[1064px]/main:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0">
           <SegmentedTabs
@@ -344,7 +383,10 @@ export function SourcingDashboard({
                               <span className="rb-mono block text-[12px] text-ink-muted">{r.customerPhone}</span>
                             </td>
                             <td className={`${td} max-w-[360px]`}>
-                              <span className="line-clamp-2">{r.description}</span>
+                              <span className="line-clamp-2">
+                                {r.requestType === "SHIP_MY_PRODUCT" && <Badge variant="info" className="mr-1.5">{t("shipBadge")}</Badge>}
+                                {r.description}
+                              </span>
                               {(r.category || r.brand) && (
                                 <span className="block text-[13px] text-ink-muted">{[r.category, r.brand].filter(Boolean).join(" · ")}</span>
                               )}
@@ -390,7 +432,10 @@ export function SourcingDashboard({
                       <b className="font-semibold">{r.customerName}</b>
                       <SourcingRequestStatusTag status={r.status} />
                     </div>
-                    <p className="mt-1 line-clamp-3 text-sm text-ink">{r.description}</p>
+                    <p className="mt-1 line-clamp-3 text-sm text-ink">
+                      {r.requestType === "SHIP_MY_PRODUCT" && <Badge variant="info" className="mr-1.5">{t("shipBadge")}</Badge>}
+                      {r.description}
+                    </p>
                     <p className="mt-1 text-[13px] text-ink-muted">
                       {destinationOf(r) ?? t("noDestination")} · {t("qty", { quantity: f.number(r.quantity) })}
                       {budget(r, f) ? ` · ${budget(r, f)}` : ""}
