@@ -8,6 +8,7 @@ import { Role, SessionUser } from "./types";
 export const ROLE_HOME: Record<Role, string> = {
   SUPER_ADMIN: "/orders",
   LOGISTICS_PARTNER: "/deliveries",
+  CUSTOMER: "/account",
 };
 
 /** Clerk session token for calling the API as the signed-in user; null when signed out. */

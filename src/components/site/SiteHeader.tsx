@@ -24,7 +24,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/login" className="hidden text-sm font-medium text-ink-muted hover:text-ink sm:block">
+          <Link href="/account" className="hidden text-sm font-medium text-ink-muted hover:text-ink sm:block">
             {t('signIn')}
           </Link>
           <Button href="#quote" size="s">

@@ -1,9 +1,11 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Button from "@/components/ui/button/Button";
-import { TRACECART_API_URL } from "@/lib/apiBase";
+import { CustomerProfile, ensureCustomerAccount, StaffAccountError, updateProfile } from "@/lib/customer";
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -36,19 +38,61 @@ function CameraIcon() {
   );
 }
 
+/** A multipart call to the customer API, through the web app's proxy (it attaches the Clerk session). */
 async function postForm<T>(path: string, form: FormData, locale: string): Promise<T> {
-  const res = await fetch(`${TRACECART_API_URL}${path}`, { method: "POST", body: form, headers: { "X-TraceCart-Locale": locale } });
+  const res = await fetch(`/api/tracecart${path}`, { method: "POST", body: form, headers: { "X-TraceCart-Locale": locale } });
   const body = await res.json().catch(() => null);
   if (!res.ok) throw new Error(body?.error?.message ?? `Request failed (${res.status})`);
   return body as T;
 }
 
+// What the customer typed and attached, kept across sign-up (which may reload the page).
+const DRAFT_KEY = "tracecart:finder-draft";
+
+function saveDraft(what: string, photoDataUrl: string | null, name: string | null) {
+  try {
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ what, photo: photoDataUrl, name }));
+  } catch {
+    try {
+      sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ what, photo: null, name: null })); // too big for storage: keep the words
+    } catch {
+      /* storage unavailable: the customer types again */
+    }
+  }
+}
+
+/** The saved draft, if any (removed as it's read), with its photo as a File again. */
+async function takeDraft(): Promise<{ what: string; photo: File | null } | null> {
+  let raw: string | null;
+  try {
+    raw = sessionStorage.getItem(DRAFT_KEY);
+    sessionStorage.removeItem(DRAFT_KEY);
+  } catch {
+    return null;
+  }
+  if (!raw) return null;
+  const draft = JSON.parse(raw) as { what: string; photo: string | null; name: string | null };
+  const blob = draft.photo ? await fetch(draft.photo).then((r) => r.blob()).catch(() => null) : null;
+  return { what: draft.what, photo: blob ? new File([blob], draft.name ?? "photo", { type: blob.type }) : null };
+}
+
+function readDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
 /**
  * The homepage's one question: what do you need? The customer describes the
- * product or tool in their own words and/or adds a photo; TraceCart reads it,
- * suggests real listings (docs/product-discovery.md, public endpoints), and
- * the request lands in the console as a sourcing request. No account. Where
- * it goes (from / to / when) is settled later, not asked here.
+ * product or tool in their own words and/or adds a photo. Seeing the results
+ * needs a (free) customer account, so TraceCart knows who asked and can reply:
+ * signed out, Find it opens Clerk's sign-up over the page and the search runs
+ * once they're in (docs/product-discovery.md). The request lands in the
+ * console as a sourcing request linked to their account. Where it goes
+ * (from / to / when) is settled later, not asked here.
  */
 export function QuoteBar() {
   const t = useTranslations("site.quoteBar");
@@ -60,7 +104,11 @@ export function QuoteBar() {
   const [searching, setSearching] = useState(false);
   const [result, setResult] = useState<SuggestResult | null>(null);
   const [choice, setChoice] = useState<Suggestion | "none" | null>(null);
-  const [contact, setContact] = useState({ name: "", phone: "", email: "" });
+  const [contact, setContact] = useState({ name: "", phone: "" });
+  const [account, setAccount] = useState<CustomerProfile | null>(null);
+  const [pending, setPending] = useState(false);
+  const { isLoaded, isSignedIn } = useAuth();
+  const clerk = useClerk();
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -68,6 +116,31 @@ export function QuoteBar() {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => () => void (preview && URL.revokeObjectURL(preview)), [preview]);
+
+  // Back from sign-up (possibly after a reload): restore the draft, then search once signed in.
+  useEffect(() => {
+    takeDraft().then((draft) => {
+      if (!draft) return;
+      setWhat(draft.what);
+      if (draft.photo) {
+        setPhoto(draft.photo);
+        setPreview(URL.createObjectURL(draft.photo));
+      }
+      setPending(true);
+      document.getElementById("quote")?.scrollIntoView({ block: "center" });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (pending && isLoaded && isSignedIn) {
+      // Clerk has just finished signing the customer in: run the search they asked for, once.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPending(false);
+      search();
+    }
+    // search reads the restored draft from state; only the sign-in should trigger it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pending, isLoaded, isSignedIn]);
 
   function pickPhoto(file: File | undefined) {
     if (!file) return;
@@ -88,18 +161,34 @@ export function QuoteBar() {
     if (fileRef.current) fileRef.current.value = "";
   }
 
-  async function search(e: FormEvent) {
-    e.preventDefault();
+  async function search(e?: FormEvent) {
+    e?.preventDefault();
     if (!what.trim() && !photo) return setProblem(t("needWhat"));
+    if (!isSignedIn) {
+      // Results are for account holders: keep the draft, sign up over the page, then search.
+      setProblem(t("signUpNeeded"));
+      saveDraft(what, photo ? await readDataUrl(photo).catch(() => null) : null, photo?.name ?? null);
+      setPending(true);
+      const here = window.location.pathname + window.location.search;
+      clerk.openSignUp({ forceRedirectUrl: here, signInForceRedirectUrl: here });
+      return;
+    }
     setProblem(null);
     setSearching(true);
     setChoice(null);
     try {
+      const me = account ?? (await ensureCustomerAccount());
+      setAccount(me);
+      setContact({ name: me.name, phone: me.phone ?? "" });
       const form = new FormData();
       form.append("what", what);
       if (photo) form.append("photo", photo);
-      setResult(await postForm<SuggestResult>("/public/discovery/suggest", form, locale));
+      setResult(await postForm<SuggestResult>("/customer/suggest", form, locale));
     } catch (err) {
+      if (err instanceof StaffAccountError) {
+        setProblem(t("staffAccount"));
+        return;
+      }
       // Searching is a help, not a gate: without it the request can still be sent.
       setProblem(err instanceof Error ? err.message : null);
       setResult({ identified: null, suggestions: [], needsDescription: false, limited: true });
@@ -115,10 +204,15 @@ export function QuoteBar() {
     setProblem(null);
     try {
       const form = new FormData();
-      Object.entries({ what, ...contact, locale }).forEach(([k, v]) => form.append(k, v));
+      // The reply goes to the account: keep its name and phone up to date first.
+      if (account && (contact.name !== account.name || contact.phone !== (account.phone ?? ""))) {
+        setAccount(await updateProfile({ name: contact.name, phone: contact.phone }));
+      }
+      form.append("what", what);
+      form.append("locale", locale);
       if (choice && choice !== "none") form.append("choice", JSON.stringify(choice));
       if (photo) form.append("photo", photo);
-      await postForm("/public/discovery/requests", form, locale);
+      await postForm("/customer/requests", form, locale);
       setSubmitted(true);
     } catch (err) {
       setProblem(err instanceof Error ? err.message : t("failed"));
@@ -132,6 +226,9 @@ export function QuoteBar() {
       <div id="quote" className="rounded-[var(--radius-m)] border border-line bg-surface-raised px-6 py-8 text-center shadow-[var(--shadow-1)]">
         <p className="rb-title text-[18px]">{t("submittedTitle")}</p>
         <p className="mt-1 text-sm text-ink-muted">{t("submittedBody")}</p>
+        <Link href="/account" className="rb-link mt-4 inline-block text-sm">
+          {t("myRequests")}
+        </Link>
       </div>
     );
   }
@@ -286,7 +383,8 @@ export function QuoteBar() {
             <form onSubmit={send} className="mt-6 border-t border-line pt-5">
               <p className="rb-title text-[16px]">{t("contactTitle")}</p>
               {choice && choice !== "none" && <p className="mt-1 text-sm text-ink-muted">{t("chosenSummary", { product: choice.title })}</p>}
-              <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
+              {account && <p className="mt-1 text-sm text-ink-muted">{t("replyTo", { email: account.email })}</p>}
+              <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
                 <label className="text-sm">
                   <span className="rb-label mb-1 block">{t("name")}</span>
                   <input required className={inputClasses} value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} autoComplete="name" />
@@ -294,10 +392,6 @@ export function QuoteBar() {
                 <label className="text-sm">
                   <span className="rb-label mb-1 block">{t("phone")}</span>
                   <input required type="tel" className={inputClasses} value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} autoComplete="tel" />
-                </label>
-                <label className="text-sm">
-                  <span className="rb-label mb-1 block">{t("email")}</span>
-                  <input type="email" className={inputClasses} value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} autoComplete="email" />
                 </label>
                 <Button type="submit" loading={sending}>
                   {sending ? t("sending") : t("send")}

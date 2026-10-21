@@ -16,7 +16,8 @@ export default async function SignInPage() {
   const t = await getTranslations("auth");
   const state = await getSessionState();
 
-  if (state.status === "ok") return redirect({ href: "/dashboard", locale });
+  // Customers have their own area; the console is for staff.
+  if (state.status === "ok") return redirect({ href: state.user.role === "CUSTOMER" ? "/account" : "/dashboard", locale });
 
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full">

@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "My account — TraceCart"
+  },
+  "title": "My account",
+  "signedOut": {
+    "title": "Your TraceCart account",
+    "body": "Create an account to see the products we find for you, send your requests and follow our replies. It's free.",
+    "signUp": "Create an account",
+    "signIn": "I already have an account"
+  },
+  "staff": {
+    "title": "This is a TraceCart staff account.",
+    "body": "Staff accounts use the console.",
+    "cta": "Open the console"
+  },
+  "loading": "Loading…",
+  "failed": "We couldn't load your account. Try again in a moment.",
+  "profile": {
+    "title": "Your details",
+    "hint": "We reply to this number and address.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "save": "Save",
+    "saved": "Saved.",
+    "signOut": "Sign out"
+  },
+  "requests": {
+    "title": "My requests",
+    "new": "Find a product",
+    "empty": "No requests yet. Describe what you need or send a photo from the home page.",
+    "sent": "Sent {when}",
+    "photo": "Photo attached",
+    "choice": "Your pick: {product}",
+    "order": "Order {reference}",
+    "openOrder": "See the quote and tracking",
+    "status": {
+      "OPEN": "Received, we're looking for the product",
+      "MATCHED": "Product found, quote in preparation",
+      "CONVERTED": "Quote ready",
+      "CLOSED": "Closed"
+    }
+  }
+}

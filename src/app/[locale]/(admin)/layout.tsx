@@ -13,6 +13,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   // The login page explains why (no account, API unreachable) when needed.
   const locale = (await getLocale()) as Locale;
   if (state.status !== "ok") return redirect({ href: '/login', locale });
+  // The console is for staff; a customer account has its own area.
+  if (state.user.role === "CUSTOMER") return redirect({ href: "/account", locale });
 
   // Notifications follow the language the console is used in: record it when
   // it changes (once, not on every page).

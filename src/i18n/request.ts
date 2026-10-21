@@ -16,6 +16,7 @@ const NAMESPACES = [
   'quote',
   'labels',
   'legal',
+  'account',
 ] as const;
 
 function isSupportedLocale(locale: string | undefined): locale is (typeof routing.locales)[number] {

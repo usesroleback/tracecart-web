@@ -1,4 +1,4 @@
-export type Role = "SUPER_ADMIN" | "LOGISTICS_PARTNER";
+export type Role = "SUPER_ADMIN" | "LOGISTICS_PARTNER" | "CUSTOMER";
 
 export type Locale = "fr" | "en";
 
@@ -251,6 +251,8 @@ export interface SourcingRequest {
   destinationCity: string;
   destinationCountry: string;
   status: SourcingRequestStatus;
+  /** The customer account that sent it from the public site, if any. */
+  customerUserId?: string | null;
   /** The listing chosen in product discovery (at most one). */
   candidates?: SourcingCandidate[];
   _count?: { candidates: number; attachments: number };

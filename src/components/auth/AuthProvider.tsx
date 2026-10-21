@@ -4,8 +4,9 @@ import { getLocale } from "next-intl/server";
 import { clerkAppearance } from "./clerkAppearance";
 
 /**
- * Clerk is only mounted on the console and the login page — the public site
- * and customer quote pages don't need its client script.
+ * Clerk is mounted on the console, the login page and the public site (where
+ * customers sign up to see product suggestions; docs/product-discovery.md).
+ * The customer quote/tracking pages don't need it.
  */
 export async function AuthProvider({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();

@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Mon compte — TraceCart"
+  },
+  "title": "Mon compte",
+  "signedOut": {
+    "title": "Votre compte TraceCart",
+    "body": "Créez un compte pour voir les produits que nous trouvons pour vous, envoyer vos demandes et suivre nos réponses. C'est gratuit.",
+    "signUp": "Créer un compte",
+    "signIn": "J'ai déjà un compte"
+  },
+  "staff": {
+    "title": "C'est un compte de l'équipe TraceCart.",
+    "body": "Les comptes de l'équipe utilisent la console.",
+    "cta": "Ouvrir la console"
+  },
+  "loading": "Chargement…",
+  "failed": "Impossible de charger votre compte. Réessayez dans un instant.",
+  "profile": {
+    "title": "Vos coordonnées",
+    "hint": "Nous vous répondons à ce numéro et à cette adresse.",
+    "name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "save": "Enregistrer",
+    "saved": "Enregistré.",
+    "signOut": "Se déconnecter"
+  },
+  "requests": {
+    "title": "Mes demandes",
+    "new": "Chercher un produit",
+    "empty": "Pas encore de demande. Décrivez ce qu'il vous faut ou envoyez une photo depuis l'accueil.",
+    "sent": "Envoyée {when}",
+    "photo": "Photo jointe",
+    "choice": "Votre choix : {product}",
+    "order": "Commande {reference}",
+    "openOrder": "Voir le devis et le suivi",
+    "status": {
+      "OPEN": "Reçue, nous cherchons le produit",
+      "MATCHED": "Produit trouvé, devis en préparation",
+      "CONVERTED": "Devis prêt",
+      "CLOSED": "Close"
+    }
+  }
+}

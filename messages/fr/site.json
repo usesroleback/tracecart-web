@@ -7,7 +7,7 @@
     "brand": "TraceCart",
     "howItWorks": "Comment ça marche",
     "corridors": "Corridors",
-    "signIn": "Se connecter",
+    "signIn": "Mon compte",
     "getAQuote": "Demander un devis"
   },
   "hero": {
@@ -73,7 +73,7 @@
     "what": "Que cherchez-vous ?",
     "whatPlaceholder": "Décrivez le produit ou l'outil avec vos mots : à quoi il sert, la marque ou le modèle si vous les connaissez, la quantité… ou ajoutez simplement une photo.",
     "cta": "Trouver le produit →",
-    "disclaimer": "Nous trouvons le produit, puis une personne vous répond sous 4 heures ouvrées avec un prix livré. Aucun compte requis.",
+    "disclaimer": "Nous trouvons le produit, puis une personne vous répond sous 4 heures ouvrées avec un prix livré. Compte gratuit requis pour voir les résultats.",
     "submittedTitle": "Merci — c'est en route.",
     "submittedBody": "Une personne de l'équipe vous répond sous 4 heures ouvrées : elle confirme le produit et vous demande où le livrer.",
     "attach": "Ajouter une photo",
@@ -98,12 +98,15 @@
     "contactTitle": "Où vous répondre ?",
     "name": "Nom",
     "phone": "Téléphone",
-    "email": "E-mail (optionnel)",
     "send": "Envoyer la demande →",
     "sending": "Envoi…",
     "chosenSummary": "Produit choisi : {product}",
     "failed": "La demande n'a pas pu partir. Réessayez dans un instant.",
-    "dropHere": "Déposez la photo ici"
+    "dropHere": "Déposez la photo ici",
+    "signUpNeeded": "Créez un compte gratuit pour voir les résultats : nous gardons votre description et votre photo.",
+    "staffAccount": "Vous êtes connecté avec un compte de l'équipe : utilisez un compte client pour rechercher.",
+    "replyTo": "Nous répondons à {email} et au numéro ci-dessous.",
+    "myRequests": "Voir mes demandes →"
   },
   "footer": {
     "brand": "TraceCart",
