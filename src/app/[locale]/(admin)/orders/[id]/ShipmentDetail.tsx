@@ -10,6 +10,8 @@ import { OrderPartnerPanel } from "@/components/tracecart/OrderPartnerPanel";
 import { LocationTimeline } from "@/components/tracecart/LocationTimeline";
 import { ShipmentFile } from "@/components/tracecart/ShipmentFile";
 import { QuoteBreakdown } from "@/components/tracecart/QuoteBreakdown";
+import { ShipmentTracking } from "@/components/tracecart/ShipmentTracking";
+import { OrderExceptions } from "@/components/tracecart/OrderExceptions";
 import { RouteTimeline, orderRouteSteps } from "@/components/tracecart/RouteTimeline";
 import { Alert } from "@/components/ui/alert/Alert";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -88,6 +90,8 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
   const backHref = isAdmin ? "/orders" : "/deliveries";
   const backLabel = td(isAdmin ? "back.admin" : "back.carrier");
   const total = money(f, order.customerQuoteTotal, currency);
+  const goodsPhotos = order.photos.filter((p) => p.kind !== "PROOF_OF_DELIVERY");
+  const openExceptions = order.exceptions.filter((x) => x.status === "OPEN");
 
   return (
     <div>
@@ -137,6 +141,11 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
           <Alert tone="critical" title={td(order.status === "DECLINED" ? "declined" : "unavailable")}>
             {stopEntry?.note ?? td("noNextStep")}
             {stopEntry && td("stoppedBy", { name: stopEntry.changedByUser.name, when: dayTime(stopEntry.createdAt) })}
+          </Alert>
+        )}
+        {openExceptions.length > 0 && (
+          <Alert tone="critical" title={t("exceptions.title")}>
+            {openExceptions.map((x) => x.summary).join(" · ")}
           </Alert>
         )}
         {isAdmin && order.status === "QUOTE_SENT" && order.quoteAcceptedAt && (
@@ -235,6 +244,10 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
 
           {isAdmin && <QuoteBreakdown order={order} />}
 
+          <OrderExceptions order={order} isAdmin={isAdmin} onChanged={refresh} />
+
+          <ShipmentTracking order={order} onChanged={refresh} />
+
           <div className="grid gap-4 md:grid-cols-2">
             <Card padding={24}>
               <h2 className="rb-title">{td("history")}</h2>
@@ -280,11 +293,11 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
           </Card>
           <Card variant="sunken" padding={24}>
             <h2 className="rb-title">{td("photos")}</h2>
-            {order.photos.length === 0 ? (
+            {goodsPhotos.length === 0 ? (
               <p className="mt-2 text-sm text-ink-muted">{td("noPhotos")}</p>
             ) : (
               <ul className="mt-3 grid grid-cols-3 gap-2">
-                {order.photos.map((p) => (
+                {goodsPhotos.map((p) => (
                   <li key={p.id}>
                     <a
                       href={`/api/tracecart${p.url}`}

@@ -176,6 +176,14 @@ function Tracking({ quote, children }: { quote: PublicQuote; children: React.Rea
     f,
   );
   const deliveredAt = [...quote.history].reverse().find((h) => h.toStatus === "DELIVERED")?.createdAt;
+  const tl = useTranslations("labels");
+  const { token } = useParams<{ token: string }>();
+  const eta = quote.eta && quote.status !== "DELIVERED" ? quote.eta : null;
+  const etaText = eta
+    ? eta.from && eta.to && eta.from.slice(0, 10) !== eta.to.slice(0, 10)
+      ? t("tracking.etaRange", { from: f.date(eta.from), to: f.date(eta.to) })
+      : f.date((eta.from ?? eta.to)!)
+    : null;
 
   return (
     <div>
@@ -185,7 +193,9 @@ function Tracking({ quote, children }: { quote: PublicQuote; children: React.Rea
       </h1>
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
         <Status state={orderStatusState(quote.status)} label={t(`status.${quote.status}`)} />
-        <span className="text-sm text-ink-muted">{t("tracking.updated", { when: f.dayTime(quote.updatedAt) })}</span>
+        <span className="text-sm text-ink-muted">
+          {quote.lastUpdateAt ? t("tracking.lastUpdate", { when: f.dayTime(quote.lastUpdateAt) }) : t("tracking.updated", { when: f.dayTime(quote.updatedAt) })}
+        </span>
       </div>
 
       <Card route padding={32} className="mt-6">
@@ -196,6 +206,21 @@ function Tracking({ quote, children }: { quote: PublicQuote; children: React.Rea
         {quote.status === "DELIVERED" && (
           <Alert tone="positive" title={t("tracking.delivered", { city: quote.destinationCity })}>
             {deliveredAt && t("tracking.deliveredOn", { when: f.dayTime(deliveredAt) })}
+            {quote.proofOfDelivery.length > 0 && (
+              <span className="mt-1 flex flex-wrap gap-x-3">
+                {t("tracking.proof")} :
+                {quote.proofOfDelivery.map((p, i) => (
+                  <a key={p.id} href={`${TRACECART_API_URL}/q/${token}/proof/${p.id}`} target="_blank" rel="noreferrer" className="rb-link">
+                    {t("tracking.proofPhoto", { n: i + 1 })}
+                  </a>
+                ))}
+              </span>
+            )}
+          </Alert>
+        )}
+        {etaText && (
+          <Alert tone="info" title={`${t("tracking.eta")} : ${etaText}`}>
+            {t("tracking.etaNote")}
           </Alert>
         )}
         {quote.status === "UNAVAILABLE" && (
@@ -210,6 +235,26 @@ function Tracking({ quote, children }: { quote: PublicQuote; children: React.Rea
           <h2 className="rb-title">{t("tracking.yourOrder")}</h2>
           <div className="mt-4">{children}</div>
         </Card>
+        {quote.events.length > 0 && (
+          <Card padding={24} className="md:order-last md:col-span-2">
+            <h2 className="rb-title">{t("tracking.milestones")}</h2>
+            <ol className="mt-3 grid">
+              {quote.events.map((e) => (
+                <li key={e.id} className="border-b border-line py-2.5 last:border-b-0">
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                    <span className="font-semibold text-ink">
+                      {tl(`milestone.${e.milestone}`)}
+                      {e.city ? ` — ${e.city}` : ""}
+                    </span>
+                    <span className="rb-mono text-xs text-ink-muted">{f.dayTime(e.occurredAt)}</span>
+                  </div>
+                  {e.reason && <p className="text-[13px] text-ink">{t("tracking.reason", { reason: e.reason })}</p>}
+                  {e.customerNote && <p className="text-[13px] text-ink-muted">{e.customerNote}</p>}
+                </li>
+              ))}
+            </ol>
+          </Card>
+        )}
         <Card padding={24}>
           <h2 className="rb-title">{t("tracking.positions")}</h2>
           {quote.positions.length === 0 ? (

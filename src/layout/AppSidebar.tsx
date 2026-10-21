@@ -49,7 +49,7 @@ const ADMIN_NAV: NavGroup[] = [
       { icon: <DsHomeIcon />, name: "overview", path: "/dashboard" },
       { icon: <DsChatIcon />, name: "requests", path: "/sourcing", count: (c) => c.sourcing },
       { icon: <DsPackageIcon />, name: "orders", path: "/orders", count: (c) => sum(c, ACTIVE) },
-      { icon: <DsAlertIcon />, name: "exceptions", path: "/orders", query: { statut: "exceptions" } },
+      { icon: <DsAlertIcon />, name: "exceptions", path: "/exceptions" },
     ],
   },
   {

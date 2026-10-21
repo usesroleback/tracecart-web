@@ -38,7 +38,15 @@
     "delivered": "Livré à {city}.",
     "deliveredOn": "Le {when}.",
     "unavailable": "Cet article n'est plus disponible chez le revendeur.",
-    "contact": "Un opérateur TraceCart vous contactera pour la suite."
+    "contact": "Un opérateur TraceCart vous contactera pour la suite.",
+    "milestones": "Étapes",
+    "eta": "Arrivée estimée",
+    "etaRange": "entre le {from} et le {to}",
+    "etaNote": "Une estimation, pas une garantie : nous la mettons à jour si quelque chose change.",
+    "lastUpdate": "Dernière nouvelle confirmée : {when}",
+    "reason": "Motif : {reason}",
+    "proof": "Preuve de livraison",
+    "proofPhoto": "Photo {n}"
   },
   "breakdown": {
     "title": "Votre devis",

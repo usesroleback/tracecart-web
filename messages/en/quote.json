@@ -38,7 +38,15 @@
     "delivered": "Delivered to {city}.",
     "deliveredOn": "On {when}.",
     "unavailable": "This item is no longer available from the seller.",
-    "contact": "A TraceCart operator will contact you about what happens next."
+    "contact": "A TraceCart operator will contact you about what happens next.",
+    "milestones": "Milestones",
+    "eta": "Estimated arrival",
+    "etaRange": "between {from} and {to}",
+    "etaNote": "An estimate, not a guarantee: we update it if anything changes.",
+    "lastUpdate": "Last confirmed news: {when}",
+    "reason": "Reason: {reason}",
+    "proof": "Proof of delivery",
+    "proofPhoto": "Photo {n}"
   },
   "breakdown": {
     "title": "Your quote",

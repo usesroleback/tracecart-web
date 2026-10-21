@@ -321,5 +321,67 @@
     "validUntil": "Valid until {when}",
     "notes": "Assumptions and exclusions",
     "caption": "Quote lines"
+  },
+  "tracking": {
+    "title": "Shipment tracking",
+    "empty": "No events recorded.",
+    "eta": "Estimated arrival",
+    "etaRange": "{from} to {to}",
+    "originalEta": "First estimate: {window}",
+    "noEta": "No estimate yet",
+    "record": "Record an event",
+    "milestone": "Event",
+    "occurredAt": "Happened at",
+    "city": "Place",
+    "reason": "Reason (the customer sees it)",
+    "customerNote": "Message for the customer",
+    "internalNote": "Internal note",
+    "etaFrom": "New arrival, earliest",
+    "etaTo": "latest",
+    "externalRef": "Carrier reference",
+    "save": "Record",
+    "saved": "Event recorded.",
+    "customerSees": "The customer is told.",
+    "internalOnly": "Internal: the customer isn't told.",
+    "by": "{source} · {when}",
+    "proof": {
+      "title": "Proof of delivery",
+      "add": "Add photos of the handover",
+      "uploading": "Uploading…",
+      "none": "No proof of delivery yet."
+    }
+  },
+  "exceptions": {
+    "title": "Exceptions",
+    "none": "No exceptions.",
+    "open": "Report an exception",
+    "type": "Type",
+    "severity": "Severity",
+    "summary": "What's happening",
+    "customerImpact": "Impact on the customer",
+    "nextAction": "Next action",
+    "dueAt": "Due by",
+    "resolve": "Resolve",
+    "resolution": "How it was resolved",
+    "save": "Save",
+    "cancel": "Cancel",
+    "resolvedOn": "Resolved on {when}",
+    "openedOn": "Opened on {when}"
+  },
+  "exceptionsPage": {
+    "title": "Exceptions",
+    "subtitle": "Problems on the hub's orders: each has an owner and a next action until it's resolved.",
+    "showResolved": "Show resolved exceptions",
+    "empty": "No open exceptions.",
+    "caption": "Hub exceptions",
+    "col": {
+      "order": "Order",
+      "issue": "Issue",
+      "next": "Next action",
+      "owner": "Owner",
+      "age": "Since"
+    },
+    "nobody": "Nobody",
+    "declined": "Declined or unavailable orders"
   }
 }

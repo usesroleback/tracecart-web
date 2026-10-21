@@ -137,5 +137,50 @@
     "missingData": "{component}: needs {field}.",
     "missingWeight": "{component}: needs the weight.",
     "cargoUnmeasured": "Packages and weight not measured yet."
+  },
+  "milestone": {
+    "PICKUP_SCHEDULED": "Pickup scheduled",
+    "PICKUP_COMPLETED": "Goods collected",
+    "ORIGIN_HUB_RECEIVED": "Received at the departure hub",
+    "INSPECTION_COMPLETED": "Inspection done",
+    "DISPATCHED": "Dispatched",
+    "BORDER_PROCESSING": "At the border",
+    "CUSTOMS_DOCUMENTS_REQUIRED": "Customs documents needed",
+    "CUSTOMS_CLEARANCE_STARTED": "Customs clearance under way",
+    "CUSTOMS_CLEARED": "Cleared customs",
+    "DELAY_REPORTED": "Delay",
+    "ETA_REVISED": "New estimated arrival",
+    "DESTINATION_HUB_RECEIVED": "Received at the arrival hub",
+    "OUT_FOR_DELIVERY": "Out for delivery",
+    "DELIVERY_ATTEMPT_FAILED": "Delivery attempt failed",
+    "RETURN_STARTED": "Return started"
+  },
+  "exceptionType": {
+    "DELAY": "Delay",
+    "STALE_TRACKING": "No tracking news",
+    "PICKUP_FAILED": "Pickup failed",
+    "CARGO_DISCREPANCY": "Cargo discrepancy",
+    "HUB_REJECTED": "Rejected by the hub",
+    "BOOKING_FAILED": "Booking failed",
+    "CUSTOMS_DOCUMENTS_MISSING": "Customs documents missing",
+    "CUSTOMS_HOLD": "Customs hold",
+    "DAMAGED_OR_MISSING": "Damaged or missing",
+    "DELIVERY_FAILED": "Delivery failed",
+    "PRICE_CHANGED": "Price changed",
+    "OTHER": "Other issue"
+  },
+  "exceptionSeverity": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High"
+  },
+  "exceptionStatus": {
+    "OPEN": "Open",
+    "RESOLVED": "Resolved"
+  },
+  "eventSource": {
+    "STAFF": "Staff",
+    "CARRIER": "Carrier",
+    "INTEGRATION": "Automatic feed"
   }
 }

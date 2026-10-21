@@ -114,6 +114,8 @@ export interface OrderPhoto {
   id: string;
   url: string;
   originalName: string | null;
+  /** GOODS: the goods themselves; PROOF_OF_DELIVERY: the handover, from the carrier. */
+  kind: "GOODS" | "PROOF_OF_DELIVERY";
   createdAt: string;
 }
 
@@ -194,8 +196,90 @@ export interface Order {
   customs?: Pick<CustomsCase, "responsibility" | "status" | "documentsNote"> | null;
   /** Admin view only: every version sent, latest first. */
   customerQuotes?: CustomerQuote[];
+  /** Estimated arrival window; the original is the first one ever given. */
+  etaFrom: string | null;
+  etaTo: string | null;
+  originalEtaFrom: string | null;
+  originalEtaTo: string | null;
+  /** Newest first. */
+  shipmentEvents: ShipmentEvent[];
+  /** Newest first. */
+  exceptions: OrderException[];
   createdAt: string;
   updatedAt: string;
+}
+
+export const MILESTONES = [
+  "PICKUP_SCHEDULED",
+  "PICKUP_COMPLETED",
+  "ORIGIN_HUB_RECEIVED",
+  "INSPECTION_COMPLETED",
+  "DISPATCHED",
+  "BORDER_PROCESSING",
+  "CUSTOMS_DOCUMENTS_REQUIRED",
+  "CUSTOMS_CLEARANCE_STARTED",
+  "CUSTOMS_CLEARED",
+  "DELAY_REPORTED",
+  "ETA_REVISED",
+  "DESTINATION_HUB_RECEIVED",
+  "OUT_FOR_DELIVERY",
+  "DELIVERY_ATTEMPT_FAILED",
+  "RETURN_STARTED",
+] as const;
+export type Milestone = (typeof MILESTONES)[number];
+
+export interface ShipmentEvent {
+  id: string;
+  milestone: Milestone;
+  source: "STAFF" | "CARRIER" | "INTEGRATION";
+  occurredAt: string;
+  recordedAt: string;
+  city: string | null;
+  customerNote: string | null;
+  internalNote: string | null;
+  reason: string | null;
+  etaFrom: string | null;
+  etaTo: string | null;
+  externalRef: string | null;
+}
+
+export const EXCEPTION_TYPES = [
+  "DELAY",
+  "STALE_TRACKING",
+  "PICKUP_FAILED",
+  "CARGO_DISCREPANCY",
+  "HUB_REJECTED",
+  "BOOKING_FAILED",
+  "CUSTOMS_DOCUMENTS_MISSING",
+  "CUSTOMS_HOLD",
+  "DAMAGED_OR_MISSING",
+  "DELIVERY_FAILED",
+  "PRICE_CHANGED",
+  "OTHER",
+] as const;
+export type ExceptionType = (typeof EXCEPTION_TYPES)[number];
+export type ExceptionSeverity = "LOW" | "MEDIUM" | "HIGH";
+
+/** Carriers get the working fields only (no owner, impact or resolution notes). */
+export interface OrderException {
+  id: string;
+  type: ExceptionType;
+  severity: ExceptionSeverity;
+  status: "OPEN" | "RESOLVED";
+  summary: string;
+  nextAction: string | null;
+  dueAt: string | null;
+  createdAt: string;
+  resolvedAt: string | null;
+  customerImpact?: string | null;
+  ownerUserId?: string | null;
+  resolution?: string | null;
+}
+
+/** GET /exceptions: the hub's exceptions with their order. */
+export interface HubException extends OrderException {
+  order: { id: string; reference: string; status: OrderStatus; customerName: string; destinationCity: string; productName: string };
+  owner: { id: string; name: string } | null;
 }
 
 export const HANDLING_FLAGS = ["BATTERY", "LIQUID", "TEMPERATURE_SENSITIVE", "FRAGILE", "MEDICAL_DEVICE", "DANGEROUS_GOODS"] as const;
@@ -525,6 +609,14 @@ export interface PublicQuote {
     provisional: boolean;
     validUntil: string;
   } | null;
+  /** Milestones that concern the customer, newest first. */
+  events: { id: string; milestone: Milestone; occurredAt: string; city: string | null; customerNote: string | null; reason: string | null }[];
+  /** An estimate. */
+  eta: { from: string | null; to: string | null } | null;
+  /** The latest confirmed news (status, milestone or position). */
+  lastUpdateAt: string | null;
+  /** Proof-of-delivery photos, once delivered. */
+  proofOfDelivery: { id: string }[];
 }
 
 // ---- Product discovery (apps/api/src/modules/discovery)

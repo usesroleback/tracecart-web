@@ -137,5 +137,50 @@
     "missingData": "{component} : il manque {field}.",
     "missingWeight": "{component} : il manque le poids.",
     "cargoUnmeasured": "Colis et poids pas encore mesurés."
+  },
+  "milestone": {
+    "PICKUP_SCHEDULED": "Enlèvement programmé",
+    "PICKUP_COMPLETED": "Marchandise enlevée",
+    "ORIGIN_HUB_RECEIVED": "Reçu au hub de départ",
+    "INSPECTION_COMPLETED": "Contrôle effectué",
+    "DISPATCHED": "Expédié",
+    "BORDER_PROCESSING": "Passage de frontière",
+    "CUSTOMS_DOCUMENTS_REQUIRED": "Documents de douane requis",
+    "CUSTOMS_CLEARANCE_STARTED": "Dédouanement en cours",
+    "CUSTOMS_CLEARED": "Dédouané",
+    "DELAY_REPORTED": "Retard",
+    "ETA_REVISED": "Nouvelle date d'arrivée estimée",
+    "DESTINATION_HUB_RECEIVED": "Reçu au hub d'arrivée",
+    "OUT_FOR_DELIVERY": "En cours de livraison",
+    "DELIVERY_ATTEMPT_FAILED": "Livraison non aboutie",
+    "RETURN_STARTED": "Retour engagé"
+  },
+  "exceptionType": {
+    "DELAY": "Retard",
+    "STALE_TRACKING": "Suivi sans nouvelles",
+    "PICKUP_FAILED": "Enlèvement échoué",
+    "CARGO_DISCREPANCY": "Écart sur la marchandise",
+    "HUB_REJECTED": "Refusé par le hub",
+    "BOOKING_FAILED": "Réservation échouée",
+    "CUSTOMS_DOCUMENTS_MISSING": "Documents de douane manquants",
+    "CUSTOMS_HOLD": "Blocage en douane",
+    "DAMAGED_OR_MISSING": "Endommagé ou manquant",
+    "DELIVERY_FAILED": "Livraison échouée",
+    "PRICE_CHANGED": "Prix modifié",
+    "OTHER": "Autre incident"
+  },
+  "exceptionSeverity": {
+    "LOW": "Faible",
+    "MEDIUM": "Moyenne",
+    "HIGH": "Élevée"
+  },
+  "exceptionStatus": {
+    "OPEN": "Ouvert",
+    "RESOLVED": "Résolu"
+  },
+  "eventSource": {
+    "STAFF": "Équipe",
+    "CARRIER": "Transporteur",
+    "INTEGRATION": "Flux automatique"
   }
 }

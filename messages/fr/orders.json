@@ -321,5 +321,67 @@
     "validUntil": "Valable jusqu'au {when}",
     "notes": "Hypothèses et exclusions",
     "caption": "Lignes du devis"
+  },
+  "tracking": {
+    "title": "Suivi de l'expédition",
+    "empty": "Aucun événement enregistré.",
+    "eta": "Arrivée estimée",
+    "etaRange": "du {from} au {to}",
+    "originalEta": "Première estimation : {window}",
+    "noEta": "Pas encore d'estimation",
+    "record": "Enregistrer un événement",
+    "milestone": "Événement",
+    "occurredAt": "Survenu le",
+    "city": "Lieu",
+    "reason": "Motif (vu par le client)",
+    "customerNote": "Message pour le client",
+    "internalNote": "Note interne",
+    "etaFrom": "Nouvelle arrivée, au plus tôt",
+    "etaTo": "au plus tard",
+    "externalRef": "Référence transporteur",
+    "save": "Enregistrer",
+    "saved": "Événement enregistré.",
+    "customerSees": "Le client est prévenu.",
+    "internalOnly": "Interne : le client n'est pas prévenu.",
+    "by": "{source} · {when}",
+    "proof": {
+      "title": "Preuve de livraison",
+      "add": "Ajouter des photos de la remise",
+      "uploading": "Envoi…",
+      "none": "Pas encore de preuve de livraison."
+    }
+  },
+  "exceptions": {
+    "title": "Incidents",
+    "none": "Aucun incident.",
+    "open": "Signaler un incident",
+    "type": "Type",
+    "severity": "Gravité",
+    "summary": "Ce qui se passe",
+    "customerImpact": "Conséquence pour le client",
+    "nextAction": "Prochaine action",
+    "dueAt": "À traiter avant le",
+    "resolve": "Résoudre",
+    "resolution": "Comment c'est réglé",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "resolvedOn": "Résolu le {when}",
+    "openedOn": "Ouvert le {when}"
+  },
+  "exceptionsPage": {
+    "title": "Incidents",
+    "subtitle": "Les problèmes en cours sur les commandes du hub : chacun a un responsable et une prochaine action jusqu'à ce qu'il soit résolu.",
+    "showResolved": "Voir les incidents résolus",
+    "empty": "Aucun incident ouvert.",
+    "caption": "Incidents du hub",
+    "col": {
+      "order": "Commande",
+      "issue": "Incident",
+      "next": "Prochaine action",
+      "owner": "Responsable",
+      "age": "Depuis"
+    },
+    "nobody": "Personne",
+    "declined": "Commandes refusées ou indisponibles"
   }
 }
