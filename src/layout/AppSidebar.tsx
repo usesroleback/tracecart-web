@@ -13,6 +13,7 @@ import {
   DsAlertIcon,
   DsBookmarkIcon,
   DsBuildingIcon,
+  DsCoinIcon,
   DsChatIcon,
   DsHomeIcon,
   DsHubIcon,
@@ -59,7 +60,13 @@ const ADMIN_NAV: NavGroup[] = [
       { icon: <DsBuildingIcon />, name: "stores", path: "/stores" },
     ],
   },
-  { title: "network", items: [{ icon: <DsHubIcon />, name: "hub", path: "/hub-setup" }] },
+  {
+    title: "network",
+    items: [
+      { icon: <DsHubIcon />, name: "hub", path: "/hub-setup" },
+      { icon: <DsCoinIcon />, name: "pricing", path: "/pricing" },
+    ],
+  },
 ];
 
 // Two entries: the steps (à coter, à gérer, en route…) are tabs on Livraisons.

@@ -7,6 +7,7 @@ const NAMESPACES = [
   'auth',
   'dashboard',
   'orders',
+  'pricing',
   'products',
   'stores',
   'hubSetup',

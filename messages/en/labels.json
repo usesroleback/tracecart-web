@@ -51,5 +51,91 @@
   },
   "unassigned": "Unassigned",
   "orderCount": "{count, plural, one {# order} other {# orders}}",
-  "parcelCount": "{count, plural, one {# parcel} other {# parcels}}"
+  "parcelCount": "{count, plural, one {# parcel} other {# parcels}}",
+  "handlingFlag": {
+    "BATTERY": "Batteries",
+    "LIQUID": "Liquids",
+    "TEMPERATURE_SENSITIVE": "Temperature-sensitive",
+    "FRAGILE": "Fragile",
+    "MEDICAL_DEVICE": "Medical device",
+    "DANGEROUS_GOODS": "Dangerous goods"
+  },
+  "addressKind": {
+    "PICKUP": "Pickup",
+    "SUPPLIER_ORIGIN": "Supplier origin",
+    "DELIVERY": "Delivery",
+    "BILLING": "Billing"
+  },
+  "customsResponsibility": {
+    "UNKNOWN": "Not assessed yet",
+    "TRACECART_COORDINATES": "TraceCart coordinates",
+    "CUSTOMER_HANDLES": "The customer handles it",
+    "ALREADY_CLEARED": "Already cleared"
+  },
+  "customsStatus": {
+    "NOT_STARTED": "Not started",
+    "DOCUMENTS_REQUIRED": "Documents required",
+    "IN_PROGRESS": "In progress",
+    "HELD": "Held",
+    "CLEARED": "Cleared",
+    "NOT_APPLICABLE": "Not applicable"
+  },
+  "compliance": {
+    "NOT_REQUIRED": "No review needed",
+    "REVIEW_REQUIRED": "Compliance review needed",
+    "APPROVED": "Compliance approved",
+    "BLOCKED": "Blocked by compliance"
+  },
+  "priceComponent": {
+    "PRODUCT": "Product",
+    "TRANSPORT": "Transport (carrier)",
+    "PLATFORM_FEE": "TraceCart fee (purchase)",
+    "CUSTOMS_DUTIES": "Customs duties and taxes",
+    "CUSTOMS_BROKER": "Customs broker charges",
+    "SERVICE": "Goods and delivery",
+    "PICKUP": "Pickup",
+    "HUB_HANDLING": "Hub handling",
+    "STORAGE": "Storage",
+    "INSURANCE": "Insurance",
+    "FINAL_MILE": "Final-mile delivery",
+    "SPECIAL_HANDLING": "Special handling",
+    "LOGISTICS_COORDINATION_FEE": "Logistics coordination fee",
+    "CUSTOMS_COORDINATION_FEE": "Customs coordination fee"
+  },
+  "priceMethod": {
+    "FIXED": "Fixed",
+    "PER_UNIT": "Per unit",
+    "PER_PACKAGE": "Per package",
+    "PER_KG": "Per kg",
+    "PERCENT_OF_PRODUCT": "% of product",
+    "PERCENT_OF_DECLARED_VALUE": "% of declared value"
+  },
+  "basis": {
+    "CONFIRMED": "Confirmed",
+    "ESTIMATED": "Estimated"
+  },
+  "quoteStatus": {
+    "SENT": "Sent",
+    "ACCEPTED": "Accepted",
+    "DECLINED": "Declined",
+    "SUPERSEDED": "Superseded",
+    "EXPIRED": "Expired"
+  },
+  "cargoField": {
+    "packageCount": "the number of packages",
+    "grossWeightKg": "the weight",
+    "declaredValue": "the declared value",
+    "declaredValueCurrency": "a declared value in the quote's currency"
+  },
+  "quoteNote": {
+    "customsNotIncluded": "Customs duties and taxes are not included.",
+    "customsByCustomer": "The customer handles customs: no coordination fee, duties paid directly.",
+    "customsAlreadyCleared": "Goods already cleared: no customs coordination fee.",
+    "customsNotEstimated": "Customs duties not estimated yet.",
+    "customsCurrency": "Customs figures in {currency} aren't converted: left out.",
+    "ruleCurrency": "{component}: rate in {currency} isn't converted, left out.",
+    "missingData": "{component}: needs {field}.",
+    "missingWeight": "{component}: needs the weight.",
+    "cargoUnmeasured": "Packages and weight not measured yet."
+  }
 }

@@ -12,11 +12,15 @@ import { Alert } from "@/components/ui/alert/Alert";
 import { Status, orderStatusState } from "@/components/ui/status/Status";
 import { RouteTimeline, orderRouteSteps } from "@/components/tracecart/RouteTimeline";
 import { useFormat } from "@/lib/format";
+import { useQuoteNote } from "@/lib/quoteNotes";
 import { PublicQuote } from "@/lib/types";
 
-/** status 0 = the request never got a response (offline, DNS, CORS). */
+/** status 0 = the request never got a response (offline, DNS, CORS); code is the API's error code. */
 class RequestError extends Error {
-  constructor(public status: number) {
+  constructor(
+    public status: number,
+    public code?: string,
+  ) {
     super(`Request failed (${status})`);
   }
 }
@@ -31,7 +35,10 @@ async function publicRequest<T>(path: string, init?: RequestInit): Promise<T> {
   } catch {
     throw new RequestError(0);
   }
-  if (!res.ok) throw new RequestError(res.status);
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new RequestError(res.status, body?.error?.code);
+  }
   return (await res.json()) as T;
 }
 
@@ -90,7 +97,10 @@ export default function PublicQuotePage() {
       if (decision === "accept") setAccepted(true);
       await refresh();
     } catch (err) {
-      if (err instanceof RequestError && err.status === 409) {
+      if (err instanceof RequestError && err.code === "QUOTE_EXPIRED") {
+        setNotice(t("errors.expired"));
+        await refresh();
+      } else if (err instanceof RequestError && err.status === 409) {
         setNotice(t("errors.alreadyAnswered"));
         await refresh();
       } else if (err instanceof RequestError && err.status === 429) {
@@ -240,6 +250,7 @@ function QuoteDetails({
   const t = useTranslations("quote");
   // From this visit's click, or recorded earlier (after a reload or a second visit).
   const isAccepted = quote.status === "QUOTE_SENT" && (accepted || quote.quoteAcceptedAt != null);
+  const expired = quote.status === "QUOTE_SENT" && !isAccepted && quote.quote?.status === "EXPIRED";
 
   return (
     <div>
@@ -256,7 +267,9 @@ function QuoteDetails({
         </p>
       </div>
 
-      {quote.customerQuoteTotal != null && (
+      {quote.quote ? (
+        <Breakdown quote={quote.quote} />
+      ) : quote.customerQuoteTotal != null && (
         <div className="mt-4 flex items-baseline justify-between gap-3 rounded-[var(--radius-s)] bg-surface-sunken px-4 py-3">
           <span className="text-sm text-ink-muted">{t("total")}</span>
           <span className="text-xl font-semibold tabular-nums text-ink">
@@ -278,7 +291,11 @@ function QuoteDetails({
         </p>
       )}
 
-      {quote.status === "QUOTE_SENT" && !isAccepted && (
+      {expired && (
+        <p className="mt-4 rounded-[var(--radius-s)] bg-critical-soft px-3 py-2 text-sm text-critical">{t("breakdown.expired")}</p>
+      )}
+
+      {quote.status === "QUOTE_SENT" && !isAccepted && !expired && (
         <div className="mt-5 flex gap-2">
           <Button variant="secondary" block onClick={() => onDecide("decline")} disabled={deciding}>
             {t("decline")}
@@ -292,6 +309,55 @@ function QuoteDetails({
       {quote.status === "PAID" && <p className="mt-4 text-sm text-positive">{t("paid")}</p>}
 
       {quote.status === "DECLINED" && <p className="mt-4 text-sm text-ink-muted">{t("declined")}</p>}
+    </div>
+  );
+}
+
+/**
+ * The quote version as the customer sees it: their delivered price, customs
+ * pass-through costs apart, what is still an estimate, what the price leaves
+ * out, and until when it holds. Never the cost/fee split behind it.
+ */
+function Breakdown({ quote }: { quote: NonNullable<PublicQuote["quote"]> }) {
+  const t = useTranslations("quote");
+  const tl = useTranslations("labels");
+  const f = useFormat();
+  const noteText = useQuoteNote();
+  return (
+    <div className="mt-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-2 text-[13px] text-ink-muted">
+        <span>{t("breakdown.version", { version: quote.version })}</span>
+        <span>{t("breakdown.validUntil", { when: f.date(quote.validUntil) })}</span>
+      </div>
+      <table className="mt-2 w-full border-separate border-spacing-0 text-sm leading-5">
+        <caption className="sr-only">{t("breakdown.title")}</caption>
+        <tbody>
+          {quote.lines.map((l) => (
+            <tr key={l.component}>
+              <th scope="row" className="border-b border-line py-2 pr-3 text-left font-normal text-ink-muted">
+                {tl(`priceComponent.${l.component}`)}
+                {l.basis === "ESTIMATED" && <span className="ml-1 text-xs">({t("breakdown.estimated")})</span>}
+              </th>
+              <td className="border-b border-line py-2 text-right tabular-nums">{f.money(l.amount, quote.currency)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="mt-2 flex items-baseline justify-between gap-3 rounded-[var(--radius-s)] bg-surface-sunken px-4 py-3">
+        <span className="text-sm text-ink-muted">{t("total")}</span>
+        <span className="text-xl font-semibold tabular-nums text-ink">{f.money(quote.total, quote.currency)}</span>
+      </div>
+      {quote.provisional && <p className="mt-2 text-[13px] text-attn">{t("breakdown.provisional")}</p>}
+      {quote.notes.length > 0 && (
+        <div className="mt-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.04em] text-ink-muted">{t("breakdown.notes")}</p>
+          <ul className="mt-1 list-disc space-y-0.5 pl-5 text-[13px] text-ink-muted">
+            {quote.notes.map((n, i) => (
+              <li key={i}>{noteText(n)}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

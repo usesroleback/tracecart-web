@@ -27,7 +27,8 @@
     "rateLimited": "Too many attempts. Please wait a minute and try again.",
     "unavailable": "We can't show your quote right now. Check your connection and try again.",
     "alreadyAnswered": "This quote has already been answered. Here is its current status.",
-    "decisionFailed": "Your answer couldn't be saved. Please try again."
+    "decisionFailed": "Your answer couldn't be saved. Please try again.",
+    "expired": "This quote has expired: prices may have changed. Contact us for a new one."
   },
   "tracking": {
     "updated": "Updated {when}",
@@ -38,5 +39,14 @@
     "deliveredOn": "On {when}.",
     "unavailable": "This item is no longer available from the seller.",
     "contact": "A TraceCart operator will contact you about what happens next."
+  },
+  "breakdown": {
+    "title": "Your quote",
+    "version": "Version {version}",
+    "validUntil": "Valid until {when}",
+    "provisional": "Some amounts are estimates: we'll confirm the final amount before committing to it.",
+    "estimated": "estimate",
+    "notes": "Good to know",
+    "expired": "This quote has expired. Contact us for a new one."
   }
 }

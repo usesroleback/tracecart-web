@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "title": "Tarifs"
+  },
+  "title": "Règles de prix",
+  "intro": "Chaque ligne d'un devis vient d'une règle. Pour un même poste, une seule règle s'applique : la plus prioritaire, puis la plus précise, puis la plus récente. Modifier une règle crée une nouvelle version ; les devis déjà envoyés gardent la leur.",
+  "new": "Nouvelle règle",
+  "showHistory": "Voir toutes les versions",
+  "empty": "Aucune règle. Sans règle, un devis reprend le produit, la cotation du transporteur et les frais TraceCart.",
+  "caption": "Règles de prix",
+  "col": {
+    "rule": "Règle",
+    "component": "Poste",
+    "rate": "Tarif",
+    "when": "S'applique si",
+    "version": "Version",
+    "actions": "Actions"
+  },
+  "always": "Toujours",
+  "inactive": "Inactive",
+  "priority": "Priorité {priority}",
+  "edit": "Modifier",
+  "deactivate": "Désactiver",
+  "save": "Enregistrer",
+  "saveVersion": "Enregistrer la version {version}",
+  "cancel": "Annuler",
+  "failed": "Enregistrement impossible.",
+  "field": {
+    "code": "Code",
+    "codeHint": "En majuscules, ex. ENLEVEMENT-ABJ",
+    "component": "Poste",
+    "method": "Calcul",
+    "amount": "Montant ou taux",
+    "currency": "Devise",
+    "minAmount": "Minimum",
+    "maxAmount": "Maximum",
+    "priority": "Priorité",
+    "destinationCountry": "Pays de destination",
+    "intakeType": "Type de commande",
+    "handlingFlag": "Particularité",
+    "productCategory": "Catégorie",
+    "weight": "Poids (kg)",
+    "quantity": "Quantité",
+    "rateSource": "Source du tarif",
+    "description": "Description interne",
+    "any": "Tous"
+  },
+  "cond": {
+    "country": "vers {country}",
+    "weight": "{min}–{max} kg",
+    "quantity": "{min}–{max} unités"
+  },
+  "intake": {
+    "BUY_ON_BEHALF": "Achat pour le client",
+    "CUSTOMER_OWNED": "Transport seul"
+  },
+  "source": "Source : {source}"
+}

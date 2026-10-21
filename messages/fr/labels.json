@@ -51,5 +51,91 @@
   },
   "unassigned": "Non assigné",
   "orderCount": "{count, plural, one {# commande} other {# commandes}}",
-  "parcelCount": "{count, plural, one {# colis} other {# colis}}"
+  "parcelCount": "{count, plural, one {# colis} other {# colis}}",
+  "handlingFlag": {
+    "BATTERY": "Batteries",
+    "LIQUID": "Liquides",
+    "TEMPERATURE_SENSITIVE": "Sensible à la température",
+    "FRAGILE": "Fragile",
+    "MEDICAL_DEVICE": "Dispositif médical",
+    "DANGEROUS_GOODS": "Marchandises dangereuses"
+  },
+  "addressKind": {
+    "PICKUP": "Enlèvement",
+    "SUPPLIER_ORIGIN": "Origine fournisseur",
+    "DELIVERY": "Livraison",
+    "BILLING": "Facturation"
+  },
+  "customsResponsibility": {
+    "UNKNOWN": "Pas encore évaluée",
+    "TRACECART_COORDINATES": "TraceCart coordonne",
+    "CUSTOMER_HANDLES": "Le client s'en charge",
+    "ALREADY_CLEARED": "Déjà dédouané"
+  },
+  "customsStatus": {
+    "NOT_STARTED": "Pas commencée",
+    "DOCUMENTS_REQUIRED": "Documents requis",
+    "IN_PROGRESS": "En cours",
+    "HELD": "Bloquée",
+    "CLEARED": "Dédouané",
+    "NOT_APPLICABLE": "Sans objet"
+  },
+  "compliance": {
+    "NOT_REQUIRED": "Aucun contrôle requis",
+    "REVIEW_REQUIRED": "Contrôle de conformité requis",
+    "APPROVED": "Conformité validée",
+    "BLOCKED": "Bloqué par la conformité"
+  },
+  "priceComponent": {
+    "PRODUCT": "Produit",
+    "TRANSPORT": "Transport (transporteur)",
+    "PLATFORM_FEE": "Frais TraceCart (achat)",
+    "CUSTOMS_DUTIES": "Droits et taxes de douane",
+    "CUSTOMS_BROKER": "Frais de transitaire en douane",
+    "SERVICE": "Produit et livraison",
+    "PICKUP": "Enlèvement",
+    "HUB_HANDLING": "Manutention au hub",
+    "STORAGE": "Stockage",
+    "INSURANCE": "Assurance",
+    "FINAL_MILE": "Livraison finale",
+    "SPECIAL_HANDLING": "Manutention spéciale",
+    "LOGISTICS_COORDINATION_FEE": "Frais de coordination logistique",
+    "CUSTOMS_COORDINATION_FEE": "Frais de coordination douane"
+  },
+  "priceMethod": {
+    "FIXED": "Forfait",
+    "PER_UNIT": "Par unité",
+    "PER_PACKAGE": "Par colis",
+    "PER_KG": "Par kg",
+    "PERCENT_OF_PRODUCT": "% du produit",
+    "PERCENT_OF_DECLARED_VALUE": "% de la valeur déclarée"
+  },
+  "basis": {
+    "CONFIRMED": "Confirmé",
+    "ESTIMATED": "Estimé"
+  },
+  "quoteStatus": {
+    "SENT": "Envoyé",
+    "ACCEPTED": "Accepté",
+    "DECLINED": "Refusé",
+    "SUPERSEDED": "Remplacé",
+    "EXPIRED": "Expiré"
+  },
+  "cargoField": {
+    "packageCount": "le nombre de colis",
+    "grossWeightKg": "le poids",
+    "declaredValue": "la valeur déclarée",
+    "declaredValueCurrency": "une valeur déclarée dans la devise du devis"
+  },
+  "quoteNote": {
+    "customsNotIncluded": "Droits et taxes de douane non inclus.",
+    "customsByCustomer": "Le client s'occupe de la douane : pas de frais de coordination, droits payés directement.",
+    "customsAlreadyCleared": "Marchandises déjà dédouanées : pas de frais de coordination douane.",
+    "customsNotEstimated": "Droits de douane pas encore estimés.",
+    "customsCurrency": "Montants de douane en {currency} non convertis : laissés de côté.",
+    "ruleCurrency": "{component} : tarif en {currency} non converti, laissé de côté.",
+    "missingData": "{component} : il manque {field}.",
+    "missingWeight": "{component} : il manque le poids.",
+    "cargoUnmeasured": "Colis et poids pas encore mesurés."
+  }
 }

@@ -27,7 +27,8 @@
     "rateLimited": "Trop de tentatives. Patientez une minute, puis réessayez.",
     "unavailable": "Impossible d'afficher votre devis pour le moment. Vérifiez votre connexion et réessayez.",
     "alreadyAnswered": "Ce devis a déjà reçu une réponse. Voici son état actuel.",
-    "decisionFailed": "Votre réponse n'a pas pu être enregistrée. Réessayez."
+    "decisionFailed": "Votre réponse n'a pas pu être enregistrée. Réessayez.",
+    "expired": "Ce devis a expiré : les prix ont pu changer. Contactez-nous pour en recevoir un nouveau."
   },
   "tracking": {
     "updated": "Mis à jour {when}",
@@ -38,5 +39,14 @@
     "deliveredOn": "Le {when}.",
     "unavailable": "Cet article n'est plus disponible chez le revendeur.",
     "contact": "Un opérateur TraceCart vous contactera pour la suite."
+  },
+  "breakdown": {
+    "title": "Votre devis",
+    "version": "Version {version}",
+    "validUntil": "Valable jusqu'au {when}",
+    "provisional": "Certains montants sont estimés : nous vous confirmerons le montant final avant de l'engager.",
+    "estimated": "estimé",
+    "notes": "Bon à savoir",
+    "expired": "Ce devis a expiré. Contactez-nous pour en recevoir un nouveau."
   }
 }

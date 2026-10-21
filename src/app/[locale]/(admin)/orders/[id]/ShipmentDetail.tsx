@@ -8,6 +8,8 @@ import { useSession } from "@/context/SessionContext";
 import { OrderAdminPanel } from "@/components/tracecart/OrderAdminPanel";
 import { OrderPartnerPanel } from "@/components/tracecart/OrderPartnerPanel";
 import { LocationTimeline } from "@/components/tracecart/LocationTimeline";
+import { ShipmentFile } from "@/components/tracecart/ShipmentFile";
+import { QuoteBreakdown } from "@/components/tracecart/QuoteBreakdown";
 import { RouteTimeline, orderRouteSteps } from "@/components/tracecart/RouteTimeline";
 import { Alert } from "@/components/ui/alert/Alert";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -189,6 +191,8 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
             </Card>
           </div>
 
+          <ShipmentFile order={order} isAdmin={isAdmin} onChanged={refresh} />
+
           <Card padding={24}>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="rb-title">{td("payment")}</h2>
@@ -228,6 +232,8 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
               </tbody>
             </table>
           </Card>
+
+          {isAdmin && <QuoteBreakdown order={order} />}
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card padding={24}>

@@ -35,7 +35,8 @@
     "stores": "Boutiques",
     "hub": "Mon hub",
     "deliveries": "Livraisons",
-    "label": "Navigation principale"
+    "label": "Navigation principale",
+    "pricing": "Tarifs"
   },
   "notifications": {
     "title": "Notifications",

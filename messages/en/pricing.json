@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "title": "Pricing"
+  },
+  "title": "Pricing rules",
+  "intro": "Each line of a quote comes from a rule. For one component, only one rule applies: the highest priority, then the most specific, then the latest. Changing a rule creates a new version; quotes already sent keep theirs.",
+  "new": "New rule",
+  "showHistory": "Show every version",
+  "empty": "No rules yet. Without rules, a quote is the product, the carrier's quote and the TraceCart fee.",
+  "caption": "Pricing rules",
+  "col": {
+    "rule": "Rule",
+    "component": "Component",
+    "rate": "Rate",
+    "when": "Applies when",
+    "version": "Version",
+    "actions": "Actions"
+  },
+  "always": "Always",
+  "inactive": "Inactive",
+  "priority": "Priority {priority}",
+  "edit": "Change",
+  "deactivate": "Deactivate",
+  "save": "Save",
+  "saveVersion": "Save version {version}",
+  "cancel": "Cancel",
+  "failed": "Couldn't save.",
+  "field": {
+    "code": "Code",
+    "codeHint": "Capitals, e.g. PICKUP-ABJ",
+    "component": "Component",
+    "method": "Calculation",
+    "amount": "Amount or rate",
+    "currency": "Currency",
+    "minAmount": "Minimum",
+    "maxAmount": "Maximum",
+    "priority": "Priority",
+    "destinationCountry": "Destination country",
+    "intakeType": "Order type",
+    "handlingFlag": "Handling",
+    "productCategory": "Category",
+    "weight": "Weight (kg)",
+    "quantity": "Quantity",
+    "rateSource": "Rate source",
+    "description": "Internal description",
+    "any": "Any"
+  },
+  "cond": {
+    "country": "to {country}",
+    "weight": "{min}–{max} kg",
+    "quantity": "{min}–{max} units"
+  },
+  "intake": {
+    "BUY_ON_BEHALF": "Purchase for the customer",
+    "CUSTOMER_OWNED": "Transport only"
+  },
+  "source": "Source: {source}"
+}

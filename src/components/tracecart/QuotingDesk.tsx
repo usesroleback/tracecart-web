@@ -37,16 +37,7 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
 
   const isCustomerOwned = order.intakeType === "CUSTOMER_OWNED";
   const quote = order.logisticsQuote;
-  // CUSTOMER_OWNED has no productCost to wait on — the logistics quote alone
-  // is enough to preview a total (the platform fee, if any, is a flat
-  // handling charge on top rather than a percentage of a product cost).
-  const total = quote
-    ? isCustomerOwned
-      ? Number(quote.amount) + (platformFee ? Number(platformFee) : 0)
-      : productCost
-        ? Number(productCost) + Number(quote.amount) + (platformFee ? Number(platformFee) : Math.round(Number(productCost) * 0.12))
-        : null
-    : null;
+  // The total it would be sent at, line by line, is the "Customer quote" card (QuoteBreakdown).
 
   return (
     <div className="space-y-4">
@@ -147,15 +138,6 @@ export function QuotingDesk({ order, onChanged }: { order: Order; onChanged: () 
           {t("desk.saveFee")}
         </Button>
       </div>
-
-      {total != null && order.status === "QUOTED" && (
-        <div className="rounded-[var(--radius-s)] bg-surface-sunken p-3 text-sm">
-          <div className="flex justify-between">
-            <span className="text-ink-muted">{t("desk.estimatedTotal")}</span>
-            <span className="font-semibold tabular-nums text-ink">{f.money(total, currency)}</span>
-          </div>
-        </div>
-      )}
 
       {order.status === "QUOTED" && (
         <Button

@@ -170,8 +170,155 @@ export interface Order {
   logisticsQuote: LogisticsQuote | null;
   photos: OrderPhoto[];
   locationUpdates: LocationUpdate[];
+  // Shipment details (docs/design/concepts-and-domain-model.md). Decimals arrive as strings.
+  productCategory: string | null;
+  packageCount: number | null;
+  lengthCm: string | null;
+  widthCm: string | null;
+  heightCm: string | null;
+  grossWeightKg: string | null;
+  /** Admin view only. */
+  declaredValue?: string | null;
+  declaredValueCurrency?: string | null;
+  handlingFlags: HandlingFlag[];
+  readyAt: string | null;
+  requiredBy: string | null;
+  requiredByIsHard: boolean;
+  complianceStatus: ComplianceStatus;
+  complianceNote?: string | null;
+  /** Carriers get every address but the billing one. */
+  addresses: OrderAddress[];
+  /** Admin view: the whole customs case. */
+  customsCase?: CustomsCase | null;
+  /** Carrier view: who handles customs and where it stands, no amounts. */
+  customs?: Pick<CustomsCase, "responsibility" | "status" | "documentsNote"> | null;
+  /** Admin view only: every version sent, latest first. */
+  customerQuotes?: CustomerQuote[];
   createdAt: string;
   updatedAt: string;
+}
+
+export const HANDLING_FLAGS = ["BATTERY", "LIQUID", "TEMPERATURE_SENSITIVE", "FRAGILE", "MEDICAL_DEVICE", "DANGEROUS_GOODS"] as const;
+export type HandlingFlag = (typeof HANDLING_FLAGS)[number];
+export type ComplianceStatus = "NOT_REQUIRED" | "REVIEW_REQUIRED" | "APPROVED" | "BLOCKED";
+
+export const ADDRESS_KINDS = ["PICKUP", "SUPPLIER_ORIGIN", "DELIVERY", "BILLING"] as const;
+export type AddressKind = (typeof ADDRESS_KINDS)[number];
+
+export interface OrderAddress {
+  id: string;
+  kind: AddressKind;
+  contactName: string | null;
+  phone: string | null;
+  line1: string;
+  line2: string | null;
+  city: string;
+  region: string | null;
+  postalCode: string | null;
+  country: string;
+  notes: string | null;
+}
+
+export const CUSTOMS_RESPONSIBILITIES = ["UNKNOWN", "TRACECART_COORDINATES", "CUSTOMER_HANDLES", "ALREADY_CLEARED"] as const;
+export type CustomsResponsibility = (typeof CUSTOMS_RESPONSIBILITIES)[number];
+export const CUSTOMS_STATUSES = ["NOT_STARTED", "DOCUMENTS_REQUIRED", "IN_PROGRESS", "HELD", "CLEARED", "NOT_APPLICABLE"] as const;
+export type CustomsStatus = (typeof CUSTOMS_STATUSES)[number];
+
+export interface CustomsCase {
+  responsibility: CustomsResponsibility;
+  status: CustomsStatus;
+  currency: string | null;
+  estimatedDuties: string | null;
+  officialAssessment: string | null;
+  brokerFee: string | null;
+  hsCodeProposal: string | null;
+  classificationReviewed: boolean;
+  originCountry: string | null;
+  documentsNote: string | null;
+  notes: string | null;
+}
+
+export const PRICE_COMPONENTS = [
+  "PICKUP",
+  "HUB_HANDLING",
+  "STORAGE",
+  "INSURANCE",
+  "FINAL_MILE",
+  "SPECIAL_HANDLING",
+  "LOGISTICS_COORDINATION_FEE",
+  "CUSTOMS_COORDINATION_FEE",
+] as const;
+export type PriceComponent = (typeof PRICE_COMPONENTS)[number];
+export const PRICE_METHODS = ["FIXED", "PER_UNIT", "PER_PACKAGE", "PER_KG", "PERCENT_OF_PRODUCT", "PERCENT_OF_DECLARED_VALUE"] as const;
+export type PriceMethod = (typeof PRICE_METHODS)[number];
+export type QuoteLineComponent = PriceComponent | "PRODUCT" | "TRANSPORT" | "PLATFORM_FEE" | "CUSTOMS_DUTIES" | "CUSTOMS_BROKER";
+
+/** One line of a priced quote (apps/api modules/pricing/engine.ts). */
+export interface QuoteLine {
+  component: QuoteLineComponent;
+  amount: number;
+  revenue: boolean;
+  basis: "CONFIRMED" | "ESTIMATED";
+  rule?: { id: string; code: string; version: number; method: PriceMethod; rateSource: string | null };
+  description?: string | null;
+}
+
+/** What a quote assumes or leaves out, as a code to put into words. */
+export interface QuoteNote {
+  kind: "assumption" | "exclusion";
+  code: string;
+  params?: Record<string, string | number>;
+}
+
+export interface PricedQuote {
+  lines: QuoteLine[];
+  notes: QuoteNote[];
+  total: number;
+  provisional: boolean;
+  currency: string;
+}
+
+export interface CustomerQuote {
+  id: string;
+  version: number;
+  status: "SENT" | "ACCEPTED" | "DECLINED" | "SUPERSEDED" | "EXPIRED";
+  currency: string;
+  total: number;
+  lineItems: QuoteLine[];
+  notes: QuoteNote[];
+  provisional: boolean;
+  validUntil: string;
+  decidedAt: string | null;
+  createdAt: string;
+}
+
+export interface PricingRule {
+  id: string;
+  code: string;
+  version: number;
+  active: boolean;
+  component: PriceComponent;
+  method: PriceMethod;
+  amount: string;
+  minAmount: string | null;
+  maxAmount: string | null;
+  currency: string;
+  priority: number;
+  hubId: string | null;
+  destinationCountry: string | null;
+  intakeType: IntakeType | null;
+  productCategory: string | null;
+  handlingFlag: HandlingFlag | null;
+  minWeightKg: string | null;
+  maxWeightKg: string | null;
+  minQuantity: number | null;
+  maxQuantity: number | null;
+  effectiveFrom: string;
+  effectiveUntil: string | null;
+  rateSource: string | null;
+  lastVerifiedAt: string | null;
+  description: string | null;
+  createdAt: string;
 }
 
 export interface OrderHistoryEntry {
@@ -366,6 +513,18 @@ export interface PublicQuote {
   history: { fromStatus: OrderStatus | null; toStatus: OrderStatus; createdAt: string }[];
   /** Where the carrier reported the parcel, newest first. */
   positions: { id: string; city: string; recordedAt: string }[];
+  /** The latest quote version, as the customer sees it; null for orders quoted before versions. */
+  quote: {
+    version: number;
+    status: CustomerQuote["status"];
+    total: number;
+    currency: string;
+    /** The delivered price as one line; customs pass-through costs apart. */
+    lines: { component: "SERVICE" | "CUSTOMS_DUTIES" | "CUSTOMS_BROKER"; amount: number; basis: QuoteLine["basis"] }[];
+    notes: QuoteNote[];
+    provisional: boolean;
+    validUntil: string;
+  } | null;
 }
 
 // ---- Product discovery (apps/api/src/modules/discovery)
