@@ -220,7 +220,7 @@ function Inputs({ state, frozen, busy, act }: SectionProps) {
                   type="button"
                   onClick={() => act(`rm-${a.id}`, () => api.delete<DiscoveryState>(`/sourcing-requests/${r.id}/attachments/${a.id}`))}
                   aria-label={t("remove", { name: a.originalName ?? a.kind })}
-                  className="absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-full border border-line bg-surface-raised text-xs text-ink-muted hover:text-ink"
+                  className="absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-[var(--radius-s)] border border-line bg-surface-raised text-xs text-ink-muted hover:text-ink"
                 >
                   ✕
                 </button>

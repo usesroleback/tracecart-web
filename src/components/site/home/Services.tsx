@@ -45,7 +45,7 @@ export function Services() {
               onClick={() => setActive(i)}
               onMouseEnter={() => setActive(i)}
               onKeyDown={(e) => onKey(e, i)}
-              className={`flex items-baseline gap-4 rounded-2xl px-4 py-4 text-left text-xl font-medium transition-colors sm:text-2xl ${
+              className={`flex items-baseline gap-4 rounded-[var(--hp-radius-control)] px-4 py-4 text-left text-xl font-medium transition-colors sm:text-2xl ${
                 i === active ? "bg-[var(--hp-dark-raised)] text-[var(--hp-on-dark)]" : "text-[var(--hp-on-dark-muted)] hover:text-[var(--hp-on-dark)]"
               }`}
             >
@@ -56,7 +56,7 @@ export function Services() {
         </div>
 
         <div id="hp-service-panel" role="tabpanel" aria-labelledby={`hp-tab-${key}`}>
-          <ImageSlot key={key} name={`service-${key}`} ratio="4/3" alt={t(`items.${key}.imageAlt`)} tone="dark" className="rounded-[var(--hp-radius-card)]" />
+          <ImageSlot key={key} name={`service-${key}`} ratio="4/3" alt={t(`items.${key}.imageAlt`)} tone="dark" className="rounded-[var(--hp-corner-media)]" />
           <p className="mt-5 text-lg leading-relaxed text-[var(--hp-on-dark)]">{t(`items.${key}.body`)}</p>
         </div>
       </div>

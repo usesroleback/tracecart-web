@@ -21,12 +21,12 @@ export function SelectedWork() {
       <ol className="mt-10 space-y-6">
         {CASES.map((c, i) => (
           <li key={c.key} className="hp-stack__card" style={{ "--hp-stack-index": i } as CSSProperties}>
-            <article className="hp-stack__inner relative overflow-hidden rounded-[var(--hp-radius-card)] bg-[var(--hp-slot)]">
+            <article className="hp-stack__inner relative overflow-hidden rounded-[var(--hp-corner-media)] bg-[var(--hp-slot)]">
               <ImageSlot name={`case-${c.key}`} ratio="2/1" alt={t(`items.${c.key}.imageAlt`)} className="min-h-[240px] w-full [&>span]:absolute [&>span]:left-4 [&>span]:top-4" />
-              <div className="relative m-3 flex flex-col rounded-[20px] bg-[var(--hp-dark)] p-6 text-[var(--hp-on-dark)] lg:absolute lg:inset-y-0 lg:right-0 lg:w-[38%] lg:min-w-[340px]">
+              <div className="relative m-3 flex flex-col rounded-[var(--hp-radius-card)] bg-[var(--hp-dark)] p-6 text-[var(--hp-on-dark)] lg:absolute lg:inset-y-0 lg:right-0 lg:w-[38%] lg:min-w-[340px]">
                 <div className="flex flex-wrap gap-2">
-                  <span className="rounded-full bg-[var(--hp-dark-raised)] px-3 py-1 text-xs">{t(`items.${c.key}.sector`)}</span>
-                  <span className="rounded-full bg-[var(--hp-dark-raised)] px-3 py-1 text-xs">{t(`items.${c.key}.service`)}</span>
+                  <span className="rounded-[var(--hp-radius-chip)] bg-[var(--hp-dark-raised)] px-3 py-1 text-xs">{t(`items.${c.key}.sector`)}</span>
+                  <span className="rounded-[var(--hp-radius-chip)] bg-[var(--hp-dark-raised)] px-3 py-1 text-xs">{t(`items.${c.key}.service`)}</span>
                 </div>
                 <h3 className="mt-5 text-2xl font-semibold tracking-tight">
                   <Placeholder>{t(`items.${c.key}.client`)}</Placeholder>

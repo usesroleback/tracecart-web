@@ -35,13 +35,13 @@ export function BulletChart({
           {format(value)} <span className="text-ink-muted">{t("ofTarget", { target: format(target) })}</span>
         </span>
       </div>
-      <div className="relative h-3 w-full overflow-visible rounded-full bg-surface-sunken">
+      <div className="relative h-3 w-full overflow-visible rounded-[var(--radius-xs)] bg-surface-sunken">
         <div
-          className="h-full rounded-full"
+          className="h-full rounded-[var(--radius-xs)]"
           style={{ width: `${valuePct}%`, backgroundColor: onTarget ? theme.colors.success : theme.colors.brand }}
         />
         <div
-          className="absolute top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-ink"
+          className="absolute top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-[var(--radius-xs)] bg-ink"
           style={{ left: `${targetPct}%` }}
           title={t("target", { target: format(target) })}
         />

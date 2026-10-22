@@ -71,7 +71,7 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
             <h2 className="text-xl font-semibold">{f("stayTitle")}</h2>
             <p className="mt-2 max-w-sm text-sm text-[var(--hp-on-dark-muted)]">{f("stayBody")}</p>
             {/* TODO: no newsletter service yet, so the form stays disabled. */}
-            <form className="mt-5 flex max-w-sm items-center gap-2 rounded-full bg-[var(--hp-dark-raised)] p-1.5 pl-5" aria-describedby="hp-newsletter-soon">
+            <form className="mt-5 flex max-w-sm items-center gap-2 rounded-[var(--hp-radius-control)] bg-[var(--hp-dark-raised)] p-1.5 pl-5" aria-describedby="hp-newsletter-soon">
               <label htmlFor="hp-newsletter" className="sr-only">
                 {f("emailLabel")}
               </label>
@@ -82,7 +82,7 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
                 placeholder={f("emailPlaceholder")}
                 className="min-w-0 flex-1 bg-transparent text-sm text-[var(--hp-on-dark)] placeholder:text-[var(--hp-on-dark-muted)] disabled:cursor-not-allowed"
               />
-              <button type="submit" disabled aria-label={f("subscribe")} className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--hp-primary)] text-[var(--hp-on-primary)] disabled:opacity-60">
+              <button type="submit" disabled aria-label={f("subscribe")} className="grid size-10 shrink-0 place-items-center rounded-[var(--hp-radius-control)] bg-[var(--hp-primary)] text-[var(--hp-on-primary)] disabled:opacity-60">
                 <svg viewBox="0 0 16 16" aria-hidden className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 8h10M9 4l4 4-4 4" />
                 </svg>
@@ -96,8 +96,8 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
               {SOCIALS.map((s) => (
                 <li key={s}>
                   {/* TODO: social profile links. */}
-                  <a href="#" aria-label={s} className="grid size-10 place-items-center rounded-xl bg-[var(--hp-dark-raised)] hover:bg-white/15">
-                    <ImageSlot name={`social-${s}`} alt="" tone="dark" className="size-5 rounded [&>span]:hidden" />
+                  <a href="#" aria-label={s} className="grid size-10 place-items-center rounded-[var(--hp-radius-control)] bg-[var(--hp-dark-raised)] hover:bg-white/15">
+                    <ImageSlot name={`social-${s}`} alt="" tone="dark" className="size-5 rounded-[var(--hp-radius-chip)] [&>span]:hidden" />
                   </a>
                 </li>
               ))}
@@ -144,7 +144,7 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
         <ul aria-label={f("badgesLabel")} className="mt-12 flex flex-wrap gap-3">
           {Array.from({ length: BADGES }, (_, i) => (
             <li key={i}>
-              <ImageSlot name={`badge-${i + 1}`} ratio="2/1" alt={f("badgeAlt")} className="w-28 rounded-xl bg-white [&>span]:text-[9px]" />
+              <ImageSlot name={`badge-${i + 1}`} ratio="2/1" alt={f("badgeAlt")} className="w-28 rounded-[var(--hp-radius-control)] bg-white [&>span]:text-[9px]" />
             </li>
           ))}
         </ul>

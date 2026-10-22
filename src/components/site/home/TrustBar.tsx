@@ -44,7 +44,7 @@ export function TrustBar() {
         <ul className="hp-marquee__track gap-4">
           {[...logos, ...logos].map((n, i) => (
             <li key={i} aria-hidden={i >= logos.length || undefined}>
-              <ImageSlot name={`client-logo-${n}`} ratio="3/1" alt={t("logoAlt")} className="w-36 rounded-xl grayscale" />
+              <ImageSlot name={`client-logo-${n}`} ratio="3/1" alt={t("logoAlt")} className="w-36 rounded-[var(--hp-radius-control)] grayscale" />
             </li>
           ))}
         </ul>

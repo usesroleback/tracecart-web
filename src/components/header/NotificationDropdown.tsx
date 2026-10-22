@@ -70,12 +70,12 @@ export default function NotificationDropdown() {
   return (
     <div className="relative">
       <button
-        className="relative dropdown-toggle flex items-center justify-center text-ink-muted transition-colors bg-surface-raised border border-line rounded-full hover:text-ink h-11 w-11 hover:bg-surface-sunken"
+        className="relative dropdown-toggle flex items-center justify-center text-ink-muted transition-colors bg-surface-raised border border-line rounded-[var(--radius-s)] hover:text-ink h-11 w-11 hover:bg-surface-sunken"
         onClick={toggleDropdown}
         aria-label={t("button", { count })}
       >
         {count > 0 && (
-          <span className="absolute right-0 top-0.5 z-10 flex h-4 min-w-4 items-center justify-center rounded-full bg-signal px-1 text-[10px] font-semibold text-black">
+          <span className="absolute right-0 top-0.5 z-10 flex h-4 min-w-4 items-center justify-center rounded-[var(--radius-xs)] bg-signal px-1 text-[10px] font-semibold text-black">
             {count > 9 ? "9+" : count}
           </span>
         )}

@@ -57,7 +57,7 @@ export function SegmentedTabs<T extends string>({
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(tab.id)}
             onKeyDown={(e) => onKeyDown(e, i)}
-            className={`inline-flex h-[34px] items-center gap-2 whitespace-nowrap rounded-[2px] px-3 text-[15px] font-[580] transition-colors duration-[var(--duration-quick)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring ${
+            className={`inline-flex h-[34px] items-center gap-2 whitespace-nowrap rounded-[var(--radius-xs)] px-3 text-[15px] font-[580] transition-colors duration-[var(--duration-quick)] ease-[var(--ease-out)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus-ring ${
               selected ? "bg-surface-raised text-ink shadow-[0_0_0_1px_var(--color-line-strong)]" : "text-ink-muted hover:text-ink"
             }`}
           >

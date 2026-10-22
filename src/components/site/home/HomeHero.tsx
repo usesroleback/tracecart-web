@@ -7,7 +7,7 @@ function ParcelChip() {
   return (
     <span
       aria-hidden
-      className="inline-flex h-[0.86em] translate-y-[0.06em] items-center gap-[0.12em] rounded-full bg-[var(--hp-dark)] py-[0.08em] pl-[0.08em] pr-[0.22em] align-baseline"
+      className="inline-flex h-[0.86em] translate-y-[0.06em] items-center gap-[0.12em] rounded-[var(--hp-radius-control)] bg-[var(--hp-dark)] py-[0.08em] pl-[0.08em] pr-[0.22em] align-baseline"
     >
       <span className="grid aspect-square h-full place-items-center rounded-full bg-[var(--hp-primary)] text-[var(--hp-on-primary)]">
         <svg viewBox="0 0 24 24" aria-hidden className="h-[55%] w-[55%]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round">
@@ -27,16 +27,16 @@ export function HomeHero() {
   const t = useTranslations("home.hero");
 
   return (
-    <section id="top" className="mx-[var(--hp-gutter)] mt-3 rounded-[var(--hp-radius-panel)] bg-[var(--hp-light-sunken)] px-4 pb-4 pt-14 sm:px-6 sm:pt-20">
+    <section id="top" className="mx-[var(--hp-gutter)] mt-3 rounded-[var(--hp-corner-panel)] bg-[var(--hp-light-sunken)] px-4 pb-4 pt-14 sm:px-6 sm:pt-20">
       <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
         <Eyebrow tone="raised">{t("eyebrow")}</Eyebrow>
         <h1 className="hp-h1 mt-6 text-balance">
           {t("titleBefore")} <ParcelChip /> {t("titleAfter")}
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--hp-text-muted)]">
-          <span className="mx-0.5 inline-block rounded-full bg-[var(--hp-secondary)] px-3 py-0.5 font-medium text-[var(--hp-text)]">{t("subtitleChip1")}</span>{" "}
-          <span className="mx-0.5 inline-block rounded-full bg-[var(--hp-light-raised)] px-3 py-0.5 font-medium text-[var(--hp-text)]">{t("subtitleChip2")}</span>{" "}
-          <span className="mx-0.5 inline-block rounded-full bg-[var(--hp-dark)] px-3 py-0.5 font-medium text-[var(--hp-on-dark)]">{t("subtitleChip3")}</span>{" "}
+          <span className="mx-0.5 inline-block rounded-[var(--hp-radius-chip)] bg-[var(--hp-secondary)] px-3 py-0.5 font-medium text-[var(--hp-text)]">{t("subtitleChip1")}</span>{" "}
+          <span className="mx-0.5 inline-block rounded-[var(--hp-radius-chip)] bg-[var(--hp-light-raised)] px-3 py-0.5 font-medium text-[var(--hp-text)]">{t("subtitleChip2")}</span>{" "}
+          <span className="mx-0.5 inline-block rounded-[var(--hp-radius-chip)] bg-[var(--hp-dark)] px-3 py-0.5 font-medium text-[var(--hp-on-dark)]">{t("subtitleChip3")}</span>{" "}
           {t("subtitleRest")}
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
@@ -48,7 +48,7 @@ export function HomeHero() {
       </div>
 
       <div className="mt-12 grid gap-3 lg:grid-cols-[72fr_28fr]">
-        <ImageSlot name="hero-arrival" ratio="16/9" alt={t("imageAlt")} className="rounded-[var(--hp-radius-card)] lg:aspect-auto lg:h-full" />
+        <ImageSlot name="hero-arrival" ratio="16/9" alt={t("imageAlt")} className="rounded-[var(--hp-corner-media)] lg:aspect-auto lg:h-full" />
         <HeroMetricCard />
       </div>
     </section>

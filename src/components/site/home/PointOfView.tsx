@@ -61,7 +61,7 @@ export function PointOfView() {
       <div className="mt-12 flex flex-col gap-6 sm:flex-row sm:items-center">
         <div className="flex gap-2">
           {[1, 2, 3, 4].map((n) => (
-            <ImageSlot key={n} name={`team-${n}`} ratio="1/1" alt={t("teamAlt")} tone="dark" className="w-16 rounded-2xl sm:w-20 [&>span]:text-[9px]" />
+            <ImageSlot key={n} name={`team-${n}`} ratio="1/1" alt={t("teamAlt")} tone="dark" className="w-16 rounded-[var(--hp-radius-card)] sm:w-20 [&>span]:text-[9px]" />
           ))}
         </div>
         <p className="max-w-sm text-[15px] leading-relaxed text-[var(--hp-on-dark-muted)]">{t("team")}</p>

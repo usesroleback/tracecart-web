@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 export function Eyebrow({ children, tone = "light" }: { children: ReactNode; tone?: "light" | "raised" | "dark" }) {
   return (
     <p
-      className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] font-medium ${
+      className={`inline-flex items-center gap-2 rounded-[var(--hp-radius-chip)] px-3.5 py-1.5 text-[13px] font-medium ${
         tone === "dark"
           ? "bg-[var(--hp-dark-raised)] text-[var(--hp-on-dark-muted)]"
           : tone === "raised"
@@ -79,8 +79,8 @@ const PILL: Record<PillTone, string> = {
 };
 
 /**
- * The pill button: label plus a round ↗ on the right (outline pills have
- * none). `href` may be "#" for a page that doesn't exist yet.
+ * The site's button: label plus a square ↗ on the right (outline buttons
+ * have none). Named for its first shape; corners follow --hp-radius-control. `href` may be "#" for a page that doesn't exist yet.
  */
 export function PillLink({
   href,
@@ -98,14 +98,14 @@ export function PillLink({
   className?: string;
 }) {
   const circle = tone === "light" || tone === "secondary" ? "bg-[var(--hp-dark)] text-white" : "bg-white text-[#0d0f0e]";
-  const classes = `inline-flex min-h-12 items-center gap-3 rounded-full text-[15px] font-semibold transition-transform hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 ${
+  const classes = `inline-flex min-h-12 items-center gap-3 rounded-[var(--hp-radius-control)] text-[15px] font-semibold transition-transform hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 ${
         arrow ? "py-1.5 pl-5 pr-1.5" : "px-5 py-2.5"
       } ${block ? "w-full justify-between" : ""} ${PILL[tone]} ${className}`;
   const content = (
     <>
       <span>{children}</span>
       {arrow && (
-        <span className={`grid size-9 shrink-0 place-items-center rounded-full ${circle}`}>
+        <span className={`grid size-9 shrink-0 place-items-center rounded-[var(--hp-radius-chip)] ${circle}`}>
           <ArrowIcon />
         </span>
       )}

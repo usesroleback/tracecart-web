@@ -52,7 +52,7 @@ export function HeroMetricCard() {
         {HERO.bars.map((v, i) => (
           <span
             key={i}
-            className={`flex-1 rounded-sm ${HERO.barsHighlighted.includes(i) ? "bg-[var(--hp-secondary-on-dark)]" : "bg-white/15"}`}
+            className={`flex-1 rounded-[var(--hp-radius-chip)] ${HERO.barsHighlighted.includes(i) ? "bg-[var(--hp-secondary-on-dark)]" : "bg-white/15"}`}
             style={{ height: `${(v / maxBar) * 100}%` }}
           />
         ))}

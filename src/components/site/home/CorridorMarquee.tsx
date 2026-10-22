@@ -19,7 +19,7 @@ export function CorridorMarquee() {
   ));
 
   return (
-    <section aria-label={t("label")} className="relative z-0 mx-[var(--hp-gutter)] -mt-8 rounded-b-[var(--hp-radius-panel)] bg-[var(--hp-secondary)] pb-5 pt-13 text-[var(--hp-text)]">
+    <section aria-label={t("label")} className="relative z-0 mx-[var(--hp-gutter)] -mt-8 rounded-b-[var(--hp-radius-chip)] bg-[var(--hp-secondary)] pb-5 pt-13 text-[var(--hp-text)]">
       <h2 className="sr-only">{t("label")}</h2>
       <ul className="sr-only">
         {CORRIDORS.map((c) => (

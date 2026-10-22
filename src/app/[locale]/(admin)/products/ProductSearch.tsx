@@ -257,7 +257,7 @@ export function ProductSearch({ providers }: { providers: Provider[] }) {
                     key={c.value}
                     type="button"
                     onClick={() => toggleCategory(c.value)}
-                    className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+                    className={`rounded-[var(--radius-xs)] border px-3 py-1 text-xs font-medium transition ${
                       category === c.value
                         ? "border-ink bg-ink text-ink-inverse"
                         : "border-line text-ink-muted hover:bg-surface-sunken"

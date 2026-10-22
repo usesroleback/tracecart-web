@@ -30,8 +30,8 @@ export function PanelShell({
 
       {loading && (
         <div className="space-y-2" role="status" aria-label={t("loading")}>
-          <div className="h-4 w-2/3 animate-pulse rounded bg-surface-sunken" />
-          <div className="h-32 w-full animate-pulse rounded bg-surface-sunken" />
+          <div className="h-4 w-2/3 animate-pulse rounded-[var(--radius-xs)] bg-surface-sunken" />
+          <div className="h-32 w-full animate-pulse rounded-[var(--radius-xs)] bg-surface-sunken" />
         </div>
       )}
 

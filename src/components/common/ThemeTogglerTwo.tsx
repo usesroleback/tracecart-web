@@ -13,7 +13,7 @@ export default function ThemeTogglerTwo() {
       onClick={toggleTheme}
       aria-label={label}
       title={label}
-      className="inline-flex size-14 items-center justify-center rounded-full bg-ink text-ink-inverse transition-colors hover:opacity-90"
+      className="inline-flex size-14 items-center justify-center rounded-[var(--radius-s)] bg-ink text-ink-inverse transition-colors hover:opacity-90"
     >
       <svg
         className="hidden dark:block"

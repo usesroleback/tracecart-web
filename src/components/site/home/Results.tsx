@@ -20,7 +20,7 @@ export function Results() {
 
       <Reveal className="mx-auto mt-12 grid max-w-[560px] gap-3 sm:grid-cols-2">
         <article className="flex aspect-square flex-col justify-between rounded-[var(--hp-radius-card)] bg-[var(--hp-tertiary)] p-6 text-[var(--hp-on-tertiary)]">
-          <span className="w-fit rounded-full bg-[#0d0f0e] px-3 py-1 text-xs font-medium text-white">{t("onTimeChip")}</span>
+          <span className="w-fit rounded-[var(--hp-radius-chip)] bg-[#0d0f0e] px-3 py-1 text-xs font-medium text-white">{t("onTimeChip")}</span>
           <div>
             <Placeholder className="hp-numeral block text-6xl">{formatFigure(RESULTS.onTime, locale)}</Placeholder>
             <p className="mt-2 text-sm leading-snug">{t("onTimeCaption")}</p>
@@ -30,14 +30,14 @@ export function Results() {
         <article className="flex aspect-square flex-col rounded-[var(--hp-radius-card)] bg-[var(--hp-light-sunken)] p-6">
           <div className="flex items-start justify-between gap-2">
             <span className="text-sm font-medium">{t("borderLabel")}</span>
-            <span className="rounded-full bg-[var(--hp-light-raised)] px-3 py-1 text-xs font-medium">{t("borderChip")}</span>
+            <span className="rounded-[var(--hp-radius-chip)] bg-[var(--hp-light-raised)] px-3 py-1 text-xs font-medium">{t("borderChip")}</span>
           </div>
           <Placeholder className="hp-numeral my-auto block text-center text-6xl">{formatFigure(RESULTS.borderWait, locale)}</Placeholder>
           <div aria-hidden className="flex h-10 items-end gap-1" data-placeholder="figure">
             {RESULTS.borderBars.map((v, i) => (
               <span
                 key={i}
-                className={`flex-1 rounded-sm ${RESULTS.borderBarsHighlighted.includes(i) ? "bg-[var(--hp-secondary-ink)]" : "bg-[var(--color-line-strong)]/40"}`}
+                className={`flex-1 rounded-[var(--hp-radius-chip)] ${RESULTS.borderBarsHighlighted.includes(i) ? "bg-[var(--hp-secondary-ink)]" : "bg-[var(--color-line-strong)]/40"}`}
                 style={{ height: `${(v / maxBar) * 100}%` }}
               />
             ))}
@@ -46,9 +46,9 @@ export function Results() {
         </article>
 
         <article className="flex flex-col gap-6 rounded-[var(--hp-radius-card)] bg-[var(--hp-dark)] p-3 text-[var(--hp-on-dark)] sm:col-span-2 sm:flex-row sm:items-stretch">
-          <ImageSlot name="result-customer" ratio="3/4" alt={t("savingImageAlt")} tone="dark" className="w-full rounded-[20px] max-sm:aspect-[16/10] sm:w-44 sm:rounded-[999px]">
+          <ImageSlot name="result-customer" ratio="3/4" alt={t("savingImageAlt")} tone="dark" className="w-full rounded-[var(--hp-corner-media)] max-sm:aspect-[16/10] sm:w-44">
             <div className="absolute inset-x-5 bottom-5">
-              <ImageSlot name="result-customer-logo" ratio="4/1" alt={t("savingLogoAlt")} className="rounded-full bg-white/80 [&>span]:text-[9px]" />
+              <ImageSlot name="result-customer-logo" ratio="4/1" alt={t("savingLogoAlt")} className="rounded-[var(--hp-radius-chip)] bg-white/80 [&>span]:text-[9px]" />
             </div>
           </ImageSlot>
           <div className="flex flex-1 flex-col justify-between gap-6 p-4 sm:py-6 sm:pr-6">

@@ -61,9 +61,9 @@ export function RankingBars({
               {formatValue ? formatValue(item) : `${f.number(item.value)}${valueSuffix}`}
             </span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-surface-sunken">
+          <div className="h-2 w-full overflow-hidden rounded-[var(--radius-xs)] bg-surface-sunken">
             <div
-              className="h-full rounded-full"
+              className="h-full rounded-[var(--radius-xs)]"
               style={{ width: `${Math.max(4, (item.value / max) * 100)}%`, backgroundColor: theme.colors.ink }}
             />
           </div>

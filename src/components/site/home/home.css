@@ -37,8 +37,14 @@
   --hp-font: var(--font-bricolage);
   --hp-mono: var(--font-mono);
 
-  --hp-radius-panel: 32px;
-  --hp-radius-card: 24px;
+  /* Shapes (brand guidelines, Corner): rectilinear, with the route corner,
+     one generous round corner top-left and the rest near-square, kept for
+     one or two things per view (big panels, hero and lead media). */
+  --hp-corner-panel: var(--radius-xl) var(--radius-xs) var(--radius-xs) var(--radius-xs);
+  --hp-corner-media: var(--radius-l) var(--radius-xs) var(--radius-xs) var(--radius-xs);
+  --hp-radius-card: var(--radius-m);
+  --hp-radius-control: var(--radius-s);
+  --hp-radius-chip: var(--radius-xs);
   --hp-gutter: 20px;
   --hp-shadow: 0 10px 30px -12px rgb(13 15 14 / 0.35);
 
@@ -84,7 +90,7 @@
 /* Dark panels float on the light page, with faint quarter lines. */
 .hp-panel {
   margin-inline: var(--hp-gutter);
-  border-radius: var(--hp-radius-panel);
+  border-radius: var(--hp-corner-panel);
   background: var(--hp-dark);
   color: var(--hp-on-dark);
   position: relative;
@@ -106,7 +112,7 @@
   background-position: 25% 0, 50% 0, 75% 0;
 }
 @media (max-width: 640px) {
-  .hp { --hp-gutter: 8px; --hp-radius-panel: 24px; }
+  .hp { --hp-gutter: 8px; --hp-corner-panel: var(--radius-l) var(--radius-xs) var(--radius-xs) var(--radius-xs); }
 }
 
 /* Focus states, everywhere on the page. */

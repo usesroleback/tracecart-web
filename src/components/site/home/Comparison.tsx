@@ -37,12 +37,12 @@ export function Comparison({ cta }: { cta: string }) {
 
         <Reveal className="mt-12">
           <div className="relative grid grid-cols-2 gap-3">
-            <p className="rounded-full bg-[var(--hp-dark-raised)] px-4 py-3 text-center text-sm font-medium text-[var(--hp-on-dark-muted)]">{t("them")}</p>
-            <p className="grid place-items-center rounded-full bg-[var(--hp-primary)] px-4 py-3">
+            <p className="rounded-[var(--hp-radius-control)] bg-[var(--hp-dark-raised)] px-4 py-3 text-center text-sm font-medium text-[var(--hp-on-dark-muted)]">{t("them")}</p>
+            <p className="grid place-items-center rounded-[var(--hp-radius-control)] bg-[var(--hp-primary)] px-4 py-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/logo/tracecart-lockup.svg" alt="TraceCart" width={116} height={16} className="h-4 w-auto" />
             </p>
-            <span aria-hidden className="absolute left-1/2 top-1/2 grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-4 border-[var(--hp-dark)] bg-white text-xs font-bold uppercase text-[#0d0f0e]">
+            <span aria-hidden className="absolute left-1/2 top-1/2 grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-[var(--hp-radius-chip)] border-4 border-[var(--hp-dark)] bg-white text-xs font-bold uppercase text-[#0d0f0e]">
               {t("vs")}
             </span>
           </div>
@@ -75,7 +75,7 @@ export function Comparison({ cta }: { cta: string }) {
 
         <Reveal className="mt-14">
           <figure className="flex flex-col gap-6 rounded-[var(--hp-radius-card)] bg-[var(--hp-dark-raised)] p-4 sm:flex-row sm:items-center sm:p-5">
-            <ImageSlot name="founder" ratio="1/1" alt={t("founderAlt")} tone="dark" className="w-28 shrink-0 rounded-2xl sm:w-40" />
+            <ImageSlot name="founder" ratio="1/1" alt={t("founderAlt")} tone="dark" className="w-28 shrink-0 rounded-[var(--hp-radius-card)] sm:w-40" />
             <div className="sm:pr-4">
               <span aria-hidden className="block text-5xl leading-none text-[var(--hp-primary)]">“</span>
               <blockquote className="-mt-2 text-xl leading-snug tracking-tight sm:text-2xl">{t("quote")}</blockquote>

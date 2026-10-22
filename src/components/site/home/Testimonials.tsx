@@ -56,7 +56,7 @@ export function Testimonials() {
                   onClick={() => setActive(i)}
                   aria-label={t("pick", { name })}
                   aria-pressed={on}
-                  className={`overflow-hidden rounded-2xl transition-all ${on ? "size-20 ring-[3px] ring-[var(--hp-primary)] ring-offset-2 ring-offset-[var(--hp-light)]" : "size-14 opacity-50 hover:opacity-80"}`}
+                  className={`overflow-hidden rounded-[var(--hp-radius-card)] transition-all ${on ? "size-20 ring-[3px] ring-[var(--hp-primary)] ring-offset-2 ring-offset-[var(--hp-light)]" : "size-14 opacity-50 hover:opacity-80"}`}
                 >
                   <ImageSlot name={`testimonial-${k}`} alt="" className="size-full [&>span]:text-[8px]" />
                 </button>
@@ -82,7 +82,7 @@ export function Testimonials() {
               </p>
               <p className="text-[var(--hp-text-muted)]">{t(`items.${key}.company`)}</p>
             </div>
-            <ImageSlot name={`testimonial-${key}-logo`} ratio="3/1" alt={t("logoAlt")} className="w-24 shrink-0 rounded-lg [&>span]:text-[8px]" />
+            <ImageSlot name={`testimonial-${key}-logo`} ratio="3/1" alt={t("logoAlt")} className="w-24 shrink-0 rounded-[var(--hp-radius-control)] [&>span]:text-[8px]" />
           </figcaption>
         </figure>
       </div>
