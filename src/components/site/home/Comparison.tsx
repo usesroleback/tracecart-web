@@ -30,7 +30,7 @@ export function Comparison({ cta }: { cta: string }) {
       <div className="mx-auto max-w-[900px]">
         <div className="text-center">
           <Eyebrow tone="dark">{t("eyebrow")}</Eyebrow>
-          <h2 id="hp-compare" className="hp-h2 mx-auto mt-6 max-w-[14ch]">
+          <h2 id="hp-compare" className="hp-h2 mx-auto mt-6 max-w-[16ch] text-balance">
             {t("title")}
           </h2>
         </div>

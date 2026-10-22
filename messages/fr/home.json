@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "TraceCart — Faites-le arriver.",
-    "description": "Sourcing, transport et douane sous un même toit, pour les marchandises qui doivent atteindre des endroits difficiles. Un prix livré, une date d'arrivée honnête, une preuve à la porte."
+    "title": "TraceCart — Trouvé. Livré.",
+    "description": "Dites-nous l'outil ou l'équipement qu'il vous faut, même sans connaître son nom : nous le trouvons, l'achetons et le livrons. Vous avez déjà la marchandise ? Nous la transportons. Un seul prix livré."
   },
   "nav": {
     "label": "Principale",
@@ -14,69 +14,69 @@
     "work": "Réalisations",
     "insights": "Notes de terrain",
     "account": "Mon compte",
-    "cta": "Obtenir un prix livré",
+    "cta": "Trouver ce qu'il vous faut",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "language": "English",
     "languageHref": "en"
   },
   "hero": {
-    "eyebrow": "Sourcing et logistique vers les destinations difficiles",
-    "titleBefore": "Et si chaque",
-    "titleAfter": "envoi connaissait la route jusqu'à votre porte ?",
-    "subtitleChip1": "Sourcing",
-    "subtitleChip2": "Transport",
-    "subtitleChip3": "Douane",
-    "subtitleRest": "sous un même toit, pensés pour des marchandises livrées, pas « en transit ».",
-    "cta": "Obtenir un prix livré",
+    "eyebrow": "Trouvez les outils qu'il vous faut. Faites-les livrer.",
+    "titleBefore": "Et si l'outil qu'il vous faut",
+    "titleAfter": "était déjà en route ?",
+    "subtitleChip1": "Trouver",
+    "subtitleChip2": "Acheter",
+    "subtitleChip3": "Livrer",
+    "subtitleRest": "les outils, équipements et pièces que vous cherchez, ou transporter les marchandises que vous avez déjà.",
+    "cta": "Trouver ce qu'il vous faut",
     "secondary": "Expédier des marchandises que vous avez déjà",
-    "imageAlt": "Des marchandises remises à la porte, vues d'en bas sur un ciel clair",
-    "cardLabel": "Arrivées à l'heure",
-    "cardDotsLabel": "{on} envois sur {total} à l'heure",
-    "cardBody": "Pensé pour la visibilité, le contrôle et des dates d'arrivée sur lesquelles vous pouvez compter.",
-    "cardRowLabel": "Attente à la frontière, 90 jours",
-    "cardChartLabel": "Envois par semaine, douze dernières semaines"
+    "imageAlt": "Un outil remis à la porte, vu d'en bas sur un ciel clair",
+    "cardLabel": "Outils trouvés",
+    "cardDotsLabel": "{on} demandes sur {total} trouvées",
+    "cardBody": "Pensé pour trouver le bon outil et vous le livrer à une date sur laquelle vous pouvez compter.",
+    "cardRowLabel": "Prix face à l'achat local",
+    "cardChartLabel": "Demandes par semaine, douze dernières semaines"
   },
   "finder": {
-    "title": "Dites-nous ce qui doit voyager.",
-    "body": "Une photo ou quelques mots suffisent. Une personne vous répond sous 4 heures ouvrées avec un prix livré."
+    "title": "Que cherchez-vous ?",
+    "body": "Décrivez-le avec vos mots ou envoyez une photo, même si vous ne connaissez pas son nom. Une personne vous répond sous 4 heures ouvrées avec des options et un prix livré."
   },
   "trust": {
-    "text": "Plus de {customers} importateurs, cliniques et entreprises du bâtiment nous font confiance, sur {corridors} corridors",
+    "text": "Plus de {customers} ateliers, cliniques, entreprises du bâtiment et exploitations agricoles nous font confiance, sur {corridors} corridors",
     "avatarAlt": "Portrait d'un client",
     "logoAlt": "Logo d'un client"
   },
   "pov": {
     "eyebrow": "Notre point de vue",
-    "before": "La plupart des transitaires vendent une réservation. Nous vendons une arrivée.",
-    "accent": "Chaque envoi a un prix, une date et une personne attitrée,",
-    "after": "et si quelque chose glisse, c'est nous qui vous le disons en premier.",
+    "before": "La plupart des fournisseurs vendent ce qu'ils ont en stock. La plupart des transitaires vendent un camion.",
+    "accent": "Nous partons de ce dont vous avez besoin,",
+    "after": "trouvons le bon outil et le livrons à votre porte, pour un seul prix.",
     "teamAlt": "Portrait d'un coordinateur",
-    "team": "Un coordinateur suit votre envoi du fournisseur jusqu'à la porte. Pas de relais entre agents, pas de « c'est à la douane » suivi de silence."
+    "team": "Une seule personne suit votre demande, du premier message à la livraison. Pas de catalogue à fouiller, pas cinq fournisseurs à relancer."
   },
   "services": {
-    "eyebrow": "Quatre métiers, une seule route",
-    "title": "Par où commencer votre prochain envoi ?",
+    "eyebrow": "De la première recherche à votre porte",
+    "title": "Que cherchez-vous aujourd'hui ?",
     "tabsLabel": "Ce que nous faisons",
     "items": {
       "sourcing": {
-        "title": "Sourcing",
-        "body": "Nous trouvons le produit à partir d'une photo ou de quelques mots, confirmons le fournisseur et vérifions la marchandise avant tout paiement.",
-        "imageAlt": "Un coordinateur vérifie des marchandises chez un fournisseur"
+        "title": "Trouver le bon outil",
+        "body": "Une photo, une référence ou quelques mots suffisent. Nous identifions le produit, comparons les fournisseurs et vérifions que c'est le bon avant que vous payiez.",
+        "imageAlt": "Un coordinateur vérifie un outil chez un fournisseur"
       },
       "freight": {
-        "title": "Transport et itinéraire",
-        "body": "Mer, rail et route planifiés comme un seul itinéraire, avec le transporteur adapté au chargement et à l'échéance.",
+        "title": "Transport",
+        "body": "Vous avez déjà la marchandise ? Nous l'enlevons et la transportons par mer, rail ou route, avec le transporteur adapté au chargement et à la date.",
         "imageAlt": "Un camion chargé dans un hub de groupage"
       },
       "customs": {
-        "title": "Douane",
-        "body": "Droits estimés d'avance, documents prêts avant la frontière, frais de courtier affichés à part, et aucuns frais de coordination si vous dédouanez vous-même.",
+        "title": "Douane et documents",
+        "body": "Droits estimés d'avance, documents prêts avant la frontière, frais de courtier affichés à part. Si vous dédouanez vous-même, vous ne nous payez rien pour ça.",
         "imageAlt": "Un courtier avec des documents à une frontière terrestre"
       },
       "tracking": {
-        "title": "Suivi et livraison",
-        "body": "Les étapes au moment où elles arrivent, une fenêtre d'arrivée honnête et une preuve photographiée à la porte.",
+        "title": "Une livraison que vous suivez",
+        "body": "Chaque étape au moment où elle arrive, une date d'arrivée honnête et une preuve photographiée à la porte.",
         "imageAlt": "Des marchandises signées à la livraison"
       }
     }
@@ -87,14 +87,14 @@
   },
   "results": {
     "eyebrow": "Résultats",
-    "title": "Des livraisons qui se mesurent.",
-    "subtitle": "Chaque envoi commence par un devis et se termine par une signature. Voici les douze derniers mois.",
+    "title": "Trouvé, acheté, livré.",
+    "subtitle": "Chaque demande commence par ce dont vous avez besoin et se termine par une signature. Voici les douze derniers mois.",
     "onTimeChip": "À l'heure",
-    "onTimeCaption": "Arrivés dans la fenêtre annoncée, Lomé → Ouagadougou",
-    "borderLabel": "Attente à la frontière",
-    "borderChip": "Pilote de 90 jours",
-    "borderCaption": "Attente médiane à la frontière : 71 h → 42 h",
-    "savingLabel": "Économie moyenne sur le coût rendu par rapport à l'achat local",
+    "onTimeCaption": "Livrés dans la fenêtre promise",
+    "borderLabel": "Délai pour trouver",
+    "borderChip": "90 derniers jours",
+    "borderCaption": "Délai médian jusqu'au produit confirmé : 29 h → 17 h",
+    "savingLabel": "Économie moyenne face à l'achat du même outil sur place",
     "savingImageAlt": "Portrait d'un client",
     "savingLogoAlt": "Logo d'un client",
     "savingCta": "Lire l'étude de cas"
@@ -108,7 +108,7 @@
         "client": "[Client A] Matériaux de construction",
         "sector": "Construction",
         "service": "Sourcing + transport",
-        "summary": "Colle à carrelage sourcée en Turquie, 6,2 t groupées à Mersin puis acheminées par mer et par route jusqu'à Niamey.",
+        "summary": "Demande : « la colle à carrelage grise qu'utilisent les maçons turcs ». Nous avons identifié la marque, acheté 6,2 t au fabricant et livré à Niamey.",
         "resultLabel": "jours de porte à porte, annoncés 21 à 24",
         "imageAlt": "Des palettes de colle à carrelage déchargées"
       },
@@ -116,7 +116,7 @@
         "client": "[Client B] Réseau de cliniques",
         "sector": "Santé",
         "service": "Transport + douane",
-        "summary": "400 glucomètres contrôlés comme dispositifs médicaux avant le devis, dédouanés en deux jours et livrés à N'Djamena.",
+        "summary": "400 glucomètres déjà achetés par la clinique, contrôlés comme dispositifs médicaux, dédouanés en deux jours et livrés à N'Djamena.",
         "resultLabel": "unité perdue ou abîmée",
         "imageAlt": "Des cartons de dispositifs médicaux dans la réserve d'une clinique"
       },
@@ -124,75 +124,75 @@
         "client": "[Client C] Importateur agricole",
         "sector": "Agriculture",
         "service": "Sourcing + transport + douane",
-        "summary": "Pompes d'irrigation achetées au fabricant, débarquées à Antofagasta et acheminées par camion jusqu'à Santa Cruz.",
-        "resultLabel": "de coût rendu face à la revente locale",
+        "summary": "Une photo de pompe usée. Nous avons trouvé le modèle exact chez le fabricant, débarqué à Antofagasta et acheminé par camion jusqu'à Santa Cruz.",
+        "resultLabel": "de prix face à la revente locale",
         "imageAlt": "Des pompes d'irrigation installées dans un champ"
       }
     }
   },
   "stats": {
-    "eyebrow": "Les chiffres derrière la route",
-    "shipments": "Envois livrés vers des destinations difficiles",
+    "eyebrow": "Les chiffres derrière le travail",
+    "shipments": "Demandes trouvées et livrées",
     "corridors": "Corridors desservis chaque semaine",
     "delivered": "Livrés complets et en bon état"
   },
   "process": {
-    "title": "Comment nous faisons arriver.",
-    "subtitle": "Un coordinateur et un plan de route, pas un numéro de suivi et un haussement d'épaules.",
-    "imageAlt": "L'équipe TraceCart planifie un itinéraire",
-    "yearsCaption": "Années d'expérience cumulée à acheminer des marchandises sur ces corridors.",
+    "title": "Comment ça marche.",
+    "subtitle": "Une personne et un prix, de votre premier message à votre porte.",
+    "imageAlt": "L'équipe TraceCart travaille sur une demande",
+    "yearsCaption": "Années d'expérience cumulée à trouver et acheminer des marchandises.",
     "stepsLabel": "3 étapes simples",
     "previous": "Étape précédente",
     "next": "Étape suivante",
     "goTo": "Étape {n}",
     "steps": {
       "tell": {
-        "title": "Dites-nous",
-        "body": "Une photo, une description ou des marchandises que vous avez déjà. Les adresses d'enlèvement et de livraison, et pour quand."
+        "title": "Dites-nous ce qu'il vous faut",
+        "body": "Décrivez l'outil ou envoyez une photo, même sans son nom. Ou donnez-nous l'adresse d'enlèvement des marchandises que vous avez déjà."
       },
       "price": {
-        "title": "Recevez un prix",
-        "body": "Itinéraire, douane et fenêtre d'arrivée calculés. Un seul prix livré, valable une semaine."
+        "title": "Recevez un prix livré",
+        "body": "Nous trouvons le bon produit et l'itinéraire. Un seul prix, livraison comprise, valable une semaine."
       },
       "follow": {
-        "title": "Suivez-le jusqu'au bout",
-        "body": "Les étapes au moment où elles arrivent, les retards avec leur motif, et une preuve à la porte."
+        "title": "Suivez-le jusqu'à votre porte",
+        "body": "Chaque étape au moment où elle arrive, les retards avec leur motif, et une preuve à la porte."
       }
     }
   },
   "compare": {
-    "eyebrow": "Pourquoi les importateurs changent",
-    "title": "Même cargaison. Autre arrivée.",
-    "them": "Le transitaire habituel",
+    "eyebrow": "Pourquoi on nous choisit",
+    "title": "Même besoin. Meilleur résultat.",
+    "them": "Chercher et expédier seul",
     "vs": "vs",
     "rows": {
       "price": {
-        "them": "Un devis en morceaux : le fret maintenant, la douane « à l'arrivée »",
-        "us": "Un prix livré avant de vous engager, la douane affichée à part"
+        "them": "Fouiller les boutiques sans être sûr que c'est la bonne pièce",
+        "us": "Décrivez-le une fois : nous trouvons le bon produit et le vérifions"
       },
       "tracking": {
-        "them": "Un numéro de suivi qui s'arrête au port",
-        "us": "Des étapes jusqu'à la porte, chaque retard avec son motif"
+        "them": "Acheter chez l'un, expédier avec l'autre, payer la douane à l'arrivée",
+        "us": "Un prix livré avant de vous engager, la douane affichée à part"
       },
       "contact": {
-        "them": "C'est vous qui relancez l'agent",
-        "us": "Un coordinateur qui vous appelle en premier"
+        "them": "Relancer le vendeur, le transitaire et le courtier",
+        "us": "Une personne qui répond, et qui vous appelle en premier"
       },
       "space": {
-        "them": "Payer un conteneur complet, ou attendre",
-        "us": "Groupage en hub : vous payez l'espace utilisé"
+        "them": "Un numéro de suivi qui s'arrête au port",
+        "us": "Chaque étape jusqu'à votre porte, chaque retard avec son motif"
       }
     },
     "no": "Pas chez eux",
     "yes": "Avec TraceCart",
-    "quote": "Faire arriver des marchandises dans un endroit difficile, ce n'est pas une question de camion le plus rapide. C'est savoir, chaque jour, où elles sont et quand elles arriveront.",
+    "quote": "Personne ne veut un catalogue ou un camion. On veut le bon outil entre les mains au moment où on en a besoin. C'est tout notre métier.",
     "founder": "[Nom]",
     "founderRole": "Fondateur, TraceCart",
     "founderAlt": "Portrait du fondateur"
   },
   "testimonials": {
     "eyebrow": "Nos clients",
-    "title": "Livré, selon eux.",
+    "title": "Trouvé et livré, selon eux.",
     "pick": "Afficher le témoignage de {name}",
     "stars": "5 sur 5",
     "logoAlt": "Logo d'un client",
@@ -201,7 +201,7 @@
         "name": "[Nom A]",
         "role": "Gérant",
         "company": "Importateur de quincaillerie, Niamey",
-        "quote": "Avant, je découvrais le vrai prix à l'arrivée du camion. Maintenant je le connais avant de payer, et la date a tenu trois fois sur trois."
+        "quote": "J'ai envoyé la photo d'un foret dont je ne connaissais pas le nom. Deux jours plus tard, j'avais le bon, à un prix qui comprenait déjà la livraison."
       },
       "clinic": {
         "name": "[Nom B]",
@@ -213,18 +213,18 @@
         "name": "[Nom C]",
         "role": "Chargé de logistique",
         "company": "Programme humanitaire, Almaty",
-        "quote": "Quand la frontière a fermé deux jours, ils nous ont prévenus avant qu'on s'en rende compte, avec une nouvelle date. C'est tout le métier, bien fait."
+        "quote": "Il nous fallait des groupes électrogènes introuvables sur place. Ils sont revenus avec trois options, nous en avons choisi une, et elle est arrivée à la date annoncée."
       },
       "agri": {
         "name": "[Nom D]",
         "role": "Directeur des opérations",
         "company": "Importateur agricole, Santa Cruz",
-        "quote": "Un coordinateur, un prix, un itinéraire. Nous ne jonglons plus entre trois prestataires et un tableur pour acheminer des pompes."
+        "quote": "Une personne, un prix. Nous ne jonglons plus entre trois fournisseurs et un tableur pour acheminer des pompes."
       }
     }
   },
   "insights": {
-    "eyebrow": "Notes du corridor",
+    "eyebrow": "Notes de terrain",
     "title": "Notes de terrain",
     "all": "Toutes les notes",
     "featured": "À la une",
@@ -232,28 +232,28 @@
     "items": {
       "landed": {
         "category": "Prix",
-        "title": "Pourquoi le prix rendu est le seul qui compte",
+        "title": "Pourquoi le prix livré est le seul qui compte",
         "imageAlt": "Un devis posé à côté de marchandises sur une palette"
       },
       "border": {
-        "category": "Douane",
-        "title": "Ce qui se passe vraiment à une frontière terrestre à 4 h du matin",
-        "imageAlt": "Des camions en file à un poste-frontière avant l'aube"
+        "category": "Sourcing",
+        "title": "Comment trouver un outil dont on ne connaît pas le nom",
+        "imageAlt": "Une pièce usée photographiée à côté d'un mètre ruban"
       },
       "consolidation": {
         "category": "Transport",
-        "title": "Comment le groupage réduit le coût d'un demi-chargement",
+        "title": "Comment le groupage réduit le coût d'une petite commande",
         "imageAlt": "Des marchandises groupées dans un hub"
       }
     }
   },
   "closing": {
-    "title": "Dites-nous où ça doit aller.",
-    "cta": "Obtenir un prix livré"
+    "title": "Dites-nous ce qu'il vous faut.",
+    "cta": "Trouver ce qu'il vous faut"
   },
   "footer": {
     "stayTitle": "Restons en contact",
-    "stayBody": "Une note par mois sur les corridors, les frontières et les coûts rendus. Rien de plus.",
+    "stayBody": "Une note par mois sur la recherche d'outils, le transport et ce que ça coûte vraiment. Rien de plus.",
     "emailLabel": "Adresse e-mail",
     "emailPlaceholder": "vous@entreprise.com",
     "subscribe": "S'abonner",
@@ -277,6 +277,6 @@
     "byline": "Une société Roleback",
     "badgesLabel": "Certifications et adhésions",
     "badgeAlt": "Badge de certification",
-    "disclaimer": "Les délais et les prix sont des estimations jusqu'au devis, et un devis vaut jusqu'à la date qu'il indique. Les droits et taxes de douane sont fixés par les autorités et refacturés à l'identique. Les chiffres et témoignages de cette page sont illustratifs. Les marques appartiennent à leurs propriétaires."
+    "disclaimer": "La disponibilité et le prix des produits sont confirmés avec le fournisseur avant tout paiement. Les délais sont des estimations jusqu'au devis, et un devis vaut jusqu'à la date qu'il indique. Les droits et taxes de douane sont fixés par les autorités et refacturés à l'identique. Les chiffres et témoignages de cette page sont illustratifs. Les marques appartiennent à leurs propriétaires."
   }
 }
