@@ -1,27 +1,13 @@
-import { SiteHeader } from "@/components/site/SiteHeader";
-import { Hero } from "@/components/site/Hero";
-import { QuoteBar } from "@/components/site/QuoteBar";
-import { HowItWorks } from "@/components/site/HowItWorks";
-import { Proof } from "@/components/site/Proof";
-import { Corridors } from "@/components/site/Corridors";
-import { ClosingBand } from "@/components/site/ClosingBand";
-import { SiteFooter } from "@/components/site/SiteFooter";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { HomePage } from "@/components/site/home/HomePage";
 
-export default function HomePage() {
-  return (
-    <>
-      <SiteHeader />
-      <main>
-        <Hero />
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <QuoteBar />
-        </div>
-        <HowItWorks />
-        <Proof />
-        <Corridors />
-        <ClosingBand />
-      </main>
-      <SiteFooter />
-    </>
-  );
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home.meta" });
+  return { title: t("title"), description: t("description") };
+}
+
+export default function Home() {
+  return <HomePage />;
 }

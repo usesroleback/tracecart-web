@@ -18,16 +18,28 @@ const MORE = [
   { key: "insights", href: "#insights" },
 ] as const;
 
-function NavLink({ href, className, children, onClick }: { href: string; className: string; children: React.ReactNode; onClick?: () => void }) {
+function NavLink({
+  href,
+  className,
+  children,
+  onClick,
+  "aria-current": current,
+}: {
+  href: string;
+  className: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+  "aria-current"?: "page";
+}) {
   if (href.startsWith("/")) {
     return (
-      <Link href={href} className={className} onClick={onClick}>
+      <Link href={href} className={className} onClick={onClick} aria-current={current}>
         {children}
       </Link>
     );
   }
   return (
-    <a href={href} className={className} onClick={onClick}>
+    <a href={href} className={className} onClick={onClick} aria-current={current}>
       {children}
     </a>
   );
@@ -41,6 +53,10 @@ export function HomeNav() {
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLLIElement>(null);
   const other = locale === "fr" ? "en" : "fr";
+  // Section anchors live on the homepage; from /ship or /account they go back to it.
+  const onHome = pathname === "/";
+  const to = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
+  const isActive = (key: string) => (key === "home" ? onHome : key === "ship" ? pathname.startsWith("/ship") : false);
 
   // Close the dropdown on outside click or Escape; Escape closes the mobile menu too.
   useEffect(() => {
@@ -83,9 +99,10 @@ export function HomeNav() {
             {LINKS.map((l) => (
               <li key={l.key}>
                 <NavLink
-                  href={l.href}
+                  href={to(l.href)}
+                  aria-current={isActive(l.key) ? "page" : undefined}
                   className={`block rounded-full px-4 py-2 ${
-                    l.key === "home" ? "bg-[var(--hp-light-raised)] text-[var(--hp-text)] shadow-sm" : "text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]"
+                    isActive(l.key) ? "bg-[var(--hp-light-raised)] text-[var(--hp-text)] shadow-sm" : "text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]"
                   }`}
                 >
                   {t(l.key)}
@@ -109,9 +126,9 @@ export function HomeNav() {
                 <ul id="hp-more" className="absolute left-0 top-full mt-2 w-48 rounded-2xl bg-[var(--hp-dark)] p-2 text-[var(--hp-on-dark)] shadow-[var(--hp-shadow)]">
                   {MORE.map((l) => (
                     <li key={l.key}>
-                      <a href={l.href} onClick={() => setMoreOpen(false)} className="block rounded-xl px-3 py-2 hover:bg-white/10">
+                      <NavLink href={to(l.href)} onClick={() => setMoreOpen(false)} className="block rounded-xl px-3 py-2 hover:bg-white/10">
                         {t(l.key)}
-                      </a>
+                      </NavLink>
                     </li>
                   ))}
                 </ul>
@@ -127,9 +144,10 @@ export function HomeNav() {
           <Link href="/account" className="hidden rounded-full px-3 py-2 text-sm font-medium text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] md:block">
             {t("account")}
           </Link>
-          <PillLink href="#quote" className="hidden md:inline-flex">
-            {t("cta")}
-          </PillLink>
+          {/* A wrapper hides it on phones: the pill's own inline-flex would beat "hidden". The menu has the same link. */}
+          <span className="hidden md:block">
+            <PillLink href={to("#quote")}>{t("cta")}</PillLink>
+          </span>
           <button
             type="button"
             className="grid size-11 place-items-center rounded-full bg-[var(--hp-dark)] text-[var(--hp-on-dark)] lg:hidden"
@@ -155,7 +173,7 @@ export function HomeNav() {
             <ul className="space-y-1 text-3xl font-semibold tracking-tight">
               {[...LINKS, ...MORE].map((l) => (
                 <li key={l.key}>
-                  <NavLink href={l.href} onClick={() => setMenuOpen(false)} className="block py-2">
+                  <NavLink href={to(l.href)} onClick={() => setMenuOpen(false)} className="block py-2">
                     {t(l.key)}
                   </NavLink>
                 </li>
@@ -169,7 +187,7 @@ export function HomeNav() {
           </nav>
           {/* Any link in here closes the menu, including the CTA. */}
           <div className="mt-8 flex flex-col gap-3" onClick={() => setMenuOpen(false)}>
-            <PillLink href="#quote" tone="primary" block>
+            <PillLink href={to("#quote")} tone="primary" block>
               {t("cta")}
             </PillLink>
             <Link href={pathname} locale={other} hrefLang={other} className="py-2 text-sm text-[var(--hp-on-dark-muted)]">

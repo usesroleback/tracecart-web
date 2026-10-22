@@ -3,73 +3,6 @@
     "title": "TraceCart — On trouvera un moyen.",
     "description": "Sourcing et logistique transfrontalière pour les marchés enclavés et difficiles d'accès. Dites-nous ce qui doit être transporté — nous nous occupons de l'itinéraire."
   },
-  "header": {
-    "brand": "TraceCart",
-    "howItWorks": "Comment ça marche",
-    "corridors": "Corridors",
-    "signIn": "Mon compte",
-    "getAQuote": "Demander un devis",
-    "ship": "Expédier"
-  },
-  "hero": {
-    "overline": "Sourcing et logistique pour les destinations difficiles d'accès",
-    "title": "On trouvera un moyen.",
-    "body": "Nous sourçons, transportons et livrons des marchandises vers des marchés enclavés et difficiles d'accès. Dites-nous ce qui doit être transporté. Nous nous occupons de l'itinéraire.",
-    "originLabel": "ORIGINE",
-    "destinationLabel": "DESTINATION"
-  },
-  "howItWorks": {
-    "overline": "Comment ça marche",
-    "title": "Cinq étapes. Vous n'en voyez qu'une : livré.",
-    "steps": {
-      "source": {
-        "title": "Sourcer",
-        "body": "Nous trouvons le fournisseur, vérifions la marchandise et le payons en toute sécurité."
-      },
-      "consolidate": {
-        "title": "Consolider",
-        "body": "Votre cargaison rejoint d'autres au hub, vous ne payez donc que l'espace que vous utilisez."
-      },
-      "move": {
-        "title": "Transporter",
-        "body": "Mer, rail et route, planifiés comme un seul itinéraire et suivis comme un seul envoi."
-      },
-      "clear": {
-        "title": "Dédouaner",
-        "body": "Nos courtiers gèrent les douanes et les papiers frontaliers avant l'arrivée du camion."
-      },
-      "deliver": {
-        "title": "Livrer",
-        "body": "Jusqu'à la porte, avec une preuve de livraison signée et photographiée."
-      }
-    }
-  },
-  "proof": {
-    "photoCaption": "Photo documentaire : le passage frontalier de Dakola à 4 h du matin — un courtier TraceCart parcourt la file avec un bloc-notes. Lieu réel, personnes réelles, aucune mise en scène.",
-    "stats": {
-      "shipments": {
-        "value": "1 284",
-        "label": "Envois livrés vers des destinations enclavées cette année"
-      },
-      "dwellTime": {
-        "value": "42 h",
-        "label": "Temps d'attente médian à la frontière, contre 71 heures auparavant"
-      },
-      "delivered": {
-        "value": "97,6 %",
-        "label": "Livrés complets et sans dommage"
-      }
-    }
-  },
-  "corridors": {
-    "title": "Les corridors que nous assurons chaque semaine",
-    "allCorridors": "Les 31 corridors",
-    "dayRange": "{min} à {max} jours"
-  },
-  "closingBand": {
-    "title": "Dites-nous où ça doit aller.",
-    "cta": "Demander un devis →"
-  },
   "quoteBar": {
     "what": "Que cherchez-vous ?",
     "whatPlaceholder": "Décrivez le produit ou l'outil avec vos mots : à quoi il sert, la marque ou le modèle si vous les connaissez, la quantité… ou ajoutez simplement une photo.",
@@ -109,10 +42,5 @@
     "replyTo": "Nous répondons à {email} et au numéro ci-dessous.",
     "myRequests": "Voir mes demandes →",
     "shipInstead": "Vous avez déjà la marchandise ? Faites-la livrer →"
-  },
-  "footer": {
-    "brand": "TraceCart",
-    "byline": "Une société Roleback",
-    "cities": "Lomé · Mersin · Antofagasta · Rotterdam"
   }
 }

@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
-import "./home.css";
-import { HomeNav } from "./HomeNav";
+import { SiteShell } from "./SiteShell";
 import { HomeHero } from "./HomeHero";
 import { FinderSection, TrustBar } from "./TrustBar";
 import { PointOfView } from "./PointOfView";
@@ -13,19 +12,16 @@ import { Process } from "./Process";
 import { Comparison } from "./Comparison";
 import { Testimonials } from "./Testimonials";
 import { Insights } from "./Insights";
-import { ClosingAndFooter } from "./ClosingAndFooter";
 
 /**
- * The redesigned homepage, one component per section. Served at
- * /preview/home until its placeholders (PLACEHOLDERS.md) are replaced;
- * making it the homepage means rendering it from (site)/page.tsx.
+ * The homepage, one component per section. Its images, figures and stories
+ * are still placeholders: see PLACEHOLDERS.md.
  */
 export function HomePage() {
   const t = useTranslations("home");
 
   return (
-    <div className="hp min-h-screen pb-[1px]">
-      <HomeNav />
+    <SiteShell closing>
       <main>
         <HomeHero />
         <FinderSection />
@@ -43,7 +39,6 @@ export function HomePage() {
         <Testimonials />
         <Insights />
       </main>
-      <ClosingAndFooter />
-    </div>
+    </SiteShell>
   );
 }

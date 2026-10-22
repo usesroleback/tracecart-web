@@ -19,8 +19,12 @@ function FooterLink({ href, children, active = false }: { href: string; children
   );
 }
 
-/** The closing call to action and the footer share one dark panel. */
-export function ClosingAndFooter() {
+/**
+ * The footer's dark panel. On the homepage the closing call to action opens
+ * it; other pages (`closing={false}`) show the footer alone, with links that
+ * lead back to the homepage's sections.
+ */
+export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
   const t = useTranslations("home");
   const f = useTranslations("home.footer");
 
@@ -28,10 +32,10 @@ export function ClosingAndFooter() {
     {
       title: f("pages"),
       links: [
-        { label: f("home"), href: "#top", active: true },
-        { label: f("howItWorks"), href: "#process" },
+        { label: f("home"), href: closing ? "#top" : "/", active: closing },
+        { label: f("howItWorks"), href: closing ? "#process" : "/#process" },
         { label: f("ship"), href: "/ship" },
-        { label: f("insights"), href: "#insights" },
+        { label: f("insights"), href: closing ? "#insights" : "/#insights" },
       ],
     },
     {
@@ -48,6 +52,7 @@ export function ClosingAndFooter() {
 
   return (
     <div className="hp-panel hp-grid-lines mb-[var(--hp-gutter)] overflow-hidden bg-[var(--hp-dark-deep)]">
+      {closing && (
       <section aria-labelledby="hp-closing" className="flex flex-col items-center px-6 pb-16 pt-24 text-center sm:pb-24 sm:pt-32">
         <Reveal>
           <h2 id="hp-closing" className="hp-h1 max-w-[14ch]">
@@ -58,9 +63,10 @@ export function ClosingAndFooter() {
           {t("closing.cta")}
         </PillLink>
       </section>
+      )}
 
       <footer className="px-6 pb-8 sm:px-10">
-        <div className="grid gap-12 border-t border-white/10 pt-12 lg:grid-cols-[1.2fr_2fr]">
+        <div className={`grid gap-12 pt-12 lg:grid-cols-[1.2fr_2fr] ${closing ? "border-t border-white/10" : ""}`}>
           <div>
             <h2 className="text-xl font-semibold">{f("stayTitle")}</h2>
             <p className="mt-2 max-w-sm text-sm text-[var(--hp-on-dark-muted)]">{f("stayBody")}</p>

@@ -1,8 +1,6 @@
 # Homepage placeholders
 
-The redesigned homepage (`/fr/preview/home`, `/en/preview/home`) uses placeholder images, figures, names and links. Replace everything below before it becomes the homepage. In the page, every image slot carries `data-image-slot="<name>"` and every placeholder figure `data-placeholder`, so `document.querySelectorAll("[data-image-slot], [data-placeholder]")` lists what's left.
-
-**Making it the homepage:** render `<HomePage />` from `src/app/[locale]/(site)/page.tsx`, then delete the `preview/home` route and its line in `src/middleware.ts` (`isAnonymousPage`).
+The homepage (`/fr`, `/en`) uses placeholder images, figures, names and links, and it is live: replace everything below as real material arrives. In the page, every image slot carries `data-image-slot="<name>"` and every placeholder figure `data-placeholder`, so `document.querySelectorAll("[data-image-slot], [data-placeholder]")` lists what's left.
 
 ## Images
 
@@ -43,14 +41,14 @@ All in `content.ts` (one place). Labels are in `home.json`.
 | Hero card | Border wait, 90 days | −41% |
 | Hero card | Shipments per week, twelve bars | `HERO.bars` |
 | Trust bar | Customers, corridors | 120+, 31 |
-| Corridor band | Transit days per corridor | `CORRIDORS` (from the current homepage) |
+| Corridor band | Transit days per corridor | `CORRIDORS` (from the previous homepage) |
 | Results | On time, Lomé → Ouagadougou | 94% |
 | Results | Border wait, 71 h → 42 h (the caption is in `home.json`) | −41%, nine bars |
 | Results | Landed-cost saving vs. buying locally | 31% |
 | Selected work | Construction: days door to door (quoted 21–24) | 19 |
 | Selected work | Clinic: units lost or damaged | 0 |
 | Selected work | Agri: landed cost vs. local resale | −34% |
-| Stats | Shipments delivered, corridors, delivered undamaged | 1,284+, 31, 97.6% (the current homepage's figures, unverified) |
+| Stats | Shipments delivered, corridors, delivered undamaged | 1,284+, 31, 97.6% (the previous homepage's figures, unverified) |
 | Process | Years of combined experience | 10+ |
 | Insights | Reading times | 6, 8, 5 min |
 

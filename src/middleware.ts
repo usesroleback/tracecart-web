@@ -23,7 +23,7 @@ function stripLocale(pathname: string): string {
  * through Clerk's servers, even on pages that don't use it.
  */
 function isAnonymousPage(bare: string): boolean {
-  return bare === "/" || bare === "/preview/home" || bare.startsWith("/q/") || bare.startsWith("/legal/");
+  return bare === "/" || bare.startsWith("/q/") || bare.startsWith("/legal/");
 }
 
 const withClerk = clerkMiddleware(async (auth, req) => {
