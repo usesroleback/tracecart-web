@@ -81,3 +81,26 @@ export function formatFigure(f: Figure, locale: string, value = f.value): string
   const { body, suffix } = figureParts(f, locale, value);
   return body + suffix;
 }
+
+/**
+ * Photos filling image slots, by slot name (files in public/images/home).
+ * A slot missing here still shows its placeholder: see PLACEHOLDERS.md.
+ * `position` is the CSS object-position, to keep faces in frame when a slot
+ * crops the photo; `sizes` is the rendered width, for next/image.
+ */
+export const IMAGES: Record<string, { src: string; position?: string; sizes: string }> = {
+  "hero-arrival": { src: "/images/home/hero-arrival.jpg", position: "40% 35%", sizes: "(min-width: 1024px) 72vw, 100vw" },
+  "trust-avatar-1": { src: "/images/home/avatar-trench.jpg", sizes: "44px" },
+  "trust-avatar-2": { src: "/images/home/avatar-couple-woman.jpg", sizes: "44px" },
+  "trust-avatar-3": { src: "/images/home/avatar-student.jpg", sizes: "44px" },
+  "service-sourcing": { src: "/images/home/service-sourcing.jpg", position: "50% 30%", sizes: "(min-width: 768px) 50vw, 100vw" },
+  "service-tracking": { src: "/images/home/service-tracking.jpg", position: "60% 40%", sizes: "(min-width: 768px) 50vw, 100vw" },
+  "result-customer": { src: "/images/home/result-customer.jpg", position: "50% 30%", sizes: "(min-width: 640px) 176px, 100vw" },
+  "process-team": { src: "/images/home/process-team.jpg", sizes: "176px" },
+  "testimonial-hardware": { src: "/images/home/avatar-couple-man.jpg", sizes: "80px" },
+  "testimonial-clinic": { src: "/images/home/avatar-student.jpg", sizes: "80px" },
+  "testimonial-ngo": { src: "/images/home/avatar-street.jpg", sizes: "80px" },
+  "testimonial-agri": { src: "/images/home/avatar-couple-woman.jpg", sizes: "80px" },
+  "insight-landed": { src: "/images/home/insight-landed.jpg", sizes: "(min-width: 1024px) 720px, 100vw" },
+  "insight-consolidation": { src: "/images/home/insight-consolidation.jpg", position: "50% 40%", sizes: "(min-width: 1024px) 220px, 50vw" },
+};

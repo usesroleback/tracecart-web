@@ -22,6 +22,8 @@ export function Insights() {
         {/* TODO: link each note once the blog exists. */}
         <a href="#" className="group relative block overflow-hidden rounded-[var(--hp-corner-media)]">
           <ImageSlot name={`insight-${featured.key}`} ratio="4/3" alt={t(`items.${featured.key}.imageAlt`)} tone="dark" className="h-full min-h-[360px] w-full [&>span]:absolute [&>span]:right-4 [&>span]:top-4" />
+          {/* Keeps the white title readable over a photo. */}
+          <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
           <span className="absolute left-4 top-4 rounded-[var(--hp-radius-chip)] bg-[var(--hp-primary)] px-3 py-1 text-xs font-semibold text-[var(--hp-on-primary)]">{t("featured")}</span>
           <div className="absolute inset-x-0 bottom-0 p-6 text-white">
             <p className="text-sm text-white/70">{meta(featured)}</p>

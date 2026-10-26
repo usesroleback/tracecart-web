@@ -1,5 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { IMAGES } from "./content";
 
 /** `• Label •`, above each section's headline. */
 export function Eyebrow({ children, tone = "light" }: { children: ReactNode; tone?: "light" | "raised" | "dark" }) {
@@ -21,8 +23,8 @@ export function Eyebrow({ children, tone = "light" }: { children: ReactNode; ton
 }
 
 /**
- * An image still to come: a neutral block with its slot name, at its final
- * aspect ratio. Swap for <Image> once the file exists (see PLACEHOLDERS.md).
+ * An image at its final aspect ratio: the slot's photo when IMAGES has one,
+ * otherwise a neutral block with its slot name (see PLACEHOLDERS.md).
  */
 export function ImageSlot({
   name,
@@ -39,21 +41,27 @@ export function ImageSlot({
   className?: string;
   children?: ReactNode;
 }) {
+  const photo = IMAGES[name];
   return (
     <div
       // alt="" is a decorative image, as with <img>.
-      {...(alt ? { role: "img", "aria-label": alt } : { "aria-hidden": true })}
-      data-image-slot={name}
+      {...(photo ? {} : alt ? { role: "img", "aria-label": alt } : { "aria-hidden": true })}
+      // Only empty slots carry data-image-slot, so the page lists what's left.
+      {...(photo ? { "data-image": name } : { "data-image-slot": name })}
       className={`relative flex items-center justify-center overflow-hidden ${
         tone === "dark" ? "bg-[var(--hp-slot-dark)] text-[var(--hp-on-dark-muted)]" : "bg-[var(--hp-slot)] text-[var(--hp-text-muted)]"
       } ${ratio ? "aspect-[var(--hp-ratio)]" : ""} ${className}`}
       // Through a variable, so a responsive class (lg:aspect-auto) can still override it.
       style={ratio ? ({ "--hp-ratio": ratio } as CSSProperties) : undefined}
     >
-      <span aria-hidden className="rb-mono-s px-2 text-center opacity-80">
-        IMG: {name}
-        {ratio ? ` ${ratio.replace("/", ":")}` : ""}
-      </span>
+      {photo ? (
+        <Image src={photo.src} alt={alt} fill sizes={photo.sizes} className="object-cover" style={{ objectPosition: photo.position }} />
+      ) : (
+        <span aria-hidden className="rb-mono-s px-2 text-center opacity-80">
+          IMG: {name}
+          {ratio ? ` ${ratio.replace("/", ":")}` : ""}
+        </span>
+      )}
       {children}
     </div>
   );

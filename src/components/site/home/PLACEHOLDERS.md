@@ -4,7 +4,9 @@ The homepage (`/fr`, `/en`) uses placeholder images, figures, names and links, a
 
 ## Images
 
-Each slot is an `<ImageSlot>` in the file named below. Swap it for a `next/image` with the same `alt` (taken from `messages/{fr,en}/home.json`) and the same aspect ratio.
+Each slot is an `<ImageSlot>` in the file named below. To fill one, put the photo in `public/images/home/` and add its slot name to `IMAGES` in `content.ts`; the slot then renders it with `next/image`, keeping its aspect ratio. Its `alt` comes from `messages/{fr,en}/home.json`: update it to describe the photo.
+
+Filled so far (stock photos, to replace with real customers and team as they agree to appear): `hero-arrival`, `trust-avatar-1…3`, `service-sourcing`, `service-tracking`, `result-customer`, `process-team`, `testimonial-hardware/clinic/ngo/agri`, `insight-landed`, `insight-consolidation`. The table keeps the original brief for each.
 
 | Slot | Ratio | What it should show | File |
 | --- | --- | --- | --- |
