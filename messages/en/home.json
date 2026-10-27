@@ -9,10 +9,6 @@
     "services": "What we do",
     "process": "How it works",
     "ship": "Ship",
-    "more": "Field notes",
-    "results": "Results",
-    "work": "Selected work",
-    "insights": "Insights",
     "account": "My account",
     "cta": "Find what you need",
     "openMenu": "Open the menu",
@@ -30,29 +26,17 @@
     "subtitleRest": "the tools, equipment and parts you're looking for, or move the goods you already have.",
     "cta": "Find what you need",
     "secondary": "Ship goods you already have",
-    "imageAlt": "A smiling customer on a busy street under a clear sky",
-    "cardLabel": "Tools found",
-    "cardDotsLabel": "{on} of {total} requests matched",
-    "cardBody": "Built to find the right tool and get it to you on a date you can plan around.",
-    "cardRowLabel": "Price vs. buying locally",
-    "cardChartLabel": "Requests per week, last twelve weeks"
+    "imageAlt": "A smiling customer on a busy street under a clear sky"
   },
   "finder": {
     "title": "What are you looking for?",
-    "body": "Describe it in your own words or send a photo, even if you don't know its name. A person replies within 4 working hours with options and a delivered price."
-  },
-  "trust": {
-    "text": "Trusted by {customers}+ workshops, clinics, builders and farms across {corridors} corridors",
-    "avatarAlt": "Customer portrait",
-    "logoAlt": "Customer logo"
+    "body": "Describe it in your own words or send a photo, even if you don't know its name."
   },
   "pov": {
     "eyebrow": "Our point of view",
     "before": "Most suppliers sell what they have in stock. Most forwarders sell a truck.",
     "accent": "We start from what you need,",
-    "after": "find the right tool, and bring it to your door for one price.",
-    "teamAlt": "Coordinator portrait",
-    "team": "One person follows your request from the first message to delivery. No catalogue to dig through, no five suppliers to chase."
+    "after": "find the right tool, and bring it to your door for one price."
   },
   "services": {
     "eyebrow": "From the first search to your door",
@@ -66,7 +50,7 @@
       },
       "freight": {
         "title": "Transport",
-        "body": "Already have the goods? We pick them up and move them by sea, rail or road, with the carrier that fits the load and the date.",
+        "body": "Already have the goods? We pick them up and move them with the carrier that fits the load and the date.",
         "imageAlt": "A truck loaded at a consolidation hub"
       },
       "customs": {
@@ -81,66 +65,9 @@
       }
     }
   },
-  "corridors": {
-    "label": "Corridors we run every week",
-    "days": "{min}–{max} days"
-  },
-  "results": {
-    "eyebrow": "Results",
-    "title": "Found, bought, delivered.",
-    "subtitle": "Every request starts with what you need and ends with a signature. Here's the last twelve months.",
-    "onTimeChip": "On time",
-    "onTimeCaption": "Delivered within the promised window",
-    "borderLabel": "Time to find",
-    "borderChip": "Last 90 days",
-    "borderCaption": "Median time to a confirmed product: 29 h → 17 h",
-    "savingLabel": "Average saving vs. buying the same tool locally",
-    "savingImageAlt": "Customer portrait",
-    "savingLogoAlt": "Customer logo",
-    "savingCta": "Read the case study"
-  },
-  "work": {
-    "title": "Selected work",
-    "all": "All case studies",
-    "cta": "View the full case study",
-    "items": {
-      "construction": {
-        "client": "[Client A] Construction supplies",
-        "sector": "Construction",
-        "service": "Sourcing + transport",
-        "summary": "Asked for “the grey tile glue the Turkish builders use”. We identified the brand, bought 6.2 t from the maker and delivered it to Niamey.",
-        "resultLabel": "days door to door, quoted 21–24",
-        "imageAlt": "Pallets of tile adhesive being unloaded"
-      },
-      "clinic": {
-        "client": "[Client B] Clinic network",
-        "sector": "Healthcare",
-        "service": "Transport + customs",
-        "summary": "400 glucometers the clinic had already bought, checked as medical devices, cleared in two days and delivered to N'Djamena.",
-        "resultLabel": "units lost or damaged",
-        "imageAlt": "Boxes of medical devices in a clinic store room"
-      },
-      "agri": {
-        "client": "[Client C] Agri importer",
-        "sector": "Agriculture",
-        "service": "Sourcing + transport + customs",
-        "summary": "Sent us a photo of a worn pump. We found the exact model at the manufacturer, landed it at Antofagasta and trucked it to Santa Cruz.",
-        "resultLabel": "price vs. local resale",
-        "imageAlt": "Irrigation pumps installed in a field"
-      }
-    }
-  },
-  "stats": {
-    "eyebrow": "The numbers behind the work",
-    "shipments": "Requests found and delivered",
-    "corridors": "Corridors run every week",
-    "delivered": "Delivered complete and undamaged"
-  },
   "process": {
     "title": "How it works.",
-    "subtitle": "One person and one price, from your first message to your door.",
-    "imageAlt": "The TraceCart team working on a request",
-    "yearsCaption": "Years of combined experience sourcing and moving goods.",
+    "subtitle": "One delivered price, from your first message to your door.",
     "stepsLabel": "3 simple steps",
     "previous": "Previous step",
     "next": "Next step",
@@ -174,109 +101,25 @@
         "them": "Buy from one, ship with another, pay customs on arrival",
         "us": "One delivered price before you commit, customs shown apart"
       },
-      "contact": {
-        "them": "Chasing the seller, the forwarder and the broker",
-        "us": "One person who answers, and calls you first"
-      },
       "space": {
         "them": "A tracking number that stops at the port",
         "us": "Every step to your door, every delay with a reason"
       }
     },
     "no": "Not with them",
-    "yes": "With TraceCart",
-    "quote": "People don't want a catalogue or a truck. They want the right tool in their hands when they need it. That's the whole job.",
-    "founder": "[Name]",
-    "founderRole": "Founder, TraceCart",
-    "founderAlt": "Portrait of the founder"
-  },
-  "testimonials": {
-    "eyebrow": "Our customers",
-    "title": "Found and delivered, in their words.",
-    "pick": "Show the quote from {name}",
-    "stars": "5 out of 5",
-    "logoAlt": "Customer logo",
-    "items": {
-      "hardware": {
-        "name": "[Name A]",
-        "role": "Owner",
-        "company": "Hardware importer, Niamey",
-        "quote": "I sent a photo of a drill bit I couldn't name. Two days later I had the exact one, at a price that already included delivery."
-      },
-      "clinic": {
-        "name": "[Name B]",
-        "role": "Procurement lead",
-        "company": "Clinic network, N'Djamena",
-        "quote": "They checked our devices before quoting and had the papers ready at the border. Nothing sat in a warehouse waiting for us."
-      },
-      "ngo": {
-        "name": "[Name C]",
-        "role": "Logistics officer",
-        "company": "Humanitarian programme, Almaty",
-        "quote": "We needed generators nobody sold locally. They came back with three options, we picked one, and it arrived on the date they gave us."
-      },
-      "agri": {
-        "name": "[Name D]",
-        "role": "Operations director",
-        "company": "Agri importer, Santa Cruz",
-        "quote": "One person, one price. We stopped juggling three suppliers and a spreadsheet to get pumps inland."
-      }
-    }
-  },
-  "insights": {
-    "eyebrow": "Notes from the field",
-    "title": "Field notes",
-    "all": "View all notes",
-    "featured": "Featured note",
-    "readTime": "{minutes} min read",
-    "items": {
-      "landed": {
-        "category": "Pricing",
-        "title": "Why the delivered price is the only price that matters",
-        "imageAlt": "A cost breakdown open on a laptop"
-      },
-      "border": {
-        "category": "Sourcing",
-        "title": "How to find a tool when you don't know its name",
-        "imageAlt": "A worn part photographed next to a tape measure"
-      },
-      "consolidation": {
-        "category": "Transport",
-        "title": "How grouping shipments cuts the cost of a small order",
-        "imageAlt": "A motorised sprayer wrapped in film, ready to ship"
-      }
-    }
+    "yes": "With TraceCart"
   },
   "closing": {
     "title": "Tell us what you need.",
     "cta": "Find what you need"
   },
   "footer": {
-    "stayTitle": "Stay connected",
-    "stayBody": "One note a month on finding tools, moving goods and what it really costs. No noise.",
-    "emailLabel": "Email address",
-    "emailPlaceholder": "you@company.com",
-    "subscribe": "Subscribe",
-    "subscribeSoon": "Sign-up opens soon",
-    "follow": "Follow us on:",
     "pages": "Pages",
-    "support": "Support",
-    "contact": "Contact",
     "home": "Home",
     "howItWorks": "How it works",
     "ship": "Ship",
-    "insights": "Field notes",
-    "faq": "FAQ",
-    "contactUs": "Contact us",
-    "privacy": "Privacy policy",
-    "terms": "Terms",
-    "email": "hello@tracecart.com",
-    "phone": "+000 00 00 00 00",
-    "cities": "Lomé · Mersin · Antofagasta · Rotterdam",
     "copyright": "© {year} TraceCart",
     "byline": "A Roleback company",
-    "badgesLabel": "Certifications and memberships",
-    "badgeAlt": "Certification badge",
-    "disclaimer": "Product availability and prices are confirmed with the supplier before you pay. Transit times are estimates until quoted, and a quote holds until the date shown on it. Customs duties and taxes are set by the authorities and passed on at cost. Figures and customer stories on this page are illustrative. Trademarks belong to their owners."
+    "disclaimer": "Product availability and prices are confirmed with the supplier before you pay. Transit times are estimates until quoted, and a quote holds until the date shown on it. Customs duties and taxes are set by the authorities and passed on at cost. Trademarks belong to their owners."
   }
 }

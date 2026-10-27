@@ -2,9 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { PROCESS } from "./content";
-import { ImageSlot } from "./primitives";
-import { CountUp, prefersReducedMotion } from "./motion";
+import { prefersReducedMotion } from "./motion";
 
 const STEPS = ["tell", "price", "follow"] as const;
 const ROTATE_MS = 4000;
@@ -33,13 +31,6 @@ export function Process() {
             {t("title")}
           </h2>
           <p className="max-w-[24ch] text-right text-sm text-[var(--hp-text-muted)]">{t("subtitle")}</p>
-        </div>
-        <div className="flex items-end gap-5">
-          <ImageSlot name="process-team" ratio="4/5" alt={t("imageAlt")} className="w-36 shrink-0 rounded-[var(--hp-radius-card)] sm:w-44" />
-          <div className="pb-1">
-            <CountUp figure={PROCESS.years} className="hp-numeral text-7xl" />
-            <p className="mt-3 max-w-[22ch] text-sm leading-snug text-[var(--hp-text-muted)]">{t("yearsCaption")}</p>
-          </div>
         </div>
       </div>
 

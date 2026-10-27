@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Eyebrow, ImageSlot } from "./primitives";
+import { Eyebrow } from "./primitives";
 import { prefersReducedMotion } from "./motion";
 
 /** The statement lights up word by word as it scrolls through the middle of the screen. */
@@ -57,14 +57,6 @@ export function PointOfView() {
       <Eyebrow tone="dark">{t("eyebrow")}</Eyebrow>
       <div className="mt-8">
         <Statement parts={[{ text: t("before") }, { text: t("accent"), accent: true }, { text: t("after") }]} />
-      </div>
-      <div className="mt-12 flex flex-col gap-6 sm:flex-row sm:items-center">
-        <div className="flex gap-2">
-          {[1, 2, 3, 4].map((n) => (
-            <ImageSlot key={n} name={`team-${n}`} ratio="1/1" alt={t("teamAlt")} tone="dark" className="w-16 rounded-[var(--hp-radius-card)] sm:w-20 [&>span]:text-[9px]" />
-          ))}
-        </div>
-        <p className="max-w-sm text-[15px] leading-relaxed text-[var(--hp-on-dark-muted)]">{t("team")}</p>
       </div>
     </div>
   );

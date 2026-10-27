@@ -9,10 +9,6 @@
     "services": "Ce que nous faisons",
     "process": "Comment ça marche",
     "ship": "Expédier",
-    "more": "Terrain",
-    "results": "Résultats",
-    "work": "Réalisations",
-    "insights": "Notes de terrain",
     "account": "Mon compte",
     "cta": "Trouver ce qu'il vous faut",
     "openMenu": "Ouvrir le menu",
@@ -30,29 +26,17 @@
     "subtitleRest": "les outils, équipements et pièces que vous cherchez, ou transporter les marchandises que vous avez déjà.",
     "cta": "Trouver ce qu'il vous faut",
     "secondary": "Expédier des marchandises que vous avez déjà",
-    "imageAlt": "Une cliente souriante dans une rue animée, sous un ciel clair",
-    "cardLabel": "Outils trouvés",
-    "cardDotsLabel": "{on} demandes sur {total} trouvées",
-    "cardBody": "Pensé pour trouver le bon outil et vous le livrer à une date sur laquelle vous pouvez compter.",
-    "cardRowLabel": "Prix face à l'achat local",
-    "cardChartLabel": "Demandes par semaine, douze dernières semaines"
+    "imageAlt": "Une cliente souriante dans une rue animée, sous un ciel clair"
   },
   "finder": {
     "title": "Que cherchez-vous ?",
-    "body": "Décrivez-le avec vos mots ou envoyez une photo, même si vous ne connaissez pas son nom. Une personne vous répond sous 4 heures ouvrées avec des options et un prix livré."
-  },
-  "trust": {
-    "text": "Plus de {customers} ateliers, cliniques, entreprises du bâtiment et exploitations agricoles nous font confiance, sur {corridors} corridors",
-    "avatarAlt": "Portrait d'un client",
-    "logoAlt": "Logo d'un client"
+    "body": "Décrivez-le avec vos mots ou envoyez une photo, même si vous ne connaissez pas son nom."
   },
   "pov": {
     "eyebrow": "Notre point de vue",
     "before": "La plupart des fournisseurs vendent ce qu'ils ont en stock. La plupart des transitaires vendent un camion.",
     "accent": "Nous partons de ce dont vous avez besoin,",
-    "after": "trouvons le bon outil et le livrons à votre porte, pour un seul prix.",
-    "teamAlt": "Portrait d'un coordinateur",
-    "team": "Une seule personne suit votre demande, du premier message à la livraison. Pas de catalogue à fouiller, pas cinq fournisseurs à relancer."
+    "after": "trouvons le bon outil et le livrons à votre porte, pour un seul prix."
   },
   "services": {
     "eyebrow": "De la première recherche à votre porte",
@@ -66,7 +50,7 @@
       },
       "freight": {
         "title": "Transport",
-        "body": "Vous avez déjà la marchandise ? Nous l'enlevons et la transportons par mer, rail ou route, avec le transporteur adapté au chargement et à la date.",
+        "body": "Vous avez déjà la marchandise ? Nous l'enlevons et la transportons avec le transporteur adapté au chargement et à la date.",
         "imageAlt": "Un camion chargé dans un hub de groupage"
       },
       "customs": {
@@ -81,66 +65,9 @@
       }
     }
   },
-  "corridors": {
-    "label": "Corridors desservis chaque semaine",
-    "days": "{min} à {max} jours"
-  },
-  "results": {
-    "eyebrow": "Résultats",
-    "title": "Trouvé, acheté, livré.",
-    "subtitle": "Chaque demande commence par ce dont vous avez besoin et se termine par une signature. Voici les douze derniers mois.",
-    "onTimeChip": "À l'heure",
-    "onTimeCaption": "Livrés dans la fenêtre promise",
-    "borderLabel": "Délai pour trouver",
-    "borderChip": "90 derniers jours",
-    "borderCaption": "Délai médian jusqu'au produit confirmé : 29 h → 17 h",
-    "savingLabel": "Économie moyenne face à l'achat du même outil sur place",
-    "savingImageAlt": "Portrait d'un client",
-    "savingLogoAlt": "Logo d'un client",
-    "savingCta": "Lire l'étude de cas"
-  },
-  "work": {
-    "title": "Réalisations",
-    "all": "Toutes les études de cas",
-    "cta": "Voir l'étude de cas complète",
-    "items": {
-      "construction": {
-        "client": "[Client A] Matériaux de construction",
-        "sector": "Construction",
-        "service": "Sourcing + transport",
-        "summary": "Demande : « la colle à carrelage grise qu'utilisent les maçons turcs ». Nous avons identifié la marque, acheté 6,2 t au fabricant et livré à Niamey.",
-        "resultLabel": "jours de porte à porte, annoncés 21 à 24",
-        "imageAlt": "Des palettes de colle à carrelage déchargées"
-      },
-      "clinic": {
-        "client": "[Client B] Réseau de cliniques",
-        "sector": "Santé",
-        "service": "Transport + douane",
-        "summary": "400 glucomètres déjà achetés par la clinique, contrôlés comme dispositifs médicaux, dédouanés en deux jours et livrés à N'Djamena.",
-        "resultLabel": "unité perdue ou abîmée",
-        "imageAlt": "Des cartons de dispositifs médicaux dans la réserve d'une clinique"
-      },
-      "agri": {
-        "client": "[Client C] Importateur agricole",
-        "sector": "Agriculture",
-        "service": "Sourcing + transport + douane",
-        "summary": "Une photo de pompe usée. Nous avons trouvé le modèle exact chez le fabricant, débarqué à Antofagasta et acheminé par camion jusqu'à Santa Cruz.",
-        "resultLabel": "de prix face à la revente locale",
-        "imageAlt": "Des pompes d'irrigation installées dans un champ"
-      }
-    }
-  },
-  "stats": {
-    "eyebrow": "Les chiffres derrière le travail",
-    "shipments": "Demandes trouvées et livrées",
-    "corridors": "Corridors desservis chaque semaine",
-    "delivered": "Livrés complets et en bon état"
-  },
   "process": {
     "title": "Comment ça marche.",
-    "subtitle": "Une personne et un prix, de votre premier message à votre porte.",
-    "imageAlt": "L'équipe TraceCart travaille sur une demande",
-    "yearsCaption": "Années d'expérience cumulée à trouver et acheminer des marchandises.",
+    "subtitle": "Un prix livré, de votre premier message à votre porte.",
     "stepsLabel": "3 étapes simples",
     "previous": "Étape précédente",
     "next": "Étape suivante",
@@ -174,109 +101,25 @@
         "them": "Acheter chez l'un, expédier avec l'autre, payer la douane à l'arrivée",
         "us": "Un prix livré avant de vous engager, la douane affichée à part"
       },
-      "contact": {
-        "them": "Relancer le vendeur, le transitaire et le courtier",
-        "us": "Une personne qui répond, et qui vous appelle en premier"
-      },
       "space": {
         "them": "Un numéro de suivi qui s'arrête au port",
         "us": "Chaque étape jusqu'à votre porte, chaque retard avec son motif"
       }
     },
     "no": "Pas chez eux",
-    "yes": "Avec TraceCart",
-    "quote": "Personne ne veut un catalogue ou un camion. On veut le bon outil entre les mains au moment où on en a besoin. C'est tout notre métier.",
-    "founder": "[Nom]",
-    "founderRole": "Fondateur, TraceCart",
-    "founderAlt": "Portrait du fondateur"
-  },
-  "testimonials": {
-    "eyebrow": "Nos clients",
-    "title": "Trouvé et livré, selon eux.",
-    "pick": "Afficher le témoignage de {name}",
-    "stars": "5 sur 5",
-    "logoAlt": "Logo d'un client",
-    "items": {
-      "hardware": {
-        "name": "[Nom A]",
-        "role": "Gérant",
-        "company": "Importateur de quincaillerie, Niamey",
-        "quote": "J'ai envoyé la photo d'un foret dont je ne connaissais pas le nom. Deux jours plus tard, j'avais le bon, à un prix qui comprenait déjà la livraison."
-      },
-      "clinic": {
-        "name": "[Nom B]",
-        "role": "Responsable achats",
-        "company": "Réseau de cliniques, N'Djamena",
-        "quote": "Ils ont contrôlé nos dispositifs avant le devis et les documents étaient prêts à la frontière. Rien n'a dormi dans un entrepôt."
-      },
-      "ngo": {
-        "name": "[Nom C]",
-        "role": "Chargé de logistique",
-        "company": "Programme humanitaire, Almaty",
-        "quote": "Il nous fallait des groupes électrogènes introuvables sur place. Ils sont revenus avec trois options, nous en avons choisi une, et elle est arrivée à la date annoncée."
-      },
-      "agri": {
-        "name": "[Nom D]",
-        "role": "Directeur des opérations",
-        "company": "Importateur agricole, Santa Cruz",
-        "quote": "Une personne, un prix. Nous ne jonglons plus entre trois fournisseurs et un tableur pour acheminer des pompes."
-      }
-    }
-  },
-  "insights": {
-    "eyebrow": "Notes de terrain",
-    "title": "Notes de terrain",
-    "all": "Toutes les notes",
-    "featured": "À la une",
-    "readTime": "{minutes} min de lecture",
-    "items": {
-      "landed": {
-        "category": "Prix",
-        "title": "Pourquoi le prix livré est le seul qui compte",
-        "imageAlt": "Un tableau de coûts ouvert sur un ordinateur portable"
-      },
-      "border": {
-        "category": "Sourcing",
-        "title": "Comment trouver un outil dont on ne connaît pas le nom",
-        "imageAlt": "Une pièce usée photographiée à côté d'un mètre ruban"
-      },
-      "consolidation": {
-        "category": "Transport",
-        "title": "Comment le groupage réduit le coût d'une petite commande",
-        "imageAlt": "Un pulvérisateur motorisé emballé sous film, prêt à partir"
-      }
-    }
+    "yes": "Avec TraceCart"
   },
   "closing": {
     "title": "Dites-nous ce qu'il vous faut.",
     "cta": "Trouver ce qu'il vous faut"
   },
   "footer": {
-    "stayTitle": "Restons en contact",
-    "stayBody": "Une note par mois sur la recherche d'outils, le transport et ce que ça coûte vraiment. Rien de plus.",
-    "emailLabel": "Adresse e-mail",
-    "emailPlaceholder": "vous@entreprise.com",
-    "subscribe": "S'abonner",
-    "subscribeSoon": "Inscriptions bientôt ouvertes",
-    "follow": "Suivez-nous :",
     "pages": "Pages",
-    "support": "Aide",
-    "contact": "Contact",
     "home": "Accueil",
     "howItWorks": "Comment ça marche",
     "ship": "Expédier",
-    "insights": "Notes de terrain",
-    "faq": "FAQ",
-    "contactUs": "Nous contacter",
-    "privacy": "Confidentialité",
-    "terms": "Conditions",
-    "email": "hello@tracecart.com",
-    "phone": "+000 00 00 00 00",
-    "cities": "Lomé · Mersin · Antofagasta · Rotterdam",
     "copyright": "© {year} TraceCart",
     "byline": "Une société Roleback",
-    "badgesLabel": "Certifications et adhésions",
-    "badgeAlt": "Badge de certification",
-    "disclaimer": "La disponibilité et le prix des produits sont confirmés avec le fournisseur avant tout paiement. Les délais sont des estimations jusqu'au devis, et un devis vaut jusqu'à la date qu'il indique. Les droits et taxes de douane sont fixés par les autorités et refacturés à l'identique. Les chiffres et témoignages de cette page sont illustratifs. Les marques appartiennent à leurs propriétaires."
+    "disclaimer": "La disponibilité et le prix des produits sont confirmés avec le fournisseur avant tout paiement. Les délais sont des estimations jusqu'au devis, et un devis vaut jusqu'à la date qu'il indique. Les droits et taxes de douane sont fixés par les autorités et refacturés à l'identique. Les marques appartiennent à leurs propriétaires."
   }
 }

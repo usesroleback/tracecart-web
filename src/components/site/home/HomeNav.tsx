@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { PillLink } from "./primitives";
@@ -10,12 +10,6 @@ const LINKS = [
   { key: "services", href: "#services" },
   { key: "process", href: "#process" },
   { key: "ship", href: "/ship" },
-] as const;
-
-const MORE = [
-  { key: "results", href: "#results" },
-  { key: "work", href: "#work" },
-  { key: "insights", href: "#insights" },
 ] as const;
 
 function NavLink({
@@ -50,31 +44,19 @@ export function HomeNav() {
   const locale = useLocale();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLLIElement>(null);
   const other = locale === "fr" ? "en" : "fr";
   // Section anchors live on the homepage; from /ship or /account they go back to it.
   const onHome = pathname === "/";
   const to = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
   const isActive = (key: string) => (key === "home" ? onHome : key === "ship" ? pathname.startsWith("/ship") : false);
 
-  // Close the dropdown on outside click or Escape; Escape closes the mobile menu too.
+  // Escape closes the mobile menu.
   useEffect(() => {
-    const onDown = (e: MouseEvent) => {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
-    };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setMoreOpen(false);
-        setMenuOpen(false);
-      }
+      if (e.key === "Escape") setMenuOpen(false);
     };
-    document.addEventListener("mousedown", onDown);
     document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, []);
 
   useEffect(() => {
@@ -109,31 +91,6 @@ export function HomeNav() {
                 </NavLink>
               </li>
             ))}
-            <li className="relative" ref={moreRef}>
-              <button
-                type="button"
-                aria-expanded={moreOpen}
-                aria-controls="hp-more"
-                onClick={() => setMoreOpen((o) => !o)}
-                className="flex items-center gap-1 rounded-[var(--hp-radius-chip)] px-4 py-2 text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]"
-              >
-                {t("more")}
-                <svg viewBox="0 0 12 12" aria-hidden className={`size-3 transition-transform ${moreOpen ? "rotate-180" : ""}`}>
-                  <path d="M3 4.5 6 7.5l3-3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              {moreOpen && (
-                <ul id="hp-more" className="absolute left-0 top-full mt-2 w-48 rounded-[var(--hp-radius-card)] bg-[var(--hp-dark)] p-2 text-[var(--hp-on-dark)] shadow-[var(--hp-shadow)]">
-                  {MORE.map((l) => (
-                    <li key={l.key}>
-                      <NavLink href={to(l.href)} onClick={() => setMoreOpen(false)} className="block rounded-[var(--hp-radius-chip)] px-3 py-2 hover:bg-white/10">
-                        {t(l.key)}
-                      </NavLink>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
           </ul>
         </nav>
 
@@ -171,7 +128,7 @@ export function HomeNav() {
         <div id="hp-menu" className="fixed inset-x-0 bottom-0 top-[84px] z-40 overflow-y-auto bg-[var(--hp-dark)] px-6 pb-10 pt-6 text-[var(--hp-on-dark)] lg:hidden">
           <nav aria-label={t("label")}>
             <ul className="space-y-1 text-3xl font-semibold tracking-tight">
-              {[...LINKS, ...MORE].map((l) => (
+              {LINKS.map((l) => (
                 <li key={l.key}>
                   <NavLink href={to(l.href)} onClick={() => setMenuOpen(false)} className="block py-2">
                     {t(l.key)}

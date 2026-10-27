@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
-import { Eyebrow, ImageSlot, PillLink, Placeholder } from "./primitives";
+import { Eyebrow, PillLink } from "./primitives";
 import { Reveal } from "./motion";
 
-const ROWS = ["price", "tracking", "contact", "space"] as const;
+const ROWS = ["price", "tracking", "space"] as const;
 
 function Cross() {
   return (
@@ -73,18 +73,6 @@ export function Comparison({ cta }: { cta: string }) {
           </div>
         </Reveal>
 
-        <Reveal className="mt-14">
-          <figure className="flex flex-col gap-6 rounded-[var(--hp-radius-card)] bg-[var(--hp-dark-raised)] p-4 sm:flex-row sm:items-center sm:p-5">
-            <ImageSlot name="founder" ratio="1/1" alt={t("founderAlt")} tone="dark" className="w-28 shrink-0 rounded-[var(--hp-radius-card)] sm:w-40" />
-            <div className="sm:pr-4">
-              <span aria-hidden className="block text-5xl leading-none text-[var(--hp-primary)]">“</span>
-              <blockquote className="-mt-2 text-xl leading-snug tracking-tight sm:text-2xl">{t("quote")}</blockquote>
-              <figcaption className="mt-4 text-sm text-[var(--hp-on-dark-muted)]">
-                <Placeholder className="font-semibold text-[var(--hp-on-dark)]">{t("founder")}</Placeholder> · {t("founderRole")}
-              </figcaption>
-            </div>
-          </figure>
-        </Reveal>
       </div>
     </section>
   );

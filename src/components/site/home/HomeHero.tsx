@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import { Eyebrow, ImageSlot, PillLink } from "./primitives";
-import { HeroMetricCard } from "./HeroMetricCard";
 
 /** The chip inside the headline: a parcel on its way (»»). Decorative: the sentence reads without it. */
 function ParcelChip() {
@@ -47,10 +46,7 @@ export function HomeHero() {
         </div>
       </div>
 
-      <div className="mt-12 grid gap-3 lg:grid-cols-[72fr_28fr]">
-        <ImageSlot name="hero-arrival" ratio="16/9" alt={t("imageAlt")} className="rounded-[var(--hp-corner-media)] lg:aspect-auto lg:h-full" />
-        <HeroMetricCard />
-      </div>
+      <ImageSlot name="hero-arrival" ratio="16/9" alt={t("imageAlt")} className="mt-12 rounded-[var(--hp-corner-media)] lg:aspect-[21/9]" />
     </section>
   );
 }
