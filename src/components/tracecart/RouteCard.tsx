@@ -76,6 +76,13 @@ export function RouteCard({ order, onChanged }: { order: Order; onChanged: () =>
                         {o.service.name} <span className="font-normal text-ink-muted">· {tl(`transportMode.${o.service.mode}`)} · {o.service.partner.name}</span>
                       </p>
                       <p className="text-[13px]">{t("route.card.arrival", { window: window(o.etaFrom, o.etaTo) })}</p>
+                      <p className="text-[13px] text-ink-muted">
+                        {o.price.priced
+                          ? t("route.card.priced", { amount: f.money(o.price.amount, o.price.currency) })
+                          : o.price.reason === "noWeight"
+                            ? t("route.card.noWeight")
+                            : t("route.card.byHand")}
+                      </p>
                       <p className="mt-1 flex flex-wrap gap-1">
                         {o.meetsDeadline === true && <Badge variant="positive">{t("route.card.onTime")}</Badge>}
                         {o.meetsDeadline === false && <Badge variant={data.requiredByIsHard ? "critical" : "attn"}>{t("route.card.late")}</Badge>}

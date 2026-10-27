@@ -57,7 +57,10 @@
       "choose": "Choisir",
       "chosen": "Choisi",
       "newQuote": "Un autre transporteur devra refaire sa cotation.",
-      "frozen": "L'itinéraire ne change plus une fois le devis envoyé."
+      "frozen": "L'itinéraire ne change plus une fois le devis envoyé.",
+      "byHand": "Coté par le transporteur",
+      "priced": "{amount} selon le barème",
+      "noWeight": "Barème : pesez la marchandise pour chiffrer"
     }
   },
   "card": {
@@ -207,7 +210,8 @@
     "note": "Note (optionnel)",
     "total": "Total",
     "update": "Mettre à jour la cotation",
-    "send": "Envoyer la cotation"
+    "send": "Envoyer la cotation",
+    "fromRateCard": "Chiffrée avec les tarifs du transporteur. Envoyer une cotation ici les remplace pour cette commande."
   },
   "location": {
     "title": "Où est le colis",
@@ -409,7 +413,8 @@
       "corridor": "Trajet",
       "limits": "Limites",
       "transit": "Délai",
-      "actions": "Actions"
+      "actions": "Actions",
+      "rates": "Tarifs"
     },
     "anyHub": "Tout hub",
     "days": "{min}–{max} j",
@@ -437,6 +442,38 @@
       "priority": "Priorité",
       "notes": "Notes"
     },
-    "myHub": "Mon hub ({city})"
+    "myHub": "Mon hub ({city})",
+    "ownTitle": "Mes routes et tarifs",
+    "ownSubtitle": "Où vous transportez, comment, en combien de temps et à quel prix. TraceCart vous confie les commandes que vos routes peuvent prendre, et les chiffre avec vos tarifs pour que vous n'ayez pas à coter chacune. Sans tarifs, vous cotez à la main.",
+    "ownNew": "Nouvelle route",
+    "ownEmpty": "Aucune route pour le moment. Ajoutez les trajets que vous desservez, un par mode (route, air, mer…), avec leurs tarifs.",
+    "rates": {
+      "none": "Cotation à la main",
+      "fromPerKg": "Dès {amount}/kg",
+      "fromFlat": "{amount} jusqu'à {kg} kg",
+      "bands": "{count, plural, one {# tranche} other {# tranches}}",
+      "min": "min {amount}",
+      "surcharges": "{count, plural, one {# supplément} other {# suppléments}}",
+      "title": "Tarifs",
+      "intro": "Les commandes sur cette route sont chiffrées avec ces tarifs dès qu'elles sont pesées. Laissez vide pour coter chaque commande à la main. Une cotation saisie sur une commande remplace toujours les tarifs pour cette commande.",
+      "currency": "Devise",
+      "baseFee": "Frais fixes par envoi",
+      "minCharge": "Minimum de perception",
+      "divisor": "Diviseur volumétrique",
+      "divisorHint": "L × l × h (cm) ÷ ce nombre = poids volumétrique ; le plus lourd des deux est facturé. En général 5000 en aérien, 6000 en routier. Vide : poids réel seulement.",
+      "bandsTitle": "Tranches de poids",
+      "bandsHint": "Chaque tranche va jusqu'à son poids. Laissez la dernière sans limite pour couvrir tout ce qui est plus lourd.",
+      "upToKg": "Jusqu'à (kg)",
+      "noUpperLimit": "Sans limite",
+      "kind": "Type de prix",
+      "perKg": "Par kg",
+      "flat": "Forfait",
+      "amount": "Montant",
+      "addBand": "Ajouter une tranche",
+      "removeBand": "Retirer",
+      "surchargesTitle": "Suppléments par marchandise",
+      "noSurcharge": "Aucun",
+      "fixed": "Fixe"
+    }
   }
 }

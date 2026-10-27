@@ -62,6 +62,7 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
       <p className="rb-overline">
         {existing ? t("titleEdit") : t("title")}
       </p>
+      {existing?.fromRateCard && <p className="text-[13px] text-ink-muted">{t("fromRateCard")}</p>}
       <div className="space-y-2">
         {lineItems.map((li, i) => (
           <div key={i} className="flex gap-2">

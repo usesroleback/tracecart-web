@@ -1,11 +1,12 @@
-import { CarriersDashboard } from "./CarriersDashboard";
+import { CarrierServices, Carrier } from "@/components/tracecart/CarrierServices";
 import { serverGet } from "@/lib/serverApi";
-import { CarrierService } from "@/lib/types";
+import { CarrierService, Hub } from "@/lib/types";
 
 export default async function CarriersPage() {
-  const [services, carriers] = await Promise.all([
+  const [services, carriers, hubs] = await Promise.all([
     serverGet<CarrierService[]>("/carrier-services"),
-    serverGet<{ id: string; name: string; email: string; phone: string | null }[]>("/carrier-services/carriers"),
+    serverGet<Carrier[]>("/carrier-services/carriers"),
+    serverGet<Hub[]>("/hubs"),
   ]);
-  return <CarriersDashboard initialServices={services ?? []} carriers={carriers ?? []} />;
+  return <CarrierServices view="admin" initialServices={services ?? []} carriers={carriers ?? []} hubs={hubs ?? []} />;
 }

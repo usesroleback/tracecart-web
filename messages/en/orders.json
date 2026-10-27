@@ -57,7 +57,10 @@
       "choose": "Choose",
       "chosen": "Chosen",
       "newQuote": "Another carrier will need to quote again.",
-      "frozen": "The route doesn't change once the quote is out."
+      "frozen": "The route doesn't change once the quote is out.",
+      "byHand": "Quoted by the carrier",
+      "priced": "{amount} from the rate card",
+      "noWeight": "Rate card: weigh the goods to price"
     }
   },
   "card": {
@@ -207,7 +210,8 @@
     "note": "Note (optional)",
     "total": "Total",
     "update": "Update the quote",
-    "send": "Send the quote"
+    "send": "Send the quote",
+    "fromRateCard": "Priced from the carrier's rates. Sending a quote here replaces them for this order."
   },
   "location": {
     "title": "Where the parcel is",
@@ -409,7 +413,8 @@
       "corridor": "Corridor",
       "limits": "Limits",
       "transit": "Transit",
-      "actions": "Actions"
+      "actions": "Actions",
+      "rates": "Rates"
     },
     "anyHub": "Any hub",
     "days": "{min}–{max} d",
@@ -437,6 +442,38 @@
       "priority": "Priority",
       "notes": "Notes"
     },
-    "myHub": "My hub ({city})"
+    "myHub": "My hub ({city})",
+    "ownTitle": "My routes and rates",
+    "ownSubtitle": "Where you carry, how, how fast, and at what price. TraceCart sends you the orders your routes fit, and prices them from your rates so you don't have to quote each one. Without rates, you quote by hand.",
+    "ownNew": "New route",
+    "ownEmpty": "No routes yet. Add the corridors you serve, one per mode (road, air, sea…), with their rates.",
+    "rates": {
+      "none": "Quoted by hand",
+      "fromPerKg": "From {amount}/kg",
+      "fromFlat": "{amount} up to {kg} kg",
+      "bands": "{count, plural, one {# band} other {# bands}}",
+      "min": "min {amount}",
+      "surcharges": "{count, plural, one {# surcharge} other {# surcharges}}",
+      "title": "Rates",
+      "intro": "Orders on this route are priced from these rates once they're weighed. Leave them empty to quote each order by hand. A quote you enter on an order always replaces the rates for that order.",
+      "currency": "Currency",
+      "baseFee": "Fixed fee per shipment",
+      "minCharge": "Minimum charge",
+      "divisor": "Volumetric divisor",
+      "divisorHint": "L × W × H (cm) ÷ this = volumetric kg; the heavier of that and the real weight is charged. Usually 5000 for air, 6000 for road. Empty: real weight only.",
+      "bandsTitle": "Weight bands",
+      "bandsHint": "Each band covers up to its weight. Leave the last one without a limit to cover anything heavier.",
+      "upToKg": "Up to (kg)",
+      "noUpperLimit": "No limit",
+      "kind": "Price type",
+      "perKg": "Per kg",
+      "flat": "Flat",
+      "amount": "Amount",
+      "addBand": "Add a band",
+      "removeBand": "Remove",
+      "surchargesTitle": "Surcharges by goods",
+      "noSurcharge": "None",
+      "fixed": "Fixed"
+    }
   }
 }

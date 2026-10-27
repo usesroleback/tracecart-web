@@ -37,7 +37,8 @@
     "deliveries": "Livraisons",
     "label": "Navigation principale",
     "pricing": "Tarifs",
-    "carriers": "Transporteurs"
+    "carriers": "Transporteurs",
+    "routes": "Mes routes et tarifs"
   },
   "notifications": {
     "title": "Notifications",

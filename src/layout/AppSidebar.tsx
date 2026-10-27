@@ -18,6 +18,7 @@ import {
   DsHomeIcon,
   DsHubIcon,
   DsPackageIcon,
+  DsRouteIcon,
   DsSearchIcon,
   DsTruckIcon,
 } from "../icons/index";
@@ -70,13 +71,14 @@ const ADMIN_NAV: NavGroup[] = [
   },
 ];
 
-// Two entries: the steps (à coter, à gérer, en route…) are tabs on Livraisons.
+// Deliveries and the carrier's own routes and rates. The steps (à coter, à gérer, en route…) are tabs on Livraisons.
 // The count is what's waiting on the carrier: quotes to submit + parcels to handle.
 const CARRIER_NAV: NavGroup[] = [
   {
     items: [
       { icon: <DsHomeIcon />, name: "overview", path: "/dashboard" },
       { icon: <DsTruckIcon />, name: "deliveries", path: "/deliveries", count: (c) => sum(c, ["QUOTING", "CONFIRMED_HUB"]) },
+      { icon: <DsRouteIcon />, name: "routes", path: "/routes" },
     ],
   },
 ];

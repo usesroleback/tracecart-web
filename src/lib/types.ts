@@ -103,6 +103,8 @@ export interface LogisticsQuote {
   currency: string;
   lineItems: LogisticsQuoteLineItem[];
   note: string | null;
+  /** Priced from the carrier's rate card rather than entered by hand. */
+  fromRateCard: boolean;
   status: "SUBMITTED" | "ACCEPTED" | "REVISED";
   createdAt: string;
 }
@@ -233,7 +235,20 @@ export interface CarrierService {
   handlingDays: number;
   priority: number;
   notes: string | null;
+  /** Rate card (docs/design/catalogue-pricing-and-revenue.md §2); no currency or bands: quoted by hand. */
+  rateCurrency: string | null;
+  baseFee: string | null;
+  minCharge: string | null;
+  volumetricDivisor: number | null;
+  weightBands: { upToKg: number | null; perKg?: number; flat?: number }[] | null;
+  surcharges: { flag: HandlingFlag; percent?: number; fixed?: number }[] | null;
+  ratesUpdatedAt: string | null;
 }
+
+/** A carrier's price for an order from its rate card, or why there's none. */
+export type TransportPrice =
+  | { priced: true; amount: number; currency: string; chargeableWeightKg: number }
+  | { priced: false; reason: "noRateCard" | "noWeight" | "noBand" };
 
 export type RouteBlocker = "inactive" | "otherHub" | "otherCountry" | "tooHeavy" | "tooLong" | "refusedGoods";
 
@@ -250,6 +265,7 @@ export interface RouteOptions {
     etaFrom: string;
     etaTo: string;
     meetsDeadline: boolean | null;
+    price: TransportPrice;
     service: { id: string; name: string; mode: TransportMode; destinationCountry: string; partner: { id: string; name: string; phone: string | null }; originHub: { id: string; name: string; city: string } | null };
   }[];
 }
