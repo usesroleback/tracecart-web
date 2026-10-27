@@ -10,7 +10,7 @@
     "process": "Comment ça marche",
     "ship": "Expédier",
     "account": "Mon compte",
-    "cta": "Trouver ce qu'il vous faut",
+    "cta": "Rechercher un outil",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "language": "English",
@@ -24,9 +24,9 @@
     "subtitleChip2": "Acheter",
     "subtitleChip3": "Livrer",
     "subtitleRest": "les outils, équipements et pièces que vous cherchez, ou transporter les marchandises que vous avez déjà.",
-    "cta": "Trouver ce qu'il vous faut",
-    "secondary": "Expédier des marchandises que vous avez déjà",
-    "imageAlt": "Une cliente souriante dans une rue animée, sous un ciel clair"
+    "cta": "Rechercher un outil",
+    "secondary": "Expédier",
+    "imageAlt": "Une femme en lunettes de protection perce un mur"
   },
   "finder": {
     "title": "Que cherchez-vous ?",
@@ -111,7 +111,7 @@
   },
   "closing": {
     "title": "Dites-nous ce qu'il vous faut.",
-    "cta": "Trouver ce qu'il vous faut"
+    "cta": "Rechercher un outil"
   },
   "footer": {
     "pages": "Pages",

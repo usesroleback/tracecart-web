@@ -5,7 +5,7 @@
  * crops the photo; `sizes` is the rendered width, for next/image.
  */
 export const IMAGES: Record<string, { src: string; position?: string; sizes: string }> = {
-  "hero-arrival": { src: "/images/home/hero-arrival.jpg", position: "40% 35%", sizes: "100vw" },
+  "hero-arrival": { src: "/images/home/hero-drill.jpg", position: "50% 30%", sizes: "100vw" },
   "service-sourcing": { src: "/images/home/service-sourcing.jpg", position: "50% 30%", sizes: "(min-width: 768px) 50vw, 100vw" },
   "service-tracking": { src: "/images/home/service-tracking.jpg", position: "60% 40%", sizes: "(min-width: 768px) 50vw, 100vw" },
 };
