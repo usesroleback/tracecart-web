@@ -54,5 +54,68 @@
     "BUY_ON_BEHALF": "Purchase for the customer",
     "CUSTOMER_OWNED": "Transport only"
   },
-  "source": "Source: {source}"
+  "source": "Source: {source}",
+  "settings": {
+    "title": "What prices are built from",
+    "subtitle": "Beyond carriers' rates and the rules above: how TraceCart earns on this hub, exchange rates, customs rates, and the weight assumed for a product of a category.",
+    "failed": "Couldn't save",
+    "margins": {
+      "title": "Margins — {hub}",
+      "intro": "How TraceCart earns on orders from this hub, in {currency}. All of it stays inside the customer's single delivered price. A fee set by hand on an order replaces the tiers.",
+      "tiers": "Fee on the product, by value",
+      "tiersHint": "Each tier covers products up to its value in {currency}; leave the last without a limit. Without tiers, the default percentage applies.",
+      "upTo": "Up to ({currency})",
+      "noLimit": "No limit",
+      "percent": "Percent",
+      "addTier": "Add a tier",
+      "remove": "Remove",
+      "min": "Minimum fee per order ({currency})",
+      "markup": "Markup on transport (%)",
+      "markupHint": "Added on top of the carrier's price.",
+      "buffer": "Price buffer (%)",
+      "bufferHint": "Of the product price: absorbs supplier price changes and weight differences, so staff can buy without going back to the customer.",
+      "save": "Save the margins"
+    },
+    "fx": {
+      "title": "Exchange rates",
+      "intro": "Used to convert a carrier's quote, a rule or customs figures in another currency, and supplier prices. A rate converts both ways. There's no live feed: keep them current.",
+      "from": "From",
+      "rate": "Rate",
+      "to": "To",
+      "source": "Source (optional)",
+      "save": "Save the rate",
+      "remove": "Remove"
+    },
+    "customs": {
+      "title": "Customs rates",
+      "intro": "Duties and taxes estimated by destination and product category (or any category), as a percentage of the goods and transport, plus the broker fee. Passed on at cost and shown apart.",
+      "anyCategory": "Any category",
+      "summary": "duties {duty}, taxes {tax}",
+      "broker": "broker {amount}",
+      "off": "Off",
+      "edit": "Edit",
+      "disable": "Switch off",
+      "enable": "Switch on",
+      "country": "Destination country",
+      "category": "Category",
+      "duty": "Duties (%)",
+      "tax": "Taxes (%)",
+      "brokerFee": "Broker fee",
+      "currency": "Currency",
+      "add": "Add the rate",
+      "update": "Save the rate",
+      "cancel": "Cancel"
+    },
+    "categories": {
+      "title": "Weight by category",
+      "intro": "Packed weight and size per unit assumed for a product of this category when it has none of its own, so it can be priced. The hub weighs the goods before the carrier leg.",
+      "category": "Category",
+      "weight": "Weight (kg)",
+      "length": "Length (cm)",
+      "width": "Width (cm)",
+      "height": "Height (cm)",
+      "save": "Save",
+      "remove": "Remove"
+    }
+  }
 }

@@ -407,7 +407,32 @@ export const PRICE_COMPONENTS = [
 export type PriceComponent = (typeof PRICE_COMPONENTS)[number];
 export const PRICE_METHODS = ["FIXED", "PER_UNIT", "PER_PACKAGE", "PER_KG", "PERCENT_OF_PRODUCT", "PERCENT_OF_DECLARED_VALUE"] as const;
 export type PriceMethod = (typeof PRICE_METHODS)[number];
-export type QuoteLineComponent = PriceComponent | "PRODUCT" | "TRANSPORT" | "PLATFORM_FEE" | "CUSTOMS_DUTIES" | "CUSTOMS_BROKER";
+export type QuoteLineComponent = PriceComponent | "PRODUCT" | "TRANSPORT" | "TRANSPORT_MARGIN" | "PLATFORM_FEE" | "PRICE_BUFFER" | "CUSTOMS_DUTIES" | "CUSTOMS_BROKER";
+
+/** GET /pricing-settings — what prices are built from beyond carrier rates. Decimals arrive as strings. */
+export interface PricingSettings {
+  margins: {
+    id: string;
+    name: string;
+    currency: string;
+    productFeeTiers: { upTo: number | null; percent: number }[] | null;
+    productFeeMin: string | null;
+    transportMarkupPercent: string;
+    priceBufferPercent: string;
+  };
+  exchangeRates: { id: string; currency: string; toCurrency: string; rate: string; source: string | null; updatedAt: string }[];
+  customsRates: {
+    id: string;
+    destinationCountry: string;
+    productCategory: string | null;
+    dutyPercent: string;
+    taxPercent: string;
+    brokerFee: string | null;
+    currency: string;
+    active: boolean;
+  }[];
+  categoryDefaults: { id: string; category: string; weightKg: string; lengthCm: string | null; widthCm: string | null; heightCm: string | null }[];
+}
 
 /** One line of a priced quote (apps/api modules/pricing/engine.ts). */
 export interface QuoteLine {

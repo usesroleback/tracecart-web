@@ -54,5 +54,68 @@
     "BUY_ON_BEHALF": "Achat pour le client",
     "CUSTOMER_OWNED": "Transport seul"
   },
-  "source": "Source : {source}"
+  "source": "Source : {source}",
+  "settings": {
+    "title": "Ce qui compose les prix",
+    "subtitle": "En plus des tarifs des transporteurs et des règles ci-dessus : ce que TraceCart gagne sur ce hub, les taux de change, les taux de douane et le poids retenu pour un produit d'une catégorie.",
+    "failed": "Impossible d'enregistrer",
+    "margins": {
+      "title": "Marges — {hub}",
+      "intro": "Ce que TraceCart gagne sur les commandes de ce hub, en {currency}. Tout reste compris dans le prix livré unique du client. Des frais fixés à la main sur une commande remplacent les tranches.",
+      "tiers": "Frais sur le produit, selon sa valeur",
+      "tiersHint": "Chaque tranche couvre les produits jusqu'à sa valeur en {currency} ; laissez la dernière sans limite. Sans tranche, le pourcentage par défaut s'applique.",
+      "upTo": "Jusqu'à ({currency})",
+      "noLimit": "Sans limite",
+      "percent": "Pourcentage",
+      "addTier": "Ajouter une tranche",
+      "remove": "Retirer",
+      "min": "Frais minimum par commande ({currency})",
+      "markup": "Marge sur le transport (%)",
+      "markupHint": "Ajoutée au prix du transporteur.",
+      "buffer": "Réserve sur le prix (%)",
+      "bufferHint": "Du prix du produit : absorbe les changements de prix des fournisseurs et les écarts de poids, pour acheter sans revenir vers le client.",
+      "save": "Enregistrer les marges"
+    },
+    "fx": {
+      "title": "Taux de change",
+      "intro": "Pour convertir une cotation, une règle ou des montants de douane dans une autre devise, et les prix des fournisseurs. Un taux convertit dans les deux sens. Pas de flux en direct : tenez-les à jour.",
+      "from": "De",
+      "rate": "Taux",
+      "to": "Vers",
+      "source": "Source (facultatif)",
+      "save": "Enregistrer le taux",
+      "remove": "Retirer"
+    },
+    "customs": {
+      "title": "Taux de douane",
+      "intro": "Droits et taxes estimés par destination et catégorie de produit (ou toute catégorie), en pourcentage de la marchandise et du transport, plus les frais du transitaire. Refacturés au coût et affichés à part.",
+      "anyCategory": "Toute catégorie",
+      "summary": "droits {duty}, taxes {tax}",
+      "broker": "transitaire {amount}",
+      "off": "Désactivé",
+      "edit": "Modifier",
+      "disable": "Désactiver",
+      "enable": "Réactiver",
+      "country": "Pays de destination",
+      "category": "Catégorie",
+      "duty": "Droits (%)",
+      "tax": "Taxes (%)",
+      "brokerFee": "Frais du transitaire",
+      "currency": "Devise",
+      "add": "Ajouter le taux",
+      "update": "Enregistrer le taux",
+      "cancel": "Annuler"
+    },
+    "categories": {
+      "title": "Poids par catégorie",
+      "intro": "Poids et dimensions emballés par unité retenus pour un produit de cette catégorie qui n'a pas les siens, pour pouvoir le chiffrer. Le hub pèse la marchandise avant le transport.",
+      "category": "Catégorie",
+      "weight": "Poids (kg)",
+      "length": "Longueur (cm)",
+      "width": "Largeur (cm)",
+      "height": "Hauteur (cm)",
+      "save": "Enregistrer",
+      "remove": "Retirer"
+    }
+  }
 }

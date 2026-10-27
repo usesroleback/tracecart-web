@@ -100,7 +100,9 @@
     "FINAL_MILE": "Livraison finale",
     "SPECIAL_HANDLING": "Manutention spéciale",
     "LOGISTICS_COORDINATION_FEE": "Frais de coordination logistique",
-    "CUSTOMS_COORDINATION_FEE": "Frais de coordination douane"
+    "CUSTOMS_COORDINATION_FEE": "Frais de coordination douane",
+    "TRANSPORT_MARGIN": "Marge TraceCart (transport)",
+    "PRICE_BUFFER": "Réserve sur le prix"
   },
   "priceMethod": {
     "FIXED": "Forfait",
@@ -137,7 +139,9 @@
     "missingData": "{component} : il manque {field}.",
     "missingWeight": "{component} : il manque le poids.",
     "cargoUnmeasured": "Colis et poids pas encore mesurés.",
-    "deadlineNotMet": "L'itinéraire choisi ne permet pas de livrer avant la date souhaitée."
+    "deadlineNotMet": "L'itinéraire choisi ne permet pas de livrer avant la date souhaitée.",
+    "converted": "Montants en {currency} convertis au taux de TraceCart.",
+    "transportCurrency": "La cotation du transporteur en {currency} ne peut pas être convertie : ajoutez un taux de change. Transport non compté."
   },
   "milestone": {
     "PICKUP_SCHEDULED": "Enlèvement programmé",
