@@ -167,6 +167,7 @@
       "found": "Found {when}",
       "provider": {
         "catalog": "TraceCart catalogue",
+        "roleback": "Roleback catalogue",
         "google_shopping": "Google Shopping",
         "web_search": "Web",
         "manual": "Offer entered",
@@ -186,6 +187,7 @@
       "image": "Photo",
       "staffOffer": "Offer entered by staff",
       "catalog": "TraceCart catalogue",
+      "roleback": "Roleback catalogue",
       "customerLink": "Given by the customer",
       "outOfStock": "Out of stock",
       "withinBudget": "Within budget",
