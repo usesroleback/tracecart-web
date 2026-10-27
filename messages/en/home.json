@@ -70,12 +70,12 @@
       "freight": {
         "title": "Transport",
         "body": "Already have the goods? We pick them up and move them with the carrier that fits the load and the date.",
-        "imageAlt": "A truck loaded at a consolidation hub"
+        "imageAlt": "A container ship loaded at a port"
       },
       "customs": {
         "title": "Customs and paperwork",
         "body": "Duties estimated up front, documents ready before the border, broker fees shown apart. If you clear customs yourself, you don't pay us for it.",
-        "imageAlt": "A broker with documents at a land border"
+        "imageAlt": "A stack of clipped shipping documents"
       },
       "tracking": {
         "title": "Delivery you can follow",

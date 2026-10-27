@@ -70,12 +70,12 @@
       "freight": {
         "title": "Transport",
         "body": "Vous avez déjà la marchandise ? Nous l'enlevons et la transportons avec le transporteur adapté au chargement et à la date.",
-        "imageAlt": "Un camion chargé dans un hub de groupage"
+        "imageAlt": "Un porte-conteneurs chargé à quai"
       },
       "customs": {
         "title": "Douane et documents",
         "body": "Droits estimés d'avance, documents prêts avant la frontière, frais de courtier affichés à part. Si vous dédouanez vous-même, vous ne nous payez rien pour ça.",
-        "imageAlt": "Un courtier avec des documents à une frontière terrestre"
+        "imageAlt": "Une pile de documents d'expédition agrafés"
       },
       "tracking": {
         "title": "Une livraison que vous suivez",

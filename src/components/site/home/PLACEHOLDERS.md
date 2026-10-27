@@ -12,8 +12,8 @@ Each slot is an `<ImageSlot>` in the file named below. To fill one, put the phot
 | --- | --- | --- | --- |
 | `hero-arrival` | 16:9 (21:9 on desktop) | Stock photo: a woman drilling into a wall | `HomeHero.tsx` |
 | `service-sourcing` | 4:3 | Stock photo: a woman reviewing a project at her desk | `Services.tsx` |
-| `service-freight` | 4:3 | Empty. Brief: a truck loaded at a consolidation hub | `Services.tsx` |
-| `service-customs` | 4:3 | Empty. Brief: a broker with documents at a land border | `Services.tsx` |
+| `service-freight` | 4:3 | Stock photo: a container ship at a port | `Services.tsx` |
+| `service-customs` | 4:3 | Stock photo: a stack of clipped documents | `Services.tsx` |
 | `service-tracking` | 4:3 | Stock photo: a couple looking at a phone | `Services.tsx` |
 
 ## Pages that don't exist yet

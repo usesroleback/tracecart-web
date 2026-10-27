@@ -7,5 +7,7 @@
 export const IMAGES: Record<string, { src: string; position?: string; sizes: string }> = {
   "hero-arrival": { src: "/images/home/hero-drill.jpg", position: "36% 30%", sizes: "100vw" },
   "service-sourcing": { src: "/images/home/service-sourcing.jpg", position: "50% 30%", sizes: "(min-width: 768px) 50vw, 100vw" },
+  "service-freight": { src: "/images/home/service-freight.jpg", position: "50% 60%", sizes: "(min-width: 768px) 50vw, 100vw" },
+  "service-customs": { src: "/images/home/service-customs.jpg", position: "50% 60%", sizes: "(min-width: 768px) 50vw, 100vw" },
   "service-tracking": { src: "/images/home/service-tracking.jpg", position: "60% 40%", sizes: "(min-width: 768px) 50vw, 100vw" },
 };
