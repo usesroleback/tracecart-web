@@ -73,7 +73,7 @@
     "phone": "Votre téléphone"
   },
   "submit": "Envoyer la demande",
-  "disclaimer": "Une personne vous répond sous 4 heures ouvrées. Aucun engagement avant votre accord sur le devis.",
+  "disclaimer": "Une personne de l'équipe vous répond avec un devis. Aucun engagement avant votre accord.",
   "sent": {
     "title": "Demande envoyée",
     "body": "Nous revenons vers vous à {email} avec un devis ou nos questions.",

@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
-import { Eyebrow, ImageSlot, PillLink } from "./primitives";
+import { QuoteBar } from "@/components/site/QuoteBar";
+import { Eyebrow, ImageSlot } from "./primitives";
 
 /** The chip inside the headline: a parcel on its way (»»). Decorative: the sentence reads without it. */
 function ParcelChip() {
@@ -38,11 +39,9 @@ export function HomeHero() {
           <span className="mx-0.5 inline-block rounded-[var(--hp-radius-chip)] bg-[var(--hp-dark)] px-3 py-0.5 font-medium text-[var(--hp-on-dark)]">{t("subtitleChip3")}</span>{" "}
           {t("subtitleRest")}
         </p>
-        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-          <PillLink href="#quote">{t("cta")}</PillLink>
-          <PillLink href="/ship" tone="outline">
-            {t("secondary")}
-          </PillLink>
+        {/* The finder itself (#quote), where every "Find what you need" on the page lands; it links to /ship too. */}
+        <div className="mt-10 w-full max-w-2xl scroll-mt-28 text-left">
+          <QuoteBar />
         </div>
       </div>
 

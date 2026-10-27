@@ -73,7 +73,7 @@
     "phone": "Your phone"
   },
   "submit": "Send the request",
-  "disclaimer": "A person replies within 4 working hours. Nothing is committed until you agree to the quote.",
+  "disclaimer": "A person from the team replies with a quote. Nothing is committed until you agree to it.",
   "sent": {
     "title": "Request sent",
     "body": "We'll come back to you at {email} with a quote or our questions.",

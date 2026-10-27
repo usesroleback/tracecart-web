@@ -24,13 +24,7 @@
     "subtitleChip2": "Acheter",
     "subtitleChip3": "Livrer",
     "subtitleRest": "les outils, équipements et pièces que vous cherchez, ou transporter les marchandises que vous avez déjà.",
-    "cta": "Rechercher un outil",
-    "secondary": "Expédier",
     "imageAlt": "Une femme en lunettes de protection perce un mur"
-  },
-  "finder": {
-    "title": "Que cherchez-vous ?",
-    "body": "Décrivez-le avec vos mots ou envoyez une photo, même si vous ne connaissez pas son nom."
   },
   "pov": {
     "eyebrow": "Notre point de vue",

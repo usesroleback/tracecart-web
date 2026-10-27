@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { SiteShell } from "./SiteShell";
 import { HomeHero } from "./HomeHero";
-import { FinderSection } from "./TrustBar";
 import { PointOfView } from "./PointOfView";
 import { Services } from "./Services";
 import { Process } from "./Process";
@@ -19,7 +18,6 @@ export function HomePage() {
     <SiteShell closing>
       <main>
         <HomeHero />
-        <FinderSection />
         <div className="hp-panel hp-grid-lines relative z-10">
           <PointOfView />
           <Services />
