@@ -473,7 +473,11 @@
       "removeBand": "Remove",
       "surchargesTitle": "Surcharges by goods",
       "noSurcharge": "None",
-      "fixed": "Fixed"
+      "fixed": "Fixed",
+      "version": "version {version}, {date}",
+      "versionShort": "Version {version}",
+      "showHistory": "Rate history",
+      "hideHistory": "Hide the history"
     },
     "accounts": {
       "title": "Carrier accounts",

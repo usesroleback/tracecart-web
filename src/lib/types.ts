@@ -105,6 +105,7 @@ export interface LogisticsQuote {
   note: string | null;
   /** Priced from the carrier's rate card rather than entered by hand. */
   fromRateCard: boolean;
+  rateVersion: number | null;
   status: "SUBMITTED" | "ACCEPTED" | "REVISED";
   createdAt: string;
 }
@@ -243,6 +244,16 @@ export interface CarrierService {
   weightBands: { upToKg: number | null; perKg?: number; flat?: number }[] | null;
   surcharges: { flag: HandlingFlag; percent?: number; fixed?: number }[] | null;
   ratesUpdatedAt: string | null;
+  /** 0 until the service has rates; each change to them is a new version. */
+  rateVersion: number;
+}
+
+/** GET /carrier-services/:id/rate-history — latest first. */
+export interface RateVersion {
+  version: number;
+  rateCard: Pick<CarrierService, "rateCurrency" | "volumetricDivisor" | "weightBands" | "surcharges"> & { baseFee: number | null; minCharge: number | null };
+  createdAt: string;
+  createdByUser: { name: string };
 }
 
 /** A carrier's price for an order from its rate card, or why there's none. */

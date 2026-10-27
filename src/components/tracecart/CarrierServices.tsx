@@ -7,7 +7,7 @@ import Button from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
 import { DsPlusIcon } from "@/icons";
-import { CarrierService, HANDLING_FLAGS, HandlingFlag, Hub, TRANSPORT_MODES, TransportMode } from "@/lib/types";
+import { CarrierService, HANDLING_FLAGS, HandlingFlag, Hub, RateVersion, TRANSPORT_MODES, TransportMode } from "@/lib/types";
 import { useFormat } from "@/lib/format";
 
 const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
@@ -74,6 +74,7 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
             t("carriersPage.rates.bands", { count: bands.length }),
             s.minCharge && t("carriersPage.rates.min", { amount: f.money(s.minCharge, s.rateCurrency) }),
             (s.surcharges?.length ?? 0) > 0 && t("carriersPage.rates.surcharges", { count: s.surcharges!.length }),
+            s.ratesUpdatedAt && t("carriersPage.rates.version", { version: s.rateVersion, date: f.date(s.ratesUpdatedAt) }),
           ]
             .filter(Boolean)
             .join(" · ")}
@@ -424,6 +425,8 @@ function ServiceForm({
         </div>
       </fieldset>
 
+      {service && service.rateVersion > 0 && <RateHistory serviceId={service.id} />}
+
       <Field label={t("carriersPage.field.notes")} className="sm:col-span-2 lg:col-span-4">
         <input className={input} value={v.notes} onChange={set("notes")} />
       </Field>
@@ -437,5 +440,53 @@ function ServiceForm({
         {error && <p className="text-sm text-critical">{error}</p>}
       </div>
     </form>
+  );
+}
+
+/** Every version of a service's rates, latest first: what each rate-card quote was priced with. */
+function RateHistory({ serviceId }: { serviceId: string }) {
+  const t = useTranslations("orders.carriersPage.rates");
+  const f = useFormat();
+  const [versions, setVersions] = useState<RateVersion[] | null>(null);
+  const [open, setOpen] = useState(false);
+
+  async function toggle() {
+    if (!open && !versions) setVersions(await api.get<RateVersion[]>(`/carrier-services/${serviceId}/rate-history`));
+    setOpen(!open);
+  }
+
+  return (
+    <div className="sm:col-span-2 lg:col-span-4">
+      <Button variant="ghost" size="s" onClick={toggle}>
+        {open ? t("hideHistory") : t("showHistory")}
+      </Button>
+      {open && versions && (
+        <ol className="mt-2 grid gap-1 text-sm">
+          {versions.map((v) => {
+            const c = v.rateCard;
+            const first = c.weightBands?.[0];
+            return (
+              <li key={v.version} className="border-b border-line py-1">
+                <span className="font-semibold">{t("versionShort", { version: v.version })}</span>{" "}
+                <span className="text-ink-muted">
+                  · {f.dateTime(v.createdAt)} · {v.createdByUser.name}
+                </span>
+                <span className="block text-xs text-ink-muted">
+                  {[
+                    c.rateCurrency,
+                    first && (first.flat != null ? t("fromFlat", { amount: f.money(first.flat), kg: f.number(first.upToKg ?? 0) }) : t("fromPerKg", { amount: f.money(first.perKg ?? 0) })),
+                    t("bands", { count: c.weightBands?.length ?? 0 }),
+                    c.baseFee ? `${t("baseFee")} ${f.money(c.baseFee)}` : null,
+                    c.minCharge ? t("min", { amount: f.money(c.minCharge) }) : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      )}
+    </div>
   );
 }

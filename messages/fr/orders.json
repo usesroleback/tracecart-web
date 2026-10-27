@@ -473,7 +473,11 @@
       "removeBand": "Retirer",
       "surchargesTitle": "Suppléments par marchandise",
       "noSurcharge": "Aucun",
-      "fixed": "Fixe"
+      "fixed": "Fixe",
+      "version": "version {version}, {date}",
+      "versionShort": "Version {version}",
+      "showHistory": "Historique des tarifs",
+      "hideHistory": "Masquer l'historique"
     },
     "accounts": {
       "title": "Comptes transporteurs",
