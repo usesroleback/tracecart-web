@@ -9,6 +9,7 @@ const LINKS = [
   { key: "home", href: "#top" },
   { key: "services", href: "#services" },
   { key: "process", href: "#process" },
+  { key: "shop", href: "/shop" },
   { key: "ship", href: "/ship" },
 ] as const;
 
@@ -45,10 +46,10 @@ export function HomeNav() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const other = locale === "fr" ? "en" : "fr";
-  // Section anchors live on the homepage; from /ship or /account they go back to it.
+  // Section anchors live on the homepage; from /shop, /ship or /account they go back to it.
   const onHome = pathname === "/";
   const to = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
-  const isActive = (key: string) => (key === "home" ? onHome : key === "ship" ? pathname.startsWith("/ship") : false);
+  const isActive = (key: string) => (key === "home" ? onHome : key === "ship" || key === "shop" ? pathname.startsWith(`/${key}`) : false);
 
   // Escape closes the mobile menu.
   useEffect(() => {

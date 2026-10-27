@@ -26,5 +26,25 @@
   "previous": "← Previous",
   "next": "Next →",
   "page": "Page {page}",
-  "results": "{count, plural, one { · # result} other { · # results}}"
+  "results": "{count, plural, one { · # result} other { · # results}}",
+  "catalogue": {
+    "title": "Shop catalogue: weight and size",
+    "intro": "What the shop needs to price a product: its category, and its packed weight and size per unit. Without its own weight or its category's (Pricing → Weight by category), a product shows \"price on request\" in the shop.",
+    "search": "Search the catalogue",
+    "onlyMissing": "Only products the shop can't weigh",
+    "loading": "Loading…",
+    "empty": "No products.",
+    "allWeighable": "Every product can be weighed.",
+    "onRequest": "Price on request",
+    "failed": "Couldn't save",
+    "save": "Save",
+    "col": {
+      "product": "Product",
+      "category": "Category",
+      "weight": "Weight (kg)",
+      "length": "L (cm)",
+      "width": "W (cm)",
+      "height": "H (cm)"
+    }
+  }
 }

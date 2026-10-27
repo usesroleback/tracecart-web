@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "title": "Shop — TraceCart"
+  },
+  "title": "Shop",
+  "subtitle": "Tools and equipment delivered to your door, at one price. We check with the supplier, buy, and bring it to you.",
+  "search": "What are you looking for?",
+  "searchPlaceholder": "Drill, solar panel, pump…",
+  "searchButton": "Search",
+  "deliverTo": "Deliver to",
+  "loading": "Loading…",
+  "empty": "Nothing matches yet.",
+  "askInstead": "Tell us what you need instead.",
+  "noDestinations": "The shop opens soon.",
+  "onRequest": "Price on request",
+  "ask": "Ask for it",
+  "customsIncluded": "Delivered price. Customs estimated at {amount}, included.",
+  "customsExcluded": "Delivered price, customs not included.",
+  "eta": "Delivery between {from} and {to}, once paid",
+  "buy": "Buy",
+  "buyingFor": "Delivered to {country}",
+  "close": "Close",
+  "quantity": "Quantity",
+  "howItWorks": "Once you confirm, we check the price and stock with the supplier and send you the quote by email. You pay only once you accept it.",
+  "signedOut": "Buying needs a free account, so we know who to deliver to and can reply.",
+  "signUp": "Create a free account",
+  "signIn": "Sign in",
+  "staff": "Staff accounts can't buy from the shop.",
+  "city": "City",
+  "phone": "Phone (for the delivery)",
+  "address": "Delivery address",
+  "notes": "Anything we should know (optional)",
+  "confirm": "Confirm my order",
+  "failed": "Couldn't place the order",
+  "done": {
+    "title": "Order {reference} received.",
+    "body": "We check with the supplier and email you the quote shortly. The link below follows your order until it's at your door.",
+    "follow": "Follow my order",
+    "account": "My account"
+  }
+}

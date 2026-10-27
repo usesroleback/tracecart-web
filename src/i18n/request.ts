@@ -10,6 +10,7 @@ const NAMESPACES = [
   'orders',
   'pricing',
   'ship',
+  'shop',
   'products',
   'stores',
   'hubSetup',
