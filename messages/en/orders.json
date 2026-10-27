@@ -159,7 +159,7 @@
   "form": {
     "customerName": "Customer name",
     "customerPhone": "Customer phone",
-    "customerEmail": "Customer email (optional)",
+    "customerEmail": "Customer email",
     "quantity": "Quantity",
     "destinationCity": "Destination city",
     "destinationCountry": "Destination country",

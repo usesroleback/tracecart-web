@@ -84,7 +84,7 @@ export function SourcingRequestForm({ onCreated, onCancel }: { onCreated: () => 
           />
         </Field>
         <Field label={to("customerEmail")}>
-          <input type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} className={inputClasses} />
+          <input required type="email" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} className={inputClasses} />
         </Field>
         <Field label={to("quantity")}>
           <input type="number" min="1" value={quantity} onChange={(e) => setQuantity(e.target.value)} className={inputClasses} />

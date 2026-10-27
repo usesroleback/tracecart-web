@@ -43,7 +43,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel, initial }: { onCr
   const [customerName, setCustomerName] = useState(initial?.customerName ?? "");
   const [customerPhone, setCustomerPhone] = useState(initial?.customerPhone ?? "");
   const [customerEmail, setCustomerEmail] = useState(initial?.customerEmail ?? "");
-  // The customer's SMS, emails and quote page; the console's language until changed.
+  // The customer's emails and quote page; the console's language until changed.
   const [customerLocale, setCustomerLocale] = useState<Locale>(useLocale() as Locale);
   const [destinationCity, setDestinationCity] = useState(initial?.destinationCity ?? "");
   const [destinationCountry, setDestinationCountry] = useState(initial?.destinationCountry ?? "");
@@ -131,6 +131,7 @@ export function CustomerOwnedIntentForm({ onCreated, onCancel, initial }: { onCr
         </Field>
         <Field label={t("form.customerEmail")}>
           <input
+            required
             type="email"
             value={customerEmail}
             onChange={(e) => setCustomerEmail(e.target.value)}
