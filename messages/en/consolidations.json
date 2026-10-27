@@ -1,0 +1,93 @@
+{
+  "title": "Consolidations",
+  "subtitle": "Paid orders on the same carrier service, sent together. Each customer pays transport as if their order went alone; TraceCart pays the carrier once, for the whole load.",
+  "carrierSubtitle": "Orders TraceCart hands you together: one pickup, one load, one set of updates. Delivery stays order by order.",
+  "failed": "That didn't go through. Try again.",
+  "loading": "Loading…",
+  "status": {
+    "OPEN": "Being formed",
+    "DISPATCHED": "Dispatched",
+    "CANCELLED": "Cancelled"
+  },
+  "carrier": "Carrier: {name}",
+  "dispatchedAt": "Picked up on {date}",
+  "price": "Your price for the load",
+  "noPrice": "To agree with TraceCart",
+  "suggestions": {
+    "title": "To consolidate",
+    "intro": "Per service, the paid orders not yet picked up and in no consolidation, and what sending them together would save. Most profitable first.",
+    "empty": "Nothing to consolidate yet: it takes at least two paid orders on the same service.",
+    "joins": "A consolidation is already being formed on this service: {reference} ({count, plural, one {# order} other {# orders}}). The saving shown is for the completed consolidation.",
+    "create": "{count, plural, one {Consolidate # order} other {Consolidate these # orders}}",
+    "add": "Add to {reference}"
+  },
+  "groups": {
+    "title": "Consolidations",
+    "empty": "No consolidations. Form one from the suggestions above.",
+    "carrierEmpty": "No consolidations have been handed to you.",
+    "showCancelled": "Show cancelled ({count})"
+  },
+  "load": {
+    "summary": "{orders, plural, one {# order} other {# orders}} · {packages, plural, one {# package} other {# packages}} · {weight} kg",
+    "chargeable": "{weight} kg chargeable (volume)",
+    "unweighed": "Not weighed yet: {refs}. The load can't be priced.",
+    "overLimit": "Over the service's limit ({max} kg)."
+  },
+  "economics": {
+    "separately": "Alone",
+    "together": "Together",
+    "saving": "Saving",
+    "estimated": "Estimated from the carrier's rate card, no quote for: {refs}.",
+    "unpriced": "No price alone for: {refs}. The saving can't be worked out.",
+    "unconverted": "An exchange rate is missing (Pricing → Exchange rates).",
+    "notPriced": {
+      "noRateCard": "This service has no rate card: agree the cost with the carrier.",
+      "noWeight": "The load isn't fully weighed.",
+      "noBand": "No band of the rate card covers this weight: agree the cost with the carrier."
+    }
+  },
+  "cost": {
+    "intro": "The cost agreed with the carrier for the whole consolidation. It replaces the rate card. Empty: the rate card applies, and its price is fixed at pickup.",
+    "amount": "Consolidation cost",
+    "currency": "Currency",
+    "notes": "Internal notes",
+    "save": "Save",
+    "useRateCard": "Back to the rate card",
+    "agreed": "Agreed cost: {amount}",
+    "frozen": "Cost fixed at pickup: {amount} (rate card v{version})"
+  },
+  "members": {
+    "caption": "Orders in consolidation {reference}",
+    "order": "Order",
+    "goods": "Goods",
+    "city": "Delivery",
+    "weight": "Weight",
+    "status": "Status",
+    "remove": "Remove",
+    "packages": "{count, plural, one {# package} other {# packages}}"
+  },
+  "actions": {
+    "handOver": "{count, plural, one {Hand # order to the carrier} other {Hand # orders to the carrier}}",
+    "pickUp": "Mark the consolidation picked up",
+    "waitHandover": "The consolidation can be picked up once the hub has handed you all its orders.",
+    "inTransit": "{count, plural, one {Mark in transit (# order)} other {Mark in transit (# orders)}}",
+    "event": "Report a milestone",
+    "add": "Add orders",
+    "cost": "Cost and notes",
+    "cancel": "Cancel the consolidation",
+    "cancelConfirm": "Cancel this consolidation? Its orders will travel alone again."
+  },
+  "event": {
+    "intro": "The milestone is recorded on every order in the consolidation, and each customer is told as they would be for their order alone."
+  },
+  "outcome": {
+    "done": "{count, plural, one {# order updated.} other {# orders updated.}}",
+    "replayed": "Already recorded for: {refs}.",
+    "skipped": "Not at that step, left as they were: {refs}."
+  },
+  "add": {
+    "empty": "No other paid order on this service is waiting to be consolidated.",
+    "submit": "{count, plural, =0 {Add} one {Add # order} other {Add # orders}}"
+  },
+  "onOrder": "Travels in consolidation {reference}"
+}

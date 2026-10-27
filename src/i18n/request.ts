@@ -11,6 +11,7 @@ const NAMESPACES = [
   'pricing',
   'ship',
   'shop',
+  'consolidations',
   'products',
   'stores',
   'hubSetup',

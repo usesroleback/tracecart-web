@@ -1,0 +1,93 @@
+{
+  "title": "Groupages",
+  "subtitle": "Des commandes payées sur un même service de transport, envoyées ensemble. Chaque client paie le transport comme si sa commande voyageait seule ; TraceCart paie le transporteur une fois, pour le chargement entier.",
+  "carrierSubtitle": "Les commandes que TraceCart vous confie ensemble : un enlèvement, un chargement, un suivi. La livraison reste commande par commande.",
+  "failed": "L'action n'a pas abouti. Réessayez.",
+  "loading": "Chargement…",
+  "status": {
+    "OPEN": "En préparation",
+    "DISPATCHED": "Expédié",
+    "CANCELLED": "Annulé"
+  },
+  "carrier": "Transporteur : {name}",
+  "dispatchedAt": "Enlevé le {date}",
+  "price": "Votre prix pour le chargement",
+  "noPrice": "À convenir avec TraceCart",
+  "suggestions": {
+    "title": "À grouper",
+    "intro": "Par service, les commandes payées et pas encore enlevées qui ne sont dans aucun groupage, et ce que les envoyer ensemble économiserait. Les plus rentables d'abord.",
+    "empty": "Rien à grouper pour l'instant : il faut au moins deux commandes payées sur le même service.",
+    "joins": "Un groupage est déjà en préparation sur ce service : {reference} ({count, plural, one {# commande} other {# commandes}}). L'économie affichée est celle du groupage complété.",
+    "create": "{count, plural, one {Grouper # commande} other {Grouper ces # commandes}}",
+    "add": "Ajouter à {reference}"
+  },
+  "groups": {
+    "title": "Groupages",
+    "empty": "Aucun groupage. Formez-en un à partir des suggestions ci-dessus.",
+    "carrierEmpty": "Aucun groupage ne vous a été confié.",
+    "showCancelled": "Afficher les annulés ({count})"
+  },
+  "load": {
+    "summary": "{orders, plural, one {# commande} other {# commandes}} · {packages, plural, one {# colis} other {# colis}} · {weight} kg",
+    "chargeable": "{weight} kg taxables (volume)",
+    "unweighed": "Pas encore pesées : {refs}. Le chargement ne peut pas être tarifé.",
+    "overLimit": "Au-delà de la limite du service ({max} kg)."
+  },
+  "economics": {
+    "separately": "Seules",
+    "together": "Ensemble",
+    "saving": "Économie",
+    "estimated": "Estimé d'après la grille du transporteur, sans devis pour : {refs}.",
+    "unpriced": "Sans prix seule : {refs}. L'économie ne peut pas être calculée.",
+    "unconverted": "Il manque un taux de change (Tarifs → Taux de change).",
+    "notPriced": {
+      "noRateCard": "Ce service n'a pas de grille tarifaire : convenez du coût avec le transporteur.",
+      "noWeight": "Le chargement n'est pas entièrement pesé.",
+      "noBand": "Aucune tranche de la grille ne couvre ce poids : convenez du coût avec le transporteur."
+    }
+  },
+  "cost": {
+    "intro": "Le coût convenu avec le transporteur pour tout le groupage. Il remplace la grille tarifaire. Vide : la grille s'applique et son prix est figé à l'enlèvement.",
+    "amount": "Coût du groupage",
+    "currency": "Devise",
+    "notes": "Notes internes",
+    "save": "Enregistrer",
+    "useRateCard": "Revenir à la grille",
+    "agreed": "Coût convenu : {amount}",
+    "frozen": "Coût figé à l'enlèvement : {amount} (grille v{version})"
+  },
+  "members": {
+    "caption": "Commandes du groupage {reference}",
+    "order": "Commande",
+    "goods": "Marchandise",
+    "city": "Livraison",
+    "weight": "Poids",
+    "status": "Statut",
+    "remove": "Retirer",
+    "packages": "{count, plural, one {# colis} other {# colis}}"
+  },
+  "actions": {
+    "handOver": "{count, plural, one {Remettre # commande au transporteur} other {Remettre # commandes au transporteur}}",
+    "pickUp": "Marquer le groupage pris en charge",
+    "waitHandover": "Le groupage peut être pris en charge quand le hub vous a remis toutes ses commandes.",
+    "inTransit": "{count, plural, one {Marquer en route (# commande)} other {Marquer en route (# commandes)}}",
+    "event": "Signaler une étape",
+    "add": "Ajouter des commandes",
+    "cost": "Coût et notes",
+    "cancel": "Annuler le groupage",
+    "cancelConfirm": "Annuler ce groupage ? Ses commandes voyageront de nouveau seules."
+  },
+  "event": {
+    "intro": "L'étape est enregistrée sur chaque commande du groupage, et chaque client est prévenu comme pour sa commande seule."
+  },
+  "outcome": {
+    "done": "{count, plural, one {# commande mise à jour.} other {# commandes mises à jour.}}",
+    "replayed": "Déjà enregistré pour : {refs}.",
+    "skipped": "Pas à cette étape, laissées telles quelles : {refs}."
+  },
+  "add": {
+    "empty": "Aucune autre commande payée sur ce service n'attend d'être groupée.",
+    "submit": "{count, plural, =0 {Ajouter} one {Ajouter # commande} other {Ajouter # commandes}}"
+  },
+  "onOrder": "Voyage dans le groupage {reference}"
+}

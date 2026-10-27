@@ -82,7 +82,7 @@ export function ShipmentTracking({ order, onChanged }: { order: Order; onChanged
         <details className="mt-4 rounded-[var(--radius-s)] border border-line">
           <summary className="cursor-pointer px-3 py-2 text-sm font-semibold">{t("tracking.record")}</summary>
           <div className="border-t border-line p-3">
-            <RecordEventForm order={order} onChanged={onChanged} />
+            <RecordEventForm path={`/orders/${order.id}/events`} delivered={order.status === "DELIVERED"} onChanged={onChanged} />
           </div>
         </details>
       )}
@@ -111,10 +111,14 @@ export function ShipmentTracking({ order, onChanged }: { order: Order; onChanged
   );
 }
 
-function RecordEventForm({ order, onChanged }: { order: Order; onChanged: () => void }) {
+/**
+ * Records a milestone at `path` — an order's events, or a groupage's (each of
+ * its orders gets it). `delivered`: only a return can still be recorded.
+ */
+export function RecordEventForm({ path, delivered = false, onChanged }: { path: string; delivered?: boolean; onChanged: (result: unknown) => void }) {
   const t = useTranslations("orders");
   const tl = useTranslations("labels");
-  const choices = order.status === "DELIVERED" ? (["RETURN_STARTED"] as Milestone[]) : MILESTONES.filter((m) => m !== "RETURN_STARTED");
+  const choices = delivered ? (["RETURN_STARTED"] as Milestone[]) : MILESTONES.filter((m) => m !== "RETURN_STARTED");
   const [milestone, setMilestone] = useState<Milestone>(choices[0]);
   const [v, setV] = useState({ occurredAt: "", city: "", reason: "", customerNote: "", internalNote: "", etaFrom: "", etaTo: "", externalRef: "" });
   const [busy, setBusy] = useState(false);
@@ -132,7 +136,7 @@ function RecordEventForm({ order, onChanged }: { order: Order; onChanged: () => 
     setError(null);
     setSaved(false);
     try {
-      await api.post(`/orders/${order.id}/events`, {
+      const result = await api.post(path, {
         milestone,
         occurredAt: v.occurredAt ? new Date(v.occurredAt).toISOString() : undefined,
         city: text(v.city),
@@ -147,7 +151,7 @@ function RecordEventForm({ order, onChanged }: { order: Order; onChanged: () => 
       key.current = crypto.randomUUID();
       setV({ occurredAt: "", city: "", reason: "", customerNote: "", internalNote: "", etaFrom: "", etaTo: "", externalRef: "" });
       setSaved(true);
-      onChanged();
+      onChanged(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("actionFailed"));
     } finally {

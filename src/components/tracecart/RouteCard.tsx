@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -20,6 +21,7 @@ const ROUTABLE = new Set(["INTENT_SUBMITTED", "QUOTING", "QUOTED"]);
 export function RouteCard({ order, onChanged }: { order: Order; onChanged: () => void }) {
   const t = useTranslations("orders");
   const tl = useTranslations("labels");
+  const tc = useTranslations("consolidations");
   const f = useFormat();
   const routable = ROUTABLE.has(order.status);
   const [data, setData] = useState<RouteOptions | null>(null);
@@ -60,6 +62,13 @@ export function RouteCard({ order, onChanged }: { order: Order; onChanged: () =>
       <p className="mt-1 text-sm text-ink">
         {order.carrierService ? t("route.card.current", { name: `${order.carrierService.name} · ${tl(`transportMode.${order.carrierService.mode}`)}` }) : t("route.card.none")}
       </p>
+      {order.consolidation && order.consolidation.status !== "CANCELLED" && (
+        <p className="mt-1 text-sm">
+          <Link href="/consolidations" className="underline underline-offset-2">
+            {tc("onOrder", { reference: order.consolidation.reference })}
+          </Link>
+        </p>
+      )}
       {!routable && <p className="mt-1 text-[13px] text-ink-muted">{t("route.card.frozen")}</p>}
       {routable && data && data.options.length === 0 && <p className="mt-2 text-sm text-ink-muted">{t("route.card.noServices")}</p>}
       {routable && data && data.options.length > 0 && (

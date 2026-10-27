@@ -211,6 +211,8 @@ export interface Order {
   /** The carrier service the order is routed with (admin: the whole service; carrier: name and mode). */
   carrierServiceId?: string | null;
   carrierService: Pick<CarrierService, "id" | "name" | "mode"> | null;
+  /** The groupage it travels in with other orders, if any. */
+  consolidation?: { id: string; reference: string; status: ConsolidationStatus } | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -814,4 +816,74 @@ export interface DiscoveryState {
   providers: ProviderOutcome[];
   candidates: SourcingCandidate[];
   lastRun: { id: string; query: string; providers: ProviderOutcome[]; startedAt: string; finishedAt: string | null } | null;
+}
+
+/** Groupages (API modules/consolidation): orders on one carrier service sent together. */
+export type ConsolidationStatus = "OPEN" | "DISPATCHED" | "CANCELLED";
+
+export interface ConsolidationMember {
+  id: string;
+  reference: string;
+  status: OrderStatus;
+  productName: string;
+  quantity: number;
+  destinationCity: string;
+  packageCount: number | null;
+  grossWeightKg: string | null;
+  handlingFlags: HandlingFlag[];
+}
+
+export interface ConsolidationLoad {
+  orders: number;
+  packages: number;
+  weightKg: number;
+  volumetricKg: number;
+  /** Null while an order isn't weighed (`unweighed`). */
+  chargeableKg: number | null;
+  unweighed: string[];
+  handlingFlags: HandlingFlag[];
+  /** The service's weight limit, when the load is over it. */
+  overWeightLimit: number | null;
+}
+
+/** What grouping saves, in the hub's currency — the administrateur's only. */
+export interface ConsolidationEconomics {
+  together: { priced: true; amount: number; currency: string; chargeableWeightKg: number } | { priced: false; reason: "noRateCard" | "noWeight" | "noBand" };
+  currency: string;
+  separately: number | null;
+  groupCost: number | null;
+  saving: number | null;
+  estimated: string[];
+  unpriced: string[];
+  unconverted: boolean;
+}
+
+type Money = { amount: number; currency: string };
+
+export interface Consolidation {
+  id: string;
+  reference: string;
+  status: ConsolidationStatus;
+  notes: string | null;
+  createdAt: string;
+  dispatchedAt: string | null;
+  carrierService: { id: string; name: string; mode: TransportMode; destinationCountry: string; partner: { id: string; name: string; phone: string | null } };
+  hub: { id: string; name: string; city: string };
+  orders: ConsolidationMember[];
+  load: ConsolidationLoad;
+  /** Administrateur: the cost agreed by hand or frozen at dispatch, and the saving. */
+  carrierCost?: Money | null;
+  costFromRateCard?: boolean;
+  rateVersion?: number | null;
+  economics?: ConsolidationEconomics;
+  /** Carrier: their price for the load. */
+  price?: Money | null;
+}
+
+export interface ConsolidationSuggestion {
+  carrierService: { id: string; name: string; mode: TransportMode; destinationCountry: string };
+  orders: ConsolidationMember[];
+  openGroup: { id: string; reference: string; orders: number } | null;
+  load: ConsolidationLoad;
+  economics: ConsolidationEconomics;
 }
