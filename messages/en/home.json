@@ -24,7 +24,32 @@
     "subtitleChip2": "Buy",
     "subtitleChip3": "Deliver",
     "subtitleRest": "the tools, equipment and parts you're looking for, or move the goods you already have.",
-    "imageAlt": "A woman in safety glasses drilling into a wall"
+    "imageAlt": "A woman in safety glasses drilling into a wall",
+    "showcase": {
+      "label": "What we solve",
+      "pause": "Pause",
+      "play": "Play",
+      "position": "{n} of {total}",
+      "goTo": "Show: {title}",
+      "items": {
+        "tool": {
+          "title": "A new tool",
+          "body": "A drill, a saw, a measuring device: describe it or show it, and we find where to buy it and deliver it."
+        },
+        "equipment": {
+          "title": "Servers for your company",
+          "body": "Servers, computers, network gear: we find the models you need and send you one delivered price."
+        },
+        "part": {
+          "title": "The part with no name",
+          "body": "A worn part from a pump or a generator: a photo is enough to start the search."
+        },
+        "move": {
+          "title": "Goods to move",
+          "body": "Already have them? We pick them up and deliver them, and you follow each step to the door."
+        }
+      }
+    }
   },
   "pov": {
     "eyebrow": "Our point of view",

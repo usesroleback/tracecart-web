@@ -196,8 +196,16 @@
 }
 .hp-sticker:hover { transform: rotate(-4deg) scale(1.03); }
 
+/* The hero showcase: the active card's bar fills, then the next card comes (HeroShowcase.tsx). */
+.hp-showcase-fill { animation: hp-showcase-fill linear forwards; }
+@keyframes hp-showcase-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hp-marquee__track { animation: none; }
+  .hp-showcase-fill { animation: none; }
   .hp-reveal { opacity: 1; transform: none; transition: none; }
   .hp-word { opacity: 1; color: var(--hp-on-dark); transition: none; }
   .hp-word--accent { color: var(--hp-primary); }

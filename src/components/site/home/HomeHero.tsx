@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { QuoteBar } from "@/components/site/QuoteBar";
 import { Eyebrow, ImageSlot } from "./primitives";
+import { HeroShowcase } from "./HeroShowcase";
 
 /** The chip inside the headline: a parcel on its way (»»). Decorative: the sentence reads without it. */
 function ParcelChip() {
@@ -45,7 +46,10 @@ export function HomeHero() {
         </div>
       </div>
 
-      <ImageSlot name="hero-arrival" ratio="16/9" alt={t("imageAlt")} className="mt-12 rounded-[var(--hp-corner-media)] lg:aspect-[21/9]" />
+      {/* Taller on phones, so the showcase card fits over the photo. */}
+      <ImageSlot name="hero-arrival" ratio="16/9" alt={t("imageAlt")} className="mt-12 rounded-[var(--hp-corner-media)] max-sm:aspect-[3/4] lg:aspect-[21/9]">
+        <HeroShowcase />
+      </ImageSlot>
     </section>
   );
 }

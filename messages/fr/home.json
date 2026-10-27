@@ -24,7 +24,32 @@
     "subtitleChip2": "Acheter",
     "subtitleChip3": "Livrer",
     "subtitleRest": "les outils, équipements et pièces que vous cherchez, ou transporter les marchandises que vous avez déjà.",
-    "imageAlt": "Une femme en lunettes de protection perce un mur"
+    "imageAlt": "Une femme en lunettes de protection perce un mur",
+    "showcase": {
+      "label": "Ce que nous réglons",
+      "pause": "Mettre en pause",
+      "play": "Reprendre",
+      "position": "{n} sur {total}",
+      "goTo": "Voir : {title}",
+      "items": {
+        "tool": {
+          "title": "Un nouvel outil",
+          "body": "Une perceuse, une scie, un appareil de mesure : décrivez-le ou montrez-le, nous trouvons où l'acheter et vous le livrons."
+        },
+        "equipment": {
+          "title": "Des serveurs pour votre entreprise",
+          "body": "Serveurs, ordinateurs, équipement réseau : nous trouvons les modèles qu'il vous faut et vous envoyons un prix livré."
+        },
+        "part": {
+          "title": "La pièce sans nom",
+          "body": "La pièce usée d'une pompe ou d'un groupe électrogène : une photo suffit pour lancer la recherche."
+        },
+        "move": {
+          "title": "Des marchandises à déplacer",
+          "body": "Vous les avez déjà ? Nous les enlevons et les livrons, et vous suivez chaque étape jusqu'à la porte."
+        }
+      }
+    }
   },
   "pov": {
     "eyebrow": "Notre point de vue",
