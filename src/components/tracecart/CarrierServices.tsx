@@ -15,7 +15,7 @@ const TD = "border-b border-line px-3 py-2 align-top";
 const input =
   "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring disabled:opacity-60";
 
-export type Carrier = { id: string; name: string; email: string; phone: string | null };
+export type Carrier = { id: string; name: string; email: string; phone: string | null; locale: "fr" | "en"; signedIn: boolean };
 
 /**
  * Carrier services (docs/design/pricing-routing-and-customs.md §5): what each

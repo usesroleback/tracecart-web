@@ -474,6 +474,22 @@
       "surchargesTitle": "Suppléments par marchandise",
       "noSurcharge": "Aucun",
       "fixed": "Fixe"
+    },
+    "accounts": {
+      "title": "Comptes transporteurs",
+      "subtitle": "Chaque transporteur se connecte avec l'email ajouté ici, puis gère lui-même ses routes et ses tarifs.",
+      "add": "Ajouter un transporteur",
+      "name": "Nom de l'entreprise",
+      "email": "Email de connexion",
+      "phone": "Téléphone",
+      "locale": "Langue",
+      "hint": "Dites au transporteur de se connecter à TraceCart avec cet email. Son compte est relié à sa première connexion.",
+      "save": "Ajouter le transporteur",
+      "cancel": "Annuler",
+      "failed": "Impossible d'ajouter le transporteur",
+      "empty": "Aucun transporteur pour le moment.",
+      "signedIn": "Connecté",
+      "invited": "Pas encore connecté"
     }
   }
 }

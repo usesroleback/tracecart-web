@@ -474,6 +474,22 @@
       "surchargesTitle": "Surcharges by goods",
       "noSurcharge": "None",
       "fixed": "Fixed"
+    },
+    "accounts": {
+      "title": "Carrier accounts",
+      "subtitle": "Each carrier signs in with the email you add here, then keeps its own routes and rates.",
+      "add": "Add a carrier",
+      "name": "Company name",
+      "email": "Sign-in email",
+      "phone": "Phone",
+      "locale": "Language",
+      "hint": "Tell the carrier to sign in at TraceCart with this email. Their account is linked the first time they do.",
+      "save": "Add the carrier",
+      "cancel": "Cancel",
+      "failed": "Couldn't add the carrier",
+      "empty": "No carriers yet.",
+      "signedIn": "Signed in",
+      "invited": "Not signed in yet"
     }
   }
 }
