@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useCountry } from "@/context/CountryContext";
 import { COUNTRY_CODES, countryName } from "@/lib/country";
+
+const noop = () => () => {};
 
 /**
  * Where the visitor is: detected on the first visit, correctable here. The
@@ -13,9 +15,19 @@ export function CountryPicker({ className = "" }: { className?: string }) {
   const t = useTranslations("site.country");
   const locale = useLocale();
   const { country, detecting, setCountry } = useCountry();
+  // Country names come from the runtime's Intl data, which differs between
+  // Node and browsers (names, hence their order). The server and the first
+  // render in the browser show the code alone; the named list follows once
+  // hydrated, so both sides agree.
+  const hydrated = useSyncExternalStore(noop, () => true, () => false);
   const options = useMemo(
-    () => COUNTRY_CODES.map((code) => ({ code, name: countryName(code, locale) })).sort((a, b) => a.name.localeCompare(b.name, locale)),
-    [locale],
+    () =>
+      hydrated
+        ? COUNTRY_CODES.map((code) => ({ code, name: countryName(code, locale) })).sort((a, b) => a.name.localeCompare(b.name, locale))
+        : country
+          ? [{ code: country, name: country }]
+          : [],
+    [hydrated, locale, country],
   );
 
   return (
