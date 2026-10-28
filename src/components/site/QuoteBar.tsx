@@ -5,22 +5,28 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Button from "@/components/ui/button/Button";
+import { useCountry } from "@/context/CountryContext";
 import { CustomerProfile, ensureCustomerAccount, StaffAccountError, updateProfile } from "@/lib/customer";
+import { BuyPanel, PriceBlock, ShopPrice } from "./ShopBuy";
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
 const PHOTO_TYPES = ["image/png", "image/jpeg", "image/webp"];
 const PHOTO_MAX_BYTES = 5 * 1024 * 1024;
+// Mirrors the API (discovery/video.ts): MP4, MOV or WebM, 20 MB, 30 s (the length is checked there).
+const VIDEO_TYPES = ["video/mp4", "video/quicktime", "video/webm"];
+const VIDEO_MAX_BYTES = 20 * 1024 * 1024;
+const isVideo = (f: File | null) => !!f && VIDEO_TYPES.includes(f.type);
 
+/** A result: what it is and, priced to the visitor's country, one delivered price and the signed offer to buy it with. */
 interface Suggestion {
   provider: string;
   url: string;
   title: string;
-  merchant: string | null;
   imageUrl: string | null;
-  price: number | null;
-  currency: string | null;
+  price: ShopPrice | null;
+  offer: string | null;
 }
 interface SuggestResult {
   identified: { title: string | null; brand: string | null; model: string | null } | null;
@@ -112,6 +118,8 @@ export function QuoteBar() {
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [buying, setBuying] = useState<Suggestion | null>(null);
+  const { country } = useCountry();
   const fileRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -144,7 +152,9 @@ export function QuoteBar() {
 
   function pickPhoto(file: File | undefined) {
     if (!file) return;
-    if (!PHOTO_TYPES.includes(file.type) || file.size > PHOTO_MAX_BYTES) {
+    const photoOk = PHOTO_TYPES.includes(file.type) && file.size <= PHOTO_MAX_BYTES;
+    const videoOk = VIDEO_TYPES.includes(file.type) && file.size <= VIDEO_MAX_BYTES;
+    if (!photoOk && !videoOk) {
       setProblem(t("photoInvalid"));
       return;
     }
@@ -152,6 +162,7 @@ export function QuoteBar() {
     setPhoto(file);
     setPreview(URL.createObjectURL(file));
     setResult(null);
+    setBuying(null);
   }
 
   function removePhoto() {
@@ -167,7 +178,7 @@ export function QuoteBar() {
     if (!isSignedIn) {
       // Results are for account holders: keep the draft, sign up over the page, then search.
       setProblem(t("signUpNeeded"));
-      saveDraft(what, photo ? await readDataUrl(photo).catch(() => null) : null, photo?.name ?? null);
+      saveDraft(what, photo && !isVideo(photo) ? await readDataUrl(photo).catch(() => null) : null, photo && !isVideo(photo) ? photo.name : null);
       setPending(true);
       const here = window.location.pathname + window.location.search;
       clerk.openSignUp({ forceRedirectUrl: here, signInForceRedirectUrl: here });
@@ -176,13 +187,16 @@ export function QuoteBar() {
     setProblem(null);
     setSearching(true);
     setChoice(null);
+    setBuying(null);
     try {
       const me = account ?? (await ensureCustomerAccount());
       setAccount(me);
       setContact({ name: me.name, phone: me.phone ?? "" });
       const form = new FormData();
       form.append("what", what);
-      if (photo) form.append("photo", photo);
+      if (photo) form.append(isVideo(photo) ? "video" : "photo", photo);
+      // Priced delivered to where the visitor is.
+      if (country) form.append("country", country);
       setResult(await postForm<SuggestResult>("/customer/suggest", form, locale));
     } catch (err) {
       if (err instanceof StaffAccountError) {
@@ -210,8 +224,9 @@ export function QuoteBar() {
       }
       form.append("what", what);
       form.append("locale", locale);
-      if (choice && choice !== "none") form.append("choice", JSON.stringify(choice));
-      if (photo) form.append("photo", photo);
+      if (choice && choice !== "none")
+        form.append("choice", JSON.stringify({ provider: choice.provider, url: choice.url, title: choice.title, imageUrl: choice.imageUrl, offer: choice.offer ?? undefined }));
+      if (photo) form.append(isVideo(photo) ? "video" : "photo", photo);
       await postForm("/customer/requests", form, locale);
       setSubmitted(true);
     } catch (err) {
@@ -234,8 +249,6 @@ export function QuoteBar() {
   }
 
   const identified = result?.identified && [result.identified.brand, result.identified.model].filter(Boolean).join(" ");
-  const money = (s: Suggestion) =>
-    s.price != null ? `${s.price.toLocaleString(locale === "en" ? "en-GB" : "fr-FR")}${s.currency ? ` ${s.currency}` : ""}` : t("priceToConfirm");
 
   return (
     <div id="quote">
@@ -274,8 +287,12 @@ export function QuoteBar() {
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-4 py-3">
             {preview ? (
               <span className="flex min-w-0 items-center gap-2.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={preview} alt="" className="h-10 w-10 flex-none rounded-[var(--radius-xs)] border border-line object-cover" />
+                {isVideo(photo) ? (
+                  <video src={preview} muted playsInline className="h-10 w-10 flex-none rounded-[var(--radius-xs)] border border-line object-cover" />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={preview} alt="" className="h-10 w-10 flex-none rounded-[var(--radius-xs)] border border-line object-cover" />
+                )}
                 <span className="truncate text-sm text-ink">{photo?.name}</span>
                 <button type="button" onClick={removePhoto} className="rb-link flex-none text-xs text-ink-muted">
                   {t("removePhoto")}
@@ -297,7 +314,7 @@ export function QuoteBar() {
             <input
               ref={fileRef}
               type="file"
-              accept="image/png,image/jpeg,image/webp"
+              accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm"
               className="sr-only"
               tabIndex={-1}
               onChange={(e) => pickPhoto(e.target.files?.[0])}
@@ -348,18 +365,17 @@ export function QuoteBar() {
                           )}
                         </span>
                         <span className="flex min-w-0 flex-1 flex-col">
-                          <a
-                            href={s.url}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="line-clamp-2 text-sm font-semibold text-ink hover:underline"
-                            aria-label={t("viewPage", { product: s.title })}
-                          >
-                            {s.title}
-                          </a>
-                          <span className="mt-0.5 truncate text-xs text-ink-muted">{s.merchant}</span>
-                          <span className="mt-auto flex items-center justify-between gap-2 pt-2">
-                            <span className={`text-sm tabular-nums ${s.price != null ? "font-semibold text-ink" : "text-ink-muted"}`}>{money(s)}</span>
+                          {/* The store stays behind the order: no link to it, no store price. */}
+                          <span className="line-clamp-2 text-sm font-semibold text-ink">{s.title}</span>
+                          <span className="mt-auto pt-2">
+                            <PriceBlock price={s.price} compact />
+                          </span>
+                          <span className="mt-2 flex flex-wrap items-center gap-2">
+                            {s.offer && s.price?.priced && (
+                              <Button type="button" size="s" onClick={() => setBuying(s)}>
+                                {t("buy")}
+                              </Button>
+                            )}
                             <Button type="button" size="s" variant={chosen ? "primary" : "secondary"} aria-pressed={chosen} onClick={() => setChoice(s)}>
                               {chosen ? t("chosen") : t("thisOne")}
                             </Button>
@@ -370,6 +386,9 @@ export function QuoteBar() {
                   );
                 })}
               </ul>
+              {buying && buying.offer && buying.price && country && (
+                <BuyPanel key={buying.url} title={buying.title} offer={buying.offer} country={country} initialPrice={buying.price} onClose={() => setBuying(null)} />
+              )}
               <button
                 type="button"
                 className={`mt-3 text-sm ${choice === "none" ? "font-semibold text-ink" : "rb-link"}`}

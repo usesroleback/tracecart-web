@@ -769,6 +769,7 @@ export interface DiscoverySpec {
   requiredAccessories: string[];
   shippingFlags: { issue: string; reason: string }[];
   hazardous: "yes" | "no" | "unknown";
+  shippingEstimate?: { packedWeightKg: number | null; lengthCm: number | null; widthCm: number | null; heightCm: number | null; confidence: "high" | "medium" | "low" } | null;
   identification: "exact_model" | "product_family" | "product_type" | "unclear";
   uncertainties: string[];
   missingInformation: string[];

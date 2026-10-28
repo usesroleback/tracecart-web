@@ -26,25 +26,5 @@
   "previous": "← Précédent",
   "next": "Suivant →",
   "page": "Page {page}",
-  "results": "{count, plural, one { · # résultat} other { · # résultats}}",
-  "catalogue": {
-    "title": "Catalogue de la boutique : poids et dimensions",
-    "intro": "Ce qu'il faut à la boutique pour chiffrer un produit : sa catégorie, son poids et ses dimensions emballés par unité. Sans poids propre ni celui de sa catégorie (Tarifs → Poids par catégorie), un produit affiche « prix sur demande » dans la boutique.",
-    "search": "Rechercher dans le catalogue",
-    "onlyMissing": "Seulement les produits que la boutique ne peut pas peser",
-    "loading": "Chargement…",
-    "empty": "Aucun produit.",
-    "allWeighable": "Tous les produits peuvent être pesés.",
-    "onRequest": "Prix sur demande",
-    "failed": "Impossible d'enregistrer",
-    "save": "Enregistrer",
-    "col": {
-      "product": "Produit",
-      "category": "Catégorie",
-      "weight": "Poids (kg)",
-      "length": "L (cm)",
-      "width": "l (cm)",
-      "height": "H (cm)"
-    }
-  }
+  "results": "{count, plural, one { · # résultat} other { · # résultats}}"
 }
