@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SiteShell } from "@/components/site/home/SiteShell";
 import { QuoteBar } from "@/components/site/QuoteBar";
+import { FeaturedProducts } from "@/components/site/FeaturedProducts";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("shop");
@@ -18,9 +19,9 @@ export default async function ShopPage() {
   return (
     <SiteShell>
       <main className="mx-auto min-h-[60vh] max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
-        <h1 className="rb-headline text-[32px] sm:text-[40px]">{t("title")}</h1>
-        <p className="mt-2 mb-6 max-w-2xl text-ink-muted">{t("subtitle")}</p>
+        <h1 className="rb-headline mb-6 text-[32px] sm:text-[40px]">{t("title")}</h1>
         <QuoteBar />
+        <FeaturedProducts />
       </main>
     </SiteShell>
   );

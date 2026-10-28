@@ -3,7 +3,6 @@
     "title": "Shop — TraceCart"
   },
   "title": "Shop",
-  "subtitle": "Describe, photograph or film what you need: we look for it at sellers and manufacturers and give you a price delivered to your door. We check with the supplier, buy it and deliver it.",
   "loading": "Loading…",
   "onRequest": "Price on request",
   "customsIncluded": "Delivered price. Customs estimated at {amount}, included.",
@@ -26,5 +25,13 @@
     "body": "We check with the supplier and email you the quote shortly. The link below follows your order until it's at your door.",
     "follow": "Follow my order",
     "account": "My account"
+  },
+  "signedOut": "To buy, you need a free account: that's how we know who to deliver to and how to reply.",
+  "signUp": "Create a free account",
+  "signIn": "Sign in",
+  "featured": {
+    "title": "Popular",
+    "pending": "We're finding today's best prices…",
+    "buy": "Buy"
   }
 }

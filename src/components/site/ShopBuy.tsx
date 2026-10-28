@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Button from "@/components/ui/button/Button";
@@ -51,6 +52,8 @@ export function PriceBlock({ price, compact = false }: { price: ShopPrice | null
 export function BuyPanel({ title, offer, country, initialPrice, onClose }: { title: string; offer: string; country: string; initialPrice: ShopPrice; onClose: () => void }) {
   const t = useTranslations("shop");
   const locale = useLocale();
+  const { isLoaded, isSignedIn } = useAuth();
+  const clerk = useClerk();
   const [quantity, setQuantity] = useState(1);
   const [priced, setPriced] = useState<{ quantity: number; price: ShopPrice } | null>(null);
   const [account, setAccount] = useState<"loading" | "staff" | "ready">("loading");
@@ -65,11 +68,12 @@ export function BuyPanel({ title, offer, country, initialPrice, onClose }: { tit
   useEffect(() => {
     if (quantity === 1) return;
     api
-      .get<{ quantity: number; price: ShopPrice }>(`/customer/shop/price?${new URLSearchParams({ offer, country, quantity: String(quantity) })}`)
+      .get<{ quantity: number; price: ShopPrice }>(`/shop/price?${new URLSearchParams({ offer, country, quantity: String(quantity) })}`)
       .then(setPriced, (err) => setError(err instanceof Error ? err.message : t("failed")));
   }, [offer, country, quantity, t]);
 
   useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
     ensureCustomerAccount()
       .then((p) => {
         setPhone(p.phone ?? "");
@@ -77,7 +81,9 @@ export function BuyPanel({ title, offer, country, initialPrice, onClose }: { tit
         setAccount("ready");
       })
       .catch((err) => setAccount(err instanceof StaffAccountError ? "staff" : "ready"));
-  }, []);
+  }, [isLoaded, isSignedIn]);
+
+  const here = typeof window === "undefined" ? `/${locale}/shop` : window.location.href;
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -137,7 +143,17 @@ export function BuyPanel({ title, offer, country, initialPrice, onClose }: { tit
             <p className="mt-3 text-xs text-ink-muted">{t("howItWorks")}</p>
           </div>
 
-          {account === "loading" ? (
+          {isLoaded && !isSignedIn ? (
+            <div>
+              <p className="text-sm text-ink-muted">{t("signedOut")}</p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Button onClick={() => clerk.openSignUp({ forceRedirectUrl: here, signInForceRedirectUrl: here })}>{t("signUp")}</Button>
+                <Button variant="secondary" onClick={() => clerk.openSignIn({ forceRedirectUrl: here, signUpForceRedirectUrl: here })}>
+                  {t("signIn")}
+                </Button>
+              </div>
+            </div>
+          ) : account === "loading" ? (
             <p className="text-sm text-ink-muted">{t("loading")}</p>
           ) : account === "staff" ? (
             <p className="text-sm text-ink-muted">{t("staff")}</p>

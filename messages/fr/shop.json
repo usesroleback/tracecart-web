@@ -3,7 +3,6 @@
     "title": "Boutique — TraceCart"
   },
   "title": "Boutique",
-  "subtitle": "Décrivez, photographiez ou filmez ce qu'il vous faut : nous le cherchons chez les vendeurs et fabricants, et vous donnons un prix livré chez vous. Nous vérifions auprès du fournisseur, achetons et vous livrons.",
   "loading": "Chargement…",
   "onRequest": "Prix sur demande",
   "customsIncluded": "Prix livré. Douane estimée à {amount}, comprise.",
@@ -26,5 +25,13 @@
     "body": "Nous vérifions auprès du fournisseur et vous envoyons le devis par email très vite. Le lien ci-dessous suit votre commande jusqu'à votre porte.",
     "follow": "Suivre ma commande",
     "account": "Mon compte"
+  },
+  "signedOut": "Pour acheter, il faut un compte gratuit : nous savons ainsi à qui livrer et pouvons vous répondre.",
+  "signUp": "Créer un compte gratuit",
+  "signIn": "Se connecter",
+  "featured": {
+    "title": "Populaires",
+    "pending": "Nous cherchons les meilleurs prix du jour…",
+    "buy": "Acheter"
   }
 }
