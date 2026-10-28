@@ -42,5 +42,10 @@
     "replyTo": "We'll reply to {email} and the number below.",
     "myRequests": "See my requests →",
     "shipInstead": "Already have the goods? Get them delivered →"
+  },
+  "country": {
+    "label": "Your country",
+    "detecting": "Locating…",
+    "choose": "Choose your country"
   }
 }

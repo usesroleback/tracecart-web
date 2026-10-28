@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { PillLink } from "./primitives";
+import { CountryPicker } from "../CountryPicker";
 
 const LINKS = [
   { key: "home", href: "#top" },
@@ -42,10 +43,8 @@ function NavLink({
 
 export function HomeNav() {
   const t = useTranslations("home.nav");
-  const locale = useLocale();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const other = locale === "fr" ? "en" : "fr";
   // Section anchors live on the homepage; from /shop, /ship or /account they go back to it.
   const onHome = pathname === "/";
   const to = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
@@ -96,9 +95,7 @@ export function HomeNav() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href={pathname} locale={other} className="hidden rounded-[var(--hp-radius-chip)] px-3 py-2 text-sm font-medium text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] sm:block" hrefLang={other}>
-            {t("language")}
-          </Link>
+          <CountryPicker className="hidden text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] sm:inline-flex" />
           <Link href="/account" className="hidden rounded-[var(--hp-radius-chip)] px-3 py-2 text-sm font-medium text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] md:block">
             {t("account")}
           </Link>
@@ -148,9 +145,7 @@ export function HomeNav() {
             <PillLink href={to("#quote")} tone="primary" block>
               {t("cta")}
             </PillLink>
-            <Link href={pathname} locale={other} hrefLang={other} className="py-2 text-sm text-[var(--hp-on-dark-muted)]">
-              {t("language")}
-            </Link>
+            <CountryPicker className="py-2 text-[var(--hp-on-dark-muted)] [&_option]:text-black" />
           </div>
         </div>
       )}

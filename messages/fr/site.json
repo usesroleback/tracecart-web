@@ -42,5 +42,10 @@
     "replyTo": "Nous répondons à {email} et au numéro ci-dessous.",
     "myRequests": "Voir mes demandes →",
     "shipInstead": "Vous avez déjà la marchandise ? Faites-la livrer →"
+  },
+  "country": {
+    "label": "Votre pays",
+    "detecting": "Localisation…",
+    "choose": "Choisir votre pays"
   }
 }
