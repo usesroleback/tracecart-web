@@ -172,7 +172,9 @@
         "web_search": "Web",
         "manual": "Offre saisie",
         "customer_link": "Lien du client",
-        "customer_choice": "Choix du client"
+        "customer_choice": "Choix du client",
+        "mindcase_amazon": "Amazon",
+        "mindcase_maps": "Fabricants et grossistes (Google Maps)"
       }
     },
     "reasons": {

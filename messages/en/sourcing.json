@@ -172,7 +172,9 @@
         "web_search": "Web",
         "manual": "Offer entered",
         "customer_link": "Customer's link",
-        "customer_choice": "Customer's pick"
+        "customer_choice": "Customer's pick",
+        "mindcase_amazon": "Amazon",
+        "mindcase_maps": "Manufacturers and wholesalers (Google Maps)"
       }
     },
     "reasons": {
