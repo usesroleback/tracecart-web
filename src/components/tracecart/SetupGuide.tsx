@@ -39,7 +39,13 @@ function useSteps(r: Readiness): Step[] {
       detail: r.exchangeRates.missing.length ? t("detail.missingRates", { pairs: r.exchangeRates.missing.map((p) => `${p.from} → ${p.to}`).join(", ") }) : undefined,
     },
     { key: "margins", need: "recommended", done: r.margins.set, href: "/pricing#margins" },
-    { key: "inbound", need: "recommended", done: r.inbound.set, href: "/pricing#margins" },
+    {
+      key: "inbound",
+      need: "required",
+      done: r.inbound.missingHubs.length === 0,
+      href: "/pricing#margins",
+      detail: r.inbound.missingHubs.length ? t("detail.missingInbound", { hubs: r.inbound.missingHubs.join(", ") }) : undefined,
+    },
     { key: "customs", need: "recommended", done: r.customsRates > 0, href: "/pricing#customs-rates" },
   ];
 }

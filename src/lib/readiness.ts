@@ -11,7 +11,8 @@ export interface Readiness {
   /** Each rate a price still needs: 1 `from` = ? `to` (the departure hub's currency). */
   exchangeRates: { missing: { from: string; to: string }[] };
   margins: { set: boolean };
-  inbound: { set: boolean };
+  /** missingHubs: hubs whose routes can't price until their store → hub rate is set. */
+  inbound: { set: boolean; missingHubs: string[] };
   customsRates: number;
 }
 
