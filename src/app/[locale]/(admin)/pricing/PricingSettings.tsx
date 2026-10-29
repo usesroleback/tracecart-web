@@ -6,7 +6,7 @@ import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
-import { CountryInput, CurrencyInput, Field, FormActions, input, UnitInput } from "@/components/ui/form/Form";
+import { CountryInput, CurrencyInput, Field, FormActions, input, UnitInput, RequiredNote } from "@/components/ui/form/Form";
 import { PricingSettings as Settings } from "@/lib/types";
 import { useFormat } from "@/lib/format";
 
@@ -190,6 +190,7 @@ function ExchangeRates({ settings, onSaved }: { settings: Settings; onSaved: () 
       )}
       {/* Reads as a sentence: 1 EUR = 655.957 XOF. */}
       <form onSubmit={submit} className="grid gap-4">
+        <RequiredNote className="col-span-full" />
         <div className="grid items-end gap-3 sm:grid-cols-[minmax(0,7rem)_1rem_minmax(0,11rem)_minmax(0,7rem)_minmax(0,1fr)]">
           <Field label={t("from")}>
             <CurrencyInput required placeholder="EUR" value={v.currency} onChange={(e) => setV({ ...v, currency: e.target.value })} />
@@ -286,6 +287,7 @@ function CustomsRates({ settings, onSaved }: { settings: Settings; onSaved: () =
         </SavedList>
       )}
       <form onSubmit={submit} className="grid gap-4">
+        <RequiredNote className="col-span-full" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Field label={t("country")}>
             <CountryInput required value={v.destinationCountry} onChange={set("destinationCountry")} />
@@ -369,6 +371,7 @@ function CategoryDefaults({ settings, onSaved }: { settings: Settings; onSaved: 
         </SavedList>
       )}
       <form onSubmit={submit} className="grid gap-4">
+        <RequiredNote className="col-span-full" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_repeat(4,minmax(0,1fr))]">
           <Field label={t("category")}>
             <input className={input} required value={v.category} onChange={set("category")} />

@@ -1,7 +1,7 @@
 "use client";
 
-import { InputHTMLAttributes, ReactNode, useId, useMemo } from "react";
-import { useLocale } from "next-intl";
+import { Children, InputHTMLAttributes, isValidElement, ReactNode, useId, useMemo } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { COUNTRY_CODES, countryName } from "@/lib/country";
 
 // The console's form pieces, so every form lines up the same way: a label
@@ -14,10 +14,55 @@ export const control =
 /** A text box that fills its column and can shrink beside others. */
 export const input = `${control} w-full min-w-0`;
 
-export function Field({ label, hint, children, className = "" }: { label: ReactNode; hint?: ReactNode; children: ReactNode; className?: string }) {
+/**
+ * Whether a field's control is required: an input, select or textarea with
+ * `required` (also inside a row of controls, or a range's `min`/`max`). The
+ * label follows what the form actually enforces, so they can't disagree.
+ */
+function hasRequired(node: ReactNode, depth = 0): boolean {
+  if (depth > 4) return false;
+  return Children.toArray(node).some((child) => {
+    if (!isValidElement(child)) return false;
+    const props = child.props as { required?: boolean; min?: { required?: boolean }; max?: { required?: boolean }; children?: ReactNode };
+    return props.required === true || props.min?.required === true || props.max?.required === true || hasRequired(props.children, depth + 1);
+  });
+}
+
+/** A required field's mark, after its label (the control itself tells screen readers). */
+export function RequiredMark() {
+  return (
+    <span aria-hidden className="ml-0.5 font-semibold text-critical">
+      *
+    </span>
+  );
+}
+
+/** Above a form: what the mark means. */
+export function RequiredNote({ className = "" }: { className?: string }) {
+  const t = useTranslations("common.form");
+  return (
+    <p className={`text-xs text-ink-muted ${className}`}>
+      <span aria-hidden className="font-semibold text-critical">
+        *
+      </span>{" "}
+      {t("requiredNote")}
+    </p>
+  );
+}
+
+/**
+ * A label above its control, with a hint below. Required fields are marked
+ * by themselves (see hasRequired); pass `required` for a control that isn't
+ * a direct input.
+ */
+export function Field({ label, hint, children, className = "", required }: { label: ReactNode; hint?: ReactNode; children: ReactNode; className?: string; required?: boolean }) {
+  const mark = required ?? hasRequired(children);
   return (
     <label className={`block min-w-0 text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
+      <span className="rb-label mb-1 block text-ink">
+        {label}
+        {mark && <RequiredMark />}
+      </span>
       {children}
       {hint && <span className="mt-1 block text-xs text-ink-muted">{hint}</span>}
     </label>

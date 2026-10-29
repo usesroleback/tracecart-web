@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
@@ -8,20 +8,12 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
 import { EXCEPTION_TYPES, ExceptionSeverity, ExceptionType, Order, OrderException } from "@/lib/types";
 import { useFormat } from "@/lib/format";
+import { Field, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
 export const SEVERITY_BADGE: Record<ExceptionSeverity, "critical" | "attn" | "outline"> = { HIGH: "critical", MEDIUM: "attn", LOW: "outline" };
-
-function Field({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-    </label>
-  );
-}
 
 /**
  * The order's exceptions: problems someone owns until they're resolved. Some
@@ -107,6 +99,7 @@ function ExceptionRow({ orderId, exception: x, isAdmin, onChanged }: { orderId: 
       )}
       {resolving && (
         <form onSubmit={resolve} className="mt-2 grid gap-2">
+          <RequiredNote className="col-span-full" />
           <Field label={t("exceptions.resolution")}>
             <input className={input} required value={resolution} onChange={(e) => setResolution(e.target.value)} />
           </Field>
@@ -159,6 +152,7 @@ function OpenForm({ orderId, onDone, onChanged }: { orderId: string; onDone: () 
 
   return (
     <form onSubmit={submit} className="mt-3 grid gap-3 rounded-[var(--radius-s)] border border-line p-3 sm:grid-cols-2">
+      <RequiredNote className="col-span-full" />
       <Field label={t("exceptions.type")}>
         <select className={input} value={type} onChange={(e) => setType(e.target.value as ExceptionType)}>
           {EXCEPTION_TYPES.filter((x) => x !== "STALE_TRACKING").map((x) => (

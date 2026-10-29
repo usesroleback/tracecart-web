@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card/Card";
 import { DsUploadIcon } from "@/icons";
 import { MILESTONES, Milestone, Order } from "@/lib/types";
 import { useFormat } from "@/lib/format";
+import { Field, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -18,15 +19,6 @@ const PROOF_STATUSES = new Set(["PICKED_UP", "IN_TRANSIT", "DELIVERED"]);
 const INTERNAL: Milestone[] = ["INSPECTION_COMPLETED", "CUSTOMS_CLEARANCE_STARTED"];
 const NEEDS_REASON: Milestone[] = ["DELAY_REPORTED", "DELIVERY_ATTEMPT_FAILED"];
 const TAKES_ETA: Milestone[] = ["DISPATCHED", "DELAY_REPORTED", "ETA_REVISED", "BORDER_PROCESSING", "DESTINATION_HUB_RECEIVED"];
-
-function Field({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-    </label>
-  );
-}
 
 /**
  * What has happened to the goods since payment (docs/design/notifications-and-exceptions.md):
@@ -161,6 +153,7 @@ export function RecordEventForm({ path, delivered = false, onChanged }: { path: 
 
   return (
     <form onSubmit={submit} className="grid gap-3 sm:grid-cols-2">
+      <RequiredNote className="col-span-full" />
       <Field label={t("tracking.milestone")} className="sm:col-span-2">
         <select className={input} value={milestone} onChange={(e) => setMilestone(e.target.value as Milestone)}>
           {choices.map((m) => (

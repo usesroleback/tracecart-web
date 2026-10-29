@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -10,6 +10,7 @@ import { api } from "@/lib/apiClient";
 import { countryName } from "@/lib/country";
 import { ensureCustomerAccount, StaffAccountError, updateProfile } from "@/lib/customer";
 import { useFormat } from "@/lib/format";
+import { Field, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -18,15 +19,6 @@ const input =
 export type ShopPrice =
   | { priced: true; currency: string; total: number; service: number; customsDuties: number | null; customsBroker: number | null; customsIncluded: boolean; etaFrom: string; etaTo: string }
   | { priced: false; reason: "noPrice" | "noWeight" | "noRoute" };
-
-function Field({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-    </label>
-  );
-}
 
 /** One delivered price, customs apart, and when it would arrive; "on request" otherwise. */
 export function PriceBlock({ price, compact = false }: { price: ShopPrice | null; compact?: boolean }) {
@@ -159,6 +151,7 @@ export function BuyPanel({ title, offer, country, initialPrice, onClose }: { tit
             <p className="text-sm text-ink-muted">{t("staff")}</p>
           ) : (
             <form onSubmit={submit} className="grid gap-3 sm:grid-cols-2">
+              <RequiredNote className="col-span-full" />
               <Field label={t("city")}>
                 <input className={input} required value={v.city} onChange={(e) => setV({ ...v, city: e.target.value })} />
               </Field>

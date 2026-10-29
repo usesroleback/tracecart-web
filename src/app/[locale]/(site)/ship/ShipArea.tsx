@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -8,22 +8,13 @@ import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
 import { CustomerProfile, ensureCustomerAccount, StaffAccountError, updateProfile } from "@/lib/customer";
 import { HANDLING_FLAGS, HandlingFlag } from "@/lib/types";
+import { Field, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
 
 const CUSTOMS = ["CUSTOMER_HANDLES", "TRACECART_COORDINATES", "ALREADY_CLEARED", "UNKNOWN"] as const;
 type Customs = (typeof CUSTOMS)[number];
-
-function Field({ label, hint, children, className = "" }: { label: string; hint?: string; children: ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-      {hint && <span className="mt-1 block text-xs text-ink-muted">{hint}</span>}
-    </label>
-  );
-}
 
 type Place = { contactName: string; phone: string; line1: string; city: string; country: string };
 const emptyPlace: Place = { contactName: "", phone: "", line1: "", city: "", country: "" };
@@ -179,6 +170,7 @@ function ShipForm({ profile }: { profile: CustomerProfile }) {
 
   return (
     <form onSubmit={submit} className="grid gap-6">
+      <RequiredNote className="col-span-full" />
       <div>
         <h1 className="rb-headline text-[32px]">{t("title")}</h1>
         <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t("intro")}</p>

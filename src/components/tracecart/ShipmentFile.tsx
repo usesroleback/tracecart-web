@@ -18,21 +18,13 @@ import {
   OrderAddress,
 } from "@/lib/types";
 import { useFormat } from "@/lib/format";
+import { Field, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring disabled:opacity-60";
 
 // What changes the price is fixed once the quote is out (the API enforces it too).
 const PRICE_EDITABLE = new Set(["INTENT_SUBMITTED", "QUOTING", "QUOTED"]);
-
-function Field({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-    </label>
-  );
-}
 
 /** Runs a save, reports failure inline, and refreshes the order on success. */
 function useSave(onChanged: () => void) {
@@ -167,6 +159,7 @@ function AddressForm({
   }
   return (
     <form onSubmit={submit} className="mt-3 grid gap-3 sm:grid-cols-2">
+      <RequiredNote className="col-span-full" />
       {ADDRESS_FIELDS.map((f) => (
         <Field key={f} label={t(`shipment.address.${f}`)} className={f === "line1" || f === "notes" ? "sm:col-span-2" : ""}>
           <input

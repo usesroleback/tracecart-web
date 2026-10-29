@@ -14,6 +14,7 @@ import { IntentForm } from "@/components/tracecart/IntentForm";
 import { destinationOf } from "../SourcingDashboard";
 import { DsChevronRightIcon, DsExternalIcon } from "@/icons";
 import { DiscoverySpec, DiscoveryState, ProviderOutcome, SourcingCandidate, SpecField } from "@/lib/types";
+import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -719,14 +720,15 @@ function ManualOffer({
         });
       }}
     >
+      <RequiredNote className="col-span-full" />
       <p className="rb-overline">{t("title")}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="text-sm">
-          <span className="rb-label mb-1 block">{t("url")}</span>
+          <span className="rb-label mb-1 block">{t("url")}<RequiredMark /></span>
           <input required type="url" className={input} {...field("url")} />
         </label>
         <label className="text-sm">
-          <span className="rb-label mb-1 block">{t("product")}</span>
+          <span className="rb-label mb-1 block">{t("product")}<RequiredMark /></span>
           <input required className={input} {...field("title")} />
         </label>
         <label className="text-sm">

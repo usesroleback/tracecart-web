@@ -49,5 +49,9 @@
   "severity": {
     "held": "En attente",
     "critical": "Exception"
+  },
+  "form": {
+    "requiredNote": "Les champs marqués d’un astérisque sont obligatoires.",
+    "optional": "facultatif"
   }
 }

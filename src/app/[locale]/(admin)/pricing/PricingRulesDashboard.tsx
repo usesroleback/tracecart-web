@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card/Card";
 import { DsPlusIcon } from "@/icons";
 import { HANDLING_FLAGS, PRICE_COMPONENTS, PRICE_METHODS, PriceMethod, PricingRule } from "@/lib/types";
 import { useFormat } from "@/lib/format";
-import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, RangeInputs, UnitInput } from "@/components/ui/form/Form";
+import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, RangeInputs, UnitInput, RequiredNote } from "@/components/ui/form/Form";
 
 const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
 const TD = "border-b border-line px-3 py-2 align-top";
@@ -234,6 +234,7 @@ function RuleForm({ rule, onCancel, onSaved }: { rule: PricingRule | null; onCan
   const currency = v.currency.trim().toUpperCase() || "—";
   return (
     <form onSubmit={submit} className="grid gap-6">
+      <RequiredNote className="col-span-full" />
       <FormSection title={t("form.charges")}>
         <Field label={t("field.code")} hint={t("field.codeHint")}>
           <input className={`${input} rb-mono uppercase`} required value={v.code} onChange={set("code")} disabled={!!rule} pattern="[A-Za-z0-9][A-Za-z0-9_\-]{1,40}" />

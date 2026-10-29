@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Provider } from "@/lib/types";
+import { Field, RequiredNote } from "@/components/ui/form/Form";
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -66,6 +67,7 @@ export function StoreForm({
       onSubmit={handleSubmit}
       className="rounded-tl-[var(--radius-l)] rounded-tr-[var(--radius-xs)] rounded-br-[var(--radius-xs)] rounded-bl-[var(--radius-xs)] border border-line bg-surface-raised p-5"
     >
+      <RequiredNote className="col-span-full" />
       <h2 className="rb-title-l text-[20px]">
         {store ? t("form.editTitle", { name: store.name }) : t("new")}
       </h2>
@@ -149,11 +151,3 @@ export function StoreForm({
   );
 }
 
-function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className ?? ""}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-    </label>
-  );
-}

@@ -9,6 +9,7 @@ import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
 import { Badge } from "@/components/ui/badge/Badge";
 import { GeoDetectResult, Hub } from "@/lib/types";
+import { Field } from "@/components/ui/form/Form";
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -226,11 +227,3 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block text-sm">
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-    </label>
-  );
-}

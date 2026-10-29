@@ -49,5 +49,9 @@
   "severity": {
     "held": "Held",
     "critical": "Exception"
+  },
+  "form": {
+    "requiredNote": "Fields marked with an asterisk are required.",
+    "optional": "optional"
   }
 }

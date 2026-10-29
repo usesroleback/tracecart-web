@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
 import { DsPlusIcon } from "@/icons";
 import type { Carrier } from "./CarrierServices";
+import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring disabled:opacity-60";
@@ -59,12 +60,13 @@ export function CarrierAccounts({ carriers }: { carriers: Carrier[] }) {
 
       {adding && (
         <form onSubmit={submit} className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <RequiredNote className="col-span-full" />
           <label className="block text-sm">
-            <span className="rb-label mb-1 block text-ink">{t("name")}</span>
+            <span className="rb-label mb-1 block text-ink">{t("name")}<RequiredMark /></span>
             <input className={input} required value={v.name} onChange={set("name")} />
           </label>
           <label className="block text-sm">
-            <span className="rb-label mb-1 block text-ink">{t("email")}</span>
+            <span className="rb-label mb-1 block text-ink">{t("email")}<RequiredMark /></span>
             <input className={input} type="email" required value={v.email} onChange={set("email")} />
           </label>
           <label className="block text-sm">

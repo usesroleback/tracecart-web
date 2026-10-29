@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card/Card";
 import { Status, StatusState } from "@/components/ui/status/Status";
 import { useFormat } from "@/lib/format";
 import { CustomerProfile, CustomerRequest, ensureCustomerAccount, listRequests, StaffAccountError, updateProfile } from "@/lib/customer";
+import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
 
 const input =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -143,12 +144,13 @@ export function AccountArea() {
         <h2 className="rb-title">{t("profile.title")}</h2>
         <p className="mt-1 text-sm text-ink-muted">{t("profile.hint")}</p>
         <form onSubmit={save} className="mt-4 grid gap-3 sm:grid-cols-3 sm:items-end">
+          <RequiredNote className="col-span-full" />
           <label className="text-sm">
-            <span className="rb-label mb-1 block">{t("profile.name")}</span>
+            <span className="rb-label mb-1 block">{t("profile.name")}<RequiredMark /></span>
             <input required className={input} value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} autoComplete="name" />
           </label>
           <label className="text-sm">
-            <span className="rb-label mb-1 block">{t("profile.phone")}</span>
+            <span className="rb-label mb-1 block">{t("profile.phone")}<RequiredMark /></span>
             <input required type="tel" className={input} value={draft.phone} onChange={(e) => setDraft({ ...draft, phone: e.target.value })} autoComplete="tel" />
           </label>
           <label className="text-sm">

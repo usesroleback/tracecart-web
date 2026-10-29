@@ -8,6 +8,7 @@ import Button from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
 import { RecordEventForm } from "@/components/tracecart/ShipmentTracking";
+import { RequiredMark } from "@/components/ui/form/Form";
 import { Consolidation, ConsolidationEconomics, ConsolidationLoad, ConsolidationMember, ConsolidationSuggestion } from "@/lib/types";
 import { useFormat } from "@/lib/format";
 
@@ -486,7 +487,10 @@ function CostForm({ group, onDone }: { group: Consolidation; onDone: () => Promi
         <input className={input} type="number" min="0" step="any" value={amount} onChange={(e) => setAmount(e.target.value)} />
       </label>
       <label className="block text-sm">
-        <span className="rb-label mb-1 block">{t("cost.currency")}</span>
+        <span className="rb-label mb-1 block">
+          {t("cost.currency")}
+          {amount.trim() !== "" && <RequiredMark />}
+        </span>
         <input className={input} maxLength={3} value={currency} onChange={(e) => setCurrency(e.target.value)} required={amount.trim() !== ""} />
       </label>
       <label className="block text-sm sm:col-span-2">

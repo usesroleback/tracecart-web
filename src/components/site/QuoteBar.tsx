@@ -8,6 +8,7 @@ import Button from "@/components/ui/button/Button";
 import { useCountry } from "@/context/CountryContext";
 import { CustomerProfile, ensureCustomerAccount, StaffAccountError, updateProfile } from "@/lib/customer";
 import { BuyPanel, PriceBlock, ShopPrice } from "./ShopBuy";
+import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -403,16 +404,17 @@ export function QuoteBar() {
 
           {!result.needsDescription && (
             <form onSubmit={send} className="mt-6 border-t border-line pt-5">
+              <RequiredNote className="col-span-full" />
               <p className="rb-title text-[16px]">{t("contactTitle")}</p>
               {choice && choice !== "none" && <p className="mt-1 text-sm text-ink-muted">{t("chosenSummary", { product: choice.title })}</p>}
               {account && <p className="mt-1 text-sm text-ink-muted">{t("replyTo", { email: account.email })}</p>}
               <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
                 <label className="text-sm">
-                  <span className="rb-label mb-1 block">{t("name")}</span>
+                  <span className="rb-label mb-1 block">{t("name")}<RequiredMark /></span>
                   <input required className={inputClasses} value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} autoComplete="name" />
                 </label>
                 <label className="text-sm">
-                  <span className="rb-label mb-1 block">{t("phone")}</span>
+                  <span className="rb-label mb-1 block">{t("phone")}<RequiredMark /></span>
                   <input required type="tel" className={inputClasses} value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} autoComplete="tel" />
                 </label>
                 <Button type="submit" loading={sending}>

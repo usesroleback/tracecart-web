@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card/Card";
 import { DsPlusIcon } from "@/icons";
 import { CarrierService, HANDLING_FLAGS, HandlingFlag, Hub, RateVersion, TRANSPORT_MODES, TransportMode } from "@/lib/types";
 import { useFormat } from "@/lib/format";
-import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, RangeInputs, UnitInput } from "@/components/ui/form/Form";
+import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, RangeInputs, UnitInput, RequiredNote } from "@/components/ui/form/Form";
 
 const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
 const TD = "border-b border-line px-3 py-2 align-top";
@@ -274,6 +274,7 @@ function ServiceForm({
   const BAND_GRID = "grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_6rem] items-center gap-2";
   return (
     <form onSubmit={submit} className="grid gap-6">
+      <RequiredNote className="col-span-full" />
       <FormSection title={t("carriersPage.form.route")}>
         <Field label={t("carriersPage.field.name")} className="sm:col-span-2">
           <input className={input} required value={v.name} onChange={set("name")} />
