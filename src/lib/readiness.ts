@@ -8,7 +8,8 @@ export interface Readiness {
   ready: boolean;
   hub: { id: string; name: string; currency: string } | null;
   routes: { priced: number; withoutRates: number; countries: string[] };
-  exchangeRates: { missing: string[] };
+  /** Each rate a price still needs: 1 `from` = ? `to` (the departure hub's currency). */
+  exchangeRates: { missing: { from: string; to: string }[] };
   margins: { set: boolean };
   inbound: { set: boolean };
   customsRates: number;

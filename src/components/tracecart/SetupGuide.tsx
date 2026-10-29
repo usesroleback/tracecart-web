@@ -36,7 +36,7 @@ function useSteps(r: Readiness): Step[] {
       need: "required",
       done: r.hub != null && r.exchangeRates.missing.length === 0,
       href: "/pricing#exchange-rates",
-      detail: r.exchangeRates.missing.length ? t("detail.missingRates", { pairs: r.exchangeRates.missing.map((c) => `${c} → ${currency}`).join(", ") }) : undefined,
+      detail: r.exchangeRates.missing.length ? t("detail.missingRates", { pairs: r.exchangeRates.missing.map((p) => `${p.from} → ${p.to}`).join(", ") }) : undefined,
     },
     { key: "margins", need: "recommended", done: r.margins.set, href: "/pricing#margins" },
     { key: "inbound", need: "recommended", done: r.inbound.set, href: "/pricing#margins" },

@@ -280,7 +280,7 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
   );
 }
 
-function ExchangeRates({ settings, missing, onSaved }: { settings: Settings; missing: string[]; onSaved: () => Promise<void> }) {
+function ExchangeRates({ settings, missing, onSaved }: { settings: Settings; missing: { from: string; to: string }[]; onSaved: () => Promise<void> }) {
   const t = useTranslations("pricing.settings.fx");
   const f = useFormat();
   const [v, setV] = useState({ currency: "", toCurrency: settings.margins.currency, rate: "", source: "" });
@@ -321,9 +321,9 @@ function ExchangeRates({ settings, missing, onSaved }: { settings: Settings; mis
       {missing.length > 0 && (
         <div className="mb-4 flex flex-wrap items-center gap-2 rounded-[var(--radius-m)] bg-attn-soft p-3 text-sm">
           <span>{t("missing")}</span>
-          {missing.map((c) => (
-            <Button key={c} variant="secondary" size="s" onClick={() => setV({ ...v, currency: c, toCurrency: settings.margins.currency })}>
-              {c} → {settings.margins.currency}
+          {missing.map((p) => (
+            <Button key={`${p.from}>${p.to}`} variant="secondary" size="s" onClick={() => setV({ ...v, currency: p.from, toCurrency: p.to })}>
+              {p.from} → {p.to}
             </Button>
           ))}
         </div>
