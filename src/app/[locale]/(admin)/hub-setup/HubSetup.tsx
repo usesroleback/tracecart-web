@@ -49,6 +49,9 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
         if (geo.location) {
           setNewHub((h) => ({ ...h, city: geo.location!.city, country: geo.location!.country }));
         }
+      } catch (err) {
+        // Say so: an empty list would otherwise look like "no hubs".
+        setError(err instanceof Error ? `${t("loadFailed")} (${err.message})` : t("loadFailed"));
       } finally {
         setLoading(false);
       }
@@ -136,7 +139,12 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
             </label>
           ))}
 
-          {error && <p className="text-sm text-critical">{error}</p>}
+          {hubs.length === 0 && !error && <p className="text-sm text-ink-muted">{t("noHubs")}</p>}
+          {error && (
+            <p role="alert" className="text-sm text-critical">
+              {error}
+            </p>
+          )}
 
           <div className="flex items-center justify-between pt-2">
             <button

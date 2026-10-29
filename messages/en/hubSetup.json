@@ -20,5 +20,7 @@
     "longitude": "Longitude"
   },
   "cancel": "Cancel",
-  "createConfirm": "Create and confirm"
+  "createConfirm": "Create and confirm",
+  "loadFailed": "The hubs couldn't be loaded.",
+  "noHubs": "No hubs yet: create the first one."
 }
