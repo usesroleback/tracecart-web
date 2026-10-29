@@ -10,6 +10,7 @@ export interface Readiness {
   routes: { priced: number; withoutRates: number; countries: string[] };
   exchangeRates: { missing: string[] };
   margins: { set: boolean };
+  inbound: { set: boolean };
   customsRates: number;
 }
 

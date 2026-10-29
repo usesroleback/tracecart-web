@@ -413,7 +413,7 @@ export const PRICE_COMPONENTS = [
 export type PriceComponent = (typeof PRICE_COMPONENTS)[number];
 export const PRICE_METHODS = ["FIXED", "PER_UNIT", "PER_PACKAGE", "PER_KG", "PERCENT_OF_PRODUCT", "PERCENT_OF_DECLARED_VALUE"] as const;
 export type PriceMethod = (typeof PRICE_METHODS)[number];
-export type QuoteLineComponent = PriceComponent | "PRODUCT" | "TRANSPORT" | "TRANSPORT_MARGIN" | "PLATFORM_FEE" | "PRICE_BUFFER" | "CUSTOMS_DUTIES" | "CUSTOMS_BROKER";
+export type QuoteLineComponent = PriceComponent | "PRODUCT" | "INBOUND_TRANSPORT" | "TRANSPORT" | "TRANSPORT_MARGIN" | "PLATFORM_FEE" | "PRICE_BUFFER" | "CUSTOMS_DUTIES" | "CUSTOMS_BROKER";
 
 /** GET /pricing-settings — what prices are built from beyond carrier rates. Decimals arrive as strings. */
 export interface PricingSettings {
@@ -425,6 +425,8 @@ export interface PricingSettings {
     productFeeMin: string | null;
     transportMarkupPercent: string;
     priceBufferPercent: string;
+    inboundFee: string | null;
+    inboundPerKg: string | null;
     /** TraceCart's fee on a product, in %, when the hub has no tiers. */
     defaultFeePercent: number;
   };

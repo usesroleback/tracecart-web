@@ -11,7 +11,7 @@ import { DsCheckIcon } from "@/icons";
 import { Readiness, useReadiness } from "@/lib/readiness";
 
 type Need = "required" | "recommended";
-type Step = { key: "hub" | "routes" | "exchangeRates" | "margins" | "customs"; need: Need; done: boolean; href: string; detail?: string };
+type Step = { key: "hub" | "routes" | "exchangeRates" | "margins" | "inbound" | "customs"; need: Need; done: boolean; href: string; detail?: string };
 
 /** What the shop needs set, in the order to set it: each step is used by the next. */
 function useSteps(r: Readiness): Step[] {
@@ -39,6 +39,7 @@ function useSteps(r: Readiness): Step[] {
       detail: r.exchangeRates.missing.length ? t("detail.missingRates", { pairs: r.exchangeRates.missing.map((c) => `${c} → ${currency}`).join(", ") }) : undefined,
     },
     { key: "margins", need: "recommended", done: r.margins.set, href: "/pricing#margins" },
+    { key: "inbound", need: "recommended", done: r.inbound.set, href: "/pricing#margins" },
     { key: "customs", need: "recommended", done: r.customsRates > 0, href: "/pricing#customs-rates" },
   ];
 }

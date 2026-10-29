@@ -88,6 +88,7 @@
   },
   "priceComponent": {
     "PRODUCT": "Product",
+    "INBOUND_TRANSPORT": "Shipping to the hub",
     "TRANSPORT": "Transport (carrier)",
     "PLATFORM_FEE": "TraceCart fee (purchase)",
     "CUSTOMS_DUTIES": "Customs duties and taxes",

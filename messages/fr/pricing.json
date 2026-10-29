@@ -87,16 +87,24 @@
       "example": {
         "title": "Exemple pour vérifier vos chiffres (non enregistré)",
         "product": "Prix du produit",
-        "transport": "Prix du transporteur",
+        "transport": "Prix du transporteur (hub → client)",
         "lines": {
           "product": "Produit",
-          "transport": "Transport",
+          "inbound": "Acheminement jusqu'au hub",
+          "transport": "Transport du hub au client",
           "fee": "Frais sur le produit",
           "markup": "Marge sur le transport",
           "buffer": "Réserve"
         },
         "total": "Prix payé par le client, hors douane",
-        "note": "TraceCart gagne {earned}, plus la réserve ({buffer}) si elle n'est pas utilisée."
+        "note": "TraceCart gagne {earned}, plus la réserve ({buffer}) si elle n'est pas utilisée.",
+        "weight": "Poids emballé"
+      },
+      "inbound": {
+        "title": "Des boutiques jusqu'au hub",
+        "hint": "Ce que coûte l'acheminement d'un achat depuis la boutique (Amazon…) jusqu'à ce hub, en {currency}. Compté dans le prix de chaque produit acheté pour le client.",
+        "fee": "Par commande ({currency})",
+        "perKg": "Par kg ({currency})"
       }
     },
     "fx": {
@@ -190,6 +198,10 @@
       "margins": {
         "title": "Marges",
         "hint": "Ce que TraceCart gagne sur chaque commande. Sans réglage, seul le pourcentage par défaut s'applique."
+      },
+      "inbound": {
+        "title": "Acheminement jusqu'au hub",
+        "hint": "Ce que coûte un achat de la boutique jusqu'au hub (par commande, par kg). Sans lui, les prix n'en tiennent pas compte."
       },
       "customs": {
         "title": "Taux de douane",

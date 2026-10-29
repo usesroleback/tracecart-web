@@ -108,14 +108,20 @@ const TIER_GRID = "grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_5.5rem] items-cen
 
 /** A product and a transport price to show the margins on, sized to the currency. */
 const exampleFor = (currency: string) =>
-  ["XOF", "XAF", "NGN", "GNF", "CDF", "UGX", "TZS", "RWF", "BIF", "MGA"].includes(currency) ? { product: "100000", transport: "25000" } : { product: "200", transport: "50" };
+  ["XOF", "XAF", "NGN", "GNF", "CDF", "UGX", "TZS", "RWF", "BIF", "MGA"].includes(currency) ? { product: "100000", transport: "25000", weight: "3" } : { product: "200", transport: "50", weight: "3" };
 
 function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Promise<void> }) {
   const t = useTranslations("pricing.settings.margins");
   const f = useFormat();
   const m = settings.margins;
   const [tiers, setTiers] = useState((m.productFeeTiers ?? []).map((x) => ({ upTo: str(x.upTo), percent: str(x.percent) })));
-  const [v, setV] = useState({ productFeeMin: str(m.productFeeMin), transportMarkupPercent: str(m.transportMarkupPercent), priceBufferPercent: str(m.priceBufferPercent) });
+  const [v, setV] = useState({
+    productFeeMin: str(m.productFeeMin),
+    transportMarkupPercent: str(m.transportMarkupPercent),
+    priceBufferPercent: str(m.priceBufferPercent),
+    inboundFee: str(m.inboundFee),
+    inboundPerKg: str(m.inboundPerKg),
+  });
   const [ex, setEx] = useState(() => exampleFor(m.currency));
   const { busy, error, saved, run, fail } = useSubmit(onSaved);
   const setTier = (i: number, k: "upTo" | "percent", value: string) => setTiers(tiers.map((x, j) => (j === i ? { ...x, [k]: value } : x)));
@@ -141,6 +147,8 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
         productFeeMin: numOrNull(v.productFeeMin) || null,
         transportMarkupPercent: Number(v.transportMarkupPercent) || 0,
         priceBufferPercent: Number(v.priceBufferPercent) || 0,
+        inboundFee: numOrNull(v.inboundFee),
+        inboundPerKg: numOrNull(v.inboundPerKg),
       }),
     );
   }
@@ -149,6 +157,8 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
   const example = useMemo(() => {
     const product = Number(ex.product) || 0;
     const transport = Number(ex.transport) || 0;
+    // The origin leg, as modules/pricing/margin.ts inboundCost.
+    const inbound = Math.round((Number(v.inboundFee) || 0) + (Number(v.inboundPerKg) || 0) * (Number(ex.weight) || 0));
     const sorted = used
       .filter((x) => x.percent.trim() !== "")
       .map((x) => ({ upTo: numOrNull(x.upTo), percent: Number(x.percent) }))
@@ -157,11 +167,12 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
     const fee = Math.max(Math.round((product * percent) / 100), Math.round(Number(v.productFeeMin) || 0));
     const markup = Math.round((transport * (Number(v.transportMarkupPercent) || 0)) / 100);
     const buffer = Math.round((product * (Number(v.priceBufferPercent) || 0)) / 100);
-    return { product, transport, percent, fee, markup, buffer, total: product + transport + fee + markup + buffer };
+    return { product, inbound, transport, percent, fee, markup, buffer, total: product + inbound + transport + fee + markup + buffer };
   }, [ex, used, v, m.defaultFeePercent]);
   const money = (n: number) => f.money(n, m.currency);
   const lines: [string, number, string?][] = [
     ["product", example.product],
+    ["inbound", example.inbound],
     ["transport", example.transport],
     ["fee", example.fee, f.percent(example.percent)],
     ["markup", example.markup],
@@ -207,6 +218,15 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
             <UnitInput unit="%" max="50" value={v.priceBufferPercent} onChange={(e) => setV({ ...v, priceBufferPercent: e.target.value })} />
           </Field>
         </FormSection>
+        <FormSection title={t("inbound.title")} columns={2}>
+          <p className="-mt-1 text-xs text-ink-muted sm:col-span-2">{t("inbound.hint", { currency: m.currency })}</p>
+          <Field label={t("inbound.fee", { currency: m.currency })}>
+            <UnitInput unit={m.currency} value={v.inboundFee} onChange={(e) => setV({ ...v, inboundFee: e.target.value })} />
+          </Field>
+          <Field label={t("inbound.perKg", { currency: m.currency })}>
+            <UnitInput unit={`${m.currency}/kg`} value={v.inboundPerKg} onChange={(e) => setV({ ...v, inboundPerKg: e.target.value })} />
+          </Field>
+        </FormSection>
         <FormSection title={t("onTransport")} columns={2}>
           <Field label={t("markup")} hint={t("markupHint")}>
             <UnitInput unit="%" max="100" value={v.transportMarkupPercent} onChange={(e) => setV({ ...v, transportMarkupPercent: e.target.value })} />
@@ -216,9 +236,12 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
         {/* Not saved: an order to see what the figures above do to a price. */}
         <div className="rounded-[var(--radius-m)] border border-line p-4">
           <p className="rb-overline text-ink-muted">{t("example.title")}</p>
-          <div className="mt-2 grid max-w-xl gap-3 sm:grid-cols-2">
+          <div className="mt-2 grid max-w-2xl gap-3 sm:grid-cols-3">
             <Field label={t("example.product")}>
               <UnitInput unit={m.currency} value={ex.product} onChange={(e) => setEx({ ...ex, product: e.target.value })} />
+            </Field>
+            <Field label={t("example.weight")}>
+              <UnitInput unit="kg" value={ex.weight} onChange={(e) => setEx({ ...ex, weight: e.target.value })} />
             </Field>
             <Field label={t("example.transport")}>
               <UnitInput unit={m.currency} value={ex.transport} onChange={(e) => setEx({ ...ex, transport: e.target.value })} />

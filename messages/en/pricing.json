@@ -87,16 +87,24 @@
       "example": {
         "title": "Example to check your figures (not saved)",
         "product": "Product price",
-        "transport": "Carrier's price",
+        "transport": "Carrier's price (hub → customer)",
         "lines": {
           "product": "Product",
-          "transport": "Transport",
+          "inbound": "Shipping to the hub",
+          "transport": "Transport from the hub to the customer",
           "fee": "Fee on the product",
           "markup": "Markup on transport",
           "buffer": "Buffer"
         },
         "total": "Price the customer pays, before customs",
-        "note": "TraceCart earns {earned}, plus the buffer ({buffer}) when it isn't used."
+        "note": "TraceCart earns {earned}, plus the buffer ({buffer}) when it isn't used.",
+        "weight": "Packed weight"
+      },
+      "inbound": {
+        "title": "From the stores to the hub",
+        "hint": "What bringing a purchase from the store (Amazon…) to this hub costs, in {currency}. Counted in the price of every product bought for the customer.",
+        "fee": "Per order ({currency})",
+        "perKg": "Per kg ({currency})"
       }
     },
     "fx": {
@@ -190,6 +198,10 @@
       "margins": {
         "title": "Margins",
         "hint": "What TraceCart earns on each order. Unset, only the default percentage applies."
+      },
+      "inbound": {
+        "title": "Shipping to the hub",
+        "hint": "What bringing a purchase from the store to the hub costs (per order, per kg). Without it, prices leave it out."
       },
       "customs": {
         "title": "Customs rates",
