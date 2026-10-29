@@ -5,6 +5,27 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { PillLink } from "./primitives";
 import { CountryPicker } from "../CountryPicker";
+import { useTheme } from "@/context/ThemeContext";
+
+/** Light or dark, remembered on this device (context/ThemeContext). */
+function ThemeSwitch({ className = "", withLabel = false }: { className?: string; withLabel?: boolean }) {
+  const { theme, toggleTheme } = useTheme();
+  const t = useTranslations("common.theme");
+  const label = theme === "dark" ? t("toLight") : t("toDark");
+  return (
+    <button type="button" onClick={toggleTheme} aria-label={withLabel ? undefined : label} title={label} className={className}>
+      {/* The icon follows the .dark class, so the server render and the first paint agree. */}
+      <svg viewBox="0 0 20 20" aria-hidden className="hidden size-5 dark:block">
+        <circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.3 4.3l1.4 1.4M14.3 14.3l1.4 1.4M4.3 15.7l1.4-1.4M14.3 5.7l1.4-1.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+      <svg viewBox="0 0 20 20" aria-hidden className="size-5 dark:hidden">
+        <path d="M16.5 12.2A6.8 6.8 0 0 1 7.8 3.5a6.8 6.8 0 1 0 8.7 8.7Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      </svg>
+      {withLabel && <span>{label}</span>}
+    </button>
+  );
+}
 
 const LINKS = [
   { key: "home", href: "#top" },
@@ -96,6 +117,7 @@ export function HomeNav() {
 
         <div className="flex items-center gap-2">
           <CountryPicker className="hidden text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] sm:inline-flex" />
+          <ThemeSwitch className="grid size-10 place-items-center rounded-[var(--hp-radius-chip)] text-[var(--hp-text-muted)] hover:bg-[var(--hp-light-sunken)] hover:text-[var(--hp-text)]" />
           <Link href="/account" className="hidden rounded-[var(--hp-radius-chip)] px-3 py-2 text-sm font-medium text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] md:block">
             {t("account")}
           </Link>
@@ -147,6 +169,8 @@ export function HomeNav() {
             </PillLink>
             <CountryPicker className="py-2 text-[var(--hp-on-dark-muted)] [&_option]:text-black" />
           </div>
+          {/* Outside the closing wrapper: switching the theme keeps the menu open. */}
+          <ThemeSwitch withLabel className="mt-3 flex items-center gap-2 py-2 text-[var(--hp-on-dark-muted)]" />
         </div>
       )}
     </header>
