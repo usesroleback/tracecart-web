@@ -478,7 +478,8 @@
       "version": "version {version}, {date}",
       "versionShort": "Version {version}",
       "showHistory": "Rate history",
-      "hideHistory": "Hide the history"
+      "hideHistory": "Hide the history",
+      "bandsNeeded": "At least one band with its price: without it, the route prices nothing. To quote every order by hand, clear the currency."
     },
     "accounts": {
       "title": "Carrier accounts",

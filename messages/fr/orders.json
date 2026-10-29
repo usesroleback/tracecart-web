@@ -478,7 +478,8 @@
       "version": "version {version}, {date}",
       "versionShort": "Version {version}",
       "showHistory": "Historique des tarifs",
-      "hideHistory": "Masquer l'historique"
+      "hideHistory": "Masquer l'historique",
+      "bandsNeeded": "Au moins une tranche avec son prix : sans elle, la route ne chiffre rien. Pour coter chaque commande à la main, videz la devise."
     },
     "accounts": {
       "title": "Comptes transporteurs",

@@ -434,7 +434,14 @@ function ServiceForm({
                     <option value="perKg">{t("carriersPage.rates.perKg")}</option>
                     <option value="flat">{t("carriersPage.rates.flat")}</option>
                   </select>
-                  <UnitInput unit={b.kind === "perKg" ? `${cur}/kg` : cur} aria-label={t("carriersPage.rates.amount")} value={b.amount} onChange={(e) => setBand(i, { amount: e.target.value })} />
+                  <UnitInput
+                    unit={b.kind === "perKg" ? `${cur}/kg` : cur}
+                    aria-label={t("carriersPage.rates.amount")}
+                    // With a currency the route has rates: at least the first band needs its price, or nothing can be priced.
+                    required={i === 0 && v.rateCurrency.trim() !== ""}
+                    value={b.amount}
+                    onChange={(e) => setBand(i, { amount: e.target.value })}
+                  />
                   <Button variant="ghost" size="s" onClick={() => setBands(bands.filter((_, j) => j !== i))} disabled={bands.length === 1}>
                     {t("carriersPage.rates.removeBand")}
                   </Button>
@@ -442,6 +449,7 @@ function ServiceForm({
               ))}
             </div>
             <p className="mt-2 text-xs text-ink-muted">{t("carriersPage.rates.bandsHint")}</p>
+            {v.rateCurrency.trim() !== "" && <p className="mt-1 text-xs text-ink-muted">{t("carriersPage.rates.bandsNeeded")}</p>}
             <Button variant="secondary" size="s" className="mt-2" onClick={() => setBands([...bands, { upToKg: "", kind: "perKg", amount: "" }])}>
               {t("carriersPage.rates.addBand")}
             </Button>

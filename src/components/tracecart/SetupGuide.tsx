@@ -80,6 +80,8 @@ function Banner({ readiness }: { readiness: Readiness }) {
           <Link href={s.href} className="underline underline-offset-2">
             {t(`steps.${s.key}.title`)}
           </Link>
+          {/* Why it isn't done, when that's known (e.g. routes saved without weight bands). */}
+          {s.detail && s.key !== "hub" && <span className="text-ink-muted"> ({s.detail})</span>}
         </Fragment>
       ))}
     </Alert>

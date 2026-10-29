@@ -211,7 +211,7 @@
     "detail": {
       "hub": "{hub}, en {currency}",
       "routes": "{count, plural, one {# route} other {# routes}} avec tarifs vers {countries}",
-      "routesWithoutRates": "{count, plural, one {# route n'a} other {# routes n'ont}} pas encore de tarifs : ajoutez-les pour donner un prix.",
+      "routesWithoutRates": "{count, plural, one {# route enregistrée sans tranche de poids} other {# routes enregistrées sans tranche de poids}} : ajoutez un prix au kg ou un forfait",
       "missingRates": "Manque : {pairs}"
     },
     "banner": {
