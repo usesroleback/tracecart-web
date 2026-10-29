@@ -11,16 +11,13 @@ import { DsCheckIcon } from "@/icons";
 import { Readiness, useReadiness } from "@/lib/readiness";
 
 type Need = "required" | "recommended";
-type Step = { key: "search" | "hub" | "routes" | "exchangeRates" | "margins" | "customs"; need: Need; done: boolean; href?: string; detail?: string };
+type Step = { key: "hub" | "routes" | "exchangeRates" | "margins" | "customs"; need: Need; done: boolean; href: string; detail?: string };
 
 /** What the shop needs set, in the order to set it: each step is used by the next. */
 function useSteps(r: Readiness): Step[] {
   const t = useTranslations("pricing.setup");
   const currency = r.hub?.currency ?? "";
-  // Server settings, not a page: no link, but what to set.
-  const missingKeys = [!r.search.mindcase && "MINDCASE_API_KEY", !r.search.claude && "ANTHROPIC_API_KEY"].filter(Boolean).join(", ");
   return [
-    { key: "search", need: "required", done: r.search.mindcase, detail: missingKeys ? t("detail.searchKeys", { keys: missingKeys }) : undefined },
     { key: "hub", need: "required", done: r.hub != null, href: "/hub-setup", detail: r.hub ? t("detail.hub", { hub: r.hub.name, currency }) : undefined },
     {
       key: "routes",
@@ -79,13 +76,9 @@ function Banner({ readiness }: { readiness: Readiness }) {
       {missing.map((s, i) => (
         <Fragment key={s.key}>
           {i > 0 && " · "}
-          {s.href ? (
-            <Link href={s.href} className="underline underline-offset-2">
-              {t(`steps.${s.key}.title`)}
-            </Link>
-          ) : (
-            <strong className="font-semibold">{t(`steps.${s.key}.title`)}</strong>
-          )}
+          <Link href={s.href} className="underline underline-offset-2">
+            {t(`steps.${s.key}.title`)}
+          </Link>
         </Fragment>
       ))}
     </Alert>
@@ -119,13 +112,9 @@ function Checklist({ readiness }: { readiness: Readiness }) {
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                {s.href ? (
-                  <Link href={s.href} className="font-semibold hover:underline">
-                    {t(`steps.${s.key}.title`)}
-                  </Link>
-                ) : (
-                  <span className="font-semibold">{t(`steps.${s.key}.title`)}</span>
-                )}
+                <Link href={s.href} className="font-semibold hover:underline">
+                  {t(`steps.${s.key}.title`)}
+                </Link>
                 <Badge variant={s.need === "required" ? "outline" : "default"}>{t(`need.${s.need}`)}</Badge>
                 <span className="sr-only">{s.done ? t("done") : t("todo")}</span>
               </div>

@@ -175,10 +175,6 @@
       "optional": "Optional"
     },
     "steps": {
-      "search": {
-        "title": "Product search",
-        "hint": "Products are found live by Mindcase (Amazon, Google Maps); Claude reads descriptions and photos."
-      },
       "hub": {
         "title": "Your hub",
         "hint": "The hub orders leave from, and its currency: every price is given in it."
@@ -204,8 +200,7 @@
       "hub": "{hub}, in {currency}",
       "routes": "{count, plural, one {# route} other {# routes}} with rates to {countries}",
       "routesWithoutRates": "{count, plural, one {# route has} other {# routes have}} no rates yet: add them to give a price.",
-      "missingRates": "Missing: {pairs}",
-      "searchKeys": "To add to the server configuration (apps/api/.env), then restart the API: {keys}"
+      "missingRates": "Missing: {pairs}"
     },
     "banner": {
       "title": "The shop can't give prices yet",
