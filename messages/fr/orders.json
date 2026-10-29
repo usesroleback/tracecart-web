@@ -440,7 +440,8 @@
       "transitMax": "Transit max (jours)",
       "handlingDays": "Préparation (jours)",
       "priority": "Priorité",
-      "notes": "Notes"
+      "notes": "Notes",
+      "destinationHub": "Hub de destination"
     },
     "myHub": "Mon hub ({city})",
     "ownTitle": "Mes routes et tarifs",
@@ -501,7 +502,24 @@
       "transit": "Délai de transit",
       "days": "j",
       "priorityHint": "Entre deux routes qui conviennent, la plus haute est choisie.",
-      "noLimitHint": "Vide : pas de limite connue."
+      "noLimitHint": "Vide : pas de limite connue.",
+      "pickHub": "Choisir un hub",
+      "destinationHubHint": "Le transporteur livre à ce hub ; le pays de destination est le sien.",
+      "chooseDestinationHub": "Cette route allait au « {country} » sans hub précis : choisissez le hub qu'elle livre."
+    },
+    "noDestinationHub": "Sans hub de destination : à choisir",
+    "newHub": {
+      "open": "Nouveau hub de destination",
+      "title": "Nouveau hub de destination",
+      "hint": "Le hub où le transporteur livre. Sa position et son fuseau horaire sont trouvés à partir de la ville.",
+      "name": "Nom du hub",
+      "city": "Ville",
+      "country": "Pays",
+      "currency": "Devise",
+      "create": "Ajouter le hub",
+      "cancel": "Annuler",
+      "incomplete": "Indiquez le nom, la ville, le pays et la devise (3 lettres) du hub.",
+      "failed": "Le hub n'a pas pu être ajouté."
     }
   }
 }

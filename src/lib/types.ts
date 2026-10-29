@@ -227,6 +227,10 @@ export interface CarrierService {
   partner: { id: string; name: string; phone: string | null };
   originHubId: string | null;
   originHub: { id: string; name: string; city: string } | null;
+  /** Where the route delivers; null on routes from before destination hubs. */
+  destinationHubId: string | null;
+  destinationHub: { id: string; name: string; city: string; country: string } | null;
+  /** The destination hub's country. */
   destinationCountry: string;
   mode: TransportMode;
   active: boolean;

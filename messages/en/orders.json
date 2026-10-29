@@ -440,7 +440,8 @@
       "transitMax": "Transit max (days)",
       "handlingDays": "Handling (days)",
       "priority": "Priority",
-      "notes": "Notes"
+      "notes": "Notes",
+      "destinationHub": "Destination hub"
     },
     "myHub": "My hub ({city})",
     "ownTitle": "My routes and rates",
@@ -501,7 +502,24 @@
       "transit": "Transit time",
       "days": "d",
       "priorityHint": "Between two routes that fit, the highest is chosen.",
-      "noLimitHint": "Empty: no known limit."
+      "noLimitHint": "Empty: no known limit.",
+      "pickHub": "Choose a hub",
+      "destinationHubHint": "The carrier delivers to this hub; the destination country is the hub's.",
+      "chooseDestinationHub": "This route went to \"{country}\" without a specific hub: choose the hub it delivers to."
+    },
+    "noDestinationHub": "No destination hub: choose one",
+    "newHub": {
+      "open": "New destination hub",
+      "title": "New destination hub",
+      "hint": "The hub the carrier delivers to. Its position and time zone are found from the city.",
+      "name": "Hub name",
+      "city": "City",
+      "country": "Country",
+      "currency": "Currency",
+      "create": "Add the hub",
+      "cancel": "Cancel",
+      "incomplete": "Give the hub's name, city, country and currency (3 letters).",
+      "failed": "The hub couldn't be added."
     }
   }
 }

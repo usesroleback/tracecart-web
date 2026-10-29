@@ -32,6 +32,8 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
   const [services, setServices] = useState(initialServices);
   const [editing, setEditing] = useState<CarrierService | "new" | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  // Grows when an administrateur adds a destination hub from the form.
+  const [hubList, setHubList] = useState(hubs);
   const own = view === "carrier";
 
   async function load() {
@@ -103,7 +105,8 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
             view={view}
             service={editing === "new" ? null : editing}
             carriers={carriers}
-            hubs={hubs}
+            hubs={hubList}
+            onHubCreated={(h) => setHubList([...hubList, h].sort((a, b) => a.name.localeCompare(b.name)))}
             onCancel={() => setEditing(null)}
             onSaved={async () => {
               setEditing(null);
@@ -139,7 +142,20 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
                     </span>
                   </td>
                   <td className={TD}>
-                    {s.originHub?.city ?? t("carriersPage.anyHub")} → {s.destinationCountry}
+                    {s.originHub?.city ?? t("carriersPage.anyHub")} →{" "}
+                    {s.destinationHub ? (
+                      <>
+                        {s.destinationHub.name}
+                        <span className="block text-xs text-ink-muted">
+                          {s.destinationHub.city}, {s.destinationHub.country}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        {s.destinationCountry}
+                        <span className="block text-xs text-attn">{t("carriersPage.noDestinationHub")}</span>
+                      </>
+                    )}
                   </td>
                   <td className={TD}>{limits(s)}</td>
                   <td className={TD}>
@@ -178,6 +194,7 @@ function ServiceForm({
   service,
   carriers,
   hubs,
+  onHubCreated,
   onCancel,
   onSaved,
 }: {
@@ -185,6 +202,7 @@ function ServiceForm({
   service: CarrierService | null;
   carriers: Carrier[];
   hubs: Hub[];
+  onHubCreated: (hub: Hub) => void;
   onCancel: () => void;
   onSaved: () => void;
 }) {
@@ -195,7 +213,7 @@ function ServiceForm({
     name: service?.name ?? "",
     partnerUserId: service?.partnerUserId ?? carriers[0]?.id ?? "",
     originHubId: service?.originHubId ?? "",
-    destinationCountry: service?.destinationCountry ?? "",
+    destinationHubId: service?.destinationHubId ?? "",
     mode: service?.mode ?? ("ROAD" as TransportMode),
     maxWeightKg: str(service?.maxWeightKg),
     maxLengthCm: str(service?.maxLengthCm),
@@ -257,13 +275,13 @@ function ServiceForm({
       })),
     };
     try {
-      if (service) await api.patch(`/carrier-services/${service.id}`, common);
+      if (service) await api.patch(`/carrier-services/${service.id}`, { ...common, ...(v.destinationHubId ? { destinationHubId: v.destinationHubId } : {}) });
       else
         await api.post("/carrier-services", {
           ...common,
           ...(admin ? { partnerUserId: v.partnerUserId } : {}),
           originHubId: v.originHubId || null,
-          destinationCountry: v.destinationCountry.trim(),
+          destinationHubId: v.destinationHubId,
           mode: v.mode,
         });
       onSaved();
@@ -324,9 +342,29 @@ function ServiceForm({
             ))}
           </select>
         </Field>
-        <Field label={t("carriersPage.field.destinationCountry")}>
-          <CountryInput required value={v.destinationCountry} onChange={set("destinationCountry")} disabled={!!service} />
+        <Field
+          label={t("carriersPage.field.destinationHub")}
+          hint={service && !service.destinationHubId ? t("carriersPage.form.chooseDestinationHub", { country: service.destinationCountry }) : t("carriersPage.form.destinationHubHint")}
+        >
+          <select className={input} required value={v.destinationHubId} onChange={set("destinationHubId")}>
+            <option value="">{t("carriersPage.form.pickHub")}</option>
+            {hubs
+              .filter((h) => h.id !== v.originHubId)
+              .map((h) => (
+                <option key={h.id} value={h.id}>
+                  {h.name} · {h.city}, {h.country}
+                </option>
+              ))}
+          </select>
         </Field>
+        {admin && (
+          <NewHub
+            onCreated={(h) => {
+              onHubCreated(h);
+              setV({ ...v, destinationHubId: h.id });
+            }}
+          />
+        )}
         <Field label={t("carriersPage.form.transit")}>
           <RangeInputs
             unit={days}
@@ -500,6 +538,78 @@ function RateHistory({ serviceId }: { serviceId: string }) {
           })}
         </ol>
       )}
+    </div>
+  );
+}
+
+/**
+ * A destination hub added without leaving the route form (an administrateur's):
+ * a name, the city and country, and its currency; the API places the city.
+ */
+function NewHub({ onCreated }: { onCreated: (hub: Hub) => void }) {
+  const t = useTranslations("orders.carriersPage.newHub");
+  const [open, setOpen] = useState(false);
+  const [h, setH] = useState({ name: "", city: "", country: "", currency: "" });
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const set = (k: keyof typeof h) => (e: { target: { value: string } }) => setH({ ...h, [k]: e.target.value });
+
+  if (!open)
+    return (
+      <div className="flex items-end">
+        <Button variant="ghost" size="s" startIcon={<DsPlusIcon width={16} height={16} />} onClick={() => setOpen(true)}>
+          {t("open")}
+        </Button>
+      </div>
+    );
+
+  async function create() {
+    if (!h.name.trim() || !h.city.trim() || !h.country.trim() || h.currency.trim().length !== 3) return setError(t("incomplete"));
+    setBusy(true);
+    setError(null);
+    try {
+      const hub = await api.post<Hub>("/hubs", { name: h.name.trim(), city: h.city.trim(), country: h.country.trim(), currency: h.currency.trim().toUpperCase() });
+      onCreated(hub);
+      setOpen(false);
+      setH({ name: "", city: "", country: "", currency: "" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("failed"));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="col-span-full rounded-[var(--radius-m)] border border-line p-4">
+      <p className="rb-label text-sm text-ink">{t("title")}</p>
+      <p className="mb-3 text-xs text-ink-muted">{t("hint")}</p>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Field label={t("name")} required>
+          <input className={input} placeholder="Niamey Hub" value={h.name} onChange={set("name")} />
+        </Field>
+        <Field label={t("city")} required>
+          <input className={input} placeholder="Niamey" value={h.city} onChange={set("city")} />
+        </Field>
+        <Field label={t("country")} required>
+          <CountryInput value={h.country} onChange={set("country")} />
+        </Field>
+        <Field label={t("currency")} required>
+          <CurrencyInput placeholder="XOF" value={h.currency} onChange={set("currency")} />
+        </Field>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <Button size="s" loading={busy} onClick={create}>
+          {t("create")}
+        </Button>
+        <Button variant="ghost" size="s" onClick={() => setOpen(false)}>
+          {t("cancel")}
+        </Button>
+        {error && (
+          <p role="alert" className="text-sm text-critical">
+            {error}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
