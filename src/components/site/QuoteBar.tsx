@@ -300,7 +300,7 @@ export function QuoteBar() {
                 </button>
               </span>
             ) : (
-              <span className="flex min-w-0 flex-1 items-center gap-3">
+              <span className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
                 {/* One line: the label never wraps inside the button. */}
                 <button
                   type="button"
@@ -310,10 +310,10 @@ export function QuoteBar() {
                   <CameraIcon />
                   {t("attach")}
                 </button>
-                {/* What's accepted, a line per kind; left out on phones (the error says it when needed). */}
-                <span className="hidden min-w-0 flex-1 text-xs leading-snug text-ink-muted md:block">
-                  <span className="block">{t("photoHintPhoto")}</span>
-                  <span className="block">{t("photoHintVideo")}</span>
+                {/* What's accepted, under the button: a line per kind, each on one line. */}
+                <span className="text-[11px] leading-snug text-ink-muted">
+                  <span className="block whitespace-nowrap">{t("photoHintPhoto")}</span>
+                  <span className="block whitespace-nowrap">{t("photoHintVideo")}</span>
                 </span>
               </span>
             )}
