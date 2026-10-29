@@ -494,6 +494,14 @@
       "empty": "No carriers yet.",
       "signedIn": "Signed in",
       "invited": "Not signed in yet"
+    },
+    "form": {
+      "route": "The route",
+      "limits": "What it can carry",
+      "transit": "Transit time",
+      "days": "d",
+      "priorityHint": "Between two routes that fit, the highest is chosen.",
+      "noLimitHint": "Empty: no known limit."
     }
   }
 }

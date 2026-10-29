@@ -202,7 +202,7 @@ export function IntentForm({
               onChange={(e) => setProductUrl(e.target.value)}
               onBlur={handleResolve}
               placeholder="https://www.jumia.ci/..."
-              className={`flex-1 ${inputClasses}`}
+              className={`min-w-0 flex-1 ${inputClasses}`}
             />
             <Button type="button" variant="secondary" size="m" onClick={handleResolve} disabled={resolving || !productUrl}>
               {resolving ? t("intent.detecting") : t("intent.detect")}

@@ -494,6 +494,14 @@
       "empty": "Aucun transporteur pour le moment.",
       "signedIn": "Connecté",
       "invited": "Pas encore connecté"
+    },
+    "form": {
+      "route": "La route",
+      "limits": "Ce qu'elle peut transporter",
+      "transit": "Délai de transit",
+      "days": "j",
+      "priorityHint": "Entre deux routes qui conviennent, la plus haute est choisie.",
+      "noLimitHint": "Vide : pas de limite connue."
     }
   }
 }

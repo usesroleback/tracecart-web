@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
@@ -9,11 +9,10 @@ import { Card } from "@/components/ui/card/Card";
 import { DsPlusIcon } from "@/icons";
 import { HANDLING_FLAGS, PRICE_COMPONENTS, PRICE_METHODS, PriceMethod, PricingRule } from "@/lib/types";
 import { useFormat } from "@/lib/format";
+import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, RangeInputs, UnitInput } from "@/components/ui/form/Form";
 
 const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
 const TD = "border-b border-line px-3 py-2 align-top";
-const input =
-  "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring disabled:opacity-60";
 
 const PERCENT_METHODS: PriceMethod[] = ["PERCENT_OF_PRODUCT", "PERCENT_OF_DECLARED_VALUE"];
 
@@ -164,16 +163,6 @@ export function PricingRulesDashboard({ initialRules }: { initialRules: PricingR
   );
 }
 
-function Field({ label, hint, children, className = "" }: { label: string; hint?: string; children: ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-      {hint && <span className="mt-1 block text-xs text-ink-muted">{hint}</span>}
-    </label>
-  );
-}
-
 const str = (v: string | number | null | undefined) => (v == null ? "" : String(v));
 const numOrNull = (v: string) => (v.trim() === "" ? null : Number(v));
 const textOrNull = (v: string) => (v.trim() === "" ? null : v.trim());
@@ -204,7 +193,7 @@ function RuleForm({ rule, onCancel, onSaved }: { rule: PricingRule | null; onCan
   });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const set = (k: keyof typeof v) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setV({ ...v, [k]: e.target.value });
+  const set = (k: keyof typeof v) => (e: { target: { value: string } }) => setV({ ...v, [k]: e.target.value });
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -241,95 +230,109 @@ function RuleForm({ rule, onCancel, onSaved }: { rule: PricingRule | null; onCan
     }
   }
 
-  const num = { type: "number", min: "0", step: "any", className: input } as const;
+  const percent = PERCENT_METHODS.includes(v.method as PriceMethod);
+  const currency = v.currency.trim().toUpperCase() || "—";
   return (
-    <form onSubmit={submit} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <Field label={t("field.code")} hint={t("field.codeHint")}>
-        <input className={`${input} rb-mono`} required value={v.code} onChange={set("code")} disabled={!!rule} pattern="[A-Za-z0-9][A-Za-z0-9_\-]{1,40}" />
-      </Field>
-      <Field label={t("field.component")}>
-        <select className={input} value={v.component} onChange={set("component")}>
-          {PRICE_COMPONENTS.map((c) => (
-            <option key={c} value={c}>
-              {tl(`priceComponent.${c}`)}
-            </option>
-          ))}
-        </select>
-      </Field>
-      <Field label={t("field.method")}>
-        <select className={input} value={v.method} onChange={set("method")}>
-          {PRICE_METHODS.map((m) => (
-            <option key={m} value={m}>
-              {tl(`priceMethod.${m}`)}
-            </option>
-          ))}
-        </select>
-      </Field>
-      <Field label={t("field.amount")}>
-        <div className="flex gap-2">
-          <input {...num} className={`${input} min-w-0 flex-1`} required value={v.amount} onChange={set("amount")} />
-          <input className={`${input} w-20 flex-none`} required maxLength={3} aria-label={t("field.currency")} value={v.currency} onChange={set("currency")} />
-        </div>
-      </Field>
-      <Field label={t("field.minAmount")}>
-        <input {...num} value={v.minAmount} onChange={set("minAmount")} />
-      </Field>
-      <Field label={t("field.maxAmount")}>
-        <input {...num} value={v.maxAmount} onChange={set("maxAmount")} />
-      </Field>
-      <Field label={t("field.priority")}>
-        <input type="number" step="1" className={input} value={v.priority} onChange={set("priority")} />
-      </Field>
-      <Field label={t("field.destinationCountry")}>
-        <input className={input} placeholder={t("field.any")} value={v.destinationCountry} onChange={set("destinationCountry")} />
-      </Field>
-      <Field label={t("field.intakeType")}>
-        <select className={input} value={v.intakeType} onChange={set("intakeType")}>
-          <option value="">{t("field.any")}</option>
-          <option value="BUY_ON_BEHALF">{t("intake.BUY_ON_BEHALF")}</option>
-          <option value="CUSTOMER_OWNED">{t("intake.CUSTOMER_OWNED")}</option>
-        </select>
-      </Field>
-      <Field label={t("field.handlingFlag")}>
-        <select className={input} value={v.handlingFlag} onChange={set("handlingFlag")}>
-          <option value="">{t("field.any")}</option>
-          {HANDLING_FLAGS.map((fl) => (
-            <option key={fl} value={fl}>
-              {tl(`handlingFlag.${fl}`)}
-            </option>
-          ))}
-        </select>
-      </Field>
-      <Field label={t("field.productCategory")}>
-        <input className={input} placeholder={t("field.any")} value={v.productCategory} onChange={set("productCategory")} />
-      </Field>
-      <Field label={t("field.weight")}>
-        <div className="flex gap-2">
-          <input {...num} placeholder="min" aria-label={`${t("field.weight")} min`} value={v.minWeightKg} onChange={set("minWeightKg")} />
-          <input {...num} placeholder="max" aria-label={`${t("field.weight")} max`} value={v.maxWeightKg} onChange={set("maxWeightKg")} />
-        </div>
-      </Field>
-      <Field label={t("field.quantity")}>
-        <div className="flex gap-2">
-          <input {...num} step="1" placeholder="min" aria-label={`${t("field.quantity")} min`} value={v.minQuantity} onChange={set("minQuantity")} />
-          <input {...num} step="1" placeholder="max" aria-label={`${t("field.quantity")} max`} value={v.maxQuantity} onChange={set("maxQuantity")} />
-        </div>
-      </Field>
-      <Field label={t("field.rateSource")} className="sm:col-span-2">
-        <input className={input} value={v.rateSource} onChange={set("rateSource")} />
-      </Field>
-      <Field label={t("field.description")} className="sm:col-span-2">
-        <input className={input} value={v.description} onChange={set("description")} />
-      </Field>
-      <div className="flex flex-wrap items-center gap-2 sm:col-span-2 lg:col-span-4">
+    <form onSubmit={submit} className="grid gap-6">
+      <FormSection title={t("form.charges")}>
+        <Field label={t("field.code")} hint={t("field.codeHint")}>
+          <input className={`${input} rb-mono uppercase`} required value={v.code} onChange={set("code")} disabled={!!rule} pattern="[A-Za-z0-9][A-Za-z0-9_\-]{1,40}" />
+        </Field>
+        <Field label={t("field.component")}>
+          <select className={input} value={v.component} onChange={set("component")}>
+            {PRICE_COMPONENTS.map((c) => (
+              <option key={c} value={c}>
+                {tl(`priceComponent.${c}`)}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={t("field.method")}>
+          <select className={input} value={v.method} onChange={set("method")}>
+            {PRICE_METHODS.map((m) => (
+              <option key={m} value={m}>
+                {tl(`priceMethod.${m}`)}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={percent ? t("form.rate") : t("form.amount")} hint={percent ? t("form.rateHint") : t("form.amountHint")}>
+          <UnitInput unit={percent ? "%" : currency} required value={v.amount} onChange={set("amount")} />
+        </Field>
+        <Field label={t("field.currency")} hint={t("form.currencyHint")}>
+          <CurrencyInput required value={v.currency} onChange={set("currency")} />
+        </Field>
+        <Field label={t("form.bounds")} hint={t("form.boundsHint")}>
+          <RangeInputs
+            unit={currency}
+            labels={{ min: t("field.minAmount"), max: t("field.maxAmount") }}
+            min={{ value: v.minAmount, onChange: set("minAmount") }}
+            max={{ value: v.maxAmount, onChange: set("maxAmount") }}
+          />
+        </Field>
+      </FormSection>
+
+      <FormSection title={t("form.when")}>
+        <Field label={t("field.destinationCountry")} hint={t("form.anyHint")}>
+          <CountryInput placeholder={t("field.any")} value={v.destinationCountry} onChange={set("destinationCountry")} />
+        </Field>
+        <Field label={t("field.intakeType")}>
+          <select className={input} value={v.intakeType} onChange={set("intakeType")}>
+            <option value="">{t("field.any")}</option>
+            <option value="BUY_ON_BEHALF">{t("intake.BUY_ON_BEHALF")}</option>
+            <option value="CUSTOMER_OWNED">{t("intake.CUSTOMER_OWNED")}</option>
+          </select>
+        </Field>
+        <Field label={t("field.handlingFlag")}>
+          <select className={input} value={v.handlingFlag} onChange={set("handlingFlag")}>
+            <option value="">{t("field.any")}</option>
+            {HANDLING_FLAGS.map((fl) => (
+              <option key={fl} value={fl}>
+                {tl(`handlingFlag.${fl}`)}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={t("field.productCategory")} hint={t("form.anyHint")}>
+          <input className={input} placeholder={t("field.any")} value={v.productCategory} onChange={set("productCategory")} />
+        </Field>
+        <Field label={t("form.weight")}>
+          <RangeInputs
+            unit="kg"
+            labels={{ min: t("form.from"), max: t("form.to") }}
+            min={{ value: v.minWeightKg, onChange: set("minWeightKg") }}
+            max={{ value: v.maxWeightKg, onChange: set("maxWeightKg") }}
+          />
+        </Field>
+        <Field label={t("field.quantity")}>
+          <RangeInputs
+            labels={{ min: t("form.from"), max: t("form.to") }}
+            min={{ value: v.minQuantity, onChange: set("minQuantity"), step: "1" }}
+            max={{ value: v.maxQuantity, onChange: set("maxQuantity"), step: "1" }}
+          />
+        </Field>
+        <Field label={t("field.priority")} hint={t("form.priorityHint")}>
+          <input type="number" step="1" className={input} value={v.priority} onChange={set("priority")} />
+        </Field>
+      </FormSection>
+
+      <FormSection title={t("form.record")} columns={2}>
+        <Field label={t("field.rateSource")} hint={t("form.rateSourceHint")}>
+          <input className={input} value={v.rateSource} onChange={set("rateSource")} />
+        </Field>
+        <Field label={t("field.description")} hint={t("form.descriptionHint")}>
+          <input className={input} value={v.description} onChange={set("description")} />
+        </Field>
+      </FormSection>
+
+      <FormActions error={error}>
         <Button type="submit" loading={busy}>
           {rule ? t("saveVersion", { version: rule.version + 1 }) : t("save")}
         </Button>
         <Button variant="ghost" onClick={onCancel}>
           {t("cancel")}
         </Button>
-        {error && <p className="text-sm text-critical">{error}</p>}
-      </div>
+      </FormActions>
     </form>
   );
 }

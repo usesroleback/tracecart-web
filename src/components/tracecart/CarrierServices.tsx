@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
@@ -9,11 +9,10 @@ import { Card } from "@/components/ui/card/Card";
 import { DsPlusIcon } from "@/icons";
 import { CarrierService, HANDLING_FLAGS, HandlingFlag, Hub, RateVersion, TRANSPORT_MODES, TransportMode } from "@/lib/types";
 import { useFormat } from "@/lib/format";
+import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, RangeInputs, UnitInput } from "@/components/ui/form/Form";
 
 const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
 const TD = "border-b border-line px-3 py-2 align-top";
-const input =
-  "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring disabled:opacity-60";
 
 export type Carrier = { id: string; name: string; email: string; phone: string | null; locale: "fr" | "en"; signedIn: boolean };
 
@@ -165,16 +164,6 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
   );
 }
 
-function Field({ label, hint, children, className = "" }: { label: string; hint?: string; children: ReactNode; className?: string }) {
-  return (
-    <label className={`block text-sm ${className}`}>
-      <span className="rb-label mb-1 block text-ink">{label}</span>
-      {children}
-      {hint && <span className="mt-1 block text-xs text-ink-muted">{hint}</span>}
-    </label>
-  );
-}
-
 const str = (v: string | number | null | undefined) => (v == null ? "" : String(v));
 const numOrNull = (v: string) => (v.trim() === "" ? null : Number(v));
 
@@ -234,7 +223,7 @@ function ServiceForm({
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const set = (k: keyof typeof v) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setV({ ...v, [k]: e.target.value });
+  const set = (k: keyof typeof v) => (e: { target: { value: string } }) => setV({ ...v, [k]: e.target.value });
   const setBand = (i: number, patch: Partial<BandRow>) => setBands(bands.map((b, j) => (j === i ? { ...b, ...patch } : b)));
 
   async function submit(e: FormEvent) {
@@ -280,125 +269,134 @@ function ServiceForm({
     }
   }
 
-  const num = { type: "number", min: "0", step: "any", className: input } as const;
+  const cur = v.rateCurrency.trim().toUpperCase() || "—";
+  const days = t("carriersPage.form.days");
+  const BAND_GRID = "grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_6rem] items-center gap-2";
   return (
-    <form onSubmit={submit} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <Field label={t("carriersPage.field.name")} className="sm:col-span-2">
-        <input className={input} required value={v.name} onChange={set("name")} />
-      </Field>
-      {admin && (
-        <Field label={t("carriersPage.field.carrier")}>
-          <select className={input} required value={v.partnerUserId} onChange={set("partnerUserId")} disabled={!!service}>
-            {carriers.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name} · {c.email}
+    <form onSubmit={submit} className="grid gap-6">
+      <FormSection title={t("carriersPage.form.route")}>
+        <Field label={t("carriersPage.field.name")} className="sm:col-span-2">
+          <input className={input} required value={v.name} onChange={set("name")} />
+        </Field>
+        {admin && (
+          <Field label={t("carriersPage.field.carrier")}>
+            <select className={input} required value={v.partnerUserId} onChange={set("partnerUserId")} disabled={!!service}>
+              {carriers.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name} · {c.email}
+                </option>
+              ))}
+            </select>
+          </Field>
+        )}
+        <Field label={t("carriersPage.field.mode")}>
+          <select className={input} value={v.mode} onChange={set("mode")} disabled={!!service}>
+            {TRANSPORT_MODES.map((m) => (
+              <option key={m} value={m}>
+                {tl(`transportMode.${m}`)}
               </option>
             ))}
           </select>
         </Field>
-      )}
-      <Field label={t("carriersPage.field.mode")}>
-        <select className={input} value={v.mode} onChange={set("mode")} disabled={!!service}>
-          {TRANSPORT_MODES.map((m) => (
-            <option key={m} value={m}>
-              {tl(`transportMode.${m}`)}
-            </option>
-          ))}
-        </select>
-      </Field>
-      <Field label={t("carriersPage.field.originHub")}>
-        <select className={input} value={v.originHubId} onChange={set("originHubId")} disabled={!!service}>
-          <option value="">{t("carriersPage.anyHub")}</option>
-          {hubs.map((h) => (
-            <option key={h.id} value={h.id}>
-              {h.name} · {h.city}
-            </option>
-          ))}
-        </select>
-      </Field>
-      <Field label={t("carriersPage.field.destinationCountry")}>
-        <input className={input} required value={v.destinationCountry} onChange={set("destinationCountry")} disabled={!!service} />
-      </Field>
-      <Field label={t("carriersPage.field.transitMin")}>
-        <input {...num} step="1" required value={v.transitDaysMin} onChange={set("transitDaysMin")} />
-      </Field>
-      <Field label={t("carriersPage.field.transitMax")}>
-        <input {...num} step="1" required value={v.transitDaysMax} onChange={set("transitDaysMax")} />
-      </Field>
-      <Field label={t("carriersPage.field.handlingDays")}>
-        <input {...num} step="1" value={v.handlingDays} onChange={set("handlingDays")} />
-      </Field>
-      <Field label={t("carriersPage.field.maxWeightKg")}>
-        <input {...num} value={v.maxWeightKg} onChange={set("maxWeightKg")} />
-      </Field>
-      <Field label={t("carriersPage.field.maxLengthCm")}>
-        <input {...num} value={v.maxLengthCm} onChange={set("maxLengthCm")} />
-      </Field>
-      {admin && (
-        <Field label={t("carriersPage.field.priority")}>
-          <input type="number" step="1" className={input} value={v.priority} onChange={set("priority")} />
+        <Field label={t("carriersPage.field.originHub")}>
+          <select className={input} value={v.originHubId} onChange={set("originHubId")} disabled={!!service}>
+            <option value="">{t("carriersPage.anyHub")}</option>
+            {hubs.map((h) => (
+              <option key={h.id} value={h.id}>
+                {h.name} · {h.city}
+              </option>
+            ))}
+          </select>
         </Field>
-      )}
-      <fieldset className="sm:col-span-2 lg:col-span-4">
-        <legend className="rb-label mb-1 text-sm text-ink">{t("carriersPage.field.refused")}</legend>
-        <div className="flex flex-wrap gap-x-4 gap-y-2">
-          {HANDLING_FLAGS.map((fl) => (
-            <label key={fl} className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={refused.includes(fl)} onChange={(e) => setRefused(e.target.checked ? [...refused, fl] : refused.filter((x) => x !== fl))} />
-              {tl(`handlingFlag.${fl}`)}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+        <Field label={t("carriersPage.field.destinationCountry")}>
+          <CountryInput required value={v.destinationCountry} onChange={set("destinationCountry")} disabled={!!service} />
+        </Field>
+        <Field label={t("carriersPage.form.transit")}>
+          <RangeInputs
+            unit={days}
+            labels={{ min: t("carriersPage.field.transitMin"), max: t("carriersPage.field.transitMax") }}
+            min={{ value: v.transitDaysMin, onChange: set("transitDaysMin"), step: "1", required: true }}
+            max={{ value: v.transitDaysMax, onChange: set("transitDaysMax"), step: "1", required: true }}
+          />
+        </Field>
+        <Field label={t("carriersPage.field.handlingDays")}>
+          <UnitInput unit={days} step="1" value={v.handlingDays} onChange={set("handlingDays")} />
+        </Field>
+        {admin && (
+          <Field label={t("carriersPage.field.priority")} hint={t("carriersPage.form.priorityHint")}>
+            <input type="number" step="1" className={input} value={v.priority} onChange={set("priority")} />
+          </Field>
+        )}
+      </FormSection>
 
-      <fieldset className="grid gap-3 border-t border-line pt-4 sm:col-span-2 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-4">
-        <legend className="rb-headline float-left mb-1 w-full text-lg">{t("carriersPage.rates.title")}</legend>
-        <p className="text-sm text-ink-muted sm:col-span-2 lg:col-span-4">{t("carriersPage.rates.intro")}</p>
-        <Field label={t("carriersPage.rates.currency")}>
-          <input className={`${input} uppercase`} maxLength={3} placeholder="XOF" value={v.rateCurrency} onChange={set("rateCurrency")} />
+      <FormSection title={t("carriersPage.form.limits")}>
+        <Field label={t("carriersPage.field.maxWeightKg")} hint={t("carriersPage.form.noLimitHint")}>
+          <UnitInput unit="kg" value={v.maxWeightKg} onChange={set("maxWeightKg")} />
         </Field>
-        <Field label={t("carriersPage.rates.baseFee")}>
-          <input {...num} value={v.baseFee} onChange={set("baseFee")} />
+        <Field label={t("carriersPage.field.maxLengthCm")} hint={t("carriersPage.form.noLimitHint")}>
+          <UnitInput unit="cm" value={v.maxLengthCm} onChange={set("maxLengthCm")} />
         </Field>
-        <Field label={t("carriersPage.rates.minCharge")}>
-          <input {...num} value={v.minCharge} onChange={set("minCharge")} />
-        </Field>
-        <Field label={t("carriersPage.rates.divisor")} hint={t("carriersPage.rates.divisorHint")}>
-          <input {...num} step="1" placeholder={v.mode === "AIR" ? "5000" : "6000"} value={v.volumetricDivisor} onChange={set("volumetricDivisor")} />
-        </Field>
-
-        <div className="sm:col-span-2 lg:col-span-4">
-          <p className="rb-label mb-1 text-sm text-ink">{t("carriersPage.rates.bandsTitle")}</p>
-          <div className="flex flex-col gap-2">
-            {bands.map((b, i) => (
-              <div key={i} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-center gap-2">
-                <input
-                  {...num}
-                  aria-label={t("carriersPage.rates.upToKg")}
-                  placeholder={t("carriersPage.rates.noUpperLimit")}
-                  value={b.upToKg}
-                  onChange={(e) => setBand(i, { upToKg: e.target.value })}
-                />
-                <select className={input} aria-label={t("carriersPage.rates.kind")} value={b.kind} onChange={(e) => setBand(i, { kind: e.target.value as BandRow["kind"] })}>
-                  <option value="perKg">{t("carriersPage.rates.perKg")}</option>
-                  <option value="flat">{t("carriersPage.rates.flat")}</option>
-                </select>
-                <input {...num} aria-label={t("carriersPage.rates.amount")} placeholder={t("carriersPage.rates.amount")} value={b.amount} onChange={(e) => setBand(i, { amount: e.target.value })} />
-                <Button variant="ghost" size="s" onClick={() => setBands(bands.filter((_, j) => j !== i))} disabled={bands.length === 1}>
-                  {t("carriersPage.rates.removeBand")}
-                </Button>
-              </div>
+        <fieldset className="min-w-0 sm:col-span-2 lg:col-span-3">
+          <legend className="rb-label mb-2 text-sm text-ink">{t("carriersPage.field.refused")}</legend>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {HANDLING_FLAGS.map((fl) => (
+              <label key={fl} className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={refused.includes(fl)} onChange={(e) => setRefused(e.target.checked ? [...refused, fl] : refused.filter((x) => x !== fl))} />
+                {tl(`handlingFlag.${fl}`)}
+              </label>
             ))}
           </div>
-          <p className="mt-1 text-xs text-ink-muted">{t("carriersPage.rates.bandsHint")}</p>
-          <Button variant="secondary" size="s" className="mt-2" onClick={() => setBands([...bands, { upToKg: "", kind: "perKg", amount: "" }])}>
-            {t("carriersPage.rates.addBand")}
-          </Button>
+        </fieldset>
+      </FormSection>
+
+      <FormSection title={t("carriersPage.rates.title")} columns={4}>
+        <p className="text-sm text-ink-muted sm:col-span-2 lg:col-span-4">{t("carriersPage.rates.intro")}</p>
+        <Field label={t("carriersPage.rates.currency")}>
+          <CurrencyInput value={v.rateCurrency} onChange={set("rateCurrency")} />
+        </Field>
+        <Field label={t("carriersPage.rates.baseFee")}>
+          <UnitInput unit={cur} value={v.baseFee} onChange={set("baseFee")} />
+        </Field>
+        <Field label={t("carriersPage.rates.minCharge")}>
+          <UnitInput unit={cur} value={v.minCharge} onChange={set("minCharge")} />
+        </Field>
+        <Field label={t("carriersPage.rates.divisor")} hint={t("carriersPage.rates.divisorHint")}>
+          <input type="number" min="0" step="1" className={input} placeholder={v.mode === "AIR" ? "5000" : "6000"} value={v.volumetricDivisor} onChange={set("volumetricDivisor")} />
+        </Field>
+
+        <div className="min-w-0 sm:col-span-2 lg:col-span-4">
+          <p className="rb-label mb-2 text-sm text-ink">{t("carriersPage.rates.bandsTitle")}</p>
+          <div className="max-w-3xl">
+            <div className={`${BAND_GRID} mb-1 text-xs text-ink-muted`}>
+              <span>{t("carriersPage.rates.upToKg")}</span>
+              <span>{t("carriersPage.rates.kind")}</span>
+              <span>{t("carriersPage.rates.amount")}</span>
+            </div>
+            <div className="flex flex-col gap-2">
+              {bands.map((b, i) => (
+                <div key={i} className={BAND_GRID}>
+                  <UnitInput unit="kg" aria-label={t("carriersPage.rates.upToKg")} placeholder={t("carriersPage.rates.noUpperLimit")} value={b.upToKg} onChange={(e) => setBand(i, { upToKg: e.target.value })} />
+                  <select className={input} aria-label={t("carriersPage.rates.kind")} value={b.kind} onChange={(e) => setBand(i, { kind: e.target.value as BandRow["kind"] })}>
+                    <option value="perKg">{t("carriersPage.rates.perKg")}</option>
+                    <option value="flat">{t("carriersPage.rates.flat")}</option>
+                  </select>
+                  <UnitInput unit={b.kind === "perKg" ? `${cur}/kg` : cur} aria-label={t("carriersPage.rates.amount")} value={b.amount} onChange={(e) => setBand(i, { amount: e.target.value })} />
+                  <Button variant="ghost" size="s" onClick={() => setBands(bands.filter((_, j) => j !== i))} disabled={bands.length === 1}>
+                    {t("carriersPage.rates.removeBand")}
+                  </Button>
+                </div>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-ink-muted">{t("carriersPage.rates.bandsHint")}</p>
+            <Button variant="secondary" size="s" className="mt-2" onClick={() => setBands([...bands, { upToKg: "", kind: "perKg", amount: "" }])}>
+              {t("carriersPage.rates.addBand")}
+            </Button>
+          </div>
         </div>
 
-        <div className="sm:col-span-2 lg:col-span-4">
-          <p className="rb-label mb-1 text-sm text-ink">{t("carriersPage.rates.surchargesTitle")}</p>
-          <div className="grid gap-2 sm:grid-cols-2">
+        <div className="min-w-0 sm:col-span-2 lg:col-span-4">
+          <p className="rb-label mb-2 text-sm text-ink">{t("carriersPage.rates.surchargesTitle")}</p>
+          <div className="grid gap-x-6 gap-y-2 md:grid-cols-2">
             {HANDLING_FLAGS.filter((fl) => !refused.includes(fl)).map((fl) => (
               <div key={fl} className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-2">
                 <span className="text-sm">{tl(`handlingFlag.${fl}`)}</span>
@@ -412,8 +410,8 @@ function ServiceForm({
                   <option value="percent">%</option>
                   <option value="fixed">{t("carriersPage.rates.fixed")}</option>
                 </select>
-                <input
-                  {...num}
+                <UnitInput
+                  unit={surcharges[fl].kind === "percent" ? "%" : cur}
                   aria-label={t("carriersPage.rates.amount")}
                   disabled={surcharges[fl].kind === "none"}
                   value={surcharges[fl].amount}
@@ -423,22 +421,21 @@ function ServiceForm({
             ))}
           </div>
         </div>
-      </fieldset>
+      </FormSection>
 
       {service && service.rateVersion > 0 && <RateHistory serviceId={service.id} />}
 
-      <Field label={t("carriersPage.field.notes")} className="sm:col-span-2 lg:col-span-4">
+      <Field label={t("carriersPage.field.notes")}>
         <input className={input} value={v.notes} onChange={set("notes")} />
       </Field>
-      <div className="flex flex-wrap items-center gap-2 sm:col-span-2 lg:col-span-4">
+      <FormActions error={error}>
         <Button type="submit" loading={busy}>
           {t("carriersPage.save")}
         </Button>
         <Button variant="ghost" onClick={onCancel}>
           {t("carriersPage.cancel")}
         </Button>
-        {error && <p className="text-sm text-critical">{error}</p>}
-      </div>
+      </FormActions>
     </form>
   );
 }

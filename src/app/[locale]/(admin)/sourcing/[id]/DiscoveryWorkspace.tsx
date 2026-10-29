@@ -471,11 +471,11 @@ function SpecEditor({
         <div className="grid gap-2">
           {spec.attributes.map((a, i) => (
             <div key={i} className="flex gap-2">
-              <input className={`${input} flex-1`} aria-label={t("attrName")} placeholder={t("attrName")} value={a.name}
+              <input className={`${input} min-w-0 flex-1`} aria-label={t("attrName")} placeholder={t("attrName")} value={a.name}
                 onChange={(e) => set({ attributes: spec.attributes.map((x, j) => (j === i ? { ...x, name: e.target.value, source: "stated", confidence: "high" } : x)) })} />
-              <input className={`${input} flex-1`} aria-label={t("attrValue")} placeholder={t("attrValue")} value={a.value}
+              <input className={`${input} min-w-0 flex-1`} aria-label={t("attrValue")} placeholder={t("attrValue")} value={a.value}
                 onChange={(e) => set({ attributes: spec.attributes.map((x, j) => (j === i ? { ...x, value: e.target.value, source: "stated", confidence: "high" } : x)) })} />
-              <input className={`${input} w-20`} aria-label={t("attrUnit")} placeholder={t("attrUnit")} value={a.unit ?? ""}
+              <input className={`${input} w-20! flex-none`} aria-label={t("attrUnit")} placeholder={t("attrUnit")} value={a.unit ?? ""}
                 onChange={(e) => set({ attributes: spec.attributes.map((x, j) => (j === i ? { ...x, unit: e.target.value || null } : x)) })} />
               <Button type="button" variant="ghost" size="s" onClick={() => set({ attributes: spec.attributes.filter((_, j) => j !== i) })}>
                 {t("removeAttr")}

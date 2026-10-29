@@ -71,7 +71,7 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
               onChange={(e) => updateItem(i, { label: e.target.value })}
               placeholder={t("lineLabel")}
               aria-label={t("lineLabel")}
-              className={`flex-1 ${inputClasses}`}
+              className={`min-w-0 flex-1 ${inputClasses}`}
             />
             <input
               type="number"
@@ -80,7 +80,7 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
               onChange={(e) => updateItem(i, { amount: Number(e.target.value) })}
               placeholder={t("lineAmount")}
               aria-label={t("lineAmount")}
-              className={`w-28 ${inputClasses}`}
+              className={`${inputClasses} w-28! flex-none tabular-nums`}
             />
             <Button type="button" variant="secondary" size="s" onClick={() => removeItem(i)} aria-label={t("removeLine")}>
               ✕
@@ -93,8 +93,8 @@ export function LogisticsQuoteForm({ order, onChanged }: { order: Order; onChang
       </button>
 
       <div className="flex items-center gap-2">
-        <input value={currency} onChange={(e) => setCurrency(e.target.value)} aria-label={t("currency")} className={`w-20 flex-shrink-0 ${inputClasses}`} />
-        <input value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("note")} aria-label={t("note")} className={inputClasses} />
+        <input value={currency} onChange={(e) => setCurrency(e.target.value)} aria-label={t("currency")} className={`${inputClasses} w-20! flex-none uppercase`} />
+        <input value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("note")} aria-label={t("note")} className={`min-w-0 flex-1 ${inputClasses}`} />
       </div>
 
       <div className="flex items-center justify-between rounded-[var(--radius-s)] bg-surface-sunken px-3 py-2 text-sm">

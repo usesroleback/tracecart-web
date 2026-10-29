@@ -318,7 +318,7 @@ function CargoForm({ order, busy, onCancel, onSave }: { order: Order; busy: bool
       <Field label={t("shipment.cargo.declaredValue")}>
         <div className="flex gap-2">
           <input {...num} className={`${input} min-w-0 flex-1`} value={v.declaredValue} onChange={set("declaredValue")} />
-          <input className={`${input} w-20 flex-none`} maxLength={3} aria-label={t("shipment.customs.currency")} value={v.declaredValueCurrency} onChange={set("declaredValueCurrency")} />
+          <input className={`${input} w-20! flex-none uppercase`} maxLength={3} aria-label={t("shipment.customs.currency")} value={v.declaredValueCurrency} onChange={set("declaredValueCurrency")} />
         </div>
       </Field>
       <fieldset className="sm:col-span-2">

@@ -117,5 +117,24 @@
       "save": "Enregistrer",
       "remove": "Retirer"
     }
+  },
+  "form": {
+    "charges": "Ce que la règle facture",
+    "when": "Quand elle s'applique",
+    "record": "Suivi",
+    "amount": "Montant",
+    "rate": "Taux",
+    "amountHint": "Par unité de calcul (par colis, par kg…).",
+    "rateHint": "En pourcentage de la valeur choisie dans « Calcul ».",
+    "currencyHint": "Celle du montant, du minimum et du maximum.",
+    "bounds": "Minimum et maximum",
+    "boundsHint": "Bornes du montant calculé (facultatif).",
+    "anyHint": "Vide : tous.",
+    "weight": "Poids de l'envoi",
+    "from": "De",
+    "to": "À",
+    "priorityHint": "Pour un même poste, la plus haute l'emporte (0 par défaut).",
+    "rateSourceHint": "Contrat, cotation du transporteur… La date est notée.",
+    "descriptionHint": "Pour l'équipe, jamais montrée au client."
   }
 }

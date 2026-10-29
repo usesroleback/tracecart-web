@@ -117,5 +117,24 @@
       "save": "Save",
       "remove": "Remove"
     }
+  },
+  "form": {
+    "charges": "What the rule charges",
+    "when": "When it applies",
+    "record": "Record",
+    "amount": "Amount",
+    "rate": "Rate",
+    "amountHint": "Per calculation unit (per package, per kg…).",
+    "rateHint": "As a percentage of the value chosen under “Calculation”.",
+    "currencyHint": "Of the amount, minimum and maximum.",
+    "bounds": "Minimum and maximum",
+    "boundsHint": "Limits on the calculated amount (optional).",
+    "anyHint": "Empty: all.",
+    "weight": "Shipment weight",
+    "from": "From",
+    "to": "To",
+    "priorityHint": "For the same item, the highest wins (0 by default).",
+    "rateSourceHint": "Contract, carrier quote… The date is recorded.",
+    "descriptionHint": "For the team, never shown to the customer."
   }
 }

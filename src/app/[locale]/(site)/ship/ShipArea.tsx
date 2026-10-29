@@ -233,7 +233,7 @@ function ShipForm({ profile }: { profile: CustomerProfile }) {
           <Field label={t("cargo.value")} hint={t("cargo.valueHint")} className="sm:col-span-2">
             <div className="flex gap-2">
               <input {...numeric} className={`${input} min-w-0 flex-1`} value={cargo.declaredValue} onChange={c("declaredValue")} />
-              <input className={`${input} w-20 flex-none`} maxLength={3} aria-label={t("cargo.currency")} value={cargo.declaredValueCurrency} onChange={c("declaredValueCurrency")} />
+              <input className={`${input} w-20! flex-none uppercase`} maxLength={3} aria-label={t("cargo.currency")} value={cargo.declaredValueCurrency} onChange={c("declaredValueCurrency")} />
             </div>
           </Field>
           <Field label={t("cargo.readyAt")}>
