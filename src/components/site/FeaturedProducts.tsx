@@ -17,7 +17,7 @@ interface Featured {
   offer: string | null;
 }
 
-// While the products are being searched (first visit of the day), ask again a few times.
+// While there's nothing to show yet (being searched, or none found), ask again a few times.
 const RETRY_MS = 20_000;
 const MAX_TRIES = 6;
 
@@ -29,7 +29,7 @@ const MAX_TRIES = 6;
 export function FeaturedProducts() {
   const t = useTranslations("shop.featured");
   const { country } = useCountry();
-  const [result, setResult] = useState<{ country: string | null; items: Featured[]; pending: boolean } | null>(null);
+  const [result, setResult] = useState<{ country: string | null; items: Featured[]; pending: boolean; failed?: boolean } | null>(null);
   const [buying, setBuying] = useState<Featured | null>(null);
 
   useEffect(() => {
@@ -42,9 +42,9 @@ export function FeaturedProducts() {
         .then((r) => {
           if (stopped) return;
           setResult({ country, ...r });
-          if (r.pending && ++tries < MAX_TRIES) timer = setTimeout(load, RETRY_MS);
+          if (r.items.length === 0 && ++tries < MAX_TRIES) timer = setTimeout(load, RETRY_MS);
         })
-        .catch(() => !stopped && setResult({ country, items: [], pending: false }));
+        .catch(() => !stopped && setResult({ country, items: [], pending: false, failed: true }));
     load();
     return () => {
       stopped = true;
@@ -53,7 +53,8 @@ export function FeaturedProducts() {
   }, [country]);
 
   const current = result?.country === country ? result : null;
-  if (current && !current.pending && current.items.length === 0) return null;
+  // Only a failure hides the section; with nothing to show yet, placeholders hold its place.
+  if (current?.failed) return null;
 
   return (
     <section className="mt-12" aria-labelledby="featured-title">
@@ -65,11 +66,24 @@ export function FeaturedProducts() {
         <BuyPanel key={buying.url} title={buying.title} offer={buying.offer} country={country} initialPrice={buying.price} onClose={() => setBuying(null)} />
       )}
 
-      {!current || current.pending ? (
+      {!current || current.items.length === 0 ? (
         <>
           <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" aria-hidden>
             {Array.from({ length: 4 }, (_, i) => (
-              <li key={i} className="h-72 animate-pulse rounded-[var(--radius-m)] bg-surface-sunken" />
+              <li key={i}>
+                {/* A card's shape: picture, two lines of title, price and button. */}
+                <div className="flex h-full animate-pulse flex-col overflow-hidden rounded-[var(--radius-m)] border border-line bg-surface-raised">
+                  <div className="aspect-[4/3] bg-surface-sunken" />
+                  <div className="flex flex-1 flex-col gap-2 p-4">
+                    <div className="h-3.5 w-11/12 rounded bg-surface-sunken" />
+                    <div className="h-3.5 w-2/3 rounded bg-surface-sunken" />
+                    <div className="mt-4 flex items-end justify-between">
+                      <div className="h-5 w-24 rounded bg-surface-sunken" />
+                      <div className="h-8 w-20 rounded-[var(--radius-s)] bg-surface-sunken" />
+                    </div>
+                  </div>
+                </div>
+              </li>
             ))}
           </ul>
           {current?.pending && <p className="mt-3 text-sm text-ink-muted">{t("pending")}</p>}
