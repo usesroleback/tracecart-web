@@ -37,7 +37,7 @@
     "hub": "My hub",
     "deliveries": "Deliveries",
     "label": "Main navigation",
-    "pricing": "Pricing",
+    "pricing": "Prices and margins",
     "carriers": "Carriers",
     "routes": "My routes and rates"
   },
@@ -53,6 +53,7 @@
   "form": {
     "requiredNote": "Fields marked with an asterisk are required.",
     "optional": "optional",
-    "notACountry": "Choose a country from the list (for example Niger), not a city."
+    "notACountry": "Choose a country from the list (for example Niger), not a city.",
+    "saved": "Saved."
   }
 }

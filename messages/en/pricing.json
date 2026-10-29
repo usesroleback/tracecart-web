@@ -2,8 +2,8 @@
   "meta": {
     "title": "Pricing"
   },
-  "title": "Pricing rules",
-  "intro": "Each line of a quote comes from a rule. For one component, only one rule applies: the highest priority, then the most specific, then the latest. Changing a rule creates a new version; quotes already sent keep theirs.",
+  "title": "Advanced pricing rules",
+  "intro": "Optional: to add or replace a specific line of quotes. Each line of a quote comes from a rule. For one component, only one rule applies: the highest priority, then the most specific, then the latest. Changing a rule creates a new version; quotes already sent keep theirs.",
   "new": "New rule",
   "showHistory": "Show every version",
   "empty": "No rules yet. Without rules, a quote is the product, the carrier's quote and the TraceCart fee.",
@@ -56,14 +56,14 @@
   },
   "source": "Source: {source}",
   "settings": {
-    "title": "What prices are built from",
-    "subtitle": "Beyond carriers' rates and the rules above: how TraceCart earns on this hub, exchange rates, customs rates, and the weight assumed for a product of a category.",
+    "title": "Prices and margins",
+    "subtitle": "Set the steps in order: each one is used by the next. Once the required steps are done, the shop gives a delivered price for every product it finds.",
     "failed": "Couldn't save",
     "margins": {
       "title": "Margins — {hub}",
       "intro": "How TraceCart earns on orders from this hub, in {currency}. All of it stays inside the customer's single delivered price. A fee set by hand on an order replaces the tiers.",
       "tiers": "Fee on the product, by value",
-      "tiersHint": "Each tier covers products up to its value in {currency}; leave the last without a limit. Without tiers, the default percentage applies.",
+      "tiersHint": "Each tier covers products up to its value in {currency}; leave the last without a limit.",
       "upTo": "Up to ({currency})",
       "noLimit": "No limit",
       "percent": "Percent",
@@ -74,7 +74,30 @@
       "markupHint": "Added on top of the carrier's price.",
       "buffer": "Price buffer (%)",
       "bufferHint": "Of the product price: absorbs supplier price changes and weight differences, so staff can buy without going back to the customer.",
-      "save": "Save the margins"
+      "save": "Save the margins",
+      "onProduct": "On the product",
+      "onTransport": "On transport",
+      "noTiers": "No tiers: TraceCart takes {percent}% of the value of every product.",
+      "minHint": "TraceCart never takes less on an order. Empty or 0: no minimum.",
+      "errors": {
+        "percentMissing": "Give each tier its percentage.",
+        "oneOpen": "Only one tier can have no limit: give the others a maximum value.",
+        "sameLimit": "Two tiers have the same limit: change one of them."
+      },
+      "example": {
+        "title": "Example to check your figures (not saved)",
+        "product": "Product price",
+        "transport": "Carrier's price",
+        "lines": {
+          "product": "Product",
+          "transport": "Transport",
+          "fee": "Fee on the product",
+          "markup": "Markup on transport",
+          "buffer": "Buffer"
+        },
+        "total": "Price the customer pays, before customs",
+        "note": "TraceCart earns {earned}, plus the buffer ({buffer}) when it isn't used."
+      }
     },
     "fx": {
       "title": "Exchange rates",
@@ -84,7 +107,8 @@
       "to": "To",
       "source": "Source (optional)",
       "save": "Save the rate",
-      "remove": "Remove"
+      "remove": "Remove",
+      "missing": "Rates still needed to give a price:"
     },
     "customs": {
       "title": "Customs rates",
@@ -136,5 +160,52 @@
     "priorityHint": "For the same item, the highest wins (0 by default).",
     "rateSourceHint": "Contract, carrier quote… The date is recorded.",
     "descriptionHint": "For the team, never shown to the customer."
+  },
+  "setup": {
+    "title": "Getting started",
+    "intro": "What the shop needs to give a customer a price: the required steps first, in order.",
+    "ready": "Ready",
+    "notReady": "Not ready yet",
+    "done": "done",
+    "todo": "to do",
+    "step": "Step {step}",
+    "need": {
+      "required": "Required",
+      "recommended": "Recommended",
+      "optional": "Optional"
+    },
+    "steps": {
+      "hub": {
+        "title": "Your hub",
+        "hint": "The hub orders leave from, and its currency: every price is given in it."
+      },
+      "routes": {
+        "title": "Carrier routes and rates",
+        "hint": "At least one active route with its rates (fee per shipment, price per kg) to a delivery country. Without a route, no product has a price."
+      },
+      "exchangeRates": {
+        "title": "Exchange rates",
+        "hint": "Products are bought in USD or EUR (Amazon): they need a rate to the hub's currency."
+      },
+      "margins": {
+        "title": "Margins",
+        "hint": "What TraceCart earns on each order. Unset, only the default percentage applies."
+      },
+      "customs": {
+        "title": "Customs rates",
+        "hint": "Duties and taxes by delivery country. Without them, prices are given before customs."
+      }
+    },
+    "detail": {
+      "hub": "{hub}, in {currency}",
+      "routes": "{count, plural, one {# route} other {# routes}} with rates to {countries}",
+      "routesWithoutRates": "{count, plural, one {# route has} other {# routes have}} no rates yet: add them to give a price.",
+      "missingRates": "Missing: {pairs}"
+    },
+    "banner": {
+      "title": "The shop can't give prices yet",
+      "lead": "To set:",
+      "action": "See the steps"
+    }
   }
 }

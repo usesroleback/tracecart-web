@@ -37,7 +37,7 @@
     "hub": "Mon hub",
     "deliveries": "Livraisons",
     "label": "Navigation principale",
-    "pricing": "Tarifs",
+    "pricing": "Prix et marges",
     "carriers": "Transporteurs",
     "routes": "Mes routes et tarifs"
   },
@@ -53,6 +53,7 @@
   "form": {
     "requiredNote": "Les champs marqués d’un astérisque sont obligatoires.",
     "optional": "facultatif",
-    "notACountry": "Choisissez un pays dans la liste (par exemple Niger), pas une ville."
+    "notACountry": "Choisissez un pays dans la liste (par exemple Niger), pas une ville.",
+    "saved": "Enregistré."
   }
 }

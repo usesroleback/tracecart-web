@@ -182,10 +182,16 @@ export function FormSection({ title, children, columns = 3 }: { title: ReactNode
 }
 
 /** Save, cancel and the error, under the form. */
-export function FormActions({ children, error }: { children: ReactNode; error?: string | null }) {
+export function FormActions({ children, error, saved = false }: { children: ReactNode; error?: string | null; saved?: boolean }) {
+  const t = useTranslations("common.form");
   return (
     <div className="flex flex-wrap items-center gap-2 border-t border-line pt-4">
       {children}
+      {saved && !error && (
+        <p role="status" className="text-sm text-positive">
+          {t("saved")}
+        </p>
+      )}
       {error && (
         <p role="alert" className="text-sm text-critical">
           {error}

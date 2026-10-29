@@ -421,6 +421,8 @@ export interface PricingSettings {
     productFeeMin: string | null;
     transportMarkupPercent: string;
     priceBufferPercent: string;
+    /** TraceCart's fee on a product, in %, when the hub has no tiers. */
+    defaultFeePercent: number;
   };
   exchangeRates: { id: string; currency: string; toCurrency: string; rate: string; source: string | null; updatedAt: string }[];
   customsRates: {

@@ -2,8 +2,8 @@
   "meta": {
     "title": "Tarifs"
   },
-  "title": "Règles de prix",
-  "intro": "Chaque ligne d'un devis vient d'une règle. Pour un même poste, une seule règle s'applique : la plus prioritaire, puis la plus précise, puis la plus récente. Modifier une règle crée une nouvelle version ; les devis déjà envoyés gardent la leur.",
+  "title": "Règles de prix avancées",
+  "intro": "Facultatif : pour ajouter ou remplacer une ligne précise des devis. Chaque ligne d'un devis vient d'une règle. Pour un même poste, une seule règle s'applique : la plus prioritaire, puis la plus précise, puis la plus récente. Modifier une règle crée une nouvelle version ; les devis déjà envoyés gardent la leur.",
   "new": "Nouvelle règle",
   "showHistory": "Voir toutes les versions",
   "empty": "Aucune règle. Sans règle, un devis reprend le produit, la cotation du transporteur et les frais TraceCart.",
@@ -56,14 +56,14 @@
   },
   "source": "Source : {source}",
   "settings": {
-    "title": "Ce qui compose les prix",
-    "subtitle": "En plus des tarifs des transporteurs et des règles ci-dessus : ce que TraceCart gagne sur ce hub, les taux de change, les taux de douane et le poids retenu pour un produit d'une catégorie.",
+    "title": "Prix et marges",
+    "subtitle": "Réglez les étapes dans l'ordre : chacune sert à la suivante. Une fois les étapes obligatoires faites, la boutique donne un prix livré à chaque produit trouvé.",
     "failed": "Impossible d'enregistrer",
     "margins": {
       "title": "Marges — {hub}",
       "intro": "Ce que TraceCart gagne sur les commandes de ce hub, en {currency}. Tout reste compris dans le prix livré unique du client. Des frais fixés à la main sur une commande remplacent les tranches.",
       "tiers": "Frais sur le produit, selon sa valeur",
-      "tiersHint": "Chaque tranche couvre les produits jusqu'à sa valeur en {currency} ; laissez la dernière sans limite. Sans tranche, le pourcentage par défaut s'applique.",
+      "tiersHint": "Chaque tranche couvre les produits jusqu'à sa valeur en {currency} ; laissez la dernière sans limite.",
       "upTo": "Jusqu'à ({currency})",
       "noLimit": "Sans limite",
       "percent": "Pourcentage",
@@ -74,7 +74,30 @@
       "markupHint": "Ajoutée au prix du transporteur.",
       "buffer": "Réserve sur le prix (%)",
       "bufferHint": "Du prix du produit : absorbe les changements de prix des fournisseurs et les écarts de poids, pour acheter sans revenir vers le client.",
-      "save": "Enregistrer les marges"
+      "save": "Enregistrer les marges",
+      "onProduct": "Sur le produit",
+      "onTransport": "Sur le transport",
+      "noTiers": "Aucune tranche : TraceCart prend {percent} % de la valeur de chaque produit.",
+      "minHint": "TraceCart ne prend jamais moins sur une commande. Vide ou 0 : pas de minimum.",
+      "errors": {
+        "percentMissing": "Indiquez le pourcentage de chaque tranche.",
+        "oneOpen": "Une seule tranche peut rester sans limite : donnez une valeur maximale aux autres.",
+        "sameLimit": "Deux tranches ont la même limite : changez l'une d'elles."
+      },
+      "example": {
+        "title": "Exemple pour vérifier vos chiffres (non enregistré)",
+        "product": "Prix du produit",
+        "transport": "Prix du transporteur",
+        "lines": {
+          "product": "Produit",
+          "transport": "Transport",
+          "fee": "Frais sur le produit",
+          "markup": "Marge sur le transport",
+          "buffer": "Réserve"
+        },
+        "total": "Prix payé par le client, hors douane",
+        "note": "TraceCart gagne {earned}, plus la réserve ({buffer}) si elle n'est pas utilisée."
+      }
     },
     "fx": {
       "title": "Taux de change",
@@ -84,7 +107,8 @@
       "to": "Vers",
       "source": "Source (facultatif)",
       "save": "Enregistrer le taux",
-      "remove": "Retirer"
+      "remove": "Retirer",
+      "missing": "Taux encore nécessaires pour donner un prix :"
     },
     "customs": {
       "title": "Taux de douane",
@@ -136,5 +160,52 @@
     "priorityHint": "Pour un même poste, la plus haute l'emporte (0 par défaut).",
     "rateSourceHint": "Contrat, cotation du transporteur… La date est notée.",
     "descriptionHint": "Pour l'équipe, jamais montrée au client."
+  },
+  "setup": {
+    "title": "Mise en route",
+    "intro": "Ce qu'il faut pour que la boutique donne un prix à un client : les étapes obligatoires d'abord, dans l'ordre.",
+    "ready": "Prête",
+    "notReady": "Pas encore prête",
+    "done": "fait",
+    "todo": "à faire",
+    "step": "Étape {step}",
+    "need": {
+      "required": "Obligatoire",
+      "recommended": "Recommandé",
+      "optional": "Facultatif"
+    },
+    "steps": {
+      "hub": {
+        "title": "Votre hub",
+        "hint": "Le hub d'où partent les commandes, et sa devise : tous les prix sont donnés dans cette devise."
+      },
+      "routes": {
+        "title": "Routes et tarifs des transporteurs",
+        "hint": "Au moins une route active avec ses tarifs (frais par envoi, prix au kg) vers un pays de livraison. Sans route, aucun produit n'a de prix."
+      },
+      "exchangeRates": {
+        "title": "Taux de change",
+        "hint": "Les produits sont achetés en USD ou en EUR (Amazon) : il faut un taux vers la devise du hub."
+      },
+      "margins": {
+        "title": "Marges",
+        "hint": "Ce que TraceCart gagne sur chaque commande. Sans réglage, seul le pourcentage par défaut s'applique."
+      },
+      "customs": {
+        "title": "Taux de douane",
+        "hint": "Droits et taxes par pays de livraison. Sans taux, les prix sont donnés hors douane."
+      }
+    },
+    "detail": {
+      "hub": "{hub}, en {currency}",
+      "routes": "{count, plural, one {# route} other {# routes}} avec tarifs vers {countries}",
+      "routesWithoutRates": "{count, plural, one {# route n'a} other {# routes n'ont}} pas encore de tarifs : ajoutez-les pour donner un prix.",
+      "missingRates": "Manque : {pairs}"
+    },
+    "banner": {
+      "title": "La boutique ne peut pas encore donner de prix",
+      "lead": "À régler :",
+      "action": "Voir les étapes"
+    }
   }
 }

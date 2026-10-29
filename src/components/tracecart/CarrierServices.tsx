@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
+import { refreshReadiness } from "@/lib/readiness";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -35,6 +36,8 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
 
   async function load() {
     setServices(await api.get<CarrierService[]>("/carrier-services"));
+    // A route with rates may be what the shop was waiting for.
+    refreshReadiness();
   }
 
   async function toggle(s: CarrierService) {

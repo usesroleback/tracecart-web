@@ -78,7 +78,7 @@ export function PricingRulesDashboard({ initialRules }: { initialRules: PricingR
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-2xl">
-          <h1 className="rb-headline text-[32px]">{t("title")}</h1>
+          <h2 className="rb-headline text-[28px]">{t("title")}</h2>
           <p className="mt-1 text-sm text-ink-muted">{t("intro")}</p>
         </div>
         <Button startIcon={<DsPlusIcon width={18} height={18} />} onClick={() => setEditing("new")}>

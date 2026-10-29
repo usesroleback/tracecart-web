@@ -7,8 +7,11 @@ export default async function PricingPage() {
   const [rules, settings] = await Promise.all([serverGet<PricingRule[]>("/pricing-rules"), serverGet<Settings>("/pricing-settings")]);
   return (
     <>
-      <PricingRulesDashboard initialRules={rules ?? []} />
+      {/* The steps first; rules only refine the quotes they give. */}
       {settings && <PricingSettings initial={settings} />}
+      <div className="mt-12">
+        <PricingRulesDashboard initialRules={rules ?? []} />
+      </div>
     </>
   );
 }
