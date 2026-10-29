@@ -6,7 +6,7 @@ import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Card } from "@/components/ui/card/Card";
-import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, UnitInput, RequiredNote } from "@/components/ui/form/Form";
+import { CountryInput, CurrencyInput, Field, FormActions, FormSection, input, UnitInput, RequiredMark, RequiredNote } from "@/components/ui/form/Form";
 import { SetupChecklist } from "@/components/tracecart/SetupGuide";
 import { refreshReadiness, useReadiness } from "@/lib/readiness";
 import { PricingSettings as Settings } from "@/lib/types";
@@ -182,6 +182,8 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
   return (
     <Section id="margins" step={4} need="recommended" title={t("title", { hub: m.name })} intro={t("intro", { currency: m.currency })}>
       <form onSubmit={submit} className="grid gap-6">
+        {/* Only fee tiers ask for something: the note shows once there is one. */}
+        {tiers.length > 0 && <RequiredNote />}
         <FormSection title={t("onProduct")} columns={2}>
           <div className="min-w-0 sm:col-span-2">
             <p className="rb-label mb-1 text-sm text-ink">{t("tiers")}</p>
@@ -192,7 +194,10 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
               <div className="mb-2 max-w-xl">
                 <div className={`${TIER_GRID} mb-1 text-xs text-ink-muted`}>
                   <span>{t("upTo", { currency: m.currency })}</span>
-                  <span>{t("percent")}</span>
+                  <span>
+                    {t("percent")}
+                    <RequiredMark />
+                  </span>
                 </div>
                 <div className="flex flex-col gap-2">
                   {tiers.map((tier, i) => (
