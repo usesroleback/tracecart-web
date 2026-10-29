@@ -285,7 +285,7 @@ export function QuoteBar() {
             placeholder={dragging ? t("dropHere") : t("whatPlaceholder")}
             className="block w-full resize-none bg-transparent px-5 pb-2 pt-1.5 text-base text-ink placeholder:text-ink-muted focus:outline-none"
           />
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-4 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-4 py-3 sm:flex-nowrap">
             {preview ? (
               <span className="flex min-w-0 items-center gap-2.5">
                 {isVideo(photo) ? (
@@ -300,7 +300,7 @@ export function QuoteBar() {
                 </button>
               </span>
             ) : (
-              <span className="flex min-w-0 items-center gap-3">
+              <span className="flex min-w-0 flex-1 items-center gap-3">
                 {/* One line: the label never wraps inside the button. */}
                 <button
                   type="button"
@@ -311,7 +311,7 @@ export function QuoteBar() {
                   {t("attach")}
                 </button>
                 {/* What's accepted, a line per kind; left out on phones (the error says it when needed). */}
-                <span className="hidden min-w-0 text-xs leading-snug text-ink-muted md:block">
+                <span className="hidden min-w-0 flex-1 text-xs leading-snug text-ink-muted md:block">
                   <span className="block">{t("photoHintPhoto")}</span>
                   <span className="block">{t("photoHintVideo")}</span>
                 </span>
@@ -325,7 +325,7 @@ export function QuoteBar() {
               tabIndex={-1}
               onChange={(e) => pickPhoto(e.target.files?.[0])}
             />
-            <Button type="submit" loading={searching} className="ml-auto">
+            <Button type="submit" loading={searching} className="ml-auto flex-none whitespace-nowrap">
               {searching ? t("searching") : t("cta")}
             </Button>
           </div>

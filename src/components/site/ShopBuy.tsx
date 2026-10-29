@@ -17,7 +17,7 @@ const input =
 
 /** A result's price delivered to the customer's country, as the API gives it (never the store's). */
 export type ShopPrice =
-  | { priced: true; currency: string; total: number; service: number; customsDuties: number | null; customsBroker: number | null; customsIncluded: boolean; etaFrom: string; etaTo: string }
+  | { priced: true; currency: string; total: number; service: number; customsDuties: number | null; customsBroker: number | null; customsIncluded: boolean; etaFrom: string | null; etaTo: string | null }
   | { priced: false; reason: "noPrice" | "noWeight" | "noRoute" };
 
 /** One delivered price, customs apart, and when it would arrive; "on request" otherwise. */
@@ -30,7 +30,7 @@ export function PriceBlock({ price, compact = false }: { price: ShopPrice | null
     <div>
       <p className={`${compact ? "text-base" : "text-xl"} font-semibold tabular-nums`}>{f.money(price.total, price.currency)}</p>
       <p className="text-xs text-ink-muted">{price.customsIncluded ? t("customsIncluded", { amount: f.money(customs, price.currency) }) : t("customsExcluded")}</p>
-      {!compact && <p className="mt-1 text-xs text-ink-muted">{t("eta", { from: f.shortDate(price.etaFrom), to: f.shortDate(price.etaTo) })}</p>}
+      {!compact && price.etaFrom && price.etaTo && <p className="mt-1 text-xs text-ink-muted">{t("eta", { from: f.shortDate(price.etaFrom), to: f.shortDate(price.etaTo) })}</p>}
     </div>
   );
 }
