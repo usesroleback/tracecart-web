@@ -102,7 +102,7 @@
       },
       "inbound": {
         "title": "From the stores to the hub",
-        "hint": "What bringing a purchase from the store (Amazon…) to this hub costs, in {currency}. Counted in the price of every product bought for the customer.",
+        "hint": "What bringing a purchase from the store (Amazon…) to this hub costs, in {currency}. Counted in the price of every product bought for the customer. Required: enter 0 if there is no cost.",
         "fee": "Per order ({currency})",
         "perKg": "Per kg ({currency})"
       }

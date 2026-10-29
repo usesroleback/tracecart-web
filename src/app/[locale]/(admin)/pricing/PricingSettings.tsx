@@ -182,8 +182,7 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
   return (
     <Section id="margins" step={4} need="recommended" title={t("title", { hub: m.name })} intro={t("intro", { currency: m.currency })}>
       <form onSubmit={submit} className="grid gap-6">
-        {/* Only fee tiers ask for something: the note shows once there is one. */}
-        {tiers.length > 0 && <RequiredNote />}
+        <RequiredNote />
         <FormSection title={t("onProduct")} columns={2}>
           <div className="min-w-0 sm:col-span-2">
             <p className="rb-label mb-1 text-sm text-ink">{t("tiers")}</p>
@@ -226,10 +225,10 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
         <FormSection title={t("inbound.title")} columns={2}>
           <p className="-mt-1 text-xs text-ink-muted sm:col-span-2">{t("inbound.hint", { currency: m.currency })}</p>
           <Field label={t("inbound.fee", { currency: m.currency })}>
-            <UnitInput unit={m.currency} value={v.inboundFee} onChange={(e) => setV({ ...v, inboundFee: e.target.value })} />
+            <UnitInput unit={m.currency} required placeholder="0" value={v.inboundFee} onChange={(e) => setV({ ...v, inboundFee: e.target.value })} />
           </Field>
           <Field label={t("inbound.perKg", { currency: m.currency })}>
-            <UnitInput unit={`${m.currency}/kg`} value={v.inboundPerKg} onChange={(e) => setV({ ...v, inboundPerKg: e.target.value })} />
+            <UnitInput unit={`${m.currency}/kg`} required placeholder="0" value={v.inboundPerKg} onChange={(e) => setV({ ...v, inboundPerKg: e.target.value })} />
           </Field>
         </FormSection>
         <FormSection title={t("onTransport")} columns={2}>

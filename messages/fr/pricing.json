@@ -102,7 +102,7 @@
       },
       "inbound": {
         "title": "Des boutiques jusqu'au hub",
-        "hint": "Ce que coûte l'acheminement d'un achat depuis la boutique (Amazon…) jusqu'à ce hub, en {currency}. Compté dans le prix de chaque produit acheté pour le client.",
+        "hint": "Ce que coûte l'acheminement d'un achat depuis la boutique (Amazon…) jusqu'à ce hub, en {currency}. Compté dans le prix de chaque produit acheté pour le client. Obligatoire : indiquez 0 s'il n'y a pas de coût.",
         "fee": "Par commande ({currency})",
         "perKg": "Par kg ({currency})"
       }
