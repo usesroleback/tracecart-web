@@ -175,6 +175,10 @@
       "optional": "Facultatif"
     },
     "steps": {
+      "search": {
+        "title": "Recherche de produits",
+        "hint": "Les produits sont trouvés en direct par Mindcase (Amazon, Google Maps) ; Claude lit les descriptions et les photos."
+      },
       "hub": {
         "title": "Votre hub",
         "hint": "Le hub d'où partent les commandes, et sa devise : tous les prix sont donnés dans cette devise."
@@ -200,7 +204,8 @@
       "hub": "{hub}, en {currency}",
       "routes": "{count, plural, one {# route} other {# routes}} avec tarifs vers {countries}",
       "routesWithoutRates": "{count, plural, one {# route n'a} other {# routes n'ont}} pas encore de tarifs : ajoutez-les pour donner un prix.",
-      "missingRates": "Manque : {pairs}"
+      "missingRates": "Manque : {pairs}",
+      "searchKeys": "À ajouter dans la configuration du serveur (apps/api/.env), puis redémarrer l'API : {keys}"
     },
     "banner": {
       "title": "La boutique ne peut pas encore donner de prix",

@@ -6,6 +6,7 @@ import { api } from "@/lib/apiClient";
 /** What the shop still needs before it can price a product (GET /pricing-settings/readiness). */
 export interface Readiness {
   ready: boolean;
+  search: { mindcase: boolean; claude: boolean };
   hub: { id: string; name: string; currency: string } | null;
   routes: { priced: number; withoutRates: number; countries: string[] };
   exchangeRates: { missing: string[] };

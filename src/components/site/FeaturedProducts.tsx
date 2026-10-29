@@ -29,7 +29,7 @@ const MAX_TRIES = 6;
 export function FeaturedProducts() {
   const t = useTranslations("shop.featured");
   const { country } = useCountry();
-  const [result, setResult] = useState<{ country: string | null; items: Featured[]; pending: boolean; failed?: boolean } | null>(null);
+  const [result, setResult] = useState<{ country: string | null; items: Featured[]; pending: boolean; available?: boolean; failed?: boolean } | null>(null);
   const [buying, setBuying] = useState<Featured | null>(null);
 
   useEffect(() => {
@@ -38,11 +38,11 @@ export function FeaturedProducts() {
     let stopped = false;
     const load = () =>
       api
-        .get<{ items: Featured[]; pending: boolean }>(`/shop/featured${country ? `?country=${country}` : ""}`)
+        .get<{ items: Featured[]; pending: boolean; available?: boolean }>(`/shop/featured${country ? `?country=${country}` : ""}`)
         .then((r) => {
           if (stopped) return;
           setResult({ country, ...r });
-          if (r.items.length === 0 && ++tries < MAX_TRIES) timer = setTimeout(load, RETRY_MS);
+          if (r.items.length === 0 && r.available !== false && ++tries < MAX_TRIES) timer = setTimeout(load, RETRY_MS);
         })
         .catch(() => !stopped && setResult({ country, items: [], pending: false, failed: true }));
     load();
@@ -53,8 +53,8 @@ export function FeaturedProducts() {
   }, [country]);
 
   const current = result?.country === country ? result : null;
-  // Only a failure hides the section; with nothing to show yet, placeholders hold its place.
-  if (current?.failed) return null;
+  // A failure, or search not configured, hides the section; with nothing to show yet, placeholders hold its place.
+  if (current?.failed || current?.available === false) return null;
 
   return (
     <section className="mt-12" aria-labelledby="featured-title">
