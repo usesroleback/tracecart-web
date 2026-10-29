@@ -506,8 +506,9 @@ function RateHistory({ serviceId }: { serviceId: string }) {
     setOpen(!open);
   }
 
+  // A row of the form itself (one column): spanning columns here would split the whole form into them.
   return (
-    <div className="sm:col-span-2 lg:col-span-4">
+    <div>
       <Button variant="ghost" size="s" onClick={toggle}>
         {open ? t("hideHistory") : t("showHistory")}
       </Button>
@@ -556,7 +557,7 @@ function NewHub({ onCreated }: { onCreated: (hub: Hub) => void }) {
 
   if (!open)
     return (
-      <div className="flex items-end">
+      <div className="flex items-end sm:col-span-full">
         <Button variant="ghost" size="s" startIcon={<DsPlusIcon width={16} height={16} />} onClick={() => setOpen(true)}>
           {t("open")}
         </Button>
