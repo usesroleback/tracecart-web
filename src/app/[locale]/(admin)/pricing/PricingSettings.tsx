@@ -225,10 +225,10 @@ function Margins({ settings, onSaved }: { settings: Settings; onSaved: () => Pro
         <FormSection title={t("inbound.title")} columns={2}>
           <p className="-mt-1 text-xs text-ink-muted sm:col-span-2">{t("inbound.hint", { currency: m.currency })}</p>
           <Field label={t("inbound.fee", { currency: m.currency })}>
-            <UnitInput unit={m.currency} required placeholder="0" value={v.inboundFee} onChange={(e) => setV({ ...v, inboundFee: e.target.value })} />
+            <UnitInput unit={m.currency} required value={v.inboundFee} onChange={(e) => setV({ ...v, inboundFee: e.target.value })} />
           </Field>
           <Field label={t("inbound.perKg", { currency: m.currency })}>
-            <UnitInput unit={`${m.currency}/kg`} required placeholder="0" value={v.inboundPerKg} onChange={(e) => setV({ ...v, inboundPerKg: e.target.value })} />
+            <UnitInput unit={`${m.currency}/kg`} required value={v.inboundPerKg} onChange={(e) => setV({ ...v, inboundPerKg: e.target.value })} />
           </Field>
         </FormSection>
         <FormSection title={t("onTransport")} columns={2}>
