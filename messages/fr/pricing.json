@@ -214,7 +214,7 @@
       },
       "customs": {
         "title": "Taux de douane",
-        "hint": "Droits et taxes par pays de livraison. Sans taux, les prix sont donnés hors douane."
+        "hint": "Droits et taxes par pays de livraison. Obligatoire : le client voit un seul prix, tout compris ; sans taux, le pays n'a pas de prix (0 % si rien n'est dû)."
       }
     },
     "detail": {
@@ -222,7 +222,8 @@
       "routes": "{count, plural, one {# route} other {# routes}} avec tarifs vers {countries}",
       "routesWithoutRates": "{count, plural, one {# route enregistrée sans tranche de poids} other {# routes enregistrées sans tranche de poids}} : ajoutez un prix au kg ou un forfait",
       "missingRates": "Manque : {pairs}",
-      "missingInbound": "À régler pour : {hubs} (Prix et marges → Des boutiques jusqu'aux autres hubs)."
+      "missingInbound": "À régler pour : {hubs} (Prix et marges → Des boutiques jusqu'aux autres hubs).",
+      "missingCustoms": "Manque un taux pour : {countries}"
     },
     "banner": {
       "title": "La boutique ne peut pas encore donner de prix",

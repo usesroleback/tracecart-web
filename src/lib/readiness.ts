@@ -14,6 +14,8 @@ export interface Readiness {
   /** missingHubs: hubs whose routes can't price until their store → hub rate is set. */
   inbound: { set: boolean; missingHubs: string[] };
   customsRates: number;
+  /** Countries a price can go to that have no customs rate yet (the price is all-in). */
+  customs: { missingCountries: string[] };
 }
 
 const EVENT = "tracecart:readiness";

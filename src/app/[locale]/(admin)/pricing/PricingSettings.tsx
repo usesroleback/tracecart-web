@@ -386,7 +386,7 @@ function CustomsRates({ settings, onSaved }: { settings: Settings; onSaved: () =
   }
 
   return (
-    <Section id="customs-rates" step={5} need="recommended" title={t("title")} intro={t("intro")}>
+    <Section id="customs-rates" step={5} need="required" title={t("title")} intro={t("intro")}>
       {settings.customsRates.length > 0 && (
         <SavedList>
           {settings.customsRates.map((r) => (

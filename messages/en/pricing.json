@@ -214,7 +214,7 @@
       },
       "customs": {
         "title": "Customs rates",
-        "hint": "Duties and taxes by delivery country. Without them, prices are given before customs."
+        "hint": "Duties and taxes by delivery country. Required: the customer sees one all-in price; without a rate, that country gets no price (0% if nothing is due)."
       }
     },
     "detail": {
@@ -222,7 +222,8 @@
       "routes": "{count, plural, one {# route} other {# routes}} with rates to {countries}",
       "routesWithoutRates": "{count, plural, one {# route saved without a weight band} other {# routes saved without a weight band}}: add a price per kg or a flat price",
       "missingRates": "Missing: {pairs}",
-      "missingInbound": "To set for: {hubs} (Prices and margins → From the stores to the other hubs)."
+      "missingInbound": "To set for: {hubs} (Prices and margins → From the stores to the other hubs).",
+      "missingCustoms": "No rate yet for: {countries}"
     },
     "banner": {
       "title": "The shop can't give prices yet",

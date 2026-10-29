@@ -47,7 +47,13 @@ function useSteps(r: Readiness): Step[] {
       href: r.inbound.set && r.inbound.missingHubs.length ? "/pricing#other-hubs" : "/pricing#margins",
       detail: r.inbound.missingHubs.length ? t("detail.missingInbound", { hubs: r.inbound.missingHubs.join(", ") }) : undefined,
     },
-    { key: "customs", need: "recommended", done: r.customsRates > 0, href: "/pricing#customs-rates" },
+    {
+      key: "customs",
+      need: "required",
+      done: r.customs.missingCountries.length === 0 && r.customsRates > 0,
+      href: "/pricing#customs-rates",
+      detail: r.customs.missingCountries.length ? t("detail.missingCustoms", { countries: r.customs.missingCountries.join(", ") }) : undefined,
+    },
   ];
 }
 
