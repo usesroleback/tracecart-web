@@ -430,6 +430,8 @@ export interface PricingSettings {
     /** Tracecart's fee on a product, in %, when the hub has no tiers. */
     defaultFeePercent: number;
   };
+  /** The other active hubs and their store → hub rates. */
+  otherHubs: { id: string; name: string; city: string; currency: string; inboundFee: string | null; inboundPerKg: string | null }[];
   exchangeRates: { id: string; currency: string; toCurrency: string; rate: string; source: string | null; updatedAt: string }[];
   customsRates: {
     id: string;

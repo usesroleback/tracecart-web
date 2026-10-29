@@ -148,6 +148,15 @@
       "height": "Hauteur (cm)",
       "save": "Enregistrer",
       "remove": "Retirer"
+    },
+    "otherHubs": {
+      "title": "Des boutiques jusqu'aux autres hubs",
+      "intro": "Une route qui part d'un autre hub compte l'acheminement jusqu'à ce hub, dans sa devise. Indiquez 0 s'il n'y a pas de coût.",
+      "waiting": "À régler : ses routes attendent",
+      "notSet": "Pas encore réglé",
+      "set": "Réglé",
+      "save": "Enregistrer",
+      "saved": "Enregistré."
     }
   },
   "form": {
@@ -213,7 +222,7 @@
       "routes": "{count, plural, one {# route} other {# routes}} avec tarifs vers {countries}",
       "routesWithoutRates": "{count, plural, one {# route enregistrée sans tranche de poids} other {# routes enregistrées sans tranche de poids}} : ajoutez un prix au kg ou un forfait",
       "missingRates": "Manque : {pairs}",
-      "missingInbound": "À régler pour : {hubs}. Le taux d'un autre hub se règle depuis ce hub (Mon hub)."
+      "missingInbound": "À régler pour : {hubs} (Prix et marges → Des boutiques jusqu'aux autres hubs)."
     },
     "banner": {
       "title": "La boutique ne peut pas encore donner de prix",

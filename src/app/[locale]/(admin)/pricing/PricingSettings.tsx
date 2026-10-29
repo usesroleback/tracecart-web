@@ -69,6 +69,7 @@ export function PricingSettings({ initial }: { initial: Settings }) {
       <SetupChecklist readiness={readiness} />
       <ExchangeRates settings={settings} missing={readiness?.exchangeRates.missing ?? []} onSaved={reload} />
       <Margins settings={settings} onSaved={reload} />
+      <OtherHubsInbound settings={settings} waiting={readiness?.inbound.missingHubs ?? []} onSaved={reload} />
       <CustomsRates settings={settings} onSaved={reload} />
       <CategoryDefaults settings={settings} onSaved={reload} />
     </div>
@@ -535,5 +536,59 @@ function CategoryDefaults({ settings, onSaved }: { settings: Settings; onSaved: 
         </FormActions>
       </form>
     </Section>
+  );
+}
+
+/**
+ * The other hubs' store → hub rates: a route leaving one of them prices with
+ * its rate, so it's set here rather than by switching hubs. One row each.
+ */
+function OtherHubsInbound({ settings, waiting, onSaved }: { settings: Settings; waiting: string[]; onSaved: () => Promise<void> }) {
+  const t = useTranslations("pricing.settings.otherHubs");
+  if (!settings.otherHubs.length) return null;
+  return (
+    <Section id="other-hubs" step={4} need="required" title={t("title")} intro={t("intro")}>
+      <div className="grid gap-3">
+        {settings.otherHubs.map((h) => (
+          <HubInboundRow key={h.id} hub={h} waiting={waiting.includes(h.name)} onSaved={onSaved} />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function HubInboundRow({ hub, waiting, onSaved }: { hub: Settings["otherHubs"][number]; waiting: boolean; onSaved: () => Promise<void> }) {
+  const t = useTranslations("pricing.settings.otherHubs");
+  const tm = useTranslations("pricing.settings.margins.inbound");
+  const [v, setV] = useState({ inboundFee: str(hub.inboundFee), inboundPerKg: str(hub.inboundPerKg) });
+  const { busy, error, saved, run } = useSubmit(onSaved);
+  function submit(e: FormEvent) {
+    e.preventDefault();
+    run(() => api.put(`/pricing-settings/hubs/${hub.id}/inbound`, { inboundFee: Number(v.inboundFee), inboundPerKg: Number(v.inboundPerKg) }));
+  }
+  return (
+    <form onSubmit={submit} className="grid items-end gap-3 rounded-[var(--radius-m)] border border-line p-3 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_minmax(0,1fr)_auto]">
+      <div className="min-w-0 self-center">
+        <p className="font-semibold">{hub.name}</p>
+        <p className="text-xs text-ink-muted">{waiting ? <Badge variant="attn">{t("waiting")}</Badge> : hub.inboundFee == null && hub.inboundPerKg == null ? t("notSet") : t("set")}</p>
+      </div>
+      <Field label={tm("fee", { currency: hub.currency })}>
+        <UnitInput unit={hub.currency} required value={v.inboundFee} onChange={(e) => setV({ ...v, inboundFee: e.target.value })} />
+      </Field>
+      <Field label={tm("perKg", { currency: hub.currency })}>
+        <UnitInput unit={`${hub.currency}/kg`} required value={v.inboundPerKg} onChange={(e) => setV({ ...v, inboundPerKg: e.target.value })} />
+      </Field>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button type="submit" size="s" loading={busy}>
+          {t("save")}
+        </Button>
+        {saved && !error && <span role="status" className="text-xs text-positive">{t("saved")}</span>}
+        {error && (
+          <span role="alert" className="text-xs text-critical">
+            {error}
+          </span>
+        )}
+      </div>
+    </form>
   );
 }

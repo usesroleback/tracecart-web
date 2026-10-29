@@ -43,7 +43,8 @@ function useSteps(r: Readiness): Step[] {
       key: "inbound",
       need: "required",
       done: r.inbound.missingHubs.length === 0,
-      href: "/pricing#margins",
+      // Own hub set, another still waiting: straight to the other hubs.
+      href: r.inbound.set && r.inbound.missingHubs.length ? "/pricing#other-hubs" : "/pricing#margins",
       detail: r.inbound.missingHubs.length ? t("detail.missingInbound", { hubs: r.inbound.missingHubs.join(", ") }) : undefined,
     },
     { key: "customs", need: "recommended", done: r.customsRates > 0, href: "/pricing#customs-rates" },
