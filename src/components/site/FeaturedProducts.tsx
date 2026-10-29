@@ -19,7 +19,7 @@ interface Featured {
 
 // While there's nothing to show yet (being searched, or none found), ask again a few times.
 const RETRY_MS = 20_000;
-const MAX_TRIES = 6;
+const MAX_TRIES = 30;
 
 /**
  * What the shop shows before anyone searches (GET /shop/featured): popular
@@ -42,7 +42,8 @@ export function FeaturedProducts() {
         .then((r) => {
           if (stopped) return;
           setResult({ country, ...r });
-          if (r.items.length === 0 && r.available !== false && ++tries < MAX_TRIES) timer = setTimeout(load, RETRY_MS);
+          // Asked again while there's nothing yet, or more are still being searched.
+          if ((r.items.length === 0 || r.pending) && r.available !== false && ++tries < MAX_TRIES) timer = setTimeout(load, RETRY_MS);
         })
         .catch(() => !stopped && setResult({ country, items: [], pending: false, failed: true }));
     load();
