@@ -300,16 +300,21 @@ export function QuoteBar() {
                 </button>
               </span>
             ) : (
-              <span className="flex items-center gap-3">
+              <span className="flex min-w-0 items-center gap-3">
+                {/* One line: the label never wraps inside the button. */}
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
-                  className="inline-flex h-10 items-center gap-2 rounded-[var(--radius-s)] border border-line-strong px-3 text-sm font-semibold text-ink hover:bg-surface-sunken focus-visible:outline-2 focus-visible:outline-focus-ring"
+                  className="inline-flex h-10 flex-none items-center gap-2 whitespace-nowrap rounded-[var(--radius-s)] border border-line-strong px-3 text-sm font-semibold text-ink hover:bg-surface-sunken focus-visible:outline-2 focus-visible:outline-focus-ring"
                 >
                   <CameraIcon />
                   {t("attach")}
                 </button>
-                <span className="hidden text-xs text-ink-muted sm:inline">{t("photoHint")}</span>
+                {/* What's accepted, a line per kind; left out on phones (the error says it when needed). */}
+                <span className="hidden min-w-0 text-xs leading-snug text-ink-muted md:block">
+                  <span className="block">{t("photoHintPhoto")}</span>
+                  <span className="block">{t("photoHintVideo")}</span>
+                </span>
               </span>
             )}
             <input
