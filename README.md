@@ -2,7 +2,7 @@
 
 The Tracecart website: the public site and shop, customer accounts, the back office (staff and carriers), and the customer's quote and tracking page. Next.js (App Router), Tailwind CSS, Clerk, next-intl (French and English). A product of Roleback Platforms.
 
-It talks to [tracecart-api](https://github.com/tracecartops/tracecart-api) only through the API's contract: a copy of its `openapi.json` in [`openapi/`](./openapi), from which the typed client in `src/lib/api/` is generated. How the two fit together, local infrastructure, the production stack and the product and design docs live in **tracecart-platforms** ([github.com/tracecartops/tracecart](https://github.com/tracecartops/tracecart)).
+It talks to [tracecart-api](https://github.com/tracecartops/tracecart-api) only through the API's contract: a copy of its `openapi.json` in [`openapi/`](./openapi), from which the typed client in `src/lib/api/` is generated.
 
 ## Run it
 
@@ -66,9 +66,32 @@ docker build \
 
 Node 24 on Debian slim, non-root, Next's standalone output. `NEXT_PUBLIC_*` values are compiled in: changing them means rebuilding. At runtime it needs `CLERK_SECRET_KEY`, and optionally `API_INTERNAL_URL` to reach the API over a private network. Health check: `GET /api/health`.
 
+## CI/CD
+
+`.github/workflows/ci.yml`, on every push and pull request:
+
+1. **check**: lint, typecheck, French and English messages match, the API client is current, build, dependency audit.
+2. **contract**: `openapi/openapi.json` matches tracecart-api's `main`.
+3. **e2e**: Playwright on the built app and API (tracecart-api checked out beside it).
+4. **image**: shell lint and the Docker image. On `main` it's built with the production `NEXT_PUBLIC_*` values (repository **variables** `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`) and pushed to `ghcr.io/tracecartops/tracecart-web:<commit sha>`. Until those variables exist, it's built with placeholders and not pushed.
+5. **deploy** (`main` only, after 1–4 pass): the image becomes `:latest`, then Dokploy is asked to redeploy through its webhook. Until the secret `DOKPLOY_DEPLOY_WEBHOOK` exists, nothing is deployed.
+
+While tracecart-api is private, the contract and e2e jobs need the secret `API_REPO_TOKEN`: a fine-grained token with read access to its contents.
+
+## Deploying (Dokploy on Hetzner)
+
+On the same Dokploy server as the API (tracecart-api README, "Deploying"):
+
+1. Create an **Application** with source **Docker image** `ghcr.io/tracecartops/tracecart-web:latest` (GHCR registry credentials as for the API).
+2. Environment: `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` (the same production values the image was built with) and `API_INTERNAL_URL`, the API on the server's private network (`http://<api service>:4000`), so server-side calls don't loop out through the internet.
+3. Domains: the site's hostname, port 3000, HTTPS. The API's `CORS_ORIGIN` must be this URL.
+4. Copy the application's deploy webhook URL into this repository's secret `DOKPLOY_DEPLOY_WEBHOOK` (environment `production`).
+
+`NEXT_PUBLIC_API_URL` and the Clerk publishable key are compiled into the browser code: changing them means changing the repository variables and letting CI rebuild. To roll back, point the application at an earlier `:<sha>` tag and redeploy.
+
 ## Design
 
-The design tokens in `src/app/globals.css` and the components in `src/components/ui/` mirror the Roleback design system (themes `tracecart-light` / `tracecart-dark`). The brand guidelines are in tracecart-platforms, `docs/brand/`.
+The design tokens in `src/app/globals.css` and the components in `src/components/ui/` mirror the Roleback design system (themes `tracecart-light` / `tracecart-dark`).
 
 ## Configuration
 

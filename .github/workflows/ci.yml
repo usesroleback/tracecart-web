@@ -138,18 +138,73 @@ jobs:
             tracecart-web/e2e-web.log
           retention-days: 7
 
-  docker:
+  # The image. NEXT_PUBLIC_* values are compiled in, so on main it's built with
+  # the production ones (repository variables NEXT_PUBLIC_API_URL and
+  # NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) and pushed to GHCR as :<sha>; elsewhere,
+  # or until those variables exist, with placeholders and not pushed.
+  image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/tracecart-web
+      ON_MAIN: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+      CLERK_KEY: ${{ vars.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Lint shell scripts
         run: shellcheck e2e/run.sh
 
-      - name: Build web image
-        # Placeholder values: this only checks the image builds.
-        run: >-
-          docker build
-          --build-arg NEXT_PUBLIC_API_URL=https://api.example.com
-          --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
-          -t tracecart-web .
+      - name: Build image
+        run: |
+          if [ "$ON_MAIN" = "true" ] && [ -n "$API_URL" ] && [ -n "$CLERK_KEY" ]; then
+            echo "PUSH=true" >> "$GITHUB_ENV"
+          else
+            API_URL=https://api.example.com
+            CLERK_KEY=pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
+            [ "$ON_MAIN" = "true" ] && echo "::notice::Set the repository variables NEXT_PUBLIC_API_URL and NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY to publish the image."
+          fi
+          docker build --build-arg NEXT_PUBLIC_API_URL="$API_URL" --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="$CLERK_KEY" -t "$IMAGE:${{ github.sha }}" .
+
+      - name: Push to GHCR
+        if: env.PUSH == 'true'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker push "$IMAGE:${{ github.sha }}"
+          echo "published=true" >> "$GITHUB_OUTPUT"
+        id: push
+    outputs:
+      published: ${{ steps.push.outputs.published }}
+
+  # Continuous deployment: once every check passes on main, this commit's image
+  # becomes :latest and Dokploy redeploys the application (pulling :latest).
+  # The Dokploy step is skipped until the server exists: then add the
+  # application's deploy webhook URL as the secret DOKPLOY_DEPLOY_WEBHOOK.
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.image.outputs.published == 'true'
+    needs: [check, contract, e2e, image]
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/tracecart-web
+    steps:
+      - name: Tag this commit's image as latest
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker buildx imagetools create -t "$IMAGE:latest" "$IMAGE:${{ github.sha }}"
+
+      - name: Trigger the Dokploy deploy
+        env:
+          HOOK: ${{ secrets.DOKPLOY_DEPLOY_WEBHOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice::DOKPLOY_DEPLOY_WEBHOOK isn't set: the image is published, nothing deployed."
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK"
