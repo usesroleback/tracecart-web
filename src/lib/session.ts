@@ -56,3 +56,17 @@ export async function requireRole(role: Role): Promise<SessionUser> {
   if (state.user.role !== role) return redirect({ href: ROLE_HOME[state.user.role], locale });
   return state.user;
 }
+
+export const can = (user: SessionUser, permission: string) => user.permissions?.includes(permission) ?? false;
+
+/**
+ * Keeps a console section to holders of a permission (catalogue screens and
+ * the like), sending everyone else to their own home. UX only, like requireRole.
+ */
+export async function requirePermission(permission: string): Promise<SessionUser> {
+  const state = await getSessionState();
+  const locale = await getLocale();
+  if (state.status !== "ok") return redirect({ href: "/login", locale });
+  if (!can(state.user, permission)) return redirect({ href: ROLE_HOME[state.user.role], locale });
+  return state.user;
+}

@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
   experimental: process.env.NEXT_BUILD_CPUS ? { cpus: Number(process.env.NEXT_BUILD_CPUS) } : undefined,
   // NEXT_SKIP_TYPECHECK=1 skips the build's own type check (run `pnpm typecheck` instead), for the same machines.
   typescript: { ignoreBuildErrors: process.env.NEXT_SKIP_TYPECHECK === "1" },
+  // Product photos (src/components/store/StoreImage.tsx): the hosts next/image
+  // may fetch and resize, AVIF first. Other hosts' photos are shown as they are.
+  images: {
+    formats: ["image/avif", "image/webp"],
+    remotePatterns: (process.env.NEXT_PUBLIC_IMAGE_HOSTS ?? "placehold.co")
+      .split(",")
+      .map((h) => h.trim())
+      .filter(Boolean)
+      .map((hostname) => ({ protocol: "https" as const, hostname })),
+  },
   // This folder is the whole project (no workspace above it).
   outputFileTracingRoot: __dirname,
   webpack(config) {

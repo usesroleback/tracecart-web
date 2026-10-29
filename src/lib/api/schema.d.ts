@@ -2,6 +2,2314 @@
 // `pnpm api:generate`. Don't edit: run `pnpm api:sync` after the API changes.
 
 export interface paths {
+    "/admin/catalog/attributes/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove an attribute: products keep the values, which are no longer shown or filtered */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Change an attribute's label, unit, options or flags (its key and type are fixed) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        label?: {
+                            fr?: string;
+                            en?: string;
+                        };
+                        unit?: string | null;
+                        options?: {
+                            value: string;
+                            label: {
+                                fr?: string;
+                                en?: string;
+                            };
+                        }[] | null;
+                        filterable?: boolean;
+                        comparable?: boolean;
+                        searchable?: boolean;
+                        required?: boolean;
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/catalog/brands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Every brand, with how many products it has */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Add a brand */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        slug: string;
+                        name: string;
+                        /** Format: uri */
+                        logoUrl?: string | null;
+                        /** Format: uri */
+                        website?: string | null;
+                        description?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/brands/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit a brand */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        slug?: string;
+                        name?: string;
+                        /** Format: uri */
+                        logoUrl?: string | null;
+                        /** Format: uri */
+                        website?: string | null;
+                        description?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/catalog/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Every category, inactive ones included, with its attributes and how many products it holds */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Add a category */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        slug: string;
+                        /** Format: uuid */
+                        parentId?: string | null;
+                        name: {
+                            fr?: string;
+                            en?: string;
+                        };
+                        description?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        defaultWeightGrams?: number | null;
+                        position?: number;
+                        active?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/categories/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Rename, move, reorder or switch off a category (switched off: it and what's under it leave the store) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        slug?: string;
+                        /** Format: uuid */
+                        parentId?: string | null;
+                        name?: {
+                            fr?: string;
+                            en?: string;
+                        };
+                        description?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        defaultWeightGrams?: number | null;
+                        position?: number;
+                        active?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/catalog/categories/{id}/attributes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add an attribute to a category (and so to the categories under it) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        key: string;
+                        label: {
+                            fr?: string;
+                            en?: string;
+                        };
+                        /** @enum {string} */
+                        type: "NUMBER" | "ENUM" | "BOOLEAN" | "TEXT";
+                        unit?: string | null;
+                        options?: {
+                            value: string;
+                            label: {
+                                fr?: string;
+                                en?: string;
+                            };
+                        }[] | null;
+                        filterable?: boolean;
+                        comparable?: boolean;
+                        searchable?: boolean;
+                        required?: boolean;
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/compatibility": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Link two variants: a battery FITS a drill, a charger CHARGES a battery, a disc is a CONSUMABLE_FOR a grinder… */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        fromSku: string;
+                        toSku: string;
+                        /** @enum {string} */
+                        kind: "FITS" | "CHARGES" | "REPLACES" | "ACCESSORY_FOR" | "CONSUMABLE_FOR" | "FREQUENTLY_BOUGHT_WITH";
+                        note?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/compatibility/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a link */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Every product as CSV, in the import's format (one row per variant, with its first offer) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description text/csv */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Import products, variants and offers from CSV (one row per variant, at most 5000). Checks only, unless dryRun is false; nothing is written while any row has a problem.
+         * @description Columns: product_slug, sku (required); category, brand (slugs), status, title_fr, title_en, description_fr, description_en, warranty_months, image_urls (separated by |); attr:<key> and option:<name> columns; gtin, mpn, weight_g, length_mm, width_mm, height_mm; offer_fulfillment, offer_status, offer_condition, offer_price (minor units), offer_currency, offer_compare_at, offer_warehouse (code), offer_seller and offer_supplier (organisation id or reference), offer_handling_days, offer_source_price, offer_source_currency, offer_source_url, offer_lead_min, offer_lead_max. An empty cell leaves a value as it is. GET /admin/catalog/export writes the same format.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        csv: string;
+                        /** @default true */
+                        dryRun?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description What was (or would be) created and updated, and each row's problems */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            dryRun: boolean;
+                            rows: number;
+                            products: {
+                                created: number;
+                                updated: number;
+                            };
+                            variants: {
+                                created: number;
+                                updated: number;
+                            };
+                            offers: {
+                                created: number;
+                                updated: number;
+                            };
+                            errors: {
+                                line: number;
+                                sku: string | null;
+                                messages: string[];
+                            }[];
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/media/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a photo, video or document */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/offers/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change an offer's price, status or terms (recorded in the audit log with the price before and after) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        fulfillmentType?: "TRACECART_STOCK" | "SELLER_FULFILLED" | "FULFILLED_BY_TRACECART" | "CROSS_BORDER";
+                        /** Format: uuid */
+                        sellerId?: string | null;
+                        /** @enum {string} */
+                        condition?: "NEW" | "REFURBISHED" | "USED";
+                        /** @enum {string} */
+                        status?: "DRAFT" | "IN_REVIEW" | "ACTIVE" | "PAUSED" | "DELISTED";
+                        priceMinor?: number | null;
+                        currency?: string;
+                        compareAtMinor?: number | null;
+                        tiers?: {
+                            minQuantity: number;
+                            priceMinor: number;
+                        }[] | null;
+                        /** Format: uuid */
+                        warehouseId?: string | null;
+                        handlingDays?: number;
+                        /** Format: uuid */
+                        sourceSupplierId?: string | null;
+                        /** Format: uri */
+                        sourceUrl?: string | null;
+                        sourcePriceMinor?: number | null;
+                        sourceCurrency?: string | null;
+                        leadTimeDaysMin?: number | null;
+                        leadTimeDaysMax?: number | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/catalog/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Products in every status, most recently changed first; `q` matches title, slug, SKU or part number */
+        get: {
+            parameters: {
+                query?: {
+                    q?: string;
+                    status?: "DRAFT" | "IN_REVIEW" | "ACTIVE" | "ARCHIVED";
+                    category?: string;
+                    brand?: string;
+                    /** @description The id of the last product of the previous page. */
+                    cursor?: string;
+                    limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Add a product with its variants (its attributes are checked against its category; required ones before it goes live) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        slug?: string;
+                        /** Format: uuid */
+                        categoryId: string;
+                        /** Format: uuid */
+                        brandId?: string | null;
+                        /** @enum {string} */
+                        status?: "DRAFT" | "IN_REVIEW" | "ACTIVE" | "ARCHIVED";
+                        title: {
+                            fr?: string;
+                            en?: string;
+                        };
+                        description?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        attributes?: {
+                            [key: string]: string | number | boolean | string[];
+                        };
+                        inTheBox?: {
+                            fr?: string;
+                            en?: string;
+                        }[] | null;
+                        safety?: {
+                            fr?: string;
+                            en?: string;
+                        }[] | null;
+                        certifications?: string[];
+                        warrantyMonths?: number | null;
+                        seoTitle?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        seoDescription?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        variants: {
+                            sku: string;
+                            options?: {
+                                [key: string]: string;
+                            };
+                            attributes?: {
+                                [key: string]: string | number | boolean | string[];
+                            };
+                            gtin?: string | null;
+                            mpn?: string | null;
+                            weightGrams?: number | null;
+                            lengthMm?: number | null;
+                            widthMm?: number | null;
+                            heightMm?: number | null;
+                            active?: boolean;
+                            position?: number;
+                        }[];
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/products/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A product with everything about it: both languages, variants, every offer (source prices included), stock, media, links, and its category's attributes */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit a product, publish it (ACTIVE) or take it off sale (ARCHIVED) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        slug?: string;
+                        /** Format: uuid */
+                        categoryId?: string;
+                        /** Format: uuid */
+                        brandId?: string | null;
+                        /** @enum {string} */
+                        status?: "DRAFT" | "IN_REVIEW" | "ACTIVE" | "ARCHIVED";
+                        title?: {
+                            fr?: string;
+                            en?: string;
+                        };
+                        description?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        attributes?: {
+                            [key: string]: string | number | boolean | string[];
+                        };
+                        inTheBox?: {
+                            fr?: string;
+                            en?: string;
+                        }[] | null;
+                        safety?: {
+                            fr?: string;
+                            en?: string;
+                        }[] | null;
+                        certifications?: string[];
+                        warrantyMonths?: number | null;
+                        seoTitle?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        seoDescription?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/catalog/products/{id}/media": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a photo, video or document by its link (to the product, or to one variant) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        kind: "IMAGE" | "VIDEO" | "SPIN360" | "DOCUMENT";
+                        url: string;
+                        alt?: {
+                            fr?: string;
+                            en?: string;
+                        } | null;
+                        /** @enum {string|null} */
+                        role?: "manual" | "datasheet" | "safety" | "certificate" | null;
+                        mimeType?: string | null;
+                        variantSku?: string | null;
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/products/{id}/variants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a variant */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        sku: string;
+                        options?: {
+                            [key: string]: string;
+                        };
+                        attributes?: {
+                            [key: string]: string | number | boolean | string[];
+                        };
+                        gtin?: string | null;
+                        mpn?: string | null;
+                        weightGrams?: number | null;
+                        lengthMm?: number | null;
+                        widthMm?: number | null;
+                        heightMm?: number | null;
+                        active?: boolean;
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/references": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** What the catalogue forms choose from: warehouses, sellers, suppliers, brands and categories */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/variants/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit a variant, or switch it off */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        sku?: string;
+                        options?: {
+                            [key: string]: string;
+                        };
+                        attributes?: {
+                            [key: string]: string | number | boolean | string[];
+                        };
+                        gtin?: string | null;
+                        mpn?: string | null;
+                        weightGrams?: number | null;
+                        lengthMm?: number | null;
+                        widthMm?: number | null;
+                        heightMm?: number | null;
+                        active?: boolean;
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/admin/catalog/variants/{id}/offers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add an offer to a variant: Tracecart stock, a seller's, stock fulfilled by Tracecart, or a cross-border import */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        fulfillmentType: "TRACECART_STOCK" | "SELLER_FULFILLED" | "FULFILLED_BY_TRACECART" | "CROSS_BORDER";
+                        /** Format: uuid */
+                        sellerId?: string | null;
+                        /** @enum {string} */
+                        condition?: "NEW" | "REFURBISHED" | "USED";
+                        /** @enum {string} */
+                        status?: "DRAFT" | "IN_REVIEW" | "ACTIVE" | "PAUSED" | "DELISTED";
+                        priceMinor?: number | null;
+                        currency: string;
+                        compareAtMinor?: number | null;
+                        tiers?: {
+                            minQuantity: number;
+                            priceMinor: number;
+                        }[] | null;
+                        /** Format: uuid */
+                        warehouseId?: string | null;
+                        handlingDays?: number;
+                        /** Format: uuid */
+                        sourceSupplierId?: string | null;
+                        /** Format: uri */
+                        sourceUrl?: string | null;
+                        sourcePriceMinor?: number | null;
+                        sourceCurrency?: string | null;
+                        leadTimeDaysMin?: number | null;
+                        leadTimeDaysMax?: number | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/search/synonyms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Synonym sets */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Add a synonym set */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @description Words or two-word phrases that mean the same: ["meuleuse", "disqueuse", "angle grinder"]. Stored without accents, in lower case. */
+                        terms: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/search/synonyms/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Replace a synonym set's terms */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @description Words or two-word phrases that mean the same: ["meuleuse", "disqueuse", "angle grinder"]. Stored without accents, in lower case. */
+                        terms: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        /** Remove a synonym set */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/search/zero-results": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Searches that found nothing, most frequent first, over the last `days` days: what to add as a synonym or a product */
+        get: {
+            parameters: {
+                query?: {
+                    days?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/approvals": {
         parameters: {
             query?: never;
@@ -324,13 +2632,13 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description The current user */
+                /** @description The current user, with their permissions */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["PublicUser"];
+                        "application/json": components["schemas"]["Me"];
                     };
                 };
                 /** @description Not signed in */
@@ -881,6 +3189,516 @@ export interface paths {
                 };
                 /** @description Not allowed */
                 403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/brands": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Brands with listed products */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["BrandList"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/brands/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A brand (its products: GET /catalog/products?brand=…) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path: {
+                    slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["BrandDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The category tree, with how many products each lists (its subcategories' included). Empty categories are left out. */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryTree"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/categories/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A category: its name, the categories above it and the ones below */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path: {
+                    slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Products of a category, a brand or a keyword search, filtered, sorted and counted for the filters (facets)
+         * @description Each product shows its best offer (the buy box: orderable first, then the lowest price, then stock in the shopper's country, then Tracecart's own). Each facet counts what the other filters leave.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Keyword search: every word or a synonym, French or English, typos corrected when nothing matches. */
+                    q?: string;
+                    /** @description A category's slug: its products and its subcategories'. */
+                    category?: string;
+                    /** @description Brand slugs (any of them). */
+                    brand?: string[];
+                    /** @description Attribute filters, repeated: "voltage:18,36" (any of the values) or "power_w:500..1200" (a range; a bound may be left empty). */
+                    attr?: string[];
+                    /** @description In minor units of `currency`. */
+                    priceMin?: number | null;
+                    priceMax?: number | null;
+                    /** @description local: in stock in the shopper's country; abroad: ordered from abroad. */
+                    delivery?: "local" | "abroad";
+                    condition?: ("NEW" | "REFURBISHED" | "USED")[];
+                    sort?: "relevance" | "price_asc" | "price_desc" | "newest";
+                    page?: number;
+                    pageSize?: number;
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductListing"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/products/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A product page: specifications, media, variants with their offers (best first), compatible products and related ones */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The SKU to show first. */
+                    variant?: string;
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path: {
+                    slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/sitemap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Every listed product, category and brand, for the web's sitemap.xml */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            products: {
+                                slug: string;
+                                updatedAt: string;
+                            }[];
+                            categories: {
+                                slug: string;
+                            }[];
+                            brands: {
+                                slug: string;
+                            }[];
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/suggest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** As-you-type suggestions for the search box: products (the last word may be cut short), categories and brands */
+        get: {
+            parameters: {
+                query: {
+                    q: string;
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SearchSuggestions"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -8618,6 +11436,258 @@ export interface components {
                 message: string;
                 details?: unknown;
             };
+        };
+        Availability: {
+            /** @enum {string} */
+            kind: "IN_STOCK" | "SELLER" | "ABROAD" | "OUT_OF_STOCK";
+            city: string | null;
+            countryCode: string | null;
+            /** @description Ships from the shopper's country. */
+            local: boolean;
+            /** @description Days until it's handed over (in stock, seller), or until it leaves the supplier (abroad). Not a delivery date: that comes with the delivery promise at checkout. */
+            days: {
+                min: number;
+                max: number;
+            };
+        };
+        ProductCard: {
+            id: string;
+            slug: string;
+            title: string;
+            brand: {
+                slug: string;
+                name: string;
+            } | null;
+            image: {
+                url: string;
+                alt: string;
+            } | null;
+            price: {
+                amountMinor: number;
+                currency: string;
+            };
+            compareAtMinor: number | null;
+            availability: components["schemas"]["Availability"];
+            offerCount: number;
+            variantCount: number;
+        };
+        ProductListing: {
+            items: components["schemas"]["ProductCard"][];
+            total: number;
+            page: number;
+            pageSize: number;
+            query: string | null;
+            /** @description What was searched instead, when the words as typed found nothing. */
+            correctedQuery: string | null;
+            category: {
+                slug: string;
+                name: string;
+            } | null;
+            facets: {
+                categories: {
+                    slug: string;
+                    name: string;
+                    count: number;
+                }[];
+                brands: {
+                    slug: string;
+                    name: string;
+                    count: number;
+                    selected: boolean;
+                }[];
+                price: {
+                    min: number;
+                    max: number;
+                } | null;
+                attributes: {
+                    key: string;
+                    /** @enum {string} */
+                    type: "NUMBER" | "ENUM" | "BOOLEAN" | "TEXT";
+                    unit: string | null;
+                    label: string;
+                    values: {
+                        value: string;
+                        label: string;
+                        count: number;
+                        selected: boolean;
+                    }[];
+                    range: {
+                        min: number;
+                        max: number;
+                        selectedMin: number | null;
+                        selectedMax: number | null;
+                    } | null;
+                }[];
+                delivery: {
+                    /** @enum {string} */
+                    value: "local" | "abroad";
+                    count: number;
+                    selected: boolean;
+                }[];
+                conditions: {
+                    value: string;
+                    count: number;
+                    selected: boolean;
+                }[];
+            };
+            /** @description More products matched than are filtered and counted at once; the query should be narrowed. */
+            truncated: boolean;
+        };
+        CategoryTree: {
+            categories: components["schemas"]["CategoryNode"][];
+        };
+        CategoryNode: {
+            slug: string;
+            name: string;
+            count: number;
+            children: components["schemas"]["CategoryNode"][];
+        };
+        CategoryDetail: {
+            slug: string;
+            name: string;
+            description: string | null;
+            breadcrumbs: {
+                slug: string;
+                name: string;
+            }[];
+            children: {
+                slug: string;
+                name: string;
+                count: number;
+            }[];
+            count: number;
+        };
+        BrandList: {
+            brands: {
+                slug: string;
+                name: string;
+                logoUrl: string | null;
+                count: number;
+            }[];
+        };
+        BrandDetail: {
+            slug: string;
+            name: string;
+            logoUrl: string | null;
+            website: string | null;
+            description: string | null;
+            count: number;
+        };
+        PublicOffer: {
+            id: string;
+            /** @enum {string} */
+            fulfillmentType: "TRACECART_STOCK" | "SELLER_FULFILLED" | "FULFILLED_BY_TRACECART" | "CROSS_BORDER";
+            /** @enum {string} */
+            condition: "NEW" | "REFURBISHED" | "USED";
+            price: {
+                amountMinor: number;
+                currency: string;
+            };
+            compareAtMinor: number | null;
+            tiers: {
+                minQuantity: number;
+                priceMinor: number;
+            }[];
+            /** @description null: sold by Tracecart. */
+            seller: {
+                name: string;
+            } | null;
+            availability: components["schemas"]["Availability"];
+        };
+        ProductDetail: {
+            id: string;
+            slug: string;
+            title: string;
+            description: string | null;
+            category: {
+                slug: string;
+                name: string;
+            };
+            breadcrumbs: {
+                slug: string;
+                name: string;
+            }[];
+            brand: {
+                slug: string;
+                name: string;
+            } | null;
+            attributes: {
+                key: string;
+                label: string;
+                value: string;
+            }[];
+            inTheBox: string[];
+            safety: string[];
+            certifications: string[];
+            warrantyMonths: number | null;
+            seo: {
+                title: string;
+                description: string;
+            };
+            media: {
+                /** @enum {string} */
+                kind: "IMAGE" | "VIDEO" | "SPIN360" | "DOCUMENT";
+                url: string;
+                alt: string;
+                role: string | null;
+                mimeType: string | null;
+                variantSku: string | null;
+            }[];
+            optionAxes: {
+                key: string;
+                values: string[];
+            }[];
+            variants: {
+                sku: string;
+                options: {
+                    [key: string]: string;
+                };
+                gtin: string | null;
+                mpn: string | null;
+                weightGrams: number | null;
+                buyBox: components["schemas"]["PublicOffer"] & unknown;
+                otherOffers: components["schemas"]["PublicOffer"][];
+            }[];
+            selectedSku: string;
+            compatibility: {
+                /** @enum {string} */
+                kind: "FITS" | "CHARGES" | "REPLACES" | "ACCESSORY_FOR" | "CONSUMABLE_FOR" | "FREQUENTLY_BOUGHT_WITH";
+                /**
+                 * @description from: this product FITS/CHARGES… the ones listed; to: the ones listed FIT/CHARGE… this product.
+                 * @enum {string}
+                 */
+                direction: "from" | "to";
+                products: components["schemas"]["ProductCard"][];
+            }[];
+            related: components["schemas"]["ProductCard"][];
+            updatedAt: string;
+        };
+        SearchSuggestions: {
+            products: {
+                slug: string;
+                title: string;
+                image: {
+                    url: string;
+                    alt: string;
+                } | null;
+                price: {
+                    amountMinor: number;
+                    currency: string;
+                };
+            }[];
+            categories: {
+                slug: string;
+                name: string;
+            }[];
+            brands: {
+                slug: string;
+                name: string;
+            }[];
+            correctedQuery: string | null;
+        };
+        Me: components["schemas"]["PublicUser"] & {
+            /** @description Every permission the user's roles give, sorted. */
+            permissions: string[];
         };
         PublicUser: {
             /** Format: uuid */

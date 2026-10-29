@@ -1,6 +1,6 @@
 # tracecart-web
 
-The Tracecart website: the public site and shop, customer accounts, the back office (staff and carriers), and the customer's quote and tracking page. Next.js (App Router), Tailwind CSS, Clerk, next-intl (French and English). A product of Roleback Platforms.
+The Tracecart website: the store (catalogue, search, product pages), customer accounts, the back office (staff, catalogue managers and carriers), and the customer's quote and tracking page. Next.js (App Router), Tailwind CSS, Clerk, next-intl (French and English). A product of Roleback Platforms.
 
 It talks to [tracecart-api](https://github.com/tracecartops/tracecart-api) only through the API's contract: a copy of its `openapi.json` in [`openapi/`](./openapi), from which the typed client in `src/lib/api/` is generated.
 
@@ -40,13 +40,19 @@ await apiWithToken(token).PATCH("/me/locale", { body: { locale: "en" } });  // o
 
 When the API changes: `pnpm api:sync`, fix what no longer type-checks, and commit `openapi/openapi.json` with `src/lib/api/schema.d.ts`. CI fails if the types are stale, or if the copy differs from tracecart-api's `main`. Pages not moved to the typed client yet use `src/lib/apiClient.ts`, with hand-written types in `src/lib/types.ts`.
 
+## The store
+
+Server-rendered from the API's public catalogue (`src/lib/store.ts`, cached for a minute): the home page (`/`), all categories (`/c`), category pages (`/c/power-tools/drills-drivers`, filters and facet counts), product pages (`/p/<slug>`), brands (`/brands`, `/b/<slug>`) and search (`/s?q=…`). Every filter, sort and page is a link or a GET form, so it works before JavaScript arrives and can be shared; the search box adds suggestions as one types. These pages carry no Clerk script (route group `(store)`), and give search engines canonical and language links, schema.org `Product` and `BreadcrumbList` data, `sitemap.xml` and `robots.txt`. "How Tracecart works" is `/about`. Ordering from a product page goes through the finder until the cart exists (PLAN phase 5).
+
+The back office's catalogue is under `/catalog` (products, categories and attributes, brands, CSV import and export, search synonyms), shown to holders of `catalog.read`.
+
 ## Access
 
-`src/middleware.ts` sends signed-out visitors of the console to `/login`. The public site, `/account`, `/ship`, the quote page (`/q/…`) and legal pages stay open. Each console section's `layout.tsx` checks the role, **for display only**: the API enforces access on every request.
+`src/middleware.ts` sends signed-out visitors of the console to `/login`. The store, `/about`, `/account`, `/ship`, the quote page (`/q/…`) and legal pages stay open. Each console section's `layout.tsx` checks the role, **for display only**: the API enforces access on every request.
 
 ## Tests
 
-`pnpm test:e2e` (`e2e/run.sh`) builds and starts tracecart-api and this app, seeds fixed test data, and runs Playwright: the customer quote and tracking page in French and English, accept and decline (including an answer given elsewhere), its error states, the public homepage, and signed-out redirects.
+`pnpm test:e2e` (`e2e/run.sh`) builds and starts tracecart-api and this app, seeds fixed test data and the demo store, and runs Playwright: the store (browsing through a category and a filter to a product, suggestions, a misspelling, synonyms, filtering without JavaScript, schema.org data, every product in the sitemap opening), the customer quote and tracking page in French and English, accept and decline (including an answer given elsewhere), its error states, and signed-out redirects.
 
 It needs a checkout of tracecart-api with dependencies installed (`TRACECART_API_DIR`, default `../tracecart-api`), a disposable Postgres and Redis, and Chromium. It **changes data**, so it refuses to run unless the database name contains `test`. It uses ports 3000 and 4000.
 

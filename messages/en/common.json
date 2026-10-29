@@ -24,7 +24,8 @@
     "groups": {
       "operations": "Operations",
       "catalogue": "Catalogue",
-      "network": "Network"
+      "network": "Network",
+      "store": "Store"
     },
     "overview": "Overview",
     "requests": "Requests",
@@ -39,7 +40,12 @@
     "label": "Main navigation",
     "pricing": "Prices and margins",
     "carriers": "Carriers",
-    "routes": "My routes and rates"
+    "routes": "My routes and rates",
+    "catalog": "Products",
+    "categories": "Categories",
+    "brands": "Brands",
+    "catalogImport": "Import and export",
+    "searchTuning": "Search"
   },
   "notifications": {
     "title": "Notifications",

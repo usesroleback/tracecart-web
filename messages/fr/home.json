@@ -6,14 +6,14 @@
   "nav": {
     "label": "Principale",
     "home": "Accueil",
-    "services": "Ce que nous faisons",
-    "process": "Comment ça marche",
+    "catalogue": "Catalogue",
+    "brands": "Marques",
+    "about": "Comment ça marche",
     "ship": "Expédier",
     "account": "Mon compte",
     "cta": "Rechercher un outil",
     "openMenu": "Ouvrir le menu",
-    "closeMenu": "Fermer le menu",
-    "shop": "Boutique"
+    "closeMenu": "Fermer le menu"
   },
   "hero": {
     "eyebrow": "Trouvez les outils qu'il vous faut. Faites-les livrer.",

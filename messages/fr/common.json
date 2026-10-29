@@ -24,7 +24,8 @@
     "groups": {
       "operations": "Opérations",
       "catalogue": "Catalogue",
-      "network": "Réseau"
+      "network": "Réseau",
+      "store": "Boutique"
     },
     "overview": "Vue d'ensemble",
     "requests": "Demandes",
@@ -39,7 +40,12 @@
     "label": "Navigation principale",
     "pricing": "Prix et marges",
     "carriers": "Transporteurs",
-    "routes": "Mes routes et tarifs"
+    "routes": "Mes routes et tarifs",
+    "catalog": "Produits",
+    "categories": "Catégories",
+    "brands": "Marques",
+    "catalogImport": "Import et export",
+    "searchTuning": "Recherche"
   },
   "notifications": {
     "title": "Notifications",

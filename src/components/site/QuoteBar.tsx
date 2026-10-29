@@ -101,10 +101,11 @@ function readDataUrl(file: File): Promise<string> {
  * console as a sourcing request linked to their account. Where it goes
  * (from / to / when) is settled later, not asked here.
  */
-export function QuoteBar() {
+export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
   const t = useTranslations("site.quoteBar");
   const locale = useLocale();
-  const [what, setWhat] = useState("");
+  // A product page's "Ask for this tool" arrives with the product's name.
+  const [what, setWhat] = useState(initialWhat);
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);

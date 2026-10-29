@@ -28,11 +28,11 @@ function ThemeSwitch({ className = "", withLabel = false }: { className?: string
 }
 
 const LINKS = [
-  { key: "home", href: "#top" },
-  { key: "services", href: "#services" },
-  { key: "process", href: "#process" },
-  { key: "shop", href: "/shop" },
+  { key: "home", href: "/" },
+  { key: "catalogue", href: "/c" },
+  { key: "brands", href: "/brands" },
   { key: "ship", href: "/ship" },
+  { key: "about", href: "/about" },
 ] as const;
 
 function NavLink({
@@ -66,10 +66,15 @@ export function HomeNav() {
   const t = useTranslations("home.nav");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  // Section anchors live on the homepage; from /shop, /ship or /account they go back to it.
-  const onHome = pathname === "/";
+  // The finder (#quote) is on the store's home and on /about; from elsewhere the link goes home.
+  const onHome = pathname === "/" || pathname === "/about";
   const to = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
-  const isActive = (key: string) => (key === "home" ? onHome : key === "ship" || key === "shop" ? pathname.startsWith(`/${key}`) : false);
+  const isActive = (key: (typeof LINKS)[number]["key"]) => {
+    if (key === "home") return pathname === "/";
+    if (key === "catalogue") return pathname === "/c" || pathname.startsWith("/c/") || pathname.startsWith("/p/") || pathname === "/s";
+    if (key === "brands") return pathname === "/brands" || pathname.startsWith("/b/");
+    return pathname.startsWith(`/${key}`);
+  };
 
   // Escape closes the mobile menu.
   useEffect(() => {

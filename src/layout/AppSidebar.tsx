@@ -73,6 +73,22 @@ const ADMIN_NAV: NavGroup[] = [
   },
 ];
 
+// The store's catalogue (docs/PLAN.md phase 4), for whoever may see it
+// (catalog.read): hub admins and staff such as catalogue managers.
+const CATALOG_NAV: NavGroup = {
+  title: "store",
+  items: [
+    { icon: <DsLayersIcon />, name: "catalog", path: "/catalog" },
+    { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories" },
+    { icon: <DsBuildingIcon />, name: "brands", path: "/catalog/brands" },
+    { icon: <DsPackageIcon />, name: "catalogImport", path: "/catalog/import" },
+    { icon: <DsSearchIcon />, name: "searchTuning", path: "/catalog/search" },
+  ],
+};
+
+// Staff who aren't hub admins: their areas arrive as each is rebuilt.
+const STAFF_NAV: NavGroup[] = [{ items: [{ icon: <DsHomeIcon />, name: "overview", path: "/dashboard" }] }];
+
 // Deliveries, groupages and the carrier's own routes and rates. The steps (à coter, à gérer, en route…) are tabs on Livraisons.
 // The count is what's waiting on the carrier: quotes to submit + parcels to handle.
 const CARRIER_NAV: NavGroup[] = [
@@ -100,7 +116,8 @@ const AppSidebar: React.FC = () => {
   const tr = useTranslations("labels.role");
   const [counts, setCounts] = useState<Counts>({});
   const isAdmin = user.role === "SUPER_ADMIN";
-  const groups = isAdmin ? ADMIN_NAV : CARRIER_NAV;
+  const base = isAdmin ? ADMIN_NAV : user.role === "STAFF" ? STAFF_NAV : CARRIER_NAV;
+  const groups = user.permissions?.includes("catalog.read") ? [...base, CATALOG_NAV] : base;
   const showLabel = isExpanded || isHovered || isMobileOpen;
   const name = nameFromEmail(user.email);
 
@@ -109,6 +126,8 @@ const AppSidebar: React.FC = () => {
   const isActive = (item: NavItem) => {
     // An order's own page belongs to the list it was opened from.
     if (pathname.startsWith("/orders/")) return !item.query && item.path === (isAdmin ? "/orders" : "/deliveries");
+    // A product's page belongs to the catalogue list.
+    if (pathname.startsWith("/catalog/products")) return item.path === "/catalog";
     const onPath = item.path === "/dashboard" ? pathname === "/dashboard" : pathname === item.path;
     if (!onPath) return false;
     // An item with a tab query is current on that tab; a plain item is current

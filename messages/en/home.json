@@ -6,14 +6,14 @@
   "nav": {
     "label": "Main",
     "home": "Home",
-    "services": "What we do",
-    "process": "How it works",
+    "catalogue": "Catalogue",
+    "brands": "Brands",
+    "about": "How it works",
     "ship": "Ship",
     "account": "My account",
     "cta": "Find what you need",
     "openMenu": "Open the menu",
-    "closeMenu": "Close the menu",
-    "shop": "Shop"
+    "closeMenu": "Close the menu"
   },
   "hero": {
     "eyebrow": "Find the tools you need. Get them delivered.",

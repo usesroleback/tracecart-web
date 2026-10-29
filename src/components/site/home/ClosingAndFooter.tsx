@@ -18,16 +18,16 @@ function FooterLink({ href, children, active = false }: { href: string; children
 
 /**
  * The footer's dark panel. On the homepage the closing call to action opens
- * it; other pages (`closing={false}`) show the footer alone, with links that
- * lead back to the homepage's sections.
+ * it (on /about, the page that explains Tracecart); other pages
+ * (`closing={false}`) show the footer alone.
  */
 export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
   const t = useTranslations("home");
   const f = useTranslations("home.footer");
 
   const links = [
-    { label: f("home"), href: closing ? "#top" : "/", active: closing },
-    { label: f("howItWorks"), href: closing ? "#process" : "/#process" },
+    { label: f("home"), href: "/" },
+    { label: f("howItWorks"), href: closing ? "#process" : "/about#process", active: closing },
     { label: f("ship"), href: "/ship" },
   ];
 

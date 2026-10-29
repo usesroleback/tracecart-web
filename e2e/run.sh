@@ -26,7 +26,8 @@ export CLERK_SECRET_KEY="${CLERK_SECRET_KEY:-sk_test_e2e_placeholder}"
 export CORS_ORIGIN="${CORS_ORIGIN:-http://localhost:3000}"
 export NODE_ENV=production
 
-(cd "$API_DIR" && pnpm migrate:deploy && pnpm seed:e2e && pnpm build)
+# The demo store (202 tools) for the store tests; its script refuses NODE_ENV=production.
+(cd "$API_DIR" && pnpm migrate:deploy && pnpm seed:e2e && NODE_ENV=test pnpm seed:demo && pnpm build)
 (cd "$WEB_DIR" && pnpm build)
 
 (cd "$API_DIR" && exec node dist/index.js > "$WEB_DIR/e2e-api.log" 2>&1) &

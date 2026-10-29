@@ -551,6 +551,8 @@ export interface SessionUser {
   locale: Locale;
   hubId: string | null;
   hub: { id: string; name: string; city: string; country: string; currency: string } | null;
+  /** What their roles allow (GET /auth/me), to show only what they can use. The API checks every call. */
+  permissions?: string[];
 }
 
 export type ReservationStatus = "RESERVED" | "CONVERTED";

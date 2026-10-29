@@ -17,13 +17,17 @@ function stripLocale(pathname: string): string {
 }
 
 /**
- * Pages that never involve sign-in: the marketing site, the customer quote
- * page (/q/*) and the legal pages. They skip Clerk entirely — with a
- * development Clerk key, Clerk otherwise redirects a browser's first visit
- * through Clerk's servers, even on pages that don't use it.
+ * Pages that never involve sign-in: the store (home, categories, products,
+ * brands, search), /about, the customer quote page (/q/*) and the legal
+ * pages. They skip Clerk entirely — with a development Clerk key, Clerk
+ * otherwise redirects a browser's first visit through Clerk's servers, even
+ * on pages that don't use it.
  */
+const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/s"]);
+const ANONYMOUS_PREFIXES = ["/q/", "/legal/", "/c/", "/p/", "/b/"];
+
 function isAnonymousPage(bare: string): boolean {
-  return bare === "/" || bare.startsWith("/q/") || bare.startsWith("/legal/");
+  return ANONYMOUS_EXACT.has(bare) || ANONYMOUS_PREFIXES.some((p) => bare.startsWith(p));
 }
 
 const withClerk = clerkMiddleware(async (auth, req) => {
@@ -53,6 +57,8 @@ const withClerk = clerkMiddleware(async (auth, req) => {
 
 export default function middleware(req: NextRequest, event: NextFetchEvent) {
   const { pathname } = req.nextUrl;
+  // For crawlers, at the root, in no language.
+  if (pathname === "/sitemap.xml" || pathname === "/robots.txt") return NextResponse.next();
   if (!pathname.startsWith("/api") && isAnonymousPage(stripLocale(pathname))) {
     return intlMiddleware(req);
   }
