@@ -9,6 +9,8 @@ export const ROLE_HOME: Record<Role, string> = {
   SUPER_ADMIN: "/orders",
   LOGISTICS_PARTNER: "/deliveries",
   CUSTOMER: "/account",
+  // Staff who are not hub admins; their areas of the console arrive as they are rebuilt.
+  STAFF: "/dashboard",
 };
 
 /** Clerk session token for calling the API as the signed-in user; null when signed out. */

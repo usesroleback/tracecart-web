@@ -8626,7 +8626,7 @@ export interface components {
             email: string;
             phone: string | null;
             /** @enum {string} */
-            role: "SUPER_ADMIN" | "LOGISTICS_PARTNER" | "CUSTOMER";
+            role: "SUPER_ADMIN" | "LOGISTICS_PARTNER" | "CUSTOMER" | "STAFF";
             /** @enum {string} */
             locale: "fr" | "en";
             /** Format: uuid */

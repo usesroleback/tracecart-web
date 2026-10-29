@@ -2,7 +2,8 @@
   "role": {
     "SUPER_ADMIN": "Administrator",
     "LOGISTICS_PARTNER": "Carrier",
-    "CUSTOMER": "Customer"
+    "CUSTOMER": "Customer",
+    "STAFF": "Staff"
   },
   "status": {
     "INTENT_SUBMITTED": "Intent received",

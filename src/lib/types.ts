@@ -1,4 +1,4 @@
-export type Role = "SUPER_ADMIN" | "LOGISTICS_PARTNER" | "CUSTOMER";
+export type Role = "SUPER_ADMIN" | "LOGISTICS_PARTNER" | "CUSTOMER" | "STAFF";
 
 export type Locale = "fr" | "en";
 
