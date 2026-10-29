@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "TraceCart — Trouvé. Livré.",
+    "title": "Tracecart — Trouvé. Livré.",
     "description": "Dites-nous l'outil ou l'équipement qu'il vous faut, même sans connaître son nom : nous le trouvons, l'achetons et le livrons. Vous avez déjà la marchandise ? Nous la transportons. Un seul prix livré."
   },
   "nav": {
@@ -125,7 +125,7 @@
       }
     },
     "no": "Pas chez eux",
-    "yes": "Avec TraceCart"
+    "yes": "Avec Tracecart"
   },
   "closing": {
     "title": "Dites-nous ce qu'il vous faut.",
@@ -136,7 +136,7 @@
     "home": "Accueil",
     "howItWorks": "Comment ça marche",
     "ship": "Expédier",
-    "copyright": "© {year} TraceCart",
+    "copyright": "© {year} Tracecart",
     "byline": "Une société Roleback",
     "disclaimer": "La disponibilité et le prix des produits sont confirmés avec le fournisseur avant tout paiement. Les délais sont des estimations jusqu'au devis, et un devis vaut jusqu'à la date qu'il indique. Les droits et taxes de douane sont fixés par les autorités et refacturés à l'identique. Les marques appartiennent à leurs propriétaires."
   }

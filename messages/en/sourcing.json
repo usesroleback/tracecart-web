@@ -166,7 +166,7 @@
       "priceUnknown": "Price to check",
       "found": "Found {when}",
       "provider": {
-        "catalog": "TraceCart catalogue",
+        "catalog": "Tracecart catalogue",
         "roleback": "Roleback catalogue",
         "google_shopping": "Google Shopping",
         "web_search": "Web",
@@ -188,7 +188,7 @@
       "priced": "Price shown",
       "image": "Photo",
       "staffOffer": "Offer entered by staff",
-      "catalog": "TraceCart catalogue",
+      "catalog": "Tracecart catalogue",
       "roleback": "Roleback catalogue",
       "customerLink": "Given by the customer",
       "outOfStock": "Out of stock",

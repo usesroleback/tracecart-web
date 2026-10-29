@@ -13,7 +13,7 @@ const DELTA_TEXT: Record<Kpi["status"], string> = {
 
 // Hub-scoped KPIs (orders.stats.service.ts §getAdminHubId) are always in the
 // current admin's hub currency — never hardcode a currency symbol, since
-// TraceCart hubs span many currencies, not just FCFA (docs/brand/tracecart-brand-guidelines.md:
+// Tracecart hubs span many currencies, not just FCFA (docs/brand/tracecart-brand-guidelines.md:
 // "never as an African logistics startup").
 function formatValue(f: Format, value: number, format: Kpi["format"], currency: string): string {
   if (format === "currency") return f.money(value, currency);

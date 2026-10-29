@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 import type { ClerkProvider } from "@clerk/nextjs";
 
 /**
- * Maps Clerk's components onto TraceCart's design tokens (globals.css), so
+ * Maps Clerk's components onto Tracecart's design tokens (globals.css), so
  * sign-in doesn't look like a different product, and follows dark mode
  * because the tokens do. Typed from ClerkProvider so a renamed variable
  * (Clerk 7 renamed colorText → colorForeground, etc.) fails type-checking.

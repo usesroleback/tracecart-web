@@ -6,7 +6,7 @@
   "intro": "Facultatif : pour ajouter ou remplacer une ligne précise des devis. Chaque ligne d'un devis vient d'une règle. Pour un même poste, une seule règle s'applique : la plus prioritaire, puis la plus précise, puis la plus récente. Modifier une règle crée une nouvelle version ; les devis déjà envoyés gardent la leur.",
   "new": "Nouvelle règle",
   "showHistory": "Voir toutes les versions",
-  "empty": "Aucune règle. Sans règle, un devis reprend le produit, la cotation du transporteur et les frais TraceCart.",
+  "empty": "Aucune règle. Sans règle, un devis reprend le produit, la cotation du transporteur et les frais Tracecart.",
   "caption": "Règles de prix",
   "col": {
     "rule": "Règle",
@@ -61,7 +61,7 @@
     "failed": "Impossible d'enregistrer",
     "margins": {
       "title": "Marges — {hub}",
-      "intro": "Ce que TraceCart gagne sur les commandes de ce hub, en {currency}. Tout reste compris dans le prix livré unique du client. Des frais fixés à la main sur une commande remplacent les tranches.",
+      "intro": "Ce que Tracecart gagne sur les commandes de ce hub, en {currency}. Tout reste compris dans le prix livré unique du client. Des frais fixés à la main sur une commande remplacent les tranches.",
       "tiers": "Frais sur le produit, selon sa valeur",
       "tiersHint": "Chaque tranche couvre les produits jusqu'à sa valeur en {currency} ; laissez la dernière sans limite.",
       "upTo": "Jusqu'à ({currency})",
@@ -77,8 +77,8 @@
       "save": "Enregistrer les marges",
       "onProduct": "Sur le produit",
       "onTransport": "Sur le transport",
-      "noTiers": "Aucune tranche : TraceCart prend {percent} % de la valeur de chaque produit.",
-      "minHint": "TraceCart ne prend jamais moins sur une commande. Vide ou 0 : pas de minimum.",
+      "noTiers": "Aucune tranche : Tracecart prend {percent} % de la valeur de chaque produit.",
+      "minHint": "Tracecart ne prend jamais moins sur une commande. Vide ou 0 : pas de minimum.",
       "errors": {
         "percentMissing": "Indiquez le pourcentage de chaque tranche.",
         "oneOpen": "Une seule tranche peut rester sans limite : donnez une valeur maximale aux autres.",
@@ -97,7 +97,7 @@
           "buffer": "Réserve"
         },
         "total": "Prix payé par le client, hors douane",
-        "note": "TraceCart gagne {earned}, plus la réserve ({buffer}) si elle n'est pas utilisée.",
+        "note": "Tracecart gagne {earned}, plus la réserve ({buffer}) si elle n'est pas utilisée.",
         "weight": "Poids emballé"
       },
       "inbound": {
@@ -197,7 +197,7 @@
       },
       "margins": {
         "title": "Marges",
-        "hint": "Ce que TraceCart gagne sur chaque commande. Sans réglage, seul le pourcentage par défaut s'applique."
+        "hint": "Ce que Tracecart gagne sur chaque commande. Sans réglage, seul le pourcentage par défaut s'applique."
       },
       "inbound": {
         "title": "Acheminement jusqu'au hub",

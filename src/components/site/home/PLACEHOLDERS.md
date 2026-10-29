@@ -1,6 +1,6 @@
 # Homepage placeholders
 
-The homepage (`/fr`, `/en`) shows only what TraceCart does today. Figures, customer logos, testimonials, case studies, team and founder portraits, field notes, corridors, the newsletter, social links, badges and contact details were removed because none of them were real or verified. Add a section back only with real material (and, for customers, their permission). Never with stand-ins.
+The homepage (`/fr`, `/en`) shows only what Tracecart does today. Figures, customer logos, testimonials, case studies, team and founder portraits, field notes, corridors, the newsletter, social links, badges and contact details were removed because none of them were real or verified. Add a section back only with real material (and, for customers, their permission). Never with stand-ins.
 
 In the page, every empty image slot carries `data-image-slot="<name>"`, so `document.querySelectorAll("[data-image-slot]")` lists what's left.
 

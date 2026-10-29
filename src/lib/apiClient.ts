@@ -1,6 +1,6 @@
 // The page's language (<html lang>), so the API answers errors in it.
 const localeHeader = (): Record<string, string> =>
-  typeof document === "undefined" ? {} : { "X-TraceCart-Locale": document.documentElement.lang };
+  typeof document === "undefined" ? {} : { "X-Tracecart-Locale": document.documentElement.lang };
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`/api/tracecart${path}`, {

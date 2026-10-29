@@ -15,7 +15,7 @@ const STEP_BUY_ON_BEHALF: Partial<Record<OrderStatus, Step>> = {
   RECEIVED_HUB: { toStatus: "CONFIRMED_HUB", label: "confirm" },
 };
 
-// No purchase for TraceCart to make — the customer already owns the goods,
+// No purchase for Tracecart to make — the customer already owns the goods,
 // so PAID (for the shipping) goes straight to RECEIVED_HUB.
 const STEP_CUSTOMER_OWNED: Partial<Record<OrderStatus, Step>> = {
   PAID: { toStatus: "RECEIVED_HUB", label: "markReceived" },

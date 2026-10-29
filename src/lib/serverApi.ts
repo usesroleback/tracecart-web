@@ -7,7 +7,7 @@ export async function serverGet<T>(path: string): Promise<T | null> {
   if (!token) return null;
 
   const res = await fetch(`${SERVER_API_URL}${path}`, {
-    headers: { Authorization: `Bearer ${token}`, "X-TraceCart-Locale": await getLocale() },
+    headers: { Authorization: `Bearer ${token}`, "X-Tracecart-Locale": await getLocale() },
     cache: "no-store",
   });
 

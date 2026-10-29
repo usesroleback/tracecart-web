@@ -6,7 +6,7 @@ export const COUNTRY_COOKIE = "tc_country";
 const LOCALE_COOKIE = "NEXT_LOCALE";
 const YEAR = 60 * 60 * 24 * 365;
 
-// Where TraceCart speaks French; English everywhere else. Mirrors the API's
+// Where Tracecart speaks French; English everywhere else. Mirrors the API's
 // lib/countries.ts (the messages it sends follow the same rule).
 const FRENCH = new Set([
   "BJ", "BF", "BI", "CM", "CF", "TD", "KM", "CG", "CD", "CI", "DJ", "GA", "GN", "MG", "ML", "MR", "MA", "NE", "RW", "SN", "SC", "TG", "TN", "DZ",

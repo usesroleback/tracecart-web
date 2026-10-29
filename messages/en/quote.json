@@ -38,7 +38,7 @@
     "delivered": "Delivered to {city}.",
     "deliveredOn": "On {when}.",
     "unavailable": "This item is no longer available from the seller.",
-    "contact": "A TraceCart operator will contact you about what happens next.",
+    "contact": "A Tracecart operator will contact you about what happens next.",
     "milestones": "Milestones",
     "eta": "Estimated arrival",
     "etaRange": "between {from} and {to}",

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "TraceCart — Find it. Get it there.",
+    "title": "Tracecart — Find it. Get it there.",
     "description": "Tell us the tool or equipment you need, even if you don't know its name: we find it, buy it and deliver it. Already have the goods? We move them. One delivered price."
   },
   "nav": {
@@ -125,7 +125,7 @@
       }
     },
     "no": "Not with them",
-    "yes": "With TraceCart"
+    "yes": "With Tracecart"
   },
   "closing": {
     "title": "Tell us what you need.",
@@ -136,7 +136,7 @@
     "home": "Home",
     "howItWorks": "How it works",
     "ship": "Ship",
-    "copyright": "© {year} TraceCart",
+    "copyright": "© {year} Tracecart",
     "byline": "A Roleback company",
     "disclaimer": "Product availability and prices are confirmed with the supplier before you pay. Transit times are estimates until quoted, and a quote holds until the date shown on it. Customs duties and taxes are set by the authorities and passed on at cost. Trademarks belong to their owners."
   }

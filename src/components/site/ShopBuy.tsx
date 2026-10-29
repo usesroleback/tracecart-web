@@ -38,7 +38,7 @@ export function PriceBlock({ price, compact = false }: { price: ShopPrice | null
 /**
  * Quantity and delivery address, then the order (POST /customer/shop/buy):
  * an offer a search found, priced again for the quantity. Who sells it and
- * how it travels stay behind the order: TraceCart checks with the store,
+ * how it travels stay behind the order: Tracecart checks with the store,
  * sends the quote, and buys once it's paid.
  */
 export function BuyPanel({ title, offer, country, initialPrice, onClose }: { title: string; offer: string; country: string; initialPrice: ShopPrice; onClose: () => void }) {

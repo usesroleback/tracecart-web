@@ -13,7 +13,7 @@ const PREVIEW_STATUSES = new Set(["QUOTING", "QUOTED"]);
 
 /**
  * The customer quote, as the administrateur sees it: before sending, what it
- * would be if sent now (every line, TraceCart's or passed on, confirmed or
+ * would be if sent now (every line, Tracecart's or passed on, confirmed or
  * estimated, and the rule version behind it); after, each version as it was sent.
  */
 export function QuoteBreakdown({ order }: { order: Order }) {

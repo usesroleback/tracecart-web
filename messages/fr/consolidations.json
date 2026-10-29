@@ -1,7 +1,7 @@
 {
   "title": "Groupages",
-  "subtitle": "Des commandes payées sur un même service de transport, envoyées ensemble. Chaque client paie le transport comme si sa commande voyageait seule ; TraceCart paie le transporteur une fois, pour le chargement entier.",
-  "carrierSubtitle": "Les commandes que TraceCart vous confie ensemble : un enlèvement, un chargement, un suivi. La livraison reste commande par commande.",
+  "subtitle": "Des commandes payées sur un même service de transport, envoyées ensemble. Chaque client paie le transport comme si sa commande voyageait seule ; Tracecart paie le transporteur une fois, pour le chargement entier.",
+  "carrierSubtitle": "Les commandes que Tracecart vous confie ensemble : un enlèvement, un chargement, un suivi. La livraison reste commande par commande.",
   "failed": "L'action n'a pas abouti. Réessayez.",
   "loading": "Chargement…",
   "status": {
@@ -12,7 +12,7 @@
   "carrier": "Transporteur : {name}",
   "dispatchedAt": "Enlevé le {date}",
   "price": "Votre prix pour le chargement",
-  "noPrice": "À convenir avec TraceCart",
+  "noPrice": "À convenir avec Tracecart",
   "suggestions": {
     "title": "À grouper",
     "intro": "Par service, les commandes payées et pas encore enlevées qui ne sont dans aucun groupage, et ce que les envoyer ensemble économiserait. Les plus rentables d'abord.",

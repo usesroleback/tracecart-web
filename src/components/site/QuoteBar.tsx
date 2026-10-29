@@ -47,7 +47,7 @@ function CameraIcon() {
 
 /** A multipart call to the customer API, through the web app's proxy (it attaches the Clerk session). */
 async function postForm<T>(path: string, form: FormData, locale: string): Promise<T> {
-  const res = await fetch(`/api/tracecart${path}`, { method: "POST", body: form, headers: { "X-TraceCart-Locale": locale } });
+  const res = await fetch(`/api/tracecart${path}`, { method: "POST", body: form, headers: { "X-Tracecart-Locale": locale } });
   const body = await res.json().catch(() => null);
   if (!res.ok) throw new Error(body?.error?.message ?? `Request failed (${res.status})`);
   return body as T;
@@ -95,7 +95,7 @@ function readDataUrl(file: File): Promise<string> {
 /**
  * The homepage's one question: what do you need? The customer describes the
  * product or tool in their own words and/or adds a photo. Seeing the results
- * needs a (free) customer account, so TraceCart knows who asked and can reply:
+ * needs a (free) customer account, so Tracecart knows who asked and can reply:
  * signed out, Find it opens Clerk's sign-up over the page and the search runs
  * once they're in (docs/product-discovery.md). The request lands in the
  * console as a sourcing request linked to their account. Where it goes

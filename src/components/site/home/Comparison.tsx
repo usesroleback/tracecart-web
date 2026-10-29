@@ -40,7 +40,7 @@ export function Comparison({ cta }: { cta: string }) {
             <p className="rounded-[var(--hp-radius-control)] bg-[var(--hp-dark-raised)] px-4 py-3 text-center text-sm font-medium text-[var(--hp-on-dark-muted)]">{t("them")}</p>
             <p className="grid place-items-center rounded-[var(--hp-radius-control)] bg-[var(--hp-primary)] px-4 py-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/logo/tracecart-lockup.svg" alt="TraceCart" width={116} height={16} className="h-4 w-auto" />
+              <img src="/images/logo/tracecart-lockup.svg" alt="Tracecart" width={116} height={16} className="h-4 w-auto" />
             </p>
             <span aria-hidden className="absolute left-1/2 top-1/2 grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-[var(--hp-radius-chip)] border-4 border-[var(--hp-dark)] bg-white text-xs font-bold uppercase text-[#0d0f0e]">
               {t("vs")}

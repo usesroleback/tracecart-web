@@ -7,7 +7,7 @@ import { Process } from "./Process";
 import { Comparison } from "./Comparison";
 
 /**
- * The homepage, one component per section. It shows only what TraceCart
+ * The homepage, one component per section. It shows only what Tracecart
  * does today: no figures, customers or stories until there are real ones
  * (see PLACEHOLDERS.md).
  */

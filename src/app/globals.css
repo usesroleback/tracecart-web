@@ -27,7 +27,7 @@
   --color-black: #0e0e0c;
   --color-signal: #ffd60a;
 
-  /* TraceCart design-system tokens (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
+  /* Tracecart design-system tokens (claude.ai/artifact/7FBB9gfizRehvbLFSqr2KF,
      project/tokens.json "tracecart-light"/"tracecart-dark"). Components use
      these semantic tokens: bg-surface, text-ink, border-line and so on.
      The old template color scales have been removed. */
@@ -55,7 +55,7 @@
   --color-focus-ring: #2440e0;
   --color-scrim: #0d0f0e99;
 
-  /* TraceCart brand constants, sampled directly from docs/brand/references/ —
+  /* Tracecart brand constants, sampled directly from docs/brand/references/ —
      ink (logo/text) and concrete (light-theme page ground). Kept as aliases
      of the tokens above so existing bg-concrete/text-ink usage keeps working. */
   --color-concrete: var(--color-surface);
@@ -122,7 +122,7 @@
   --color-info-900: #0d1854;
   --color-info-950: #0a1340;
 
-  /* TraceCart corridor-phase palette (formerly "Kaya corridor palette":
+  /* Tracecart corridor-phase palette (formerly "Kaya corridor palette":
      abidjan/handoff/niamey, named after the original two-city prototype).
      Same 3-phase structure as before — pre-handoff / at-handoff /
      post-handoff — just renamed to scheme-neutral identifiers and recolored.
@@ -224,7 +224,7 @@
   .rb-link { color: var(--color-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: var(--color-line-strong); transition: text-decoration-color var(--duration-quick) var(--ease-out); }
   .rb-link:hover { text-decoration-color: var(--color-accent); text-decoration-thickness: 2px; }
 
-  /* Route timeline (bundle.css "route timeline (TraceCart)", components/tracecart/RouteTimeline.tsx):
+  /* Route timeline (bundle.css "route timeline (Tracecart)", components/tracecart/RouteTimeline.tsx):
      a 4px line per leg with a node at its start; done legs are ink, the
      current leg fills to --_p, the destination node is square. Vertical
      below 700px or with .rb-route--vertical. */

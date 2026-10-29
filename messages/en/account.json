@@ -1,16 +1,16 @@
 {
   "meta": {
-    "title": "My account — TraceCart"
+    "title": "My account — Tracecart"
   },
   "title": "My account",
   "signedOut": {
-    "title": "Your TraceCart account",
+    "title": "Your Tracecart account",
     "body": "Create an account to see the products we find for you, send your requests and follow our replies. It's free.",
     "signUp": "Create an account",
     "signIn": "I already have an account"
   },
   "staff": {
-    "title": "This is a TraceCart staff account.",
+    "title": "This is a Tracecart staff account.",
     "body": "Staff accounts use the console.",
     "cta": "Open the console"
   },

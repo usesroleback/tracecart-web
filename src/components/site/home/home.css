@@ -1,8 +1,8 @@
 /*
   Homepage design tokens and motion. Every colour and font the new homepage
-  uses is defined here, mapped onto the TraceCart theme where one exists.
+  uses is defined here, mapped onto the Tracecart theme where one exists.
 
-  Reference role (template)     TraceCart token
+  Reference role (template)     Tracecart token
   primary (lime)                --hp-primary       Trace Green, a fill with ink on it
   primary as text on light      --hp-primary-ink   green ink
   secondary (soft pink)         --hp-secondary     soft blue, with --hp-secondary-ink for marks

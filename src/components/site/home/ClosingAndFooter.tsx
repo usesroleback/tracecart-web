@@ -61,7 +61,7 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
 
         <Reveal className="mt-16">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo/tracecart-lockup-white.svg" alt="TraceCart" width={1200} height={166} className="h-auto w-full opacity-95" />
+          <img src="/images/logo/tracecart-lockup-white.svg" alt="Tracecart" width={1200} height={166} className="h-auto w-full opacity-95" />
         </Reveal>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-[var(--hp-on-dark-muted)] sm:flex-row sm:justify-between">

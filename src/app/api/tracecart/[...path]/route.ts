@@ -22,13 +22,13 @@ async function forward(req: NextRequest, pathParts: string[]) {
   const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
   if (incomingContentType) headers["Content-Type"] = incomingContentType;
   const locale = req.headers.get(LOCALE_HEADER);
-  if (locale) headers["X-TraceCart-Locale"] = locale;
+  if (locale) headers["X-Tracecart-Locale"] = locale;
   // Who's asking, for their country (GET /geo/country): the browser's IP as
   // this server received it, and the host's country header when it sets one.
   const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip");
-  if (clientIp) headers["X-TraceCart-Client-IP"] = clientIp;
+  if (clientIp) headers["X-Tracecart-Client-IP"] = clientIp;
   const hostCountry = COUNTRY_HEADERS.map((h) => req.headers.get(h)).find((v) => v && /^[A-Za-z]{2}$/.test(v));
-  if (hostCountry) headers["X-TraceCart-Client-Country"] = hostCountry;
+  if (hostCountry) headers["X-Tracecart-Client-Country"] = hostCountry;
 
   const init: RequestInit = { method: req.method, headers };
 

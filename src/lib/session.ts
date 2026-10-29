@@ -20,12 +20,12 @@ export async function getServerToken(): Promise<string | null> {
 export type SessionState =
   | { status: "signed-out" }
   | { status: "ok"; user: SessionUser }
-  // Signed in with Clerk, but the API has no TraceCart account for them.
+  // Signed in with Clerk, but the API has no Tracecart account for them.
   | { status: "no-account" }
   // Signed in, but the API couldn't confirm who they are (down, misconfigured).
   | { status: "unavailable" };
 
-/** The signed-in TraceCart user. Cached per request, so layouts and pages can share it. */
+/** The signed-in Tracecart user. Cached per request, so layouts and pages can share it. */
 export const getSessionState = cache(async (): Promise<SessionState> => {
   const token = await getServerToken();
   if (!token) return { status: "signed-out" };

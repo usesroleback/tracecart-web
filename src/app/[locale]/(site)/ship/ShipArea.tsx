@@ -119,7 +119,7 @@ function ShipForm({ profile }: { profile: CustomerProfile }) {
       form.append("quantity", quantity);
       form.append("shipment", JSON.stringify(shipment));
       if (photo) form.append("photo", photo);
-      const res = await fetch("/api/tracecart/customer/shipments", { method: "POST", body: form, headers: { "X-TraceCart-Locale": locale } });
+      const res = await fetch("/api/tracecart/customer/shipments", { method: "POST", body: form, headers: { "X-Tracecart-Locale": locale } });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
         throw new Error(body?.error?.message ?? t("failed"));

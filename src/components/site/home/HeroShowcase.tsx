@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 
-// What people come to TraceCart for, one card at a time over the hero photo.
+// What people come to Tracecart for, one card at a time over the hero photo.
 const ITEMS = ["tool", "equipment", "part", "move"] as const;
 const SLIDE_MS = 5000;
 

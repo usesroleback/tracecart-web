@@ -90,7 +90,7 @@ export function HomeNav() {
   return (
     <header className="sticky top-0 z-50 px-[var(--hp-gutter)] pt-3">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-4 rounded-[var(--hp-radius-control)] bg-[var(--hp-light)]/85 pl-5 pr-2 backdrop-blur-md">
-        <Link href="/" aria-label="TraceCart" className="flex items-center">
+        <Link href="/" aria-label="Tracecart" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/logo/tracecart-lockup.svg" alt="" width={152} height={21} className="block h-[21px] w-auto dark:hidden" />
           {/* eslint-disable-next-line @next/next/no-img-element */}

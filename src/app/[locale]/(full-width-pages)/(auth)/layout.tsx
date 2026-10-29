@@ -29,7 +29,7 @@ export default function AuthLayout({
                     width={232}
                     height={32}
                     src="/images/logo/tracecart-lockup-white.svg"
-                    alt="TraceCart"
+                    alt="Tracecart"
                   />
                 </Link>
                 <p className="text-center text-white/60">

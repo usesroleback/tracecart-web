@@ -43,7 +43,7 @@ export default function NotFound() {
       </div>
       {/* <!-- Footer --> */}
       <p className="absolute text-sm text-center text-ink-muted -translate-x-1/2 bottom-6 left-1/2">
-        &copy; {new Date().getFullYear()} - TraceCart
+        &copy; {new Date().getFullYear()} - Tracecart
       </p>
     </div>
   );

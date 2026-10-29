@@ -68,7 +68,7 @@
   },
   "customsResponsibility": {
     "UNKNOWN": "Not assessed yet",
-    "TRACECART_COORDINATES": "TraceCart coordinates",
+    "TRACECART_COORDINATES": "Tracecart coordinates",
     "CUSTOMER_HANDLES": "The customer handles it",
     "ALREADY_CLEARED": "Already cleared"
   },
@@ -90,7 +90,7 @@
     "PRODUCT": "Product",
     "INBOUND_TRANSPORT": "Shipping to the hub",
     "TRANSPORT": "Transport (carrier)",
-    "PLATFORM_FEE": "TraceCart fee (purchase)",
+    "PLATFORM_FEE": "Tracecart fee (purchase)",
     "CUSTOMS_DUTIES": "Customs duties and taxes",
     "CUSTOMS_BROKER": "Customs broker charges",
     "SERVICE": "Delivered price",
@@ -102,7 +102,7 @@
     "SPECIAL_HANDLING": "Special handling",
     "LOGISTICS_COORDINATION_FEE": "Logistics coordination fee",
     "CUSTOMS_COORDINATION_FEE": "Customs coordination fee",
-    "TRANSPORT_MARGIN": "TraceCart margin (transport)",
+    "TRANSPORT_MARGIN": "Tracecart margin (transport)",
     "PRICE_BUFFER": "Price buffer"
   },
   "priceMethod": {
@@ -141,7 +141,7 @@
     "missingWeight": "{component}: needs the weight.",
     "cargoUnmeasured": "Packages and weight not measured yet.",
     "deadlineNotMet": "The chosen route can't deliver by the date wanted.",
-    "converted": "Amounts in {currency} converted at TraceCart's exchange rate.",
+    "converted": "Amounts in {currency} converted at Tracecart's exchange rate.",
     "transportCurrency": "The carrier's quote in {currency} can't be converted: add an exchange rate. Transport left out."
   },
   "milestone": {

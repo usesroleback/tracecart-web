@@ -30,7 +30,7 @@ export default async function SignInPage() {
           <SignIn
             routing="hash"
             forceRedirectUrl={`/${locale}/dashboard`}
-            // Accounts are created by TraceCart admins, not by signing up.
+            // Accounts are created by Tracecart admins, not by signing up.
             appearance={{ elements: { footerAction: "hidden" } }}
           />
         ) : (

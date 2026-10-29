@@ -18,7 +18,7 @@ const DEFAULT_HEIGHT: Record<LogoVariant, number> = {
 };
 
 /**
- * TraceCart logo (design system Logos: lockup = default, symbol = the Trace
+ * Tracecart logo (design system Logos: lockup = default, symbol = the Trace
  * for ≤32px and collapsed nav, wordmark when the symbol is already nearby,
  * endorsed = with "a roleback company" for footers and legal). Renders both
  * the ink and white SVG, toggling visibility by theme (the files hardcode
@@ -43,7 +43,7 @@ export function Logo({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={`/images/logo/tracecart-${variant}.svg`}
-        alt="TraceCart"
+        alt="Tracecart"
         width={w}
         height={h}
         className="block dark:hidden"
@@ -51,7 +51,7 @@ export function Logo({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={`/images/logo/tracecart-${variant}-white.svg`}
-        alt="TraceCart"
+        alt="Tracecart"
         width={w}
         height={h}
         className="hidden dark:block"

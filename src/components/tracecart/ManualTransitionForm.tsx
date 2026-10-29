@@ -13,7 +13,7 @@ const inputClasses =
 export function ManualTransitionForm({ order, onChanged }: { order: Order; onChanged: () => void }) {
   const t = useTranslations("orders");
   const ts = useTranslations("labels.status");
-  // Nothing for TraceCart to purchase on a CUSTOMER_OWNED order.
+  // Nothing for Tracecart to purchase on a CUSTOMER_OWNED order.
   const targets =
     order.intakeType === "CUSTOMER_OWNED" ? ADMIN_MANUAL_TARGETS.filter((s) => s !== "PURCHASED") : ADMIN_MANUAL_TARGETS;
   const [open, setOpen] = useState(false);

@@ -1,7 +1,7 @@
 {
   "title": "Consolidations",
-  "subtitle": "Paid orders on the same carrier service, sent together. Each customer pays transport as if their order went alone; TraceCart pays the carrier once, for the whole load.",
-  "carrierSubtitle": "Orders TraceCart hands you together: one pickup, one load, one set of updates. Delivery stays order by order.",
+  "subtitle": "Paid orders on the same carrier service, sent together. Each customer pays transport as if their order went alone; Tracecart pays the carrier once, for the whole load.",
+  "carrierSubtitle": "Orders Tracecart hands you together: one pickup, one load, one set of updates. Delivery stays order by order.",
   "failed": "That didn't go through. Try again.",
   "loading": "Loading…",
   "status": {
@@ -12,7 +12,7 @@
   "carrier": "Carrier: {name}",
   "dispatchedAt": "Picked up on {date}",
   "price": "Your price for the load",
-  "noPrice": "To agree with TraceCart",
+  "noPrice": "To agree with Tracecart",
   "suggestions": {
     "title": "To consolidate",
     "intro": "Per service, the paid orders not yet picked up and in no consolidation, and what sending them together would save. Most profitable first.",

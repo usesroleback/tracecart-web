@@ -21,8 +21,8 @@ const inputClasses =
 
 /**
  * Second intake path: the customer already bought the goods themselves —
- * TraceCart only transports. No product URL to resolve, no purchase for
- * TraceCart to make; just what it is, where it's going, and photos of the
+ * Tracecart only transports. No product URL to resolve, no purchase for
+ * Tracecart to make; just what it is, where it's going, and photos of the
  * physical item. Mirrors IntentForm's shape (same Field/inputClasses) minus
  * the product-URL/"Détecter" step.
  */

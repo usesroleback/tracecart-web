@@ -38,7 +38,7 @@
     "delivered": "Livré à {city}.",
     "deliveredOn": "Le {when}.",
     "unavailable": "Cet article n'est plus disponible chez le revendeur.",
-    "contact": "Un opérateur TraceCart vous contactera pour la suite.",
+    "contact": "Un opérateur Tracecart vous contactera pour la suite.",
     "milestones": "Étapes",
     "eta": "Arrivée estimée",
     "etaRange": "entre le {from} et le {to}",

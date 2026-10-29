@@ -6,7 +6,7 @@
   "intro": "Optional: to add or replace a specific line of quotes. Each line of a quote comes from a rule. For one component, only one rule applies: the highest priority, then the most specific, then the latest. Changing a rule creates a new version; quotes already sent keep theirs.",
   "new": "New rule",
   "showHistory": "Show every version",
-  "empty": "No rules yet. Without rules, a quote is the product, the carrier's quote and the TraceCart fee.",
+  "empty": "No rules yet. Without rules, a quote is the product, the carrier's quote and the Tracecart fee.",
   "caption": "Pricing rules",
   "col": {
     "rule": "Rule",
@@ -61,7 +61,7 @@
     "failed": "Couldn't save",
     "margins": {
       "title": "Margins — {hub}",
-      "intro": "How TraceCart earns on orders from this hub, in {currency}. All of it stays inside the customer's single delivered price. A fee set by hand on an order replaces the tiers.",
+      "intro": "How Tracecart earns on orders from this hub, in {currency}. All of it stays inside the customer's single delivered price. A fee set by hand on an order replaces the tiers.",
       "tiers": "Fee on the product, by value",
       "tiersHint": "Each tier covers products up to its value in {currency}; leave the last without a limit.",
       "upTo": "Up to ({currency})",
@@ -77,8 +77,8 @@
       "save": "Save the margins",
       "onProduct": "On the product",
       "onTransport": "On transport",
-      "noTiers": "No tiers: TraceCart takes {percent}% of the value of every product.",
-      "minHint": "TraceCart never takes less on an order. Empty or 0: no minimum.",
+      "noTiers": "No tiers: Tracecart takes {percent}% of the value of every product.",
+      "minHint": "Tracecart never takes less on an order. Empty or 0: no minimum.",
       "errors": {
         "percentMissing": "Give each tier its percentage.",
         "oneOpen": "Only one tier can have no limit: give the others a maximum value.",
@@ -97,7 +97,7 @@
           "buffer": "Buffer"
         },
         "total": "Price the customer pays, before customs",
-        "note": "TraceCart earns {earned}, plus the buffer ({buffer}) when it isn't used.",
+        "note": "Tracecart earns {earned}, plus the buffer ({buffer}) when it isn't used.",
         "weight": "Packed weight"
       },
       "inbound": {
@@ -197,7 +197,7 @@
       },
       "margins": {
         "title": "Margins",
-        "hint": "What TraceCart earns on each order. Unset, only the default percentage applies."
+        "hint": "What Tracecart earns on each order. Unset, only the default percentage applies."
       },
       "inbound": {
         "title": "Shipping to the hub",

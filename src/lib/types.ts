@@ -427,7 +427,7 @@ export interface PricingSettings {
     priceBufferPercent: string;
     inboundFee: string | null;
     inboundPerKg: string | null;
-    /** TraceCart's fee on a product, in %, when the hub has no tiers. */
+    /** Tracecart's fee on a product, in %, when the hub has no tiers. */
     defaultFeePercent: number;
   };
   exchangeRates: { id: string; currency: string; toCurrency: string; rate: string; source: string | null; updatedAt: string }[];
@@ -720,7 +720,7 @@ export interface PublicQuote {
   /** Set once the customer accepts; the status stays QUOTE_SENT until payment. */
   quoteAcceptedAt: string | null;
   intakeType: IntakeType;
-  /** The store the goods come from, when TraceCart buys them. */
+  /** The store the goods come from, when Tracecart buys them. */
   sourceName: string | null;
   hubCity: string;
   destinationCity: string;

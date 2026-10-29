@@ -32,7 +32,7 @@ export class StaffAccountError extends Error {}
 export async function ensureCustomerAccount(): Promise<CustomerProfile> {
   const res = await fetch("/api/tracecart/customer/account", {
     method: "POST",
-    headers: { "X-TraceCart-Locale": document.documentElement.lang },
+    headers: { "X-Tracecart-Locale": document.documentElement.lang },
     cache: "no-store",
   });
   const body = await res.json().catch(() => null);
