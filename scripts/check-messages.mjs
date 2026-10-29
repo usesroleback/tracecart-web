@@ -1,6 +1,6 @@
 // Fails when the locales' message files drift apart: a namespace or key in
 // one locale but not the other, or a message whose {placeholders} differ.
-// Run with `pnpm i18n:check` (from apps/web).
+// Run with `pnpm i18n:check` (from this folder).
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -13,9 +13,59 @@ const flatten = (obj, prefix = "") =>
     v && typeof v === "object" ? flatten(v, `${prefix}${k}.`) : [[`${prefix}${k}`, String(v)]],
   );
 
-// Argument names ({name} or {name, plural…}); plural/select branch text such
-// as "{no results}" isn't an argument and is ignored.
-const placeholders = (msg) => [...new Set([...msg.matchAll(/\{\s*([A-Za-z_]\w*)\s*[,}]/g)].map((m) => m[1]))].sort().join(",");
+// Argument names ({name} or {name, plural…}), from a small ICU parser: the
+// text of plural/select branches ("=0 {Add}", "other {# orders}") is message
+// text, not an argument, however much it looks like one.
+function placeholders(msg) {
+  const names = new Set();
+  let i = 0;
+  const skipSpace = () => {
+    while (i < msg.length && /\s/.test(msg[i])) i++;
+  };
+  const readWord = () => {
+    const start = i;
+    while (i < msg.length && !/[\s,{}]/.test(msg[i])) i++;
+    return msg.slice(start, i);
+  };
+  // Message text up to an unmatched "}" (or the end), collecting arguments.
+  const text = () => {
+    while (i < msg.length && msg[i] !== "}") {
+      if (msg[i] === "{") argument();
+      else i++;
+    }
+  };
+  // At "{": name, then an optional type and style; branches for plural/select.
+  const argument = () => {
+    i++;
+    skipSpace();
+    names.add(readWord());
+    skipSpace();
+    if (msg[i] === ",") {
+      i++;
+      skipSpace();
+      const type = readWord();
+      skipSpace();
+      if (msg[i] === ",") i++;
+      if (["plural", "select", "selectordinal"].includes(type)) {
+        for (;;) {
+          skipSpace();
+          if (i >= msg.length || msg[i] === "}") break;
+          if (msg[i] === "{") {
+            i++;
+            text();
+            i++;
+          } else readWord();
+        }
+      } else {
+        // number/date/time styles: skip to the matching "}".
+        for (let depth = 0; i < msg.length && (msg[i] !== "}" || depth > 0); i++) depth += msg[i] === "{" ? 1 : msg[i] === "}" ? -1 : 0;
+      }
+    }
+    i++;
+  };
+  text();
+  return [...names].sort().join(",");
+}
 
 const load = (locale) =>
   Object.fromEntries(

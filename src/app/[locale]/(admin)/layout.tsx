@@ -5,7 +5,7 @@ import AdminShell from "@/layout/AdminShell";
 import { SessionProvider } from "@/context/SessionContext";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { getServerToken, getSessionState } from "@/lib/session";
-import { SERVER_API_URL } from "@/lib/apiBase";
+import { apiWithToken } from "@/lib/api/client";
 import { Locale } from "@/lib/types";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -33,10 +33,5 @@ async function rememberLocale(locale: Locale) {
   const token = await getServerToken();
   if (!token) return;
   // Best effort: a failure only means notifications stay in the old language.
-  await fetch(`${SERVER_API_URL}/me/locale`, {
-    method: "PATCH",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ locale }),
-    cache: "no-store",
-  }).catch(() => undefined);
+  await apiWithToken(token).PATCH("/me/locale", { body: { locale } }).catch(() => undefined);
 }

@@ -1,0 +1,155 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# The contract and browser-test jobs check out tracecartops/tracecart-api too.
+# While that repository is private, add a repository secret API_REPO_TOKEN: a
+# fine-grained token with read access to its contents.
+env:
+  API_REPO: tracecartops/tracecart-api
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      # Placeholders: the build only needs them to exist.
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Messages match across locales
+        run: pnpm i18n:check
+
+      - name: API client matches openapi/openapi.json
+        run: pnpm api:check
+
+      - name: Build
+        run: pnpm build
+
+      - name: Dependency audit (high and critical)
+        run: pnpm audit --prod --audit-level high
+
+  # openapi/openapi.json must be the API's current contract.
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.API_REPO }}
+          token: ${{ secrets.API_REPO_TOKEN || github.token }}
+          path: .api
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Contract is current
+        run: pnpm api:check
+        env:
+          TRACECART_API_SPEC: .api/openapi.json
+
+  # Browser tests of the pages that need no sign-in (customer quote page,
+  # public site, sign-in redirects), against the built API and web app.
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: tracecart_e2e_test
+        ports: ["5432:5432"]
+        options: --health-cmd "pg_isready -U test" --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://test:test@localhost:5432/tracecart_e2e_test
+      REDIS_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tracecart-web
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.API_REPO }}
+          token: ${{ secrets.API_REPO_TOKEN || github.token }}
+          path: tracecart-api
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: tracecart-web/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+          cache-dependency-path: |
+            tracecart-web/pnpm-lock.yaml
+            tracecart-api/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: |
+          (cd tracecart-api && pnpm install --frozen-lockfile)
+          (cd tracecart-web && pnpm install --frozen-lockfile)
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+        working-directory: tracecart-web
+
+      - name: Browser tests
+        run: sh tracecart-web/e2e/run.sh
+
+      - name: Upload test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            tracecart-web/playwright-report
+            tracecart-web/test-results
+            tracecart-web/e2e-api.log
+            tracecart-web/e2e-web.log
+          retention-days: 7
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint shell scripts
+        run: shellcheck e2e/run.sh
+
+      - name: Build web image
+        # Placeholder values: this only checks the image builds.
+        run: >-
+          docker build
+          --build-arg NEXT_PUBLIC_API_URL=https://api.example.com
+          --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_Y2xlcmsuZXhhbXBsZS5jb20k
+          -t tracecart-web .

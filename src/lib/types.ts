@@ -446,7 +446,7 @@ export interface PricingSettings {
   categoryDefaults: { id: string; category: string; weightKg: string; lengthCm: string | null; widthCm: string | null; heightCm: string | null }[];
 }
 
-/** One line of a priced quote (apps/api modules/pricing/engine.ts). */
+/** One line of a priced quote (tracecart-api src/modules/pricing/engine.ts). */
 export interface QuoteLine {
   component: QuoteLineComponent;
   amount: number;
@@ -576,7 +576,7 @@ export interface Reservation {
 
 export type SourcingRequestStatus = "OPEN" | "MATCHED" | "CONVERTED" | "CLOSED";
 
-/** What a customer told us about goods they want moved (apps/api modules/shipment/draft.ts). */
+/** What a customer told us about goods they want moved (tracecart-api src/modules/shipment/draft.ts). */
 export interface ShipmentDraft {
   pickup: Omit<OrderAddress, "id" | "kind">;
   delivery: Omit<OrderAddress, "id" | "kind">;
@@ -756,7 +756,7 @@ export interface PublicQuote {
   proofOfDelivery: { id: string }[];
 }
 
-// ---- Product discovery (apps/api/src/modules/discovery)
+// ---- Product discovery (tracecart-api src/modules/discovery)
 
 export type SpecSource = "observed" | "stated" | "inferred";
 export type SpecConfidence = "high" | "medium" | "low";

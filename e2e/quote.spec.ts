@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-// Quotes created by apps/api/scripts/seed-e2e.ts, all "Quote sent" from Abidjan to
+// Quotes created by tracecart-api scripts/seed-e2e.ts, all "Quote sent" from Abidjan to
 // Niamey, total 1 234 568 XOF. The same link is the customer's tracking page.
 const API = process.env.E2E_API_URL ?? "http://localhost:4000";
 

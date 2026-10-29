@@ -1,4 +1,3 @@
-import path from "node:path";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
@@ -14,15 +13,15 @@ const svgr = {
 };
 
 const nextConfig: NextConfig = {
-  // Self-contained server bundle, enabled only by apps/web/Dockerfile —
+  // Self-contained server bundle, enabled only by the Dockerfile —
   // `next start` warns when this is on, so local builds keep the default.
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   // NEXT_BUILD_CPUS caps build workers on low-memory machines (unset: Next's default).
   experimental: process.env.NEXT_BUILD_CPUS ? { cpus: Number(process.env.NEXT_BUILD_CPUS) } : undefined,
   // NEXT_SKIP_TYPECHECK=1 skips the build's own type check (run `pnpm typecheck` instead), for the same machines.
   typescript: { ignoreBuildErrors: process.env.NEXT_SKIP_TYPECHECK === "1" },
-  // pnpm workspace: trace dependencies from the repo root, where pnpm's store lives.
-  outputFileTracingRoot: path.join(__dirname, "../.."),
+  // This folder is the whole project (no workspace above it).
+  outputFileTracingRoot: __dirname,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts.bak
+*.log
+.env
+.env.*
+!.env.example
+.eslintcache
+# Browser tests (e2e/)
+playwright-report/
+test-results/
+e2e-api.log
+e2e-web.log

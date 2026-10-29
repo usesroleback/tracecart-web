@@ -3,7 +3,7 @@
 import { api } from "./apiClient";
 
 // The customer's side of the API (/customer/…), through the web app's proxy,
-// which attaches the Clerk session. See apps/api/src/modules/customer.
+// which attaches the Clerk session. See tracecart-api src/modules/customer.
 
 export interface CustomerProfile {
   id: string;

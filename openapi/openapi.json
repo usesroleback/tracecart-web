@@ -1,0 +1,2699 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Tracecart API",
+    "version": "1.0.0",
+    "description": "REST API for the Tracecart store, customer accounts, back office, Seller Center and Partner portal."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "A Clerk session token for a user linked to a Tracecart account."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "details": {
+                "nullable": true
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "PublicUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "SUPER_ADMIN",
+              "LOGISTICS_PARTNER",
+              "CUSTOMER"
+            ]
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "fr",
+              "en"
+            ]
+          },
+          "hubId": {
+            "type": "string",
+            "nullable": true,
+            "format": "uuid"
+          },
+          "hub": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "currency": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "city",
+              "country",
+              "currency"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "role",
+          "locale",
+          "hubId",
+          "hub"
+        ]
+      },
+      "Hub": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "productFeeTiers": {
+            "nullable": true
+          },
+          "productFeeMin": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportMarkupPercent": {
+            "type": "string"
+          },
+          "priceBufferPercent": {
+            "type": "string"
+          },
+          "inboundFee": {
+            "type": "string",
+            "nullable": true
+          },
+          "inboundPerKg": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "city",
+          "country",
+          "countryCode",
+          "latitude",
+          "longitude",
+          "timezone",
+          "currency",
+          "isActive",
+          "notes",
+          "productFeeMin",
+          "transportMarkupPercent",
+          "priceBufferPercent",
+          "inboundFee",
+          "inboundPerKg",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Health": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ]
+          },
+          "postgres": {
+            "type": "string",
+            "enum": [
+              "up",
+              "down"
+            ]
+          },
+          "redis": {
+            "type": "string",
+            "enum": [
+              "up",
+              "down"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "postgres",
+          "redis"
+        ]
+      },
+      "Ready": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Health"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "migrations": {
+                "type": "string",
+                "enum": [
+                  "applied",
+                  "pending",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "migrations"
+            ]
+          }
+        ]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "The signed-in user",
+        "description": "401: not signed in, or the Clerk session is invalid. 403: signed in with Clerk, but no Tracecart account is linked to that email.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The current user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carrier-services": {
+      "get": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Carrier services — who carries what, from where to which country, within which limits and transit time, at which rates. An admin sees all; a carrier its own."
+      },
+      "post": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Add a carrier service, with its rate card (a carrier adds its own). Once any active service exists, new orders are routed to the best one that fits them, and priced from its rate card when it has one."
+      }
+    },
+    "/carrier-services/carriers": {
+      "get": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Carrier accounts, and whether each has signed in yet (Super Admin)."
+      },
+      "post": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Add a carrier account (Super Admin). The carrier signs in with this email and then manages its own routes and rates."
+      }
+    },
+    "/carrier-services/carriers/{id}": {
+      "patch": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Change a carrier account's name, phone or language (Super Admin). The email is how they sign in, so it stays."
+      }
+    },
+    "/carrier-services/{id}": {
+      "patch": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Change a service's limits, transit time, rate card or priority (admin only), or switch it off. Orders already routed keep their carrier; those still being quoted from the rate card take the new rates."
+      }
+    },
+    "/carrier-services/{id}/rate-history": {
+      "get": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Every version of a service's rates, latest first — what each rate-card quote was priced with (its carrier or an admin)."
+      }
+    },
+    "/consolidations": {
+      "get": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Groupages — orders on one carrier service sent together. The hub's administrateur sees each group's load, its cost and what it saves against sending the orders alone; a carrier sees the groups on its services, with the load and its price, never the saving."
+      },
+      "post": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Group paid orders routed on the same carrier service and not yet picked up (Super Admin). Together they must stay within the service's weight limit."
+      }
+    },
+    "/consolidations/suggestions": {
+      "get": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Where grouping pays — per carrier service, the paid orders not yet in a group, what sending them together would save, and the open group they could join; biggest saving first (Super Admin)."
+      }
+    },
+    "/consolidations/{id}": {
+      "get": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "A group, as the administrateur or its carrier sees it."
+      },
+      "patch": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Notes, and the cost agreed with the carrier for the whole group (it wins over the rate card; null goes back to it) (Super Admin)."
+      }
+    },
+    "/consolidations/{id}/advance": {
+      "post": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Move the group's orders one step together, each through its own transition — CONFIRMED_HUB (the hub hands them over), PICKED_UP (the carrier; every order must be handed over, and the group is then dispatched with its cost fixed), IN_TRANSIT (the carrier). Delivery stays per order. Answers which orders moved, which were skipped (not at the step before) and which failed."
+      }
+    },
+    "/consolidations/{id}/cancel": {
+      "post": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Cancel an open group; its orders travel alone again (Super Admin)."
+      }
+    },
+    "/consolidations/{id}/candidates": {
+      "get": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Orders that could join this open group now (Super Admin)."
+      }
+    },
+    "/consolidations/{id}/events": {
+      "post": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Record a shipment milestone for every order in the group — same body and rules as POST /orders/{id}/events, and each customer is told as if it were recorded on their order alone. With an idempotencyKey (or Idempotency-Key header), a retry records nothing new."
+      }
+    },
+    "/consolidations/{id}/orders": {
+      "post": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Add orders to an open group (Super Admin)."
+      }
+    },
+    "/consolidations/{id}/orders/{orderId}": {
+      "delete": {
+        "tags": [
+          "Consolidation"
+        ],
+        "summary": "Take an order out of an open group; it travels alone again (Super Admin)."
+      }
+    },
+    "/customer/account": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "The signed-in customer's profile"
+      },
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "The customer account for this Clerk session, created on first call from the verified email. Staff emails are refused (409).",
+        "responses": {
+          "200": {
+            "description": "The customer profile"
+          },
+          "403": {
+            "description": "The Clerk email isn't verified"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Update name and phone (the phone is needed to send a request)"
+      }
+    },
+    "/customer/requests": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "The customer's own requests and where each stands"
+      },
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Send a request (multipart `what`, `choice` as JSON, and one `photo` or `video`; a few frames of a video are kept). Contact details come from the account."
+      }
+    },
+    "/customer/shipments": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Ask Tracecart to move goods the customer already has (multipart `what`, `quantity`, `shipment` as JSON — pickup and delivery addresses, cargo as far as known, ready and needed-by dates, who handles customs — and an optional `photo`). Contact details come from the account."
+      }
+    },
+    "/customer/shop/buy": {
+      "post": {
+        "tags": [
+          "Shop"
+        ],
+        "summary": "Buy an offer a search found (the customer's own account, with a phone) — an ordinary order priced as shown with today's rates, a reservation of the listing, and a request on the account. Staff check with the store, send the quote and buy by hand."
+      }
+    },
+    "/customer/suggest": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Product suggestions for a description and/or one photo or video (multipart `what`, `photo` up to 5 MB, or `video` — MP4, MOV or WebM, up to 20 MB and 30 s), searched live and ranked by accuracy then price. With `country` (two letters), each is priced delivered there and comes with a signed `offer` to buy it with (POST /customer/shop/buy). Uploads are screened first. Nothing is stored. Limited per account.",
+        "responses": {
+          "200": {
+            "description": "What the photo shows (if read), up to 6 matching listings, and whether paid sources were skipped"
+          },
+          "400": {
+            "description": "The file isn't a usable photo or video, or is over the limits (VIDEO_TOO_LONG gives durationSeconds and maxSeconds)"
+          },
+          "413": {
+            "description": "The file is larger than 20 MB"
+          },
+          "422": {
+            "description": "The file was refused by screening (MEDIA_REJECTED)"
+          },
+          "429": {
+            "description": "Too many searches from this account"
+          }
+        }
+      }
+    },
+    "/exceptions": {
+      "get": {
+        "tags": [
+          "Tracking"
+        ],
+        "summary": "The hub's exceptions, open first, most severe first (Super Admin)."
+      }
+    },
+    "/geo/country": {
+      "get": {
+        "tags": [
+          "Geo"
+        ],
+        "summary": "The visitor's country from their IP, for the site's language, prices and delivery (public). The web app asks the browser for the location first and uses this when that's refused or fails. Answers the country code (null when unknown) and the language Tracecart speaks there."
+      }
+    },
+    "/geo/detect": {
+      "get": {
+        "tags": [
+          "Geo"
+        ],
+        "summary": "Best-effort location from the caller's IP, plus the nearest active hub if one is within range",
+        "responses": {
+          "200": {
+            "description": "Detected location (nullable) and nearest hub match (nullable)"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Liveness: Postgres and Redis are reachable",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "All dependencies are reachable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "A dependency is unreachable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hubs": {
+      "get": {
+        "tags": [
+          "Hubs"
+        ],
+        "summary": "List active hubs",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Active hubs, by name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Hub"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Hubs"
+        ],
+        "summary": "Create a hub",
+        "description": "Left out, the country code comes from the country, and the position and time zone from the city.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "city": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "country": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "countryCode": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2
+                  },
+                  "latitude": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "currency": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "name",
+                  "city",
+                  "country",
+                  "currency"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created hub",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hub"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hubs/{id}": {
+      "patch": {
+        "tags": [
+          "Hubs"
+        ],
+        "summary": "Update a hub",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "city": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "country": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "countryCode": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2
+                  },
+                  "latitude": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "currency": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated hub",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hub"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/hub": {
+      "patch": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Bind the current user to a hub, or create one and bind to it",
+        "description": "Authoritative: hub detection only pre-fills.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hubId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "newHub": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "city": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "country": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "countryCode": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2
+                      },
+                      "latitude": {
+                        "type": "number",
+                        "minimum": -90,
+                        "maximum": 90
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      "timezone": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "currency": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "isActive": {
+                        "type": "boolean"
+                      },
+                      "notes": {
+                        "type": "string",
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "city",
+                      "country",
+                      "currency"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/locale": {
+      "patch": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Set the language the current user's notifications are written in",
+        "description": "The console sends the language it is shown in.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "locale": {
+                    "type": "string",
+                    "enum": [
+                      "fr",
+                      "en"
+                    ]
+                  }
+                },
+                "required": [
+                  "locale"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "List the current user's notifications, newest first",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of notifications"
+          }
+        }
+      }
+    },
+    "/notifications/unread-count": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Count of unread in-app notifications for the current user",
+        "responses": {
+          "200": {
+            "description": "Unread count"
+          }
+        }
+      }
+    },
+    "/notifications/{id}/read": {
+      "patch": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Mark a notification as read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated notification"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "List orders (role-scoped — Super Admin sees their hub's orders with full pricing, Partner sees only assigned parcels, price-free)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "providerId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of orders"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create an intent (Super Admin only). Inherits the admin's hub; auto-assigns a partner and moves straight to QUOTING.",
+        "responses": {
+          "201": {
+            "description": "Created order"
+          },
+          "400": {
+            "description": "Admin has no hub set yet"
+          }
+        }
+      }
+    },
+    "/orders/stats/breakdown": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Order counts grouped by store or by destination city (data-driven, no hardcoded cities). No pricing — safe for both roles.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "dimension",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "provider",
+                "destination"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "rangeDays",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Composition breakdown"
+          }
+        }
+      }
+    },
+    "/orders/stats/queue-depth": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Current count and time-in-stage (avg/p90 age) for every open pipeline stage — the bottleneck/leading-indicator view. No pricing — safe for both roles.",
+        "responses": {
+          "200": {
+            "description": "Queue depth per stage"
+          }
+        }
+      }
+    },
+    "/orders/stats/summary": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Headline KPIs (orders created/delivered, avg cycle time, revenue for admins) with current-vs-previous-period values, plus a full status-count breakdown. Role-scoped like GET /orders; revenue/avgOrderValue are only ever present for Super Admin.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "rangeDays",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "KPI summary"
+          }
+        }
+      }
+    },
+    "/orders/stats/trend": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Orders created vs delivered over time, bucketed by day/week/month, with a previous-period series for overlay comparison. No pricing — safe for both roles.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "granularity",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "day",
+                "week",
+                "month"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "rangeDays",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trend series"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get a single order (role-scoped serialization)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The order"
+          },
+          "404": {
+            "description": "Not found or not visible to this user"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Edit product/customer/quantity/notes and enter productCost while quoting (Super Admin only)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated order"
+          },
+          "409": {
+            "description": "Order has moved past the editable stage"
+          }
+        }
+      }
+    },
+    "/orders/{id}/addresses/{kind}": {
+      "put": {
+        "tags": [
+          "Shipment"
+        ],
+        "summary": "Set one of the order's typed addresses (PICKUP, SUPPLIER_ORIGIN, DELIVERY, BILLING). DELIVERY also updates the order's destination. Super Admin; before the quote is sent."
+      },
+      "delete": {
+        "tags": [
+          "Shipment"
+        ],
+        "summary": "Remove one of the order's addresses."
+      }
+    },
+    "/orders/{id}/cargo": {
+      "patch": {
+        "tags": [
+          "Shipment"
+        ],
+        "summary": "Cargo as it travels (packages, dimensions, weight, declared value, handling flags, ready and required-by dates). Medical devices and dangerous goods put the order under compliance review. Super Admin; before the quote is sent."
+      }
+    },
+    "/orders/{id}/compliance": {
+      "put": {
+        "tags": [
+          "Shipment"
+        ],
+        "summary": "Record the compliance review (APPROVED or BLOCKED need a note). A quote can't be sent while a review is pending or the order is blocked."
+      }
+    },
+    "/orders/{id}/customs": {
+      "put": {
+        "tags": [
+          "Shipment"
+        ],
+        "summary": "Create or update the order's customs case (responsibility, status, estimated/official duties, broker fee, classification proposal, documents)."
+      }
+    },
+    "/orders/{id}/events": {
+      "post": {
+        "tags": [
+          "Tracking"
+        ],
+        "summary": "Record a shipment milestone that happened (Super Admin of the hub, or the assigned carrier), from payment until delivery (after it, only RETURN_STARTED). A delay or a failed delivery needs a reason; a revised ETA needs the new window. Send an idempotencyKey (or Idempotency-Key header) so a retry records nothing twice — the replay answers 200 instead of 201. The customer is told about the milestones that concern them; a repeated, unchanged delay isn't sent again. Delays, failed deliveries and missing customs documents open an exception."
+      }
+    },
+    "/orders/{id}/exceptions": {
+      "post": {
+        "tags": [
+          "Tracking"
+        ],
+        "summary": "Open an exception on an order (Super Admin). One open exception per type and order."
+      }
+    },
+    "/orders/{id}/exceptions/{exceptionId}": {
+      "patch": {
+        "tags": [
+          "Tracking"
+        ],
+        "summary": "Update an open exception's owner, next action, due date, severity or customer impact (Super Admin)."
+      }
+    },
+    "/orders/{id}/exceptions/{exceptionId}/resolve": {
+      "post": {
+        "tags": [
+          "Tracking"
+        ],
+        "summary": "Resolve an exception, saying how (Super Admin)."
+      }
+    },
+    "/orders/{id}/fee": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Set/override the platform fee for an order (Super Admin only). If never called, send-quote computes a default from PLATFORM_FEE_PERCENT.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated order"
+          }
+        }
+      }
+    },
+    "/orders/{id}/history": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Full status timeline for an order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status history, oldest first"
+          }
+        }
+      }
+    },
+    "/orders/{id}/location-updates": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Report the shipment's current position (Logistics Partner only, while they hold the shipping leg). Always recorded with source=MANUAL.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "latitude": {
+                    "type": "number"
+                  },
+                  "longitude": {
+                    "type": "number"
+                  },
+                  "recordedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Updated order, including the new location update"
+          }
+        }
+      }
+    },
+    "/orders/{id}/logistics-quote": {
+      "post": {
+        "tags": [
+          "Logistics Quotes"
+        ],
+        "summary": "Submit (or revise) the itemized logistics quote for an order (Partner, or Super Admin on a CUSTOMER_OWNED order). Never exposes product cost or platform fee.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "amount",
+                  "currency",
+                  "lineItems"
+                ],
+                "properties": {
+                  "amount": {
+                    "type": "number"
+                  },
+                  "currency": {
+                    "type": "string"
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated order (price-free view)"
+          }
+        }
+      }
+    },
+    "/orders/{id}/mark-paid": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Confirm the customer's payment (Super Admin only). Notifies the partner to prepare.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated order, now PAID"
+          }
+        }
+      }
+    },
+    "/orders/{id}/photos": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Upload photos of the physical goods (Super Admin only). Up to 6 images, 8MB each.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Updated order, including the new photos"
+          }
+        }
+      }
+    },
+    "/orders/{id}/photos/{photoId}/file": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "View a photo. Redirects to a signed storage URL valid for 5 minutes. Same access as viewing the order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "photoId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to the photo"
+          },
+          "404": {
+            "description": "Unknown photo, or the order isn't visible to this user"
+          }
+        }
+      }
+    },
+    "/orders/{id}/proof-of-delivery": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Upload proof-of-delivery photos (the assigned carrier, or Super Admin), once the parcel is on its way. The customer sees them on their link after delivery."
+      }
+    },
+    "/orders/{id}/quote-preview": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "The quote the order would get if sent now — every line with its component, whether it is Tracecart revenue or a pass-through cost, how sure it is, the pricing rule version behind it, and the notes (Super Admin only)."
+      }
+    },
+    "/orders/{id}/quote-request": {
+      "get": {
+        "tags": [
+          "Logistics Quotes"
+        ],
+        "summary": "The price-free view of an order a partner has been asked to quote (Partner only)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Price-free order details for quoting"
+          }
+        }
+      }
+    },
+    "/orders/{id}/route": {
+      "post": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Route the order with a carrier service that fits it (and meets a hard deadline), before the quote is sent. A different carrier replaces the carrier quote and is asked to quote."
+      }
+    },
+    "/orders/{id}/route-options": {
+      "get": {
+        "tags": [
+          "Routing"
+        ],
+        "summary": "Every active carrier service as it would serve this order — whether it fits and why not, limits not yet checkable, arrival window, on time for the deadline (Super Admin)."
+      }
+    },
+    "/orders/{id}/send-quote": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Price the order (product, carrier quote, fee, pricing rules, customs) and send it to the customer as a new quote version, valid QUOTE_VALIDITY_DAYS (Super Admin only). Requires productCost (purchases), a logistics quote, and no pending or failed compliance review.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated order, now QUOTE_SENT"
+          },
+          "409": {
+            "description": "Missing productCost or logistics quote, compliance review pending or blocked, or order not in QUOTED"
+          }
+        }
+      }
+    },
+    "/orders/{id}/transition": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Manually change an order's status. Admin can move to most statuses (note required); Partner can only advance CONFIRMED_HUB → ... → DELIVERED.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "toStatus"
+                ],
+                "properties": {
+                  "toStatus": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "override": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated order"
+          },
+          "403": {
+            "description": "This role does not own this transition"
+          },
+          "409": {
+            "description": "Illegal transition or guardrail blocked (e.g. PURCHASED while unpaid)"
+          }
+        }
+      }
+    },
+    "/pricing-rules": {
+      "get": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Pricing rules — the latest version of each, or every version with history=true. Super Admin."
+      },
+      "post": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Create a pricing rule (version 1). For each quote component at most one rule applies — highest priority, then most specific, then latest."
+      }
+    },
+    "/pricing-rules/{id}/deactivate": {
+      "post": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Stop a rule applying from now on (kept in the history)."
+      }
+    },
+    "/pricing-rules/{id}/revise": {
+      "post": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Change a rule by adding its next version; the current version stops applying. Quotes already sent keep the version they used."
+      }
+    },
+    "/pricing-settings": {
+      "get": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "What prices are built from beyond carrier rates — the hub's margins, exchange rates, customs rates, category defaults (Super Admin)."
+      }
+    },
+    "/pricing-settings/category-defaults": {
+      "put": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "The packed weight and size assumed for a product of this category without its own (Super Admin)."
+      }
+    },
+    "/pricing-settings/customs-rates": {
+      "post": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Add duties and taxes for a destination and product category (or any), with the broker fee (Super Admin)."
+      }
+    },
+    "/pricing-settings/exchange-rates": {
+      "put": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Set the rate for a currency pair (1 currency = rate toCurrency); it converts both ways (Super Admin)."
+      }
+    },
+    "/pricing-settings/hubs/{id}/inbound": {
+      "put": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Another hub's store-to-hub rate, per order and per kg in its currency (Super Admin)."
+      }
+    },
+    "/pricing-settings/margins": {
+      "put": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "The hub's margins — fee tiers on the product and their minimum, markup on transport, buffer on the product (Super Admin)."
+      }
+    },
+    "/pricing-settings/readiness": {
+      "get": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "What the shop still needs before it can price a product (hub, routes with rates, exchange rates), and what is recommended (Super Admin)."
+      }
+    },
+    "/providers": {
+      "get": {
+        "tags": [
+          "Providers"
+        ],
+        "summary": "List providers (store registry). SUPER_ADMIN may pass includeInactive=true to also see disabled stores.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "includeInactive",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                true,
+                false
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of providers"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Providers"
+        ],
+        "summary": "Register a new supported store",
+        "responses": {
+          "201": {
+            "description": "Created provider"
+          }
+        }
+      }
+    },
+    "/providers/resolve": {
+      "get": {
+        "tags": [
+          "Providers"
+        ],
+        "summary": "Resolve a pasted product URL to a provider and best-effort product metadata",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "url",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resolved provider (nullable) and product metadata (best-effort, may be empty)"
+          }
+        }
+      }
+    },
+    "/providers/search": {
+      "get": {
+        "tags": [
+          "Providers"
+        ],
+        "summary": "Keyword search a store's catalog (only supported for stores whose adapter implements search)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "provider",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Category facet value from a previous search's facets.categories"
+          },
+          {
+            "in": "query",
+            "name": "brand",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Brand facet value from a previous search's facets.brands"
+          },
+          {
+            "in": "query",
+            "name": "priceMin",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "priceMax",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "1-based page number, from pagination.page/hasMore in a previous response"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "supported flag, best-effort results (may be empty), refinable facets, and pagination info"
+          }
+        }
+      }
+    },
+    "/providers/{id}": {
+      "patch": {
+        "tags": [
+          "Providers"
+        ],
+        "summary": "Update a provider",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated provider"
+          }
+        }
+      }
+    },
+    "/q/{quoteToken}": {
+      "get": {
+        "tags": [
+          "Public Quote"
+        ],
+        "summary": "The customer's quote/tracking page data (no auth). Never includes cost, fee, or margin.",
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "quoteToken",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product, quantity, total, and status"
+          },
+          "404": {
+            "description": "Unknown token"
+          }
+        }
+      }
+    },
+    "/q/{quoteToken}/decision": {
+      "post": {
+        "tags": [
+          "Public Quote"
+        ],
+        "summary": "Customer accepts or declines the quote (no auth)",
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "quoteToken",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "decision"
+                ],
+                "properties": {
+                  "decision": {
+                    "type": "string",
+                    "enum": [
+                      "accept",
+                      "decline"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resulting status"
+          },
+          "409": {
+            "description": "Quote is no longer answerable"
+          }
+        }
+      }
+    },
+    "/q/{quoteToken}/proof/{photoId}": {
+      "get": {
+        "tags": [
+          "Public Quote"
+        ],
+        "summary": "A proof-of-delivery photo for the customer holding the link, once the order is delivered (no auth). Redirects to a signed URL valid for 5 minutes.",
+        "security": []
+      }
+    },
+    "/ready": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Readiness: dependencies reachable and no migration unfinished or failed",
+        "description": "For load balancers: send traffic only when this answers 200.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Ready to serve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ready"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Not ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ready"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservations": {
+      "get": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "List saved products for the admin's hub (Super Admin only)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "RESERVED",
+                "CONVERTED"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of reservations"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "Save a product for later (Super Admin only) — no customer/destination needed yet",
+        "responses": {
+          "201": {
+            "description": "Created reservation"
+          }
+        }
+      }
+    },
+    "/reservations/stats/ranking": {
+      "get": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "Most-reserved stores for the admin's hub, in the window — Super Admin only",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "rangeDays",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store ranking"
+          }
+        }
+      }
+    },
+    "/reservations/stats/summary": {
+      "get": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "Reservation KPIs for the admin's hub (created, converted, conversion rate) — Super Admin only",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "rangeDays",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "KPI summary"
+          }
+        }
+      }
+    },
+    "/reservations/{id}": {
+      "delete": {
+        "tags": [
+          "Reservations"
+        ],
+        "summary": "Remove a reservation that hasn't been converted to an order yet",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removed"
+          },
+          "409": {
+            "description": "Already converted to an order"
+          }
+        }
+      }
+    },
+    "/shop/featured": {
+      "get": {
+        "tags": [
+          "Shop"
+        ],
+        "summary": "Products the shop shows before anyone searches (public) — a few popular needs searched live and cached a day, priced delivered to `country` (two letters), each with a signed offer when it can be priced. `pending` while they're being searched."
+      }
+    },
+    "/shop/price": {
+      "get": {
+        "tags": [
+          "Shop"
+        ],
+        "summary": "An offer priced again delivered to a country, for a quantity. Public, since the offer is signed; it lasts 24 hours."
+      }
+    },
+    "/sourcing-requests": {
+      "get": {
+        "tags": [
+          "SourcingRequests"
+        ],
+        "summary": "List sourcing requests for the admin's hub (Super Admin only)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "MATCHED",
+                "CONVERTED",
+                "CLOSED"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of sourcing requests"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SourcingRequests"
+        ],
+        "summary": "Log a company's sourcing need (Super Admin only) — no product link required yet",
+        "responses": {
+          "201": {
+            "description": "Created sourcing request"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}": {
+      "get": {
+        "tags": [
+          "SourcingRequests"
+        ],
+        "summary": "Get one sourcing request",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sourcing request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "SourcingRequests"
+        ],
+        "summary": "Select a candidate product, close, or annotate a sourcing request",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated sourcing request"
+          },
+          "409": {
+            "description": "Already converted to a reservation/order"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/attachments": {
+      "post": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Add photos (JPEG, PNG, WebP, GIF) or PDF datasheets — up to 8 per request, 10 MB each. The file's bytes must match its type.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Discovery state"
+          },
+          "400": {
+            "description": "No file",
+            "too many files": null,
+            "or a file whose content doesn't match its type": null
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/attachments/{attachmentId}": {
+      "delete": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Remove a file from the request",
+        "responses": {
+          "200": {
+            "description": "Discovery state"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/attachments/{attachmentId}/file": {
+      "get": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Redirect to a short-lived signed link for the file (files are never public)",
+        "responses": {
+          "302": {
+            "description": "Signed link"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/candidates": {
+      "post": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Add a supplier offer researched by staff (link, title, optional price and currency)",
+        "responses": {
+          "200": {
+            "description": "Discovery state"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/candidates/{candidateId}": {
+      "patch": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Choose (SELECTED), reject (REJECTED) or reset (PROPOSED) a candidate. Choosing one marks the request \"candidate chosen\"; nothing is bought.",
+        "responses": {
+          "200": {
+            "description": "Discovery state"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/discovery": {
+      "get": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Discovery state of a request — inputs, product spec, search providers and their availability, ranked candidates, last search run",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Discovery state"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/extract": {
+      "post": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Read the description, identifiers, photos and datasheets into a structured product spec with Claude. Values carry their source (observed / stated / inferred); unknowns stay empty.",
+        "responses": {
+          "200": {
+            "description": "Discovery state with the new spec"
+          },
+          "503": {
+            "description": "ANTHROPIC_API_KEY isn't set",
+            "or Claude is rate limited": null
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/matches": {
+      "get": {
+        "tags": [
+          "SourcingRequests"
+        ],
+        "summary": "Search the catalog for candidate products matching this request's description/category/budget",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Best-effort candidate matches from the synced catalog (cross-provider; see catalogSearch.service.ts)"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/search": {
+      "post": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Search every enabled provider, then normalise, de-duplicate and rank the listings. Unavailable or failing providers are reported, never faked.",
+        "responses": {
+          "200": {
+            "description": "Discovery state with candidates and the run's per-provider outcome"
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/spec": {
+      "put": {
+        "tags": [
+          "ProductDiscovery"
+        ],
+        "summary": "Replace the product spec with a corrected one (validated like Claude's)",
+        "responses": {
+          "200": {
+            "description": "Discovery state"
+          },
+          "400": {
+            "description": "The spec doesn't fit the schema"
+          }
+        }
+      }
+    }
+  }
+}
