@@ -126,10 +126,39 @@ export function CurrencyInput(props: InputHTMLAttributes<HTMLInputElement>) {
 export function CountryInput(props: InputHTMLAttributes<HTMLInputElement>) {
   const id = useId();
   const locale = useLocale();
+  const t = useTranslations("common.form");
   const names = useMemo(() => COUNTRY_CODES.map((c) => countryName(c, locale)).sort((a, b) => a.localeCompare(b, locale)), [locale]);
+  // Every country's name in French and English, and the codes: what may be typed.
+  const known = useMemo(() => {
+    const all = new Set<string>();
+    for (const c of COUNTRY_CODES) {
+      all.add(c.toLowerCase());
+      for (const l of ["fr", "en"]) all.add(countryName(c, l).toLowerCase());
+    }
+    return all;
+  }, []);
+  const check = (el: HTMLInputElement) => el.setCustomValidity(el.value.trim() && !known.has(el.value.trim().toLowerCase()) ? t("notACountry") : "");
   return (
     <>
-      <input autoComplete="off" list={id} {...props} className={`${input} ${props.className ?? ""}`} />
+      <input
+        autoComplete="off"
+        list={id}
+        {...props}
+        className={`${input} ${props.className ?? ""}`}
+        onChange={(e) => {
+          check(e.target);
+          props.onChange?.(e);
+        }}
+        onBlur={(e) => {
+          check(e.target);
+          e.target.reportValidity();
+          props.onBlur?.(e);
+        }}
+        // A value set before the user typed (editing a saved rule) is checked too.
+        ref={(el) => {
+          if (el) check(el);
+        }}
+      />
       <datalist id={id}>
         {names.map((n) => (
           <option key={n} value={n} />

@@ -201,7 +201,8 @@ function ServiceForm({
     handlingDays: str(service?.handlingDays ?? 0),
     priority: str(service?.priority ?? 0),
     notes: service?.notes ?? "",
-    rateCurrency: service?.rateCurrency ?? "",
+    // A new route's rates are in its hub's currency unless the carrier says otherwise.
+    rateCurrency: service ? (service.rateCurrency ?? "") : (hubs[0]?.currency ?? "XOF"),
     baseFee: str(service?.baseFee),
     minCharge: str(service?.minCharge),
     volumetricDivisor: str(service?.volumetricDivisor),
@@ -233,8 +234,9 @@ function ServiceForm({
     const filledBands = bands.filter((b) => b.amount.trim() !== "");
     const common = {
       name: v.name.trim(),
-      maxWeightKg: numOrNull(v.maxWeightKg),
-      maxLengthCm: numOrNull(v.maxLengthCm),
+      // Empty or 0: no limit (a 0 limit would refuse every order).
+      maxWeightKg: numOrNull(v.maxWeightKg) || null,
+      maxLengthCm: numOrNull(v.maxLengthCm) || null,
       refusedFlags: refused,
       transitDaysMin: Number(v.transitDaysMin),
       transitDaysMax: Number(v.transitDaysMax),
@@ -300,7 +302,17 @@ function ServiceForm({
           </select>
         </Field>
         <Field label={t("carriersPage.field.originHub")}>
-          <select className={input} value={v.originHubId} onChange={set("originHubId")} disabled={!!service}>
+          <select
+            className={input}
+            value={v.originHubId}
+            onChange={(e) => {
+              // The departure hub's currency, while the rates are still in the previous hub's default.
+              const hub = hubs.find((h) => h.id === e.target.value);
+              const fromDefault = !v.rateCurrency || hubs.some((h) => h.currency === v.rateCurrency);
+              setV({ ...v, originHubId: e.target.value, ...(hub && fromDefault ? { rateCurrency: hub.currency } : {}) });
+            }}
+            disabled={!!service}
+          >
             <option value="">{t("carriersPage.anyHub")}</option>
             {hubs.map((h) => (
               <option key={h.id} value={h.id}>

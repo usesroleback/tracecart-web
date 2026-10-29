@@ -19,7 +19,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen lg:flex">
       <AppSidebar />
       <Backdrop />
-      <div className={`flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}>
+      <div className={`min-w-0 flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}>
         <AppHeader />
         {/* The ops console caps at container-wide (1440px); side margins 16 / 24 / 32 (system grid). */}
         <main className="@container/main px-4 py-6 mx-auto max-w-[1440px] sm:px-6 lg:px-8 lg:py-7">{children}</main>

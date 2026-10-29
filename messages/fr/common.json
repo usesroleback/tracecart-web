@@ -52,6 +52,7 @@
   },
   "form": {
     "requiredNote": "Les champs marqués d’un astérisque sont obligatoires.",
-    "optional": "facultatif"
+    "optional": "facultatif",
+    "notACountry": "Choisissez un pays dans la liste (par exemple Niger), pas une ville."
   }
 }
