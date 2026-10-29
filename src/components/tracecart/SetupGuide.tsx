@@ -23,7 +23,7 @@ function useSteps(r: Readiness): Step[] {
       key: "routes",
       need: "required",
       done: r.routes.priced > 0,
-      href: "/routes",
+      href: "/carriers",
       detail:
         r.routes.priced > 0
           ? t("detail.routes", { count: r.routes.priced, countries: r.routes.countries.join(", ") })
