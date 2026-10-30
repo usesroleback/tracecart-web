@@ -99,7 +99,7 @@ On the same Dokploy server as the API (tracecart-api README, "Deploying"):
 
 ## Design
 
-The design tokens in `src/app/globals.css` and the components in `src/components/ui/` mirror the Roleback design system (themes `tracecart-light` / `tracecart-dark`).
+The design tokens in `src/app/globals.css` and the components in `src/components/ui/` mirror the Roleback design system (themes `tracecart-light` / `tracecart-dark`). The brand guidelines, the design system and reference screenshots are in [docs/brand/](docs/brand/README.md).
 
 ## Configuration
 

@@ -5,3 +5,4 @@ openapi
 src/lib/api/schema.d.ts
 public
 messages
+docs
