@@ -1,0 +1,55 @@
+{
+  "title": "Store orders",
+  "lead": "Orders placed in the store, newest first.",
+  "search": "Reference, customer name or email",
+  "status": "Status",
+  "allStatuses": "All statuses",
+  "find": "Search",
+  "empty": "No order matches.",
+  "more": "Show more",
+  "columns": {
+    "order": "Order",
+    "customer": "Customer",
+    "status": "Status",
+    "payment": "Payment",
+    "total": "Total",
+    "promise": "Promised by",
+    "item": "Item",
+    "item_total": "Items",
+    "shipping": "Delivery",
+    "duties": "Duties, taxes, fees"
+  },
+  "methods": {
+    "CINETPAY": "CinetPay",
+    "CASH_ON_DELIVERY": "Cash on delivery",
+    "BANK_TRANSFER": "Bank transfer",
+    "FAKE": "Test payment"
+  },
+  "paymentStatus": {
+    "PENDING": "Pending",
+    "AUTHORIZED": "Authorised",
+    "CAPTURED": "Received",
+    "PARTIALLY_REFUNDED": "Partly refunded",
+    "REFUNDED": "Refunded",
+    "FAILED": "Failed",
+    "CANCELLED": "Cancelled",
+    "EXPIRED": "Expired"
+  },
+  "fulfillment": {
+    "TRACECART_STOCK": "Tracecart stock",
+    "SELLER_FULFILLED": "Seller ships",
+    "FULFILLED_BY_TRACECART": "Seller's stock, shipped by Tracecart",
+    "CROSS_BORDER": "Cross-border"
+  },
+  "lines": "Lines and frozen prices",
+  "history": "History",
+  "address": "Delivered to",
+  "pickup": "Pickup point",
+  "promise": "Promised between {from} and {to}",
+  "payments": "Payments",
+  "confirmTransfer": "Record the transfer as received",
+  "invoice": "Invoice {number} (PDF)",
+  "cancel": "Cancel the order",
+  "cancelReason": "Why (the customer is told it's cancelled)",
+  "cancelCta": "Cancel the order"
+}

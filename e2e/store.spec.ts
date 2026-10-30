@@ -45,7 +45,7 @@ test.describe("the store", () => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByText(/\d[\d\s ]* XOF/).first()).toBeVisible();
     await expect(page.getByRole("heading", { name: "Caractéristiques" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Demander cet outil" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Ajouter au panier" })).toBeVisible();
   });
 
   test("suggests as one types, and searches past a misspelling", async ({ page }) => {

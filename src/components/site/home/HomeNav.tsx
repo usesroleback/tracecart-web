@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { PillLink } from "./primitives";
 import { CountryPicker } from "../CountryPicker";
+import { CartLink } from "@/components/store/CartLink";
 import { useTheme } from "@/context/ThemeContext";
 
 /** Light or dark, remembered on this device (context/ThemeContext). */
@@ -123,6 +124,7 @@ export function HomeNav() {
         <div className="flex items-center gap-2">
           <CountryPicker className="hidden text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] sm:inline-flex" />
           <ThemeSwitch className="grid size-10 place-items-center rounded-[var(--hp-radius-chip)] text-[var(--hp-text-muted)] hover:bg-[var(--hp-light-sunken)] hover:text-[var(--hp-text)]" />
+          <CartLink className="rounded-[var(--hp-radius-chip)] px-2 py-2 text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]" />
           <Link href="/account" className="hidden rounded-[var(--hp-radius-chip)] px-3 py-2 text-sm font-medium text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] md:block">
             {t("account")}
           </Link>

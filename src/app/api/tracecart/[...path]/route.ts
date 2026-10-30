@@ -60,16 +60,18 @@ async function forward(req: NextRequest, pathParts: string[]) {
     return NextResponse.json({ error: { code: "UNAUTHORIZED", message } }, { status: 401 });
   }
 
-  const text = await apiRes.text();
   const contentType = apiRes.headers.get("content-type") ?? "application/json";
+  // Bytes, not text: an invoice (PDF) or an export must arrive unchanged.
+  const body = await apiRes.arrayBuffer();
 
   // A 204 (or any no-content status) must have a null body — the Response
   // constructor throws even on an empty string.
-  const hasBody = text.length > 0 && apiRes.status !== 204 && apiRes.status !== 205 && apiRes.status !== 304;
+  const hasBody = body.byteLength > 0 && apiRes.status !== 204 && apiRes.status !== 205 && apiRes.status !== 304;
+  const disposition = apiRes.headers.get("content-disposition");
 
-  return new NextResponse(hasBody ? text : null, {
+  return new NextResponse(hasBody ? body : null, {
     status: apiRes.status,
-    headers: hasBody ? { "content-type": contentType } : undefined,
+    headers: hasBody ? { "content-type": contentType, ...(disposition ? { "content-disposition": disposition } : {}) } : undefined,
   });
 }
 

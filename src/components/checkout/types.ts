@@ -1,0 +1,92 @@
+// What the checkout and order routes return (they document no response shapes yet).
+
+export type Breakdown = { itemMinor: number; shippingMinor: number; dutiesMinor: number; taxesMinor: number; feesMinor: number; totalMinor: number };
+
+export type PaymentMethod = "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE";
+
+export interface Address {
+  id: string;
+  label: string | null;
+  recipientName: string;
+  phone: string;
+  countryCode: string;
+  city: string;
+  district: string | null;
+  street: string | null;
+  landmark: string;
+  isDefault: boolean;
+}
+
+export interface PickupPoint {
+  id: string;
+  name: string;
+  countryCode: string;
+  city: string;
+  addressLine: string;
+  landmark: string | null;
+  phone: string | null;
+  openingHours: Record<string, string> | null;
+}
+
+export interface Quote {
+  currency: string;
+  available: boolean;
+  problems: { code: string; lineId?: string; shipment?: string; params?: Record<string, string> }[];
+  lines: {
+    id: string;
+    sku: string;
+    title: string;
+    quantity: number;
+    unitPriceMinor: number;
+    fulfillmentType: string;
+    breakdown: Breakdown | null;
+    promise: { from: string; to: string } | null;
+    shipment: string | null;
+  }[];
+  shipments: { key: string; from: { city: string; countryCode: string }; crossBorder: boolean; lineIds: string[]; shippingMinor: number }[];
+  totals: Breakdown;
+  promise: { from: string; to: string } | null;
+  paymentMethods: { method: PaymentMethod; available: boolean; blockers: string[]; instructions: string | null }[];
+}
+
+export interface PaymentView {
+  id: string;
+  method: PaymentMethod;
+  status: string;
+  amountMinor: number;
+  currency: string;
+  checkoutUrl: string | null;
+  expiresAt: string | null;
+  failureReason: string | null;
+  instructions: string | null;
+}
+
+export interface OrderView {
+  id: string;
+  reference: string;
+  status: string;
+  createdAt: string;
+  placedAt: string | null;
+  cancelledAt: string | null;
+  cancelReason: string | null;
+  currency: string;
+  totals: Breakdown;
+  deliveryMethod: "HOME" | "PICKUP";
+  delivery: {
+    recipientName?: string;
+    phone?: string;
+    city?: string;
+    district?: string | null;
+    street?: string | null;
+    landmark?: string;
+    countryCode?: string;
+    pickupPoint?: { name: string; addressLine: string; city: string; countryCode: string; landmark: string | null };
+  };
+  paymentMethod: PaymentMethod;
+  promise: { from: string; to: string };
+  lines: { id: string; sku: string; title: string; quantity: number; unitPriceMinor: number; breakdown: Breakdown; status: string; fulfillmentType: string; promise: { from: string; to: string } }[];
+  payments: PaymentView[];
+  invoice: { number: string; issuedAt: string } | null;
+  canCancel: boolean;
+  canPay: boolean;
+}

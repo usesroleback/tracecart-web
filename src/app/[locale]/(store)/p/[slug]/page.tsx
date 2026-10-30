@@ -9,6 +9,7 @@ import { Price } from "@/components/store/Price";
 import { AvailabilityNote } from "@/components/store/AvailabilityNote";
 import { ProductList } from "@/components/store/ProductCard";
 import { JsonLd } from "@/components/store/JsonLd";
+import { AddToCart } from "@/components/store/AddToCart";
 import { categoryHref, STORE_CURRENCY, storeApi, storeCountry, toMajor, type ProductDetail, type PublicOffer } from "@/lib/store";
 import { alternates, siteUrl } from "@/lib/siteUrl";
 
@@ -215,13 +216,13 @@ export default async function ProductPage({ params, searchParams }: Props) {
               ) : null}
               <p className="mt-4 text-sm text-ink-muted">{t("product.delivery")}</p>
               <div className="mt-5 border-t border-line pt-5">
-                <h2 className="rb-label text-ink">{t("product.orderTitle")}</h2>
-                <p className="mt-1 text-sm text-ink-muted">{t("product.orderLead")}</p>
-                <Link
-                  href={`/?need=${encodeURIComponent(`${p.title} (${variant.sku})`)}#quote`}
-                  className="mt-4 inline-flex w-full justify-center rounded-[var(--radius-s)] bg-ink px-5 py-3 font-medium text-ink-inverse hover:opacity-90 sm:w-auto"
-                >
-                  {t("product.orderCta")}
+                {offer.availability.kind === "OUT_OF_STOCK" ? (
+                  <p className="text-sm text-critical">{t("availability.OUT_OF_STOCK")}</p>
+                ) : (
+                  <AddToCart sku={variant.sku} offerId={offer.id} max={null} />
+                )}
+                <Link href={`/?need=${encodeURIComponent(`${p.title} (${variant.sku})`)}#quote`} className="mt-3 inline-block text-sm text-ink-muted underline">
+                  {t("product.askInstead")}
                 </Link>
               </div>
             </div>
@@ -232,8 +233,9 @@ export default async function ProductPage({ params, searchParams }: Props) {
               <summary className="cursor-pointer px-5 py-4 text-sm font-medium text-ink">{t("product.otherOffers", { count: variant.otherOffers.length })}</summary>
               <ul className="divide-y divide-line border-t border-line">
                 {variant.otherOffers.map((o) => (
-                  <li key={o.id} className="px-5 py-4">
+                  <li key={o.id} className="flex flex-col gap-3 px-5 py-4">
                     <OfferLine offer={o} />
+                    {o.availability.kind !== "OUT_OF_STOCK" ? <AddToCart sku={variant.sku} offerId={o.id} max={null} secondary /> : null}
                   </li>
                 ))}
               </ul>

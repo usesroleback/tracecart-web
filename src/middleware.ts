@@ -23,7 +23,7 @@ function stripLocale(pathname: string): string {
  * otherwise redirects a browser's first visit through Clerk's servers, even
  * on pages that don't use it.
  */
-const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/s"]);
+const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/s", "/cart", "/shop"]);
 const ANONYMOUS_PREFIXES = ["/q/", "/legal/", "/c/", "/p/", "/b/"];
 
 function isAnonymousPage(bare: string): boolean {
@@ -40,7 +40,9 @@ const withClerk = clerkMiddleware(async (auth, req) => {
   // The login page reads the session itself (to explain "no access" etc.),
   // and the customer account page offers sign-up and sign-in itself.
   const bare = stripLocale(pathname);
-  if (bare !== "/login" && bare !== "/account" && bare !== "/ship") {
+  // Checkout and the account's orders ask for sign-in on the page (Clerk's modal), keeping the cart.
+  const signsInItself = bare === "/login" || bare === "/account" || bare.startsWith("/account/") || bare === "/ship" || bare === "/checkout" || bare.startsWith("/checkout/");
+  if (!signsInItself) {
     const { userId } = await auth();
     if (!userId) {
       // The path's locale, else the one last chosen (next-intl's cookie), else the default.

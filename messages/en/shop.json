@@ -1,36 +1,5 @@
 {
-  "meta": {
-    "title": "Shop — Tracecart"
-  },
-  "title": "Shop",
-  "loading": "Loading…",
   "onRequest": "Price on request",
   "allIn": "Delivered to your door, all included.",
-  "eta": "Delivery between {from} and {to}, once paid",
-  "buy": "Buy",
-  "buyingFor": "Delivered to {country}",
-  "close": "Close",
-  "quantity": "Quantity",
-  "howItWorks": "Once you confirm, we check the price and stock with the supplier and send you the quote by email. You pay only once you accept it.",
-  "staff": "Staff accounts can't buy from the shop.",
-  "city": "City",
-  "phone": "Phone (for the delivery)",
-  "address": "Delivery address",
-  "notes": "Anything we should know (optional)",
-  "confirm": "Confirm my order",
-  "failed": "Couldn't place the order",
-  "done": {
-    "title": "Order {reference} received.",
-    "body": "We check with the supplier and email you the quote shortly. The link below follows your order until it's at your door.",
-    "follow": "Follow my order",
-    "account": "My account"
-  },
-  "signedOut": "To buy, you need a free account: that's how we know who to deliver to and how to reply.",
-  "signUp": "Create a free account",
-  "signIn": "Sign in",
-  "featured": {
-    "title": "Popular",
-    "pending": "We're finding today's best prices…",
-    "buy": "Buy"
-  }
+  "eta": "Delivery between {from} and {to}, once paid"
 }

@@ -107,9 +107,6 @@
     "was": "Was {price}",
     "tiers": "From {quantity} units: {price} each",
     "delivery": "The delivery cost, any duties and the delivery date are worked out for your address at checkout, before you pay.",
-    "orderTitle": "Order it",
-    "orderLead": "Online checkout is opening soon. Until then, ask us for this tool: we confirm the price delivered to you, then you pay.",
-    "orderCta": "Ask for this tool",
     "otherOffers": "{count, plural, one {Another offer} other {# other offers}}",
     "specifications": "Specifications",
     "codes": "References",
@@ -145,7 +142,8 @@
       "FREQUENTLY_BOUGHT_WITH_from": "Often bought together",
       "FREQUENTLY_BOUGHT_WITH_to": "Often bought together"
     },
-    "related": "More in {category}"
+    "related": "More in {category}",
+    "askInstead": "Can't find what you need? Ask us for it"
   },
   "brands": {
     "title": "Brands",

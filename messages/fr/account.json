@@ -43,5 +43,6 @@
     },
     "ship": "Expédition",
     "to": "vers {destination}"
-  }
+  },
+  "orders": "Mes commandes"
 }

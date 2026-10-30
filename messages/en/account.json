@@ -43,5 +43,6 @@
     },
     "ship": "Shipment",
     "to": "to {destination}"
-  }
+  },
+  "orders": "My orders"
 }

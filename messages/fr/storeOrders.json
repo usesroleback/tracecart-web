@@ -1,0 +1,55 @@
+{
+  "title": "Commandes boutique",
+  "lead": "Les commandes passées dans la boutique, les plus récentes d'abord.",
+  "search": "Référence, nom ou e-mail du client",
+  "status": "Statut",
+  "allStatuses": "Tous les statuts",
+  "find": "Rechercher",
+  "empty": "Aucune commande ne correspond.",
+  "more": "Afficher plus",
+  "columns": {
+    "order": "Commande",
+    "customer": "Client",
+    "status": "Statut",
+    "payment": "Paiement",
+    "total": "Total",
+    "promise": "Promise pour le",
+    "item": "Article",
+    "item_total": "Articles",
+    "shipping": "Livraison",
+    "duties": "Droits, taxes, frais"
+  },
+  "methods": {
+    "CINETPAY": "CinetPay",
+    "CASH_ON_DELIVERY": "Paiement à la livraison",
+    "BANK_TRANSFER": "Virement bancaire",
+    "FAKE": "Paiement de test"
+  },
+  "paymentStatus": {
+    "PENDING": "En attente",
+    "AUTHORIZED": "Autorisé",
+    "CAPTURED": "Reçu",
+    "PARTIALLY_REFUNDED": "Remboursé en partie",
+    "REFUNDED": "Remboursé",
+    "FAILED": "Échoué",
+    "CANCELLED": "Annulé",
+    "EXPIRED": "Expiré"
+  },
+  "fulfillment": {
+    "TRACECART_STOCK": "Stock Tracecart",
+    "SELLER_FULFILLED": "Expédié par le vendeur",
+    "FULFILLED_BY_TRACECART": "Stock vendeur, expédié par Tracecart",
+    "CROSS_BORDER": "Import"
+  },
+  "lines": "Lignes et prix figés",
+  "history": "Historique",
+  "address": "Livrée à",
+  "pickup": "Point relais",
+  "promise": "Promise entre le {from} et le {to}",
+  "payments": "Paiements",
+  "confirmTransfer": "Enregistrer le virement comme reçu",
+  "invoice": "Facture {number} (PDF)",
+  "cancel": "Annuler la commande",
+  "cancelReason": "Pourquoi (le client est prévenu de l'annulation)",
+  "cancelCta": "Annuler la commande"
+}

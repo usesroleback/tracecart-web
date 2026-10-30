@@ -107,9 +107,6 @@
     "was": "Avant {price}",
     "tiers": "À partir de {quantity} unités : {price} l'unité",
     "delivery": "Le coût de livraison, les droits éventuels et la date de livraison sont calculés pour votre adresse au moment de commander, avant de payer.",
-    "orderTitle": "Le commander",
-    "orderLead": "La commande en ligne ouvre bientôt. D'ici là, demandez-nous cet outil : nous confirmons le prix livré chez vous, puis vous payez.",
-    "orderCta": "Demander cet outil",
     "otherOffers": "{count, plural, one {Une autre offre} other {# autres offres}}",
     "specifications": "Caractéristiques",
     "codes": "Références",
@@ -145,7 +142,8 @@
       "FREQUENTLY_BOUGHT_WITH_from": "Souvent achetés ensemble",
       "FREQUENTLY_BOUGHT_WITH_to": "Souvent achetés ensemble"
     },
-    "related": "Plus dans {category}"
+    "related": "Plus dans {category}",
+    "askInstead": "Pas ce qu'il vous faut ? Demandez-le-nous"
   },
   "brands": {
     "title": "Marques",

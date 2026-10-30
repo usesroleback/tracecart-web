@@ -1,36 +1,5 @@
 {
-  "meta": {
-    "title": "Boutique — Tracecart"
-  },
-  "title": "Boutique",
-  "loading": "Chargement…",
   "onRequest": "Prix sur demande",
   "allIn": "Prix livré chez vous, tout compris.",
-  "eta": "Livraison entre le {from} et le {to}, après paiement",
-  "buy": "Acheter",
-  "buyingFor": "Livré en {country}",
-  "close": "Fermer",
-  "quantity": "Quantité",
-  "howItWorks": "Après confirmation, nous vérifions le prix et le stock auprès du fournisseur et vous envoyons le devis par email. Vous ne payez qu'après l'avoir accepté.",
-  "staff": "Les comptes du personnel ne peuvent pas acheter dans la boutique.",
-  "city": "Ville",
-  "phone": "Téléphone (pour la livraison)",
-  "address": "Adresse de livraison",
-  "notes": "Une précision (facultatif)",
-  "confirm": "Confirmer ma commande",
-  "failed": "Impossible de passer la commande",
-  "done": {
-    "title": "Commande {reference} reçue.",
-    "body": "Nous vérifions auprès du fournisseur et vous envoyons le devis par email très vite. Le lien ci-dessous suit votre commande jusqu'à votre porte.",
-    "follow": "Suivre ma commande",
-    "account": "Mon compte"
-  },
-  "signedOut": "Pour acheter, il faut un compte gratuit : nous savons ainsi à qui livrer et pouvons vous répondre.",
-  "signUp": "Créer un compte gratuit",
-  "signIn": "Se connecter",
-  "featured": {
-    "title": "Populaires",
-    "pending": "Nous cherchons les meilleurs prix du jour…",
-    "buy": "Acheter"
-  }
+  "eta": "Livraison entre le {from} et le {to}, après paiement"
 }

@@ -98,7 +98,12 @@ export function AccountArea() {
           <p className="rb-overline">{t("title")}</p>
           <h1 className="rb-headline mt-1 text-[32px]">{profile?.name}</h1>
         </div>
-        <Button href="/#quote">{t("requests.new")}</Button>
+        <div className="flex flex-wrap gap-2">
+          <Button href="/account/orders" variant="secondary">
+            {t("orders")}
+          </Button>
+          <Button href="/#quote">{t("requests.new")}</Button>
+        </div>
       </div>
 
       <Card padding={24}>

@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "checkout": "Commande",
+    "order": "Votre commande",
+    "pay": "Paiement",
+    "orders": "Mes commandes"
+  },
+  "cart": {
+    "title": "Panier",
+    "link": "Panier",
+    "linkWithCount": "{count, plural, one {Panier, # article} other {Panier, # articles}}",
+    "loading": "Chargement du panier…",
+    "quantity": "Quantité",
+    "add": "Ajouter au panier",
+    "adding": "Ajout…",
+    "added": "Ajouté au panier.",
+    "view": "Voir le panier",
+    "outOfStock": "Épuisé.",
+    "soldBy": "Vendu par {seller}",
+    "soldByTracecart": "Vendu par Tracecart",
+    "issues": {
+      "UNAVAILABLE": "N'est plus en vente : retirez-le pour commander.",
+      "OUT_OF_STOCK": "Épuisé : retirez-le ou gardez-le pour plus tard.",
+      "NOT_ENOUGH_STOCK": "Plus que {available} : baissez la quantité."
+    },
+    "priceChanged": "Le prix a changé depuis votre ajout (il était de {was}).",
+    "saveForLater": "Garder pour plus tard",
+    "moveToCart": "Remettre dans le panier",
+    "remove": "Retirer",
+    "empty": "Votre panier est vide.",
+    "browse": "Parcourir le catalogue",
+    "later": "Gardés pour plus tard",
+    "subtotal": "{count, plural, one {Articles (# article)} other {Articles (# articles)}}",
+    "deliveryAtCheckout": "La livraison, les droits éventuels et la date de livraison sont calculés pour votre adresse au moment de commander, avant de payer.",
+    "checkout": "Commander",
+    "notReady": "Réglez les lignes en rouge pour commander.",
+    "unavailable": "Cette offre n'est plus disponible : rechargez la page."
+  },
+  "checkout": {
+    "title": "Commande",
+    "loading": "Chargement…",
+    "signIn": {
+      "title": "Connectez-vous pour commander",
+      "lead": "Votre panier vous suit. Nous vous donnons des nouvelles de votre commande par e-mail.",
+      "signIn": "Se connecter",
+      "signUp": "Créer un compte"
+    },
+    "staff": "C'est un compte de l'équipe : les comptes de l'équipe n'achètent pas dans la boutique.",
+    "failed": "La commande n'a pas pu se charger. Réessayez dans un instant.",
+    "emptyCart": "Il n'y a rien à commander dans votre panier.",
+    "backToCart": "Retour au panier",
+    "delivery": "Livraison",
+    "methods": {
+      "HOME": "À une adresse",
+      "PICKUP": "En point relais"
+    },
+    "addAddress": "Ajouter une adresse",
+    "country": "Pays",
+    "noPickupPoints": "Pas encore de point relais dans ce pays.",
+    "pickupPhone": "Téléphone pour le code de retrait",
+    "pickupPhoneHint": "Facultatif si votre compte en a un.",
+    "payment": "Paiement",
+    "paymentMethods": {
+      "CINETPAY": "Mobile money ou carte",
+      "CASH_ON_DELIVERY": "Paiement à la livraison",
+      "BANK_TRANSFER": "Virement bancaire",
+      "FAKE": "Paiement de test"
+    },
+    "paymentHints": {
+      "CINETPAY": "Orange Money, Moov, Wave, MTN, Visa ou Mastercard, sur la page sécurisée de CinetPay.",
+      "CASH_ON_DELIVERY": "Payez le total exact à la livraison. Rien de plus.",
+      "BANK_TRANSFER": "Nous confirmons la commande à réception du virement ; les articles vous sont réservés d'ici là.",
+      "FAKE": "Pour les tests : aucun argent ne circule."
+    },
+    "blockers": {
+      "NOT_CONFIGURED": "Pas encore disponible.",
+      "AMOUNT_NOT_MULTIPLE_OF_5": "Ce total ne peut pas être payé ainsi.",
+      "COD_NOT_HERE": "Pas proposé à cette destination.",
+      "COD_CROSS_BORDER": "Pas pour les articles commandés à l'étranger.",
+      "COD_OVER_LIMIT": "Au-delà du plafond du paiement à la livraison.",
+      "COD_NEEDS_PHONE": "Il faut un numéro de téléphone.",
+      "NO_BANK_DETAILS": "Pas encore disponible.",
+      "NOT_ENABLED": "Indisponible."
+    },
+    "note": "Un mot pour la livraison (facultatif)",
+    "summary": "Récapitulatif",
+    "chooseDelivery": "Choisissez où livrer pour voir le prix livré.",
+    "pricing": "Calcul du prix…",
+    "shipmentFrom": "Colis {index}, depuis {city}",
+    "shipmentAbroad": "Colis {index}, commandé à l'étranger, livré depuis {city}",
+    "totals": {
+      "items": "Articles",
+      "shipping": "Livraison",
+      "duties": "Droits de douane",
+      "taxes": "Taxes à l'importation",
+      "fees": "Frais de dédouanement",
+      "total": "Total"
+    },
+    "allIncluded": "Tout compris : rien de plus à payer à la livraison.",
+    "arrives": "Livré entre le {from} et le {to}.",
+    "problems": {
+      "NO_ZONE": "Nous ne livrons pas encore là-bas.",
+      "METHOD_UNAVAILABLE": "Ce mode de livraison n'est pas proposé là-bas : choisissez l'autre.",
+      "NO_WEIGHT": "La livraison de {sku} ne peut pas encore être calculée.",
+      "NO_ARRIVAL_WAREHOUSE": "Les articles commandés à l'étranger ne peuvent pas encore être livrés là-bas.",
+      "NO_ROUTE": "Nous ne pouvons pas encore acheminer certains articles là-bas.",
+      "NO_EXCHANGE_RATE": "Cette livraison ne peut pas être calculée pour le moment.",
+      "OTHER_CURRENCY": "{sku} est vendu dans une autre devise.",
+      "NO_CUSTOMS_RATE": "Les droits d'importation de {sku} ne peuvent pas encore être calculés.",
+      "UNAVAILABLE": "{sku} n'est plus en vente.",
+      "OUT_OF_STOCK": "{sku} est épuisé.",
+      "NOT_ENOUGH_STOCK": "Il ne reste pas assez de {sku}."
+    },
+    "priceChanged": "Le prix a changé : voici le nouveau total. Vérifiez-le et passez la commande à nouveau.",
+    "outOfStock": "Un article s'est épuisé entre-temps : le panier a été mis à jour.",
+    "place": "Passer la commande · {total}",
+    "placeNoTotal": "Passer la commande",
+    "placing": "Commande en cours…"
+  },
+  "address": {
+    "recipientName": "Nom",
+    "phone": "Téléphone",
+    "country": "Pays",
+    "city": "Ville",
+    "district": "Quartier",
+    "street": "Rue",
+    "landmark": "Point de repère",
+    "landmarkHint": "Comment un livreur la trouve : « derrière la station Total, portail bleu ».",
+    "save": "Enregistrer l'adresse",
+    "cancel": "Annuler"
+  },
+  "order": {
+    "loading": "Chargement de la commande…",
+    "signIn": "Connectez-vous pour voir cette commande.",
+    "signInCta": "Se connecter",
+    "headline": {
+      "thanks": "Merci : votre commande est confirmée",
+      "awaitingPayment": "Votre commande attend le paiement",
+      "awaitingTransfer": "Votre commande attend votre virement",
+      "cancelled": "Cette commande est annulée"
+    },
+    "status": {
+      "PENDING_PAYMENT": "En attente de paiement",
+      "PLACED": "Confirmée",
+      "PROCESSING": "En préparation",
+      "PARTIALLY_SHIPPED": "En partie expédiée",
+      "SHIPPED": "En route",
+      "PARTIALLY_DELIVERED": "En partie livrée",
+      "DELIVERED": "Livrée",
+      "COMPLETED": "Terminée",
+      "CANCELLED": "Annulée",
+      "ON_HOLD": "En attente"
+    },
+    "arrives": "Livrée entre le {from} et le {to}.",
+    "transfer": {
+      "title": "Virez {total} à :",
+      "reference": "Indiquez {reference} dans la référence du virement."
+    },
+    "payment": {
+      "waiting": "Nous n'avons pas encore reçu le paiement.",
+      "failed": "Le paiement n'a pas abouti.",
+      "pay": "Payer {total}"
+    },
+    "holdUntil": "Vos articles sont réservés jusqu'au {when}.",
+    "items": "Articles",
+    "totals": {
+      "shipping": "Livraison",
+      "duties": "Droits de douane",
+      "taxes": "Taxes à l'importation",
+      "fees": "Frais de dédouanement",
+      "total": "Total"
+    },
+    "deliverTo": "Livrée à",
+    "pickupPoint": "Point relais",
+    "paymentTitle": "Paiement",
+    "methods": {
+      "CINETPAY": "Mobile money ou carte",
+      "CASH_ON_DELIVERY": "Paiement à la livraison",
+      "BANK_TRANSFER": "Virement bancaire",
+      "FAKE": "Paiement de test"
+    },
+    "invoice": "Facture {number} (PDF)",
+    "cancel": "Annuler cette commande",
+    "confirmCancel": "Annuler cette commande ? Les articles sont remis en vente.",
+    "allOrders": "Toutes mes commandes"
+  },
+  "orders": {
+    "title": "Mes commandes",
+    "loading": "Chargement…",
+    "signIn": "Connectez-vous pour voir vos commandes",
+    "empty": "Pas encore de commande.",
+    "browse": "Parcourir le catalogue",
+    "andMore": "{count, plural, one {et # autre} other {et # autres}}",
+    "legacy": "Demandes et commandes précédentes"
+  },
+  "fakePay": {
+    "label": "Page de paiement de test",
+    "pay": "Payer",
+    "fail": "Faire échouer le paiement"
+  }
+}

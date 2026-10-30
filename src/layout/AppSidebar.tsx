@@ -35,6 +35,8 @@ type NavItem = {
   path: string;
   query?: Record<string, string>;
   count?: (c: Counts) => number | undefined;
+  /** Shown only to holders of this permission (display only). */
+  permission?: string;
 };
 
 type NavGroup = { /** Key under common.nav.groups. */ title?: string; items: NavItem[] };
@@ -78,6 +80,7 @@ const ADMIN_NAV: NavGroup[] = [
 const CATALOG_NAV: NavGroup = {
   title: "store",
   items: [
+    { icon: <DsPackageIcon />, name: "storeOrders", path: "/store-orders", permission: "orders.store.read" },
     { icon: <DsLayersIcon />, name: "catalog", path: "/catalog" },
     { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories" },
     { icon: <DsBuildingIcon />, name: "brands", path: "/catalog/brands" },
@@ -117,7 +120,12 @@ const AppSidebar: React.FC = () => {
   const [counts, setCounts] = useState<Counts>({});
   const isAdmin = user.role === "SUPER_ADMIN";
   const base = isAdmin ? ADMIN_NAV : user.role === "STAFF" ? STAFF_NAV : CARRIER_NAV;
-  const groups = user.permissions?.includes("catalog.read") ? [...base, CATALOG_NAV] : base;
+  const allowed = (i: NavItem) => !i.permission || !!user.permissions?.includes(i.permission);
+  const store: NavGroup = {
+    ...CATALOG_NAV,
+    items: CATALOG_NAV.items.filter((i) => (i.permission ? allowed(i) : !!user.permissions?.includes("catalog.read"))),
+  };
+  const groups = store.items.length ? [...base, store] : base;
   const showLabel = isExpanded || isHovered || isMobileOpen;
   const name = nameFromEmail(user.email);
 
@@ -128,6 +136,7 @@ const AppSidebar: React.FC = () => {
     if (pathname.startsWith("/orders/")) return !item.query && item.path === (isAdmin ? "/orders" : "/deliveries");
     // A product's page belongs to the catalogue list.
     if (pathname.startsWith("/catalog/products")) return item.path === "/catalog";
+    if (pathname.startsWith("/store-orders/")) return item.path === "/store-orders";
     const onPath = item.path === "/dashboard" ? pathname === "/dashboard" : pathname === item.path;
     if (!onPath) return false;
     // An item with a tab query is current on that tab; a plain item is current

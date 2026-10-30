@@ -45,7 +45,8 @@
     "categories": "Catégories",
     "brands": "Marques",
     "catalogImport": "Import et export",
-    "searchTuning": "Recherche"
+    "searchTuning": "Recherche",
+    "storeOrders": "Commandes"
   },
   "notifications": {
     "title": "Notifications",

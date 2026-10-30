@@ -7,7 +7,7 @@ import { Link } from "@/i18n/navigation";
 import Button from "@/components/ui/button/Button";
 import { useCountry } from "@/context/CountryContext";
 import { CustomerProfile, ensureCustomerAccount, StaffAccountError, updateProfile } from "@/lib/customer";
-import { BuyPanel, PriceBlock, ShopPrice } from "./ShopBuy";
+import { PriceBlock, ShopPrice } from "./PriceBlock";
 import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
 
 const inputClasses =
@@ -120,7 +120,6 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const [buying, setBuying] = useState<Suggestion | null>(null);
   const { country } = useCountry();
   const fileRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -164,7 +163,6 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
     setPhoto(file);
     setPreview(URL.createObjectURL(file));
     setResult(null);
-    setBuying(null);
   }
 
   function removePhoto() {
@@ -189,7 +187,6 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
     setProblem(null);
     setSearching(true);
     setChoice(null);
-    setBuying(null);
     try {
       const me = account ?? (await ensureCustomerAccount());
       setAccount(me);
@@ -378,11 +375,6 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
                             <PriceBlock price={s.price} compact />
                           </span>
                           <span className="mt-2 flex flex-wrap items-center gap-2">
-                            {s.offer && s.price?.priced && (
-                              <Button type="button" size="s" onClick={() => setBuying(s)}>
-                                {t("buy")}
-                              </Button>
-                            )}
                             <Button type="button" size="s" variant={chosen ? "primary" : "secondary"} aria-pressed={chosen} onClick={() => setChoice(s)}>
                               {chosen ? t("chosen") : t("thisOne")}
                             </Button>
@@ -393,9 +385,6 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
                   );
                 })}
               </ul>
-              {buying && buying.offer && buying.price && country && (
-                <BuyPanel key={buying.url} title={buying.title} offer={buying.offer} country={country} initialPrice={buying.price} onClose={() => setBuying(null)} />
-              )}
               <button
                 type="button"
                 className={`mt-3 text-sm ${choice === "none" ? "font-semibold text-ink" : "rb-link"}`}

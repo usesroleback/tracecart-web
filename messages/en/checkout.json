@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "checkout": "Checkout",
+    "order": "Your order",
+    "pay": "Payment",
+    "orders": "My orders"
+  },
+  "cart": {
+    "title": "Cart",
+    "link": "Cart",
+    "linkWithCount": "{count, plural, one {Cart, # item} other {Cart, # items}}",
+    "loading": "Loading the cart…",
+    "quantity": "Quantity",
+    "add": "Add to cart",
+    "adding": "Adding…",
+    "added": "Added to the cart.",
+    "view": "See the cart",
+    "outOfStock": "Out of stock.",
+    "soldBy": "Sold by {seller}",
+    "soldByTracecart": "Sold by Tracecart",
+    "issues": {
+      "UNAVAILABLE": "No longer for sale: remove it to check out.",
+      "OUT_OF_STOCK": "Out of stock: remove it or save it for later.",
+      "NOT_ENOUGH_STOCK": "Only {available} left: lower the quantity."
+    },
+    "priceChanged": "The price has changed since you added it (it was {was}).",
+    "saveForLater": "Save for later",
+    "moveToCart": "Move to the cart",
+    "remove": "Remove",
+    "empty": "Your cart is empty.",
+    "browse": "Browse the catalogue",
+    "later": "Saved for later",
+    "subtotal": "{count, plural, one {Items (# item)} other {Items (# items)}}",
+    "deliveryAtCheckout": "Delivery, any duties and the delivery date are worked out for your address at checkout, before you pay.",
+    "checkout": "Check out",
+    "notReady": "Sort out the lines marked in red to check out.",
+    "unavailable": "This offer is no longer available: reload the page."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "loading": "Loading…",
+    "signIn": {
+      "title": "Sign in to check out",
+      "lead": "Your cart comes with you. We send your order's news by email.",
+      "signIn": "Sign in",
+      "signUp": "Create an account"
+    },
+    "staff": "This is a staff account: staff accounts don't buy from the store.",
+    "failed": "Checkout couldn't load. Try again in a moment.",
+    "emptyCart": "There's nothing to check out in your cart.",
+    "backToCart": "Back to the cart",
+    "delivery": "Delivery",
+    "methods": {
+      "HOME": "To an address",
+      "PICKUP": "To a pickup point"
+    },
+    "addAddress": "Add an address",
+    "country": "Country",
+    "noPickupPoints": "No pickup point in this country yet.",
+    "pickupPhone": "Phone for the collection code",
+    "pickupPhoneHint": "Optional if your account has one.",
+    "payment": "Payment",
+    "paymentMethods": {
+      "CINETPAY": "Mobile money or card",
+      "CASH_ON_DELIVERY": "Cash on delivery",
+      "BANK_TRANSFER": "Bank transfer",
+      "FAKE": "Test payment"
+    },
+    "paymentHints": {
+      "CINETPAY": "Orange Money, Moov, Wave, MTN, Visa or Mastercard, on CinetPay's secure page.",
+      "CASH_ON_DELIVERY": "Pay the exact total when it's delivered. Nothing more.",
+      "BANK_TRANSFER": "We confirm the order when the transfer arrives; the items are held for you meanwhile.",
+      "FAKE": "For tests: no money moves."
+    },
+    "blockers": {
+      "NOT_CONFIGURED": "Not available yet.",
+      "AMOUNT_NOT_MULTIPLE_OF_5": "This total can't be paid this way.",
+      "COD_NOT_HERE": "Not offered where this goes.",
+      "COD_CROSS_BORDER": "Not for items ordered from abroad.",
+      "COD_OVER_LIMIT": "Over the limit for cash on delivery.",
+      "COD_NEEDS_PHONE": "Needs a phone number.",
+      "NO_BANK_DETAILS": "Not available yet.",
+      "NOT_ENABLED": "Not available."
+    },
+    "note": "A note for the delivery (optional)",
+    "summary": "Summary",
+    "chooseDelivery": "Choose where it goes to see the delivered price.",
+    "pricing": "Working out the price…",
+    "shipmentFrom": "Parcel {index}, from {city}",
+    "shipmentAbroad": "Parcel {index}, ordered from abroad, delivered from {city}",
+    "totals": {
+      "items": "Items",
+      "shipping": "Delivery",
+      "duties": "Customs duties",
+      "taxes": "Import taxes",
+      "fees": "Customs clearance",
+      "total": "Total"
+    },
+    "allIncluded": "Everything included: nothing more to pay on delivery.",
+    "arrives": "Delivered between {from} and {to}.",
+    "problems": {
+      "NO_ZONE": "We don't deliver there yet.",
+      "METHOD_UNAVAILABLE": "This way of delivering isn't offered there: choose the other.",
+      "NO_WEIGHT": "{sku} can't be priced for delivery yet.",
+      "NO_ARRIVAL_WAREHOUSE": "Items ordered from abroad can't be delivered there yet.",
+      "NO_ROUTE": "We can't bring some items there yet.",
+      "NO_EXCHANGE_RATE": "This delivery can't be priced right now.",
+      "OTHER_CURRENCY": "{sku} is sold in another currency.",
+      "NO_CUSTOMS_RATE": "Import duties for {sku} can't be worked out yet.",
+      "UNAVAILABLE": "{sku} is no longer for sale.",
+      "OUT_OF_STOCK": "{sku} is out of stock.",
+      "NOT_ENOUGH_STOCK": "Not enough {sku} left."
+    },
+    "priceChanged": "The price changed: here's the new total. Check it and place the order again.",
+    "outOfStock": "An item ran out meanwhile: the cart has been updated.",
+    "place": "Place the order · {total}",
+    "placeNoTotal": "Place the order",
+    "placing": "Placing the order…"
+  },
+  "address": {
+    "recipientName": "Name",
+    "phone": "Phone",
+    "country": "Country",
+    "city": "City",
+    "district": "District",
+    "street": "Street",
+    "landmark": "Landmark",
+    "landmarkHint": "How a driver finds it: \"behind the Total station, blue gate\".",
+    "save": "Save the address",
+    "cancel": "Cancel"
+  },
+  "order": {
+    "loading": "Loading the order…",
+    "signIn": "Sign in to see this order.",
+    "signInCta": "Sign in",
+    "headline": {
+      "thanks": "Thank you: your order is confirmed",
+      "awaitingPayment": "Your order is waiting for payment",
+      "awaitingTransfer": "Your order is waiting for your transfer",
+      "cancelled": "This order is cancelled"
+    },
+    "status": {
+      "PENDING_PAYMENT": "Waiting for payment",
+      "PLACED": "Confirmed",
+      "PROCESSING": "Being prepared",
+      "PARTIALLY_SHIPPED": "Partly on its way",
+      "SHIPPED": "On its way",
+      "PARTIALLY_DELIVERED": "Partly delivered",
+      "DELIVERED": "Delivered",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled",
+      "ON_HOLD": "On hold"
+    },
+    "arrives": "Delivered between {from} and {to}.",
+    "transfer": {
+      "title": "Transfer {total} to:",
+      "reference": "Put {reference} in the transfer's reference."
+    },
+    "payment": {
+      "waiting": "We haven't received the payment yet.",
+      "failed": "The payment didn't go through.",
+      "pay": "Pay {total}"
+    },
+    "holdUntil": "Your items are held until {when}.",
+    "items": "Items",
+    "totals": {
+      "shipping": "Delivery",
+      "duties": "Customs duties",
+      "taxes": "Import taxes",
+      "fees": "Customs clearance",
+      "total": "Total"
+    },
+    "deliverTo": "Delivered to",
+    "pickupPoint": "Pickup point",
+    "paymentTitle": "Payment",
+    "methods": {
+      "CINETPAY": "Mobile money or card",
+      "CASH_ON_DELIVERY": "Cash on delivery",
+      "BANK_TRANSFER": "Bank transfer",
+      "FAKE": "Test payment"
+    },
+    "invoice": "Invoice {number} (PDF)",
+    "cancel": "Cancel this order",
+    "confirmCancel": "Cancel this order? The items go back on sale.",
+    "allOrders": "All my orders"
+  },
+  "orders": {
+    "title": "My orders",
+    "loading": "Loading…",
+    "signIn": "Sign in to see your orders",
+    "empty": "No order yet.",
+    "browse": "Browse the catalogue",
+    "andMore": "{count, plural, one {and # more} other {and # more}}",
+    "legacy": "Earlier requests and orders"
+  },
+  "fakePay": {
+    "label": "Test payment page",
+    "pay": "Pay",
+    "fail": "Fail the payment"
+  }
+}
