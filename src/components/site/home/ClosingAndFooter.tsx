@@ -28,7 +28,7 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
   const links = [
     { label: f("home"), href: "/" },
     { label: f("howItWorks"), href: closing ? "#process" : "/about#process", active: closing },
-    { label: f("ship"), href: "/ship" },
+    { label: f("ship"), href: "/freight" },
   ];
 
   return (

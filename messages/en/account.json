@@ -44,5 +44,32 @@
     "ship": "Shipment",
     "to": "to {destination}"
   },
-  "orders": "My orders"
+  "orders": "My orders",
+  "quotes": {
+    "title": "Quotes",
+    "status": {
+      "SENT": "Waiting for your answer",
+      "ACCEPTED": "Accepted",
+      "DECLINED": "Declined",
+      "EXPIRED": "Expired",
+      "WITHDRAWN": "Replaced"
+    },
+    "validUntil": "valid until {date}",
+    "open": "See and accept",
+    "see": "See"
+  },
+  "freight": {
+    "title": "Freight requests",
+    "new": "Move goods",
+    "route": "{from} → {to}",
+    "status": {
+      "SUBMITTED": "Waiting for a quote",
+      "QUOTED": "Quote sent",
+      "ACCEPTED": "Accepted",
+      "CANCELLED": "Cancelled",
+      "CLOSED": "Closed"
+    },
+    "quoteWaiting": "A quote is waiting",
+    "see": "See"
+  }
 }

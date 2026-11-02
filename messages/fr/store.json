@@ -23,7 +23,8 @@
     "suggestedCategories": "Catégories",
     "suggestedBrands": "Marques",
     "seeAll": "Tous les résultats pour « {query} »",
-    "didYouMean": "Vouliez-vous dire « {query} » ?"
+    "didYouMean": "Vouliez-vous dire « {query} » ?",
+    "aiSearch": "Chercher avec une photo"
   },
   "home": {
     "title": "Les outils qu'il vous faut, livrés là où les autres ne vont pas.",
@@ -76,12 +77,23 @@
     "emptyLead": "Retirez un filtre, ou décrivez ce qu'il vous faut et nous le trouvons pour vous.",
     "emptySearchTitle": "Aucun produit ne correspond à « {query} »",
     "emptySearchLead": "Vérifiez l'orthographe, essayez un mot plus général, ou décrivez-le et nous le trouvons pour vous.",
-    "askUs": "Nous demander de le trouver",
+    "askUs": "Trouvez-le pour moi",
     "truncated": "Seuls les premiers résultats sont affichés : ajoutez un mot ou un filtre pour affiner.",
     "pagination": "Pages",
     "page": "Page {page} sur {pages}",
     "previous": "Précédente",
-    "next": "Suivante"
+    "next": "Suivante",
+    "searchWithPhoto": "Chercher avec une photo",
+    "interpreted": {
+      "lead": "Lu dans votre recherche :",
+      "remove": "Chercher sans {filter}",
+      "priceMax": "Moins de {amount}",
+      "priceMin": "Plus de {amount}",
+      "brand": "Marque : {brand}",
+      "used": "D'occasion",
+      "refurbished": "Reconditionné",
+      "inStock": "En stock près de vous"
+    }
   },
   "card": {
     "offers": "{count, plural, one {# offre} other {# offres}}",

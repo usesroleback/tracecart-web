@@ -1,0 +1,33 @@
+{
+  "title": "Chercher avec une photo",
+  "lead": "Montrez-nous l'outil, la pièce ou sa plaque signalétique, ou décrivez-le avec vos mots. Nous le lisons, le cherchons dans le catalogue et disons pourquoi chaque résultat correspond.",
+  "describe": "Décrivez-le",
+  "describePlaceholder": "« Perceuse-visseuse 18 V qui prend les batteries Voltix », une référence, à quoi il sert…",
+  "addFile": "Ajouter une photo ou une vidéo",
+  "changeFile": "Changer de fichier",
+  "removeFile": "Retirer",
+  "fileHint": "Une photo (PNG, JPEG, WebP, 5 Mo) ou une vidéo de 30 secondes au plus.",
+  "search": "Chercher",
+  "searching": "Lecture et recherche…",
+  "needSomething": "Décrivez l'outil ou ajoutez une photo.",
+  "rateLimited": "Trop de recherches pour le moment. Réessayez dans quelques minutes.",
+  "failed": "La recherche n'a pas abouti. Réessayez.",
+  "limited": "La lecture des photos n'est pas disponible pour le moment : nous avons cherché vos mots.",
+  "notAProduct": "Nous ne voyons ni outil ni pièce dans ce fichier. Décrivez-le avec des mots.",
+  "understood": "Ce que nous avons lu",
+  "unnamed": "Pas identifié précisément",
+  "refine": "Affiner",
+  "nothing": "Rien dans le catalogue ne correspond pour l'instant.",
+  "needsDescription": "Décrivez-le en quelques mots et nous cherchons à nouveau.",
+  "notIt": "Ce n'est pas ce qu'il vous faut ?",
+  "notItLead": "Demandez-nous de le trouver : un agent le cherche et vous envoie un prix qui comprend tout jusqu'à votre porte.",
+  "findForMe": "Trouvez-le pour moi",
+  "reasons": {
+    "identifier": "Même modèle : {code}",
+    "brand": "{brand}",
+    "category": "{category}",
+    "attribute": "{label} : {value}",
+    "words": "Vos mots",
+    "looksLike": "Lui ressemble"
+  }
+}

@@ -375,10 +375,19 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
   );
 }
 
-function AddressForm({ onSaved, onCancel }: { onSaved: (id: string) => Promise<void>; onCancel?: () => void }) {
+/** A new delivery address; `fixed` sets its country and city (a quote priced for one place). */
+export function AddressForm({ onSaved, onCancel, fixed }: { onSaved: (id: string) => Promise<void>; onCancel?: () => void; fixed?: { countryCode: string; city: string } }) {
   const t = useTranslations("checkout.address");
   const locale = useLocale();
-  const [f, setF] = useState({ recipientName: "", phone: "", countryCode: typeof document === "undefined" ? "BF" : savedCountry(), city: "", district: "", street: "", landmark: "" });
+  const [f, setF] = useState({
+    recipientName: "",
+    phone: "",
+    countryCode: fixed?.countryCode ?? (typeof document === "undefined" ? "BF" : savedCountry()),
+    city: fixed?.city ?? "",
+    district: "",
+    street: "",
+    landmark: "",
+  });
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const set = (k: keyof typeof f) => (e: { target: { value: string } }) => setF((x) => ({ ...x, [k]: e.target.value }));
@@ -406,7 +415,7 @@ function AddressForm({ onSaved, onCancel }: { onSaved: (id: string) => Promise<v
         <input className={input} type="tel" value={f.phone} onChange={set("phone")} required placeholder="+226 70 00 00 00" autoComplete="tel" />
       </Field>
       <Field label={t("country")}>
-        <select className={input} value={f.countryCode} onChange={set("countryCode")}>
+        <select className={input} value={f.countryCode} onChange={set("countryCode")} disabled={!!fixed}>
           {COUNTRY_CODES.map((c) => (
             <option key={c} value={c}>
               {countryName(c, locale)}
@@ -415,7 +424,7 @@ function AddressForm({ onSaved, onCancel }: { onSaved: (id: string) => Promise<v
         </select>
       </Field>
       <Field label={t("city")}>
-        <input className={input} value={f.city} onChange={set("city")} required maxLength={80} autoComplete="address-level2" />
+        <input className={input} value={f.city} onChange={set("city")} required maxLength={80} autoComplete="address-level2" readOnly={!!fixed} />
       </Field>
       <Field label={t("district")}>
         <input className={input} value={f.district} onChange={set("district")} maxLength={80} />

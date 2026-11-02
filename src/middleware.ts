@@ -21,9 +21,10 @@ function stripLocale(pathname: string): string {
  * brands, search), /about, the customer quote page (/q/*) and the legal
  * pages. They skip Clerk entirely — with a development Clerk key, Clerk
  * otherwise redirects a browser's first visit through Clerk's servers, even
- * on pages that don't use it.
+ * on pages that don't use it. /freight is here too: anyone gets an estimate,
+ * and asking for the firm quote signs in over the page (client side).
  */
-const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/s", "/cart", "/shop"]);
+const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/s", "/s/ai", "/freight", "/cart", "/shop"]);
 const ANONYMOUS_PREFIXES = ["/q/", "/legal/", "/c/", "/p/", "/b/"];
 
 function isAnonymousPage(bare: string): boolean {
@@ -40,8 +41,9 @@ const withClerk = clerkMiddleware(async (auth, req) => {
   // The login page reads the session itself (to explain "no access" etc.),
   // and the customer account page offers sign-up and sign-in itself.
   const bare = stripLocale(pathname);
-  // Checkout and the account's orders ask for sign-in on the page (Clerk's modal), keeping the cart.
-  const signsInItself = bare === "/login" || bare === "/account" || bare.startsWith("/account/") || bare === "/ship" || bare === "/checkout" || bare.startsWith("/checkout/");
+  // Checkout, the account's pages and "Find it for me" ask for sign-in on the page (Clerk's modal), keeping what was typed.
+  const signsInItself =
+    bare === "/login" || bare === "/account" || bare.startsWith("/account/") || bare === "/ship" || bare === "/find" || bare === "/checkout" || bare.startsWith("/checkout/");
   if (!signsInItself) {
     const { userId } = await auth();
     if (!userId) {

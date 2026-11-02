@@ -32,7 +32,7 @@ const LINKS = [
   { key: "home", href: "/" },
   { key: "catalogue", href: "/c" },
   { key: "brands", href: "/brands" },
-  { key: "ship", href: "/ship" },
+  { key: "ship", href: "/freight" },
   { key: "about", href: "/about" },
 ] as const;
 

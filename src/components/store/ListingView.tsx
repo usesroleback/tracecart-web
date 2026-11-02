@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { getTranslations } from "next-intl/server";
+import { getFormatter, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import {
   carriedFields,
@@ -304,6 +304,34 @@ async function Pagination({ listing, state, path }: { listing: ProductListing; s
   );
 }
 
+/** Filters read from the search's words ("moins de 50 000 F", a brand…), each a link that searches without it. */
+async function ReadFromQuery({ listing, state, path, currency }: { listing: ProductListing; state: ListingState; path: string; currency: string }) {
+  if (!listing.interpreted?.length) return null;
+  const t = await getTranslations("store.listing.interpreted");
+  const format = await getFormatter();
+  const money = (minor: number | null) => `${format.number(toMajor(minor ?? 0, currency))} ${currency}`;
+  const label = (f: ProductListing["interpreted"][number]) =>
+    f.kind === "priceMax"
+      ? t("priceMax", { amount: money(f.amountMinor) })
+      : f.kind === "priceMin"
+        ? t("priceMin", { amount: money(f.amountMinor) })
+        : f.kind === "brand"
+          ? t("brand", { brand: f.label ?? f.value ?? "" })
+          : f.kind === "condition"
+            ? t(f.value === "USED" ? "used" : "refurbished")
+            : t("inStock");
+  return (
+    <p className="mb-4 flex flex-wrap items-center gap-2 text-sm">
+      <span className="text-ink-muted">{t("lead")}</span>
+      {listing.interpreted.map((f) => (
+        <Link key={`${f.kind}:${f.phrase}`} href={listingHref(path, { ...state, q: f.removeQuery || undefined, page: undefined })} rel="nofollow" aria-label={t("remove", { filter: label(f) })} className={chip(true)}>
+          {label(f)} <span aria-hidden>×</span>
+        </Link>
+      ))}
+    </p>
+  );
+}
+
 /**
  * A category, brand or search page: heading, filters (a sidebar on large
  * screens, a fold-out on phones), sort, the products and the pages. Every
@@ -372,6 +400,7 @@ export async function ListingView({
             <div className="border-t border-line px-4 py-4">{panel}</div>
           </details>
           <ActiveFilters listing={listing} state={state} path={path} currency={currency} />
+          <ReadFromQuery listing={listing} state={state} path={path} currency={currency} />
           {listing.correctedQuery && state.q ? (
             <p className="mb-4 rounded-[var(--radius-s)] bg-surface-sunken px-4 py-3 text-sm text-ink">{t("corrected", { corrected: listing.correctedQuery, query: state.q })}</p>
           ) : null}

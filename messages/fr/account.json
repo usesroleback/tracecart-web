@@ -44,5 +44,32 @@
     "ship": "Expédition",
     "to": "vers {destination}"
   },
-  "orders": "Mes commandes"
+  "orders": "Mes commandes",
+  "quotes": {
+    "title": "Devis",
+    "status": {
+      "SENT": "En attente de votre réponse",
+      "ACCEPTED": "Accepté",
+      "DECLINED": "Refusé",
+      "EXPIRED": "Expiré",
+      "WITHDRAWN": "Remplacé"
+    },
+    "validUntil": "valable jusqu'au {date}",
+    "open": "Voir et accepter",
+    "see": "Voir"
+  },
+  "freight": {
+    "title": "Demandes de fret",
+    "new": "Faire transporter",
+    "route": "{from} → {to}",
+    "status": {
+      "SUBMITTED": "En attente de devis",
+      "QUOTED": "Devis envoyé",
+      "ACCEPTED": "Accepté",
+      "CANCELLED": "Annulée",
+      "CLOSED": "Clôturée"
+    },
+    "quoteWaiting": "Un devis vous attend",
+    "see": "Voir"
+  }
 }

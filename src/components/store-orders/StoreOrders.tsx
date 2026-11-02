@@ -26,6 +26,13 @@ const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"
   EXPIRED: "critical",
 };
 
+// A quoted order's next step, recorded by staff until shipments exist (ADR-038).
+const PROGRESS: Record<string, "fulfil.start" | "fulfil.ship" | "fulfil.deliver" | undefined> = {
+  PLACED: "fulfil.start",
+  PROCESSING: "fulfil.ship",
+  SHIPPED: "fulfil.deliver",
+};
+
 interface Row {
   id: string;
   reference: string;
@@ -163,7 +170,7 @@ type StaffOrder = OrderView & {
 };
 
 /** One store order in the console: lines, payments, holds, history; cancel and confirm a transfer. */
-export function StoreOrderDetail({ id, canCancel, canConfirm }: { id: string; canCancel: boolean; canConfirm: boolean }) {
+export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil }: { id: string; canCancel: boolean; canConfirm: boolean; canFulfil: boolean }) {
   const t = useTranslations("storeOrders");
   const ts = useTranslations("checkout.order.status");
   const format = useFormat();
@@ -205,6 +212,7 @@ export function StoreOrderDetail({ id, canCancel, canConfirm }: { id: string; ca
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="rb-headline rb-mono text-[26px]">{order.reference}</h1>
           <Badge variant={TONE[order.status] ?? "default"}>{ts(order.status as "PLACED")}</Badge>
+          {order.kind !== "PRODUCTS" ? <Badge variant="info">{t(`kind.${order.kind}`)}</Badge> : null}
         </div>
         <p className="mt-1 text-sm text-ink-muted">
           {order.customer.name} · {order.customer.email}
@@ -232,7 +240,7 @@ export function StoreOrderDetail({ id, canCancel, canConfirm }: { id: string; ca
                   <td className="py-2">
                     {l.title} × {l.quantity}
                     <p className="rb-mono-s text-ink-muted">
-                      {l.sku} · {t(`fulfillment.${l.fulfillmentType}` as "fulfillment.TRACECART_STOCK")} · {l.status}
+                      {l.sku} · {l.fulfillmentType ? t(`fulfillment.${l.fulfillmentType}` as "fulfillment.TRACECART_STOCK") : t("kind.FREIGHT")} · {l.status}
                     </p>
                   </td>
                   <td className="rb-numeral py-2 text-right">{money(l.breakdown.itemMinor)}</td>
@@ -269,9 +277,9 @@ export function StoreOrderDetail({ id, canCancel, canConfirm }: { id: string; ca
               </p>
             ) : (
               <p>
-                {d.recipientName} · {d.phone}
+                {d.recipientName ?? d.contactName} · {d.phone}
                 <br />
-                {[d.street, d.district, d.city, d.countryCode].filter(Boolean).join(", ")}
+                {[d.street, d.addressLine, d.district, d.city, d.countryCode].filter(Boolean).join(", ")}
                 <br />
                 <span className="text-ink-muted">{d.landmark}</span>
               </p>
@@ -300,6 +308,15 @@ export function StoreOrderDetail({ id, canCancel, canConfirm }: { id: string; ca
               </a>
             ) : null}
           </div>
+          {canFulfil && order.kind !== "PRODUCTS" && PROGRESS[order.status] ? (
+            <div className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm">
+              <h2 className="rb-label mb-2">{t("progress.title")}</h2>
+              <p className="mb-3 text-ink-muted">{t("progress.hint")}</p>
+              <Button variant="primary" loading={busy} onClick={() => act(() => call<StaffOrder>("POST", `/store-orders/${order.id}/progress`, { event: PROGRESS[order.status] }))}>
+                {t(`progress.${PROGRESS[order.status]!.replace("fulfil.", "")}` as "progress.start")}
+              </Button>
+            </div>
+          ) : null}
           {canCancel && !["CANCELLED", "SHIPPED", "DELIVERED", "COMPLETED", "PARTIALLY_SHIPPED", "PARTIALLY_DELIVERED"].includes(order.status) ? (
             <form
               className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm"

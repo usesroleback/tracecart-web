@@ -2,7 +2,7 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useId, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { browserApi } from "@/lib/api/client";
 import type { components } from "@/lib/api/schema";
 import { useCountry } from "@/context/CountryContext";
@@ -155,6 +155,18 @@ export function SearchBox({ initialQuery = "", autoFocus = false, size = "m" }: 
             <path d="m13.5 13.5 3.5 3.5" strokeLinecap="round" />
           </svg>
         </button>
+        {/* Search by photo, video or a longer description (the AI search). */}
+        <Link
+          href={q ? `/s/ai?q=${encodeURIComponent(q)}` : "/s/ai"}
+          aria-label={t("aiSearch")}
+          title={t("aiSearch")}
+          className={`${height} ml-2 inline-flex shrink-0 items-center justify-center rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-ink hover:border-ink`}
+        >
+          <svg viewBox="0 0 20 20" aria-hidden className="size-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <path d="M3 7h3l1.5-2h5L14 7h3v9H3z" strokeLinejoin="round" />
+            <circle cx="10" cy="11" r="3" />
+          </svg>
+        </Link>
       </form>
       {showList ? (
         <ul id={`${id}-list`} role="listbox" aria-label={t("suggestions")} className="absolute inset-x-0 top-full z-40 mt-1 max-h-[70vh] overflow-y-auto rounded-[var(--radius-s)] border border-line bg-surface-raised pb-1 shadow-[var(--shadow-1)]">

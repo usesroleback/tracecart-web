@@ -182,7 +182,13 @@
     "invoice": "Invoice {number} (PDF)",
     "cancel": "Cancel this order",
     "confirmCancel": "Cancel this order? The items go back on sale.",
-    "allOrders": "All my orders"
+    "allOrders": "All my orders",
+    "kind": {
+      "PRODUCTS": "Store",
+      "SOURCING": "Found for you",
+      "FREIGHT": "Freight"
+    },
+    "progress": "Progress"
   },
   "orders": {
     "title": "My orders",

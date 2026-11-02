@@ -9,6 +9,10 @@ import { Status, StatusState } from "@/components/ui/status/Status";
 import { useFormat } from "@/lib/format";
 import { CustomerProfile, CustomerRequest, ensureCustomerAccount, listRequests, StaffAccountError, updateProfile } from "@/lib/customer";
 import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
+import { Link } from "@/i18n/navigation";
+import { toMajor } from "@/lib/currency";
+import { call } from "@/components/checkout/http";
+import type { CustomerQuote, FreightListItem } from "@/components/services/types";
 
 const input =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -29,6 +33,8 @@ export function AccountArea() {
   const [state, setState] = useState<"loading" | "staff" | "failed" | "ready">("loading");
   const [profile, setProfile] = useState<CustomerProfile | null>(null);
   const [requests, setRequests] = useState<CustomerRequest[]>([]);
+  const [quotes, setQuotes] = useState<CustomerQuote[]>([]);
+  const [freight, setFreight] = useState<FreightListItem[]>([]);
   const [draft, setDraft] = useState({ name: "", phone: "" });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -36,11 +42,13 @@ export function AccountArea() {
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
     ensureCustomerAccount()
-      .then(async (p) => [p, await listRequests()] as const)
-      .then(([p, list]) => {
+      .then(async (p) => [p, ...(await Promise.all([listRequests(), call<{ quotes: CustomerQuote[] }>("GET", "/me/quotes"), call<{ requests: FreightListItem[] }>("GET", "/me/freight-requests")]))] as const)
+      .then(([p, list, q, fr]) => {
         setProfile(p);
         setDraft({ name: p.name, phone: p.phone ?? "" });
         setRequests(list);
+        setQuotes(q.quotes);
+        setFreight(fr.requests);
         setState("ready");
       })
       .catch((err) => setState(err instanceof StaffAccountError ? "staff" : "failed"));
@@ -102,9 +110,60 @@ export function AccountArea() {
           <Button href="/account/orders" variant="secondary">
             {t("orders")}
           </Button>
-          <Button href="/#quote">{t("requests.new")}</Button>
+          <Button href="/freight" variant="secondary">
+            {t("freight.new")}
+          </Button>
+          <Button href="/find">{t("requests.new")}</Button>
         </div>
       </div>
+
+      {quotes.length ? (
+        <Card padding={24}>
+          <h2 className="rb-title">{t("quotes.title")}</h2>
+          <ol className="mt-3 grid">
+            {quotes.map((q) => (
+              <li key={q.reference} className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3 last:border-b-0">
+                <div className="min-w-0">
+                  <p className="font-semibold text-ink">{q.title}</p>
+                  <p className="mt-0.5 text-[13px] text-ink-muted">
+                    {[
+                      `${f.number(toMajor(q.totals.totalMinor, q.currency))} ${q.currency}`,
+                      t(`quotes.status.${q.status}`),
+                      q.status === "SENT" && t("quotes.validUntil", { date: f.date(q.validUntil) }),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                </div>
+                <Link href={`/account/quotes/${q.reference}`} className="rb-link text-sm">
+                  {q.status === "SENT" ? t("quotes.open") : t("quotes.see")}
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </Card>
+      ) : null}
+
+      {freight.length ? (
+        <Card padding={24}>
+          <h2 className="rb-title">{t("freight.title")}</h2>
+          <ol className="mt-3 grid">
+            {freight.map((r) => (
+              <li key={r.reference} className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3 last:border-b-0">
+                <div className="min-w-0">
+                  <p className="font-semibold text-ink">{t("freight.route", { from: r.from, to: r.to })}</p>
+                  <p className="mt-0.5 text-[13px] text-ink-muted">
+                    {[r.reference, t(`freight.status.${r.status}`), f.dayTime(r.createdAt)].join(" · ")}
+                  </p>
+                </div>
+                <Link href={`/account/freight/${r.reference}`} className="rb-link text-sm">
+                  {r.openQuote ? t("freight.quoteWaiting") : t("freight.see")}
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </Card>
+      ) : null}
 
       <Card padding={24}>
         <h2 className="rb-title">{t("requests.title")}</h2>

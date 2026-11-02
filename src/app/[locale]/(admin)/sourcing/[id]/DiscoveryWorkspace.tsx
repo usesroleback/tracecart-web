@@ -15,6 +15,7 @@ import { destinationOf } from "../SourcingDashboard";
 import { DsChevronRightIcon, DsExternalIcon } from "@/icons";
 import { DiscoverySpec, DiscoveryState, ProviderOutcome, SourcingCandidate, SpecField } from "@/lib/types";
 import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
+import { SourcingQuotes } from "./SourcingQuotes";
 
 const input =
   "h-10 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -107,6 +108,8 @@ export function DiscoveryWorkspace({ initial }: { initial: DiscoveryState }) {
       <SearchCard state={state} frozen={frozen} busy={busy} act={act} />
 
       <CandidatesCard state={state} frozen={frozen} busy={busy} act={act} />
+
+      <SourcingQuotes request={r} selected={selected ?? null} categorySlug={(state.spec as { categorySlug?: string | null } | null)?.categorySlug ?? null} />
 
       {selected && r.status === "MATCHED" && (
         <Card padding={24} className="mt-4">

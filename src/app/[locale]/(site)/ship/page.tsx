@@ -1,20 +1,7 @@
-import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import { SiteShell } from "@/components/site/home/SiteShell";
-import { ShipArea } from "./ShipArea";
+import { permanentRedirect } from "next/navigation";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("ship");
-  return { title: t("meta.title") };
-}
-
-/** Goods the customer already has, moved from a pickup address to a delivery address. */
-export default function ShipPage() {
-  return (
-    <SiteShell>
-      <main className="mx-auto min-h-[60vh] max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
-        <ShipArea />
-      </main>
-    </SiteShell>
-  );
+/** "Ship my parcel" became freight, with an estimate from photos (docs ADR-036): old links land there. */
+export default async function ShipPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  permanentRedirect(`/${locale}/freight`);
 }

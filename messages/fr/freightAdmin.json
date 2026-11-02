@@ -1,0 +1,57 @@
+{
+  "title": "Demandes de fret",
+  "lead": "Les marchandises que des clients veulent faire transporter : vérifiez l'estimation de l'IA sur les photos, puis envoyez le devis ferme.",
+  "all": "Toutes",
+  "status": {
+    "SUBMITTED": "À chiffrer",
+    "QUOTED": "Devis envoyé",
+    "ACCEPTED": "Accepté",
+    "CANCELLED": "Annulée",
+    "CLOSED": "Clôturée"
+  },
+  "quoteStatus": {
+    "SENT": "Envoyé",
+    "ACCEPTED": "Accepté",
+    "DECLINED": "Refusé",
+    "EXPIRED": "Expiré",
+    "WITHDRAWN": "Remplacé"
+  },
+  "columns": {
+    "reference": "Demande",
+    "route": "Trajet",
+    "customer": "Client",
+    "status": "Statut",
+    "estimate": "Estimation IA"
+  },
+  "noEstimate": "—",
+  "empty": "Aucune demande ici.",
+  "collect": "Enlèvement",
+  "deliver": "Livraison",
+  "goods": "Marchandises",
+  "readyOn": "Prêt le",
+  "declaredValue": "Valeur déclarée",
+  "photo": "Photo des marchandises",
+  "frame": "Image de la vidéo du client",
+  "noMedia": "Aucune photo conservée.",
+  "estimateTitle": "L'estimation de l'IA",
+  "readBy": "Lu par {model}",
+  "quotesTitle": "Devis",
+  "order": "Commande {reference}",
+  "close": "Clôturer cette demande",
+  "confirmClose": "Clôturer cette demande ? Un devis ouvert est retiré.",
+  "quote": {
+    "title": "Envoyer un devis ferme",
+    "hint": "Part du haut de l'estimation : vérifiez-la sur les photos et auprès d'un transporteur si besoin. Il remplace tout devis ouvert.",
+    "packages": "Colis",
+    "weight": "Poids (kg)",
+    "shipping": "Enlèvement, transport et livraison ({currency})",
+    "duties": "Droits ({currency})",
+    "taxes": "Taxes à l'importation ({currency})",
+    "fees": "Frais de dédouanement ({currency})",
+    "from": "Livré à partir du",
+    "to": "Livré au plus tard le",
+    "note": "Un mot au client",
+    "total": "Total : {total}",
+    "send": "Envoyer le devis"
+  }
+}

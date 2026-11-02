@@ -64,6 +64,8 @@ export interface PaymentView {
 export interface OrderView {
   id: string;
   reference: string;
+  /** PRODUCTS from checkout; SOURCING and FREIGHT from an accepted quote. */
+  kind: "PRODUCTS" | "SOURCING" | "FREIGHT";
   status: string;
   createdAt: string;
   placedAt: string | null;
@@ -74,6 +76,9 @@ export interface OrderView {
   deliveryMethod: "HOME" | "PICKUP";
   delivery: {
     recipientName?: string;
+    /** Freight orders: the request's contact and address. */
+    contactName?: string;
+    addressLine?: string;
     phone?: string;
     city?: string;
     district?: string | null;
@@ -84,9 +89,10 @@ export interface OrderView {
   };
   paymentMethod: PaymentMethod;
   promise: { from: string; to: string };
-  lines: { id: string; sku: string; title: string; quantity: number; unitPriceMinor: number; breakdown: Breakdown; status: string; fulfillmentType: string; promise: { from: string; to: string } }[];
+  lines: { id: string; sku: string; title: string; quantity: number; unitPriceMinor: number; breakdown: Breakdown; status: string; fulfillmentType: string | null; promise: { from: string; to: string } }[];
   payments: PaymentView[];
   invoice: { number: string; issuedAt: string } | null;
   canCancel: boolean;
   canPay: boolean;
+  timeline: { status: string; at: string }[];
 }

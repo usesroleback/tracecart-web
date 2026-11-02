@@ -217,5 +217,35 @@
   },
   "noDestination": "Destination à préciser",
   "shipBadge": "Transport",
-  "shipRequest": "Demande d'expédition du client"
+  "shipRequest": "Demande d'expédition du client",
+  "quotes": {
+    "title": "Devis pour le client",
+    "hint": "Votre prix de l'article ; la livraison, les droits et les frais sont calculés pour la destination. Le client accepte et paie dans son compte.",
+    "status": {
+      "SENT": "Envoyé",
+      "ACCEPTED": "Accepté",
+      "DECLINED": "Refusé",
+      "EXPIRED": "Expiré",
+      "WITHDRAWN": "Remplacé"
+    },
+    "breakdown": "article {item} · livraison {shipping} · douane {duties}",
+    "inCatalogue": "Au catalogue",
+    "promote": "Mettre au catalogue",
+    "titleFr": "Titre (français)",
+    "titleEn": "Titre (anglais)",
+    "category": "Catégorie",
+    "brand": "Marque",
+    "unitPrice": "Prix de l'article par unité (XOF)",
+    "unitPriceHint": "Votre prix, marge comprise, avant livraison et droits.",
+    "quantity": "Quantité",
+    "weight": "Poids par unité, emballé (g)",
+    "weightHint": "Vide : celui de la catégorie.",
+    "leadMin": "Délai, jours (min)",
+    "leadMax": "Délai, jours (max)",
+    "country": "Pays (2 lettres)",
+    "city": "Ville",
+    "note": "Un mot au client",
+    "send": "Envoyer le devis",
+    "noAccount": "Seule une demande envoyée depuis un compte client peut être chiffrée ici."
+  }
 }

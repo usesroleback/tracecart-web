@@ -14,11 +14,13 @@ export class ApiError extends Error {
   }
 }
 
+/** A JSON body, or a FormData (photos, videos), which the browser sends as multipart with its own boundary. */
 export async function call<T>(method: string, path: string, body?: unknown, headers: Record<string, string> = {}): Promise<T> {
+  const form = typeof FormData !== "undefined" && body instanceof FormData;
   const res = await fetch(`/api/tracecart${path}`, {
     method,
-    headers: { ...(body !== undefined ? { "Content-Type": "application/json" } : {}), "X-Tracecart-Locale": document.documentElement.lang || "fr", ...headers },
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    headers: { ...(body !== undefined && !form ? { "Content-Type": "application/json" } : {}), "X-Tracecart-Locale": document.documentElement.lang || "fr", ...headers },
+    body: body === undefined ? undefined : form ? (body as FormData) : JSON.stringify(body),
     cache: "no-store",
   });
   const text = await res.text();

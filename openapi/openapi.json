@@ -213,6 +213,56 @@
             "nullable": true,
             "description": "What was searched instead, when the words as typed found nothing."
           },
+          "interpreted": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "priceMax",
+                    "priceMin",
+                    "brand",
+                    "condition",
+                    "delivery"
+                  ]
+                },
+                "phrase": {
+                  "type": "string",
+                  "description": "The words of the query it was read from."
+                },
+                "amountMinor": {
+                  "type": "integer",
+                  "nullable": true,
+                  "description": "priceMax, priceMin: in minor units of `currency`."
+                },
+                "value": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "brand: its slug; condition: REFURBISHED or USED; delivery: local."
+                },
+                "label": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "brand: its name."
+                },
+                "removeQuery": {
+                  "type": "string",
+                  "description": "The query without this phrase, to undo it."
+                }
+              },
+              "required": [
+                "kind",
+                "phrase",
+                "amountMinor",
+                "value",
+                "label",
+                "removeQuery"
+              ]
+            },
+            "description": "Filters read from the query's words (a price limit, a brand, a condition, in stock), applied unless the same filter was given as a parameter."
+          },
           "category": {
             "type": "object",
             "nullable": true,
@@ -453,6 +503,7 @@
           "pageSize",
           "query",
           "correctedQuery",
+          "interpreted",
           "category",
           "facets",
           "truncated"
@@ -8941,6 +8992,545 @@
         }
       }
     },
+    "/freight-requests": {
+      "get": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Freight requests, newest first",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SUBMITTED",
+                "QUOTED",
+                "ACCEPTED",
+                "CANCELLED",
+                "CLOSED"
+              ]
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 1
+            },
+            "required": false,
+            "name": "page",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight-requests/{reference}": {
+      "get": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "A freight request: the customer, addresses, photos, the AI's estimate and indicative price, and the quotes sent",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight-requests/{reference}/close": {
+      "post": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Close a request that won't be quoted or went nowhere",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.quote.send",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight-requests/{reference}/media/{mediaId}": {
+      "get": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "A photo of the goods: a redirect to a link valid for 5 minutes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "mediaId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to the photo"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight-requests/{reference}/quotes": {
+      "post": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Send the customer a firm quote (it replaces any still open); they're emailed",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.quote.send",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "packageCount": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "maximum": 100000
+                  },
+                  "weightKg": {
+                    "type": "number",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "maximum": 1000000
+                  },
+                  "volumeM3": {
+                    "type": "number",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "maximum": 100000
+                  },
+                  "shippingMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Collection, linehaul and delivery, in the store currency."
+                  },
+                  "dutiesMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 0
+                  },
+                  "taxesMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 0
+                  },
+                  "feesMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 0
+                  },
+                  "promiseFrom": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time"
+                  },
+                  "promiseTo": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time"
+                  },
+                  "validUntil": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time"
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "packageCount",
+                  "weightKg",
+                  "shippingMinor",
+                  "promiseFrom",
+                  "promiseTo"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight/estimate": {
+      "post": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "An instant estimate for goods to move, with no account: the cargo as read from the photos or words, and an indicative price range and delivery window. Nothing is stored. Multipart: `request` (JSON: `origin` and `destination` as { countryCode, city } — for a request also addressLine, landmark, contactName, phone —, `description`, `declaredValueMinor`, `readyOn`), `photos` (up to 6 PNG, JPEG or WebP, 5 MB each) or `video` (MP4, MOV or WebM, up to 20 MB and 30 s).",
+        "security": [],
+        "x-tracecart-access": "public",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight/requests": {
+      "post": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Ask Tracecart to move goods: collection and delivery addresses, what they are, photos or a video. Estimated at once when AI is available; an agent replies with a firm quote. Multipart: `request` (JSON: `origin` and `destination` as { countryCode, city } — for a request also addressLine, landmark, contactName, phone —, `description`, `declaredValueMinor`, `readyOn`), `photos` (up to 6 PNG, JPEG or WebP, 5 MB each) or `video` (MP4, MOV or WebM, up to 20 MB and 30 s).",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account.request.create",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200,
+              "description": "Send a unique key (a UUID) to make retries safe: the same key replays the first response."
+            },
+            "required": false,
+            "description": "Send a unique key (a UUID) to make retries safe: the same key replays the first response.",
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/geo/country": {
       "get": {
         "tags": [
@@ -10182,6 +10772,195 @@
         }
       }
     },
+    "/me/freight-requests": {
+      "get": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "One's freight requests, newest first",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account.request.read",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/freight-requests/{reference}": {
+      "get": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "One of one's freight requests: the estimate, the indicative price and the quotes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/freight-requests/{reference}/cancel": {
+      "post": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Withdraw a request no order came from",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account.request.create",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/me/hub": {
       "patch": {
         "tags": [
@@ -10697,6 +11476,360 @@
             "description": "Send a unique key (a UUID) to make retries safe: the same key replays the first response.",
             "name": "idempotency-key",
             "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/quotes": {
+      "get": {
+        "tags": [
+          "Quotes"
+        ],
+        "summary": "One's quotes (sourcing and freight), newest first",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account.request.read",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/quotes/{reference}": {
+      "get": {
+        "tags": [
+          "Quotes"
+        ],
+        "summary": "One of one's quotes, with the payment methods it can be paid with while it's open",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^Q-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/quotes/{reference}/accept": {
+      "post": {
+        "tags": [
+          "Quotes"
+        ],
+        "summary": "Accept a quote: it becomes an order at the quoted total, paid like any store order (an online payment's page comes back in `payment.checkoutUrl`). Sourcing quotes need a delivery in the quote's city; freight goes where the request said.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "store.checkout",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^Q-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 200,
+              "description": "Send a unique key (a UUID) to make retries safe: the same key replays the first response."
+            },
+            "required": false,
+            "description": "Send a unique key (a UUID) to make retries safe: the same key replays the first response.",
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "delivery": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "method": {
+                            "type": "string",
+                            "enum": [
+                              "HOME"
+                            ]
+                          },
+                          "addressId": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "method",
+                          "addressId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "method": {
+                            "type": "string",
+                            "enum": [
+                              "PICKUP"
+                            ]
+                          },
+                          "pickupPointId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "recipientName": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 120
+                          },
+                          "phone": {
+                            "type": "string",
+                            "pattern": "^\\+?[0-9 ().-]{6,20}$"
+                          }
+                        },
+                        "required": [
+                          "method",
+                          "pickupPointId"
+                        ]
+                      }
+                    ]
+                  },
+                  "paymentMethod": {
+                    "type": "string",
+                    "enum": [
+                      "CINETPAY",
+                      "CASH_ON_DELIVERY",
+                      "BANK_TRANSFER",
+                      "FAKE"
+                    ]
+                  },
+                  "expectedTotalMinor": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "paymentMethod",
+                  "expectedTotalMinor"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/quotes/{reference}/decline": {
+      "post": {
+        "tags": [
+          "Quotes"
+        ],
+        "summary": "Decline a quote",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^Q-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
           }
         ],
         "responses": {
@@ -16973,6 +18106,66 @@
         }
       }
     },
+    "/search/ai": {
+      "post": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "AI search over the catalogue (multipart: `q`, and `photo` up to 5 MB or `video` — MP4, MOV or WebM up to 20 MB and 30 s). Claude reads them into a spec with the catalogue's categories and attributes; keyword and vector search find candidates, ranked against the spec, each with the reasons it matches; `chips` narrow the results. `searchId` carries what was read to \"Find it for me\" (POST /customer/requests) for a day. Without AI, the words are searched and `limited` says so. Limited per IP.",
+        "security": [],
+        "x-tracecart-access": "public",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{2}$",
+              "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first."
+            },
+            "required": false,
+            "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first.",
+            "name": "country",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$",
+              "default": "XOF",
+              "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion)."
+            },
+            "required": false,
+            "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion).",
+            "name": "currency",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sourcing-requests": {
       "get": {
         "tags": [
@@ -18035,6 +19228,359 @@
         }
       }
     },
+    "/sourcing-requests/{id}/quotes": {
+      "get": {
+        "tags": [
+          "Quotes"
+        ],
+        "summary": "The quotes sent for a request, with the product each sells",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "sourcing.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Quotes"
+        ],
+        "summary": "Quote a request for its customer: the item price is the agent's; shipping, duties and fees are worked out for the destination (409 QUOTE_UNPRICEABLE with the problems when they can't be). It replaces any open quote; the customer is emailed.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "sourcing.quote.send",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "candidateId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The listing found for it, marked selected."
+                  },
+                  "title": {
+                    "type": "object",
+                    "properties": {
+                      "fr": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "en": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      }
+                    },
+                    "required": [
+                      "fr",
+                      "en"
+                    ],
+                    "description": "What is sold, as the customer reads it."
+                  },
+                  "categorySlug": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "description": "Its category: customs rates and the default weight come from it."
+                  },
+                  "brand": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "description": "A brand the catalogue knows, by name."
+                  },
+                  "unitPriceMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "description": "The item's price per unit in the store currency, before shipping, duties and fees (the agent's price, margin included)."
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "maximum": 10000,
+                    "description": "Defaults to the request's."
+                  },
+                  "weightGrams": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "maximum": 10000000,
+                    "description": "One unit, packed. Defaults to the category's."
+                  },
+                  "leadTimeDaysMin": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 120
+                  },
+                  "leadTimeDaysMax": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 180
+                  },
+                  "sourceUrl": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "format": "uri"
+                  },
+                  "sourcePriceMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                  },
+                  "sourceCurrency": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 3
+                  },
+                  "destination": {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "enum": [
+                          "HOME",
+                          "PICKUP"
+                        ]
+                      },
+                      "countryCode": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2
+                      },
+                      "city": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "countryCode",
+                      "city"
+                    ],
+                    "description": "Where the price takes it; defaults to the request's city, delivered to an address."
+                  },
+                  "validUntil": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time"
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "title",
+                  "categorySlug",
+                  "unitPriceMinor",
+                  "leadTimeDaysMin",
+                  "leadTimeDaysMax"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sourcing-requests/{id}/quotes/{quoteId}/promote": {
+      "post": {
+        "tags": [
+          "Quotes"
+        ],
+        "summary": "Promote to catalogue: the quoted product and its cross-border offer go on sale in the store",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "catalog.product.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "quoteId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sourcing-requests/{id}/search": {
       "post": {
         "tags": [
@@ -18472,6 +20018,103 @@
         "responses": {
           "200": {
             "description": "application/pdf"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/store-orders/{id}/progress": {
+      "post": {
+        "tags": [
+          "Store orders"
+        ],
+        "summary": "Record a freight or sourcing order's progress: collected or bought, on its way, delivered (the customer is emailed for the last two)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "orders.store.fulfil",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "string",
+                    "enum": [
+                      "fulfil.start",
+                      "fulfil.ship",
+                      "fulfil.deliver"
+                    ],
+                    "description": "fulfil.start: collected (freight) or bought (sourcing); fulfil.ship: on its way; fulfil.deliver: delivered."
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 300
+                  }
+                },
+                "required": [
+                  "event"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Invalid request",

@@ -182,7 +182,13 @@
     "invoice": "Facture {number} (PDF)",
     "cancel": "Annuler cette commande",
     "confirmCancel": "Annuler cette commande ? Les articles sont remis en vente.",
-    "allOrders": "Toutes mes commandes"
+    "allOrders": "Toutes mes commandes",
+    "kind": {
+      "PRODUCTS": "Boutique",
+      "SOURCING": "Trouvé pour vous",
+      "FREIGHT": "Fret"
+    },
+    "progress": "Suivi"
   },
   "orders": {
     "title": "Mes commandes",

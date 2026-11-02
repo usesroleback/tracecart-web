@@ -23,7 +23,8 @@
     "suggestedCategories": "Categories",
     "suggestedBrands": "Brands",
     "seeAll": "All results for “{query}”",
-    "didYouMean": "Did you mean “{query}”?"
+    "didYouMean": "Did you mean “{query}”?",
+    "aiSearch": "Search with a photo"
   },
   "home": {
     "title": "The tools you need, delivered where others don't.",
@@ -76,12 +77,23 @@
     "emptyLead": "Remove a filter, or describe what you need and we'll find it for you.",
     "emptySearchTitle": "No product matches “{query}”",
     "emptySearchLead": "Check the spelling, try a more general word, or describe it and we'll find it for you.",
-    "askUs": "Ask us to find it",
+    "askUs": "Find it for me",
     "truncated": "Showing the first matches only: add a word or a filter to narrow it down.",
     "pagination": "Pages",
     "page": "Page {page} of {pages}",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "searchWithPhoto": "Search with a photo",
+    "interpreted": {
+      "lead": "Read from your search:",
+      "remove": "Search without {filter}",
+      "priceMax": "Under {amount}",
+      "priceMin": "Over {amount}",
+      "brand": "Brand: {brand}",
+      "used": "Used",
+      "refurbished": "Refurbished",
+      "inStock": "In stock near you"
+    }
   },
   "card": {
     "offers": "{count, plural, one {# offer} other {# offers}}",

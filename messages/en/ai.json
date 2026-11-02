@@ -1,0 +1,33 @@
+{
+  "title": "Search with a photo",
+  "lead": "Show us the tool, the part or its nameplate, or describe it in your words. We read it and find it in the catalogue, and say why each result matches.",
+  "describe": "Describe it",
+  "describePlaceholder": "“18 V drill driver that takes Voltix batteries”, a model number, what it's for…",
+  "addFile": "Add a photo or a video",
+  "changeFile": "Change the file",
+  "removeFile": "Remove",
+  "fileHint": "A photo (PNG, JPEG, WebP, 5 MB) or a video of up to 30 seconds.",
+  "search": "Search",
+  "searching": "Reading and searching…",
+  "needSomething": "Describe the tool or add a photo.",
+  "rateLimited": "Too many searches for now. Try again in a few minutes.",
+  "failed": "The search didn't go through. Try again.",
+  "limited": "Photo reading isn't available right now: we searched your words.",
+  "notAProduct": "We couldn't see a tool or a part in this file. Describe it in words.",
+  "understood": "What we read",
+  "unnamed": "Not identified exactly",
+  "refine": "Narrow down",
+  "nothing": "Nothing in the catalogue matches yet.",
+  "needsDescription": "Describe it in a few words and we'll search again.",
+  "notIt": "Not what you need?",
+  "notItLead": "Ask us to find it: an agent searches for it and sends you a price that covers everything to your door.",
+  "findForMe": "Find it for me",
+  "reasons": {
+    "identifier": "Same model: {code}",
+    "brand": "{brand}",
+    "category": "{category}",
+    "attribute": "{label}: {value}",
+    "words": "Your words",
+    "looksLike": "Looks like it"
+  }
+}

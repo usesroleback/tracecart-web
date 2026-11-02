@@ -101,7 +101,10 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="rb-mono-s text-ink-muted">{order.reference}</p>
+        <p className="rb-mono-s text-ink-muted">
+          {order.reference}
+          {order.kind !== "PRODUCTS" ? <span className="ml-2 font-sans">· {t(`kind.${order.kind}`)}</span> : null}
+        </p>
         <h1 className="rb-headline mt-1 text-[28px] sm:text-[36px]">{headline}</h1>
         {order.status !== "CANCELLED" ? <p className="mt-2 text-ink">{t("arrives", { from: day(order.promise.from), to: day(order.promise.to) })}</p> : null}
         {order.status === "CANCELLED" && order.cancelReason ? <p className="mt-2 text-ink-muted">{order.cancelReason}</p> : null}
@@ -181,15 +184,28 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
                 </>
               ) : (
                 <>
-                  {d.recipientName} · {d.phone}
+                  {d.recipientName ?? d.contactName} · {d.phone}
                   <br />
-                  {[d.street, d.district, d.city].filter(Boolean).join(", ")}
+                  {[d.street, d.addressLine, d.district, d.city].filter(Boolean).join(", ")}
                   <br />
                   <span className="text-ink-muted">{d.landmark}</span>
                 </>
               )}
             </p>
           </div>
+          {order.timeline.length > 1 ? (
+            <div className={box}>
+              <h2 className="rb-label mb-2">{t("progress")}</h2>
+              <ol className="grid gap-1.5 text-sm">
+                {order.timeline.map((s, i) => (
+                  <li key={i} className="flex justify-between gap-3">
+                    <span>{t(`status.${s.status}` as "status.PLACED")}</span>
+                    <span className="text-ink-muted">{format.dateTime(s.at)}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : null}
           <div className={box}>
             <h2 className="rb-label mb-2">{t("paymentTitle")}</h2>
             <p className="text-sm">{t(`methods.${order.paymentMethod}`)}</p>

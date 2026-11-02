@@ -1,0 +1,57 @@
+{
+  "title": "Freight requests",
+  "lead": "Goods customers want moved: check the AI's estimate against the photos, then send the firm quote.",
+  "all": "All",
+  "status": {
+    "SUBMITTED": "To quote",
+    "QUOTED": "Quote sent",
+    "ACCEPTED": "Accepted",
+    "CANCELLED": "Cancelled",
+    "CLOSED": "Closed"
+  },
+  "quoteStatus": {
+    "SENT": "Sent",
+    "ACCEPTED": "Accepted",
+    "DECLINED": "Declined",
+    "EXPIRED": "Expired",
+    "WITHDRAWN": "Replaced"
+  },
+  "columns": {
+    "reference": "Request",
+    "route": "Route",
+    "customer": "Customer",
+    "status": "Status",
+    "estimate": "AI estimate"
+  },
+  "noEstimate": "—",
+  "empty": "No request here.",
+  "collect": "Collect",
+  "deliver": "Deliver",
+  "goods": "Goods",
+  "readyOn": "Ready on",
+  "declaredValue": "Declared value",
+  "photo": "Photo of the goods",
+  "frame": "Frame from the customer's video",
+  "noMedia": "No photo kept.",
+  "estimateTitle": "The AI's estimate",
+  "readBy": "Read by {model}",
+  "quotesTitle": "Quotes",
+  "order": "Order {reference}",
+  "close": "Close this request",
+  "confirmClose": "Close this request? An open quote is withdrawn.",
+  "quote": {
+    "title": "Send a firm quote",
+    "hint": "Starts from the high end of the estimate: check it against the photos and a carrier where needed. It replaces any open quote.",
+    "packages": "Packages",
+    "weight": "Weight (kg)",
+    "shipping": "Collection, transport and delivery ({currency})",
+    "duties": "Duties ({currency})",
+    "taxes": "Import taxes ({currency})",
+    "fees": "Clearance fees ({currency})",
+    "from": "Delivered from",
+    "to": "Delivered by",
+    "note": "A word to the customer",
+    "total": "Total: {total}",
+    "send": "Send the quote"
+  }
+}

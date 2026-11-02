@@ -51,5 +51,17 @@
   "invoice": "Facture {number} (PDF)",
   "cancel": "Annuler la commande",
   "cancelReason": "Pourquoi (le client est prévenu de l'annulation)",
-  "cancelCta": "Annuler la commande"
+  "cancelCta": "Annuler la commande",
+  "kind": {
+    "PRODUCTS": "Boutique",
+    "SOURCING": "Sourcing",
+    "FREIGHT": "Fret"
+  },
+  "progress": {
+    "title": "Suivi",
+    "hint": "En attendant le suivi des envois, enregistrez chaque étape : le client reçoit un e-mail quand c'est en route et livré.",
+    "start": "Enlevé ou acheté",
+    "ship": "En route",
+    "deliver": "Livré"
+  }
 }

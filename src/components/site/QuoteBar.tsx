@@ -329,7 +329,7 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
           </div>
         </div>
         <p className="mt-3 text-xs text-ink-muted">{t("disclaimer")}</p>
-        <Link href="/ship" className="rb-link mt-1 inline-block text-sm">
+        <Link href="/freight" className="rb-link mt-1 inline-block text-sm">
           {t("shipInstead")}
         </Link>
       </form>

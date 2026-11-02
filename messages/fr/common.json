@@ -46,7 +46,8 @@
     "brands": "Marques",
     "catalogImport": "Import et export",
     "searchTuning": "Recherche",
-    "storeOrders": "Commandes"
+    "storeOrders": "Commandes",
+    "freight": "Fret"
   },
   "notifications": {
     "title": "Notifications",

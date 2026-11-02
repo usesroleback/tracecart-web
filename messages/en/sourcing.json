@@ -217,5 +217,35 @@
   },
   "noDestination": "Destination to confirm",
   "shipBadge": "Transport",
-  "shipRequest": "The customer's shipment request"
+  "shipRequest": "The customer's shipment request",
+  "quotes": {
+    "title": "Quote for the customer",
+    "hint": "Your item price; delivery, duties and fees are worked out for the destination. The customer accepts and pays in their account.",
+    "status": {
+      "SENT": "Sent",
+      "ACCEPTED": "Accepted",
+      "DECLINED": "Declined",
+      "EXPIRED": "Expired",
+      "WITHDRAWN": "Replaced"
+    },
+    "breakdown": "item {item} · delivery {shipping} · customs {duties}",
+    "inCatalogue": "In the catalogue",
+    "promote": "Promote to catalogue",
+    "titleFr": "Title (French)",
+    "titleEn": "Title (English)",
+    "category": "Category",
+    "brand": "Brand",
+    "unitPrice": "Item price per unit (XOF)",
+    "unitPriceHint": "Your price, margin included, before delivery and duties.",
+    "quantity": "Quantity",
+    "weight": "Weight per unit, packed (g)",
+    "weightHint": "Empty: the category's.",
+    "leadMin": "Lead time, days (min)",
+    "leadMax": "Lead time, days (max)",
+    "country": "Country (2 letters)",
+    "city": "City",
+    "note": "A word to the customer",
+    "send": "Send the quote",
+    "noAccount": "Only a request sent from a customer account can be quoted here."
+  }
 }
