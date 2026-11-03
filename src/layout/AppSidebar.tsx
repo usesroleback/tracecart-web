@@ -85,6 +85,7 @@ const CATALOG_NAV: NavGroup = {
     { icon: <DsPackageIcon />, name: "cash", path: "/cod", permission: ["shipments.cod.collect", "payments.read"] },
     { icon: <DsLayersIcon />, name: "inventory", path: "/inventory", permission: "inventory.read" },
     { icon: <DsPackageIcon />, name: "purchasing", path: "/purchasing", permission: ["purchasing.po.read", "inventory.receive", "customs.file.write"] },
+    { icon: <DsBuildingIcon />, name: "partners", path: "/partners", permission: ["partners.notice.handle", "partners.notice.send", "partners.manage"] },
     { icon: <DsPackageIcon />, name: "returns", path: "/returns", permission: "returns.read" },
     { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
     { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },

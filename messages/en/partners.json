@@ -1,0 +1,75 @@
+{
+  "title": "Partners",
+  "lead": "What carriers, pickup points and other partners tell us, and how their systems connect.",
+  "pick": "Choose…",
+  "onlyNew": "Only those not yet read",
+  "noNotices": "No notice here.",
+  "photo": "Photo {number}",
+  "acknowledge": "Mark as read",
+  "send": "Send a notice",
+  "sendHint": "It goes to Tracecart's staff, not the customer. To change a parcel's status, use its page.",
+  "kind": "About",
+  "shipment": "Shipment reference",
+  "noSuchShipment": "None of your shipments has this reference.",
+  "message": "Message",
+  "photos": "Photos",
+  "sendCta": "Send",
+  "partner": "Partner",
+  "shownOnce": "Copy it now. It won't be shown again.",
+  "gotIt": "I've copied it",
+  "keys": "API keys",
+  "noKeys": "No key yet.",
+  "lastUsed": "last used {when}",
+  "neverUsed": "never used",
+  "revoked": "Revoked",
+  "revoke": "Revoke",
+  "confirmRevoke": "Stop “{name}” working, at once? Anything using it will stop.",
+  "newKey": "The new key",
+  "keyName": "Name",
+  "keyNameHint": "What it's for, such as “Tracking system”.",
+  "scopes": "What it can do",
+  "makeKey": "Make the key",
+  "webhooks": "Webhooks",
+  "noWebhooks": "No webhook yet.",
+  "disable": "Stop calling it",
+  "disabled": "Stopped",
+  "newSecret": "The new signing secret",
+  "webhookUrl": "Their URL",
+  "webhookUrlHint": "On their own server, in https.",
+  "addWebhook": "Add the webhook",
+  "tabs": {
+    "notices": "Notices",
+    "access": "Keys and webhooks"
+  },
+  "statuses": {
+    "NEW": "New",
+    "ACKNOWLEDGED": "Read"
+  },
+  "sources": {
+    "API": "from their system",
+    "PORTAL": "from the console"
+  },
+  "kinds": {
+    "PICKED_UP": "Picked up",
+    "DELAYED": "Delayed",
+    "DAMAGED": "Damaged",
+    "REFUSED": "Refused",
+    "ARRIVED": "Arrived",
+    "BORDER_CLOSURE": "Border closed",
+    "CAPACITY": "Capacity",
+    "PRICE_CHANGE": "Price change",
+    "OTHER": "Other"
+  },
+  "scopeHints": {
+    "shipments_read": "See their shipments and inbound shipments, with no prices.",
+    "shipments_write": "Report status changes and news on their shipments.",
+    "shipments_proof": "Upload proof of delivery.",
+    "shipments_cod": "See the total to collect on cash orders, and record delivering them.",
+    "notices_write": "Send us notices."
+  },
+  "deliveryStatuses": {
+    "PENDING": "Waiting",
+    "SENT": "Delivered",
+    "FAILED": "Failed"
+  }
+}

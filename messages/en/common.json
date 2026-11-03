@@ -53,7 +53,8 @@
     "returns": "Returns",
     "refunds": "Refunds",
     "inventory": "Stock",
-    "purchasing": "Purchasing"
+    "purchasing": "Purchasing",
+    "partners": "Partners"
   },
   "notifications": {
     "title": "Notifications",

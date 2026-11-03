@@ -1,0 +1,75 @@
+{
+  "title": "Partenaires",
+  "lead": "Ce que les transporteurs, points relais et autres partenaires nous disent, et comment leurs systèmes se connectent.",
+  "pick": "Choisir…",
+  "onlyNew": "Seulement ceux non lus",
+  "noNotices": "Aucun avis ici.",
+  "photo": "Photo {number}",
+  "acknowledge": "Marquer comme lu",
+  "send": "Envoyer un avis",
+  "sendHint": "Il va à l'équipe de Tracecart, pas au client. Pour changer le statut d'un colis, passez par sa page.",
+  "kind": "Sujet",
+  "shipment": "Référence de l'expédition",
+  "noSuchShipment": "Aucune de vos expéditions n'a cette référence.",
+  "message": "Message",
+  "photos": "Photos",
+  "sendCta": "Envoyer",
+  "partner": "Partenaire",
+  "shownOnce": "Copiez-la maintenant. Elle ne sera plus affichée.",
+  "gotIt": "Je l'ai copiée",
+  "keys": "Clés d'API",
+  "noKeys": "Aucune clé pour l'instant.",
+  "lastUsed": "utilisée le {when}",
+  "neverUsed": "jamais utilisée",
+  "revoked": "Révoquée",
+  "revoke": "Révoquer",
+  "confirmRevoke": "Arrêter « {name} » tout de suite ? Tout ce qui l'utilise s'arrêtera.",
+  "newKey": "La nouvelle clé",
+  "keyName": "Nom",
+  "keyNameHint": "À quoi elle sert, par exemple « Système de suivi ».",
+  "scopes": "Ce qu'elle permet",
+  "makeKey": "Créer la clé",
+  "webhooks": "Webhooks",
+  "noWebhooks": "Aucun webhook pour l'instant.",
+  "disable": "Ne plus l'appeler",
+  "disabled": "Arrêté",
+  "newSecret": "Le nouveau secret de signature",
+  "webhookUrl": "Leur URL",
+  "webhookUrlHint": "Sur leur propre serveur, en https.",
+  "addWebhook": "Ajouter le webhook",
+  "tabs": {
+    "notices": "Avis",
+    "access": "Clés et webhooks"
+  },
+  "statuses": {
+    "NEW": "Nouveau",
+    "ACKNOWLEDGED": "Lu"
+  },
+  "sources": {
+    "API": "depuis leur système",
+    "PORTAL": "depuis la console"
+  },
+  "kinds": {
+    "PICKED_UP": "Enlevé",
+    "DELAYED": "Retard",
+    "DAMAGED": "Dommage",
+    "REFUSED": "Refusé",
+    "ARRIVED": "Arrivé",
+    "BORDER_CLOSURE": "Frontière fermée",
+    "CAPACITY": "Capacité",
+    "PRICE_CHANGE": "Changement de prix",
+    "OTHER": "Autre"
+  },
+  "scopeHints": {
+    "shipments_read": "Voir leurs expéditions et les expéditions entrantes, sans les prix.",
+    "shipments_write": "Signaler les changements de statut et les nouvelles de leurs expéditions.",
+    "shipments_proof": "Envoyer des preuves de livraison.",
+    "shipments_cod": "Voir le total à encaisser sur les commandes en espèces, et enregistrer leur livraison.",
+    "notices_write": "Nous envoyer des avis."
+  },
+  "deliveryStatuses": {
+    "PENDING": "En attente",
+    "SENT": "Livré",
+    "FAILED": "Échoué"
+  }
+}
