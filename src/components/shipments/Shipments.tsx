@@ -191,6 +191,7 @@ interface Detail {
   orderStatus: string;
   deliveryMethod: string;
   destination: { recipientName: string | null; phone: string | null; countryCode: string; city: string; address: string | null; landmark: string | null; pickupPoint: string | null };
+  collectFrom: { countryCode: string; city: string; addressLine?: string; landmark?: string; contactName?: string; phone?: string } | null;
   promise: { from: string; to: string };
   eta: { from: string | null; to: string | null } | null;
   warehouse: { name: string; city: string; countryCode: string };
@@ -220,7 +221,7 @@ interface RateOption {
 const box = "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
 
 /** One shipment: the pick list and, for those who may, the next step of its way. */
-export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, canReissue, canSeeOrder }: { id: string; canPack: boolean; canRoute: boolean; canRecord: boolean; canProve: boolean; canReissue: boolean; canSeeOrder: boolean }) {
+export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, canReissue, canResolve, canSeeOrder }: { id: string; canPack: boolean; canRoute: boolean; canRecord: boolean; canProve: boolean; canReissue: boolean; canResolve: boolean; canSeeOrder: boolean }) {
   const t = useTranslations("shipments");
   const format = useFormat();
   const [s, setS] = useState<Detail | null>(null);
@@ -284,8 +285,11 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
       {s.openExceptions.length ? (
         <ul className={`${box} border-critical`}>
           {s.openExceptions.map((x) => (
-            <li key={x.id} className="text-critical">
-              {t(`exceptions.${x.type}` as "exceptions.OTHER")} · {x.summary}
+            <li key={x.id} className="py-1">
+              <span className="text-critical">
+                {t(`exceptions.${x.type}` as "exceptions.OTHER")} · {x.summary}
+              </span>
+              {canResolve ? <ResolveProblem busy={busy} onResolve={(resolution) => post(`exceptions/${x.id}/resolve`, { resolution })} /> : null}
             </li>
           ))}
         </ul>
@@ -342,7 +346,25 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
 
         <aside className="flex flex-col gap-4">
           <div className={box}>
-            <h2 className="rb-label mb-2">{t("from")}</h2>
+            {s.collectFrom ? (
+              <>
+                <h2 className="rb-label mb-2">{t("collectFrom")}</h2>
+                <p>
+                  {[s.collectFrom.contactName, s.collectFrom.phone].filter(Boolean).join(" · ")}
+                  <br />
+                  {[s.collectFrom.addressLine, s.collectFrom.city, s.collectFrom.countryCode].filter(Boolean).join(", ")}
+                  {s.collectFrom.landmark ? (
+                    <>
+                      <br />
+                      <span className="text-ink-muted">{s.collectFrom.landmark}</span>
+                    </>
+                  ) : null}
+                </p>
+                <h2 className="rb-label mb-2 mt-4">{t("handledBy")}</h2>
+              </>
+            ) : (
+              <h2 className="rb-label mb-2">{t("from")}</h2>
+            )}
             <p>
               {s.warehouse.name}, {s.warehouse.city}
             </p>
@@ -448,6 +470,35 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
         </aside>
       </div>
     </div>
+  );
+}
+
+function ResolveProblem({ busy, onResolve }: { busy: boolean; onResolve: (resolution: string) => void }) {
+  const t = useTranslations("shipments");
+  const [open, setOpen] = useState(false);
+  const [resolution, setResolution] = useState("");
+  if (!open) {
+    return (
+      <button type="button" className="ml-2 underline" onClick={() => setOpen(true)}>
+        {t("resolve")}
+      </button>
+    );
+  }
+  return (
+    <form
+      className="mt-2 grid max-w-md gap-2"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onResolve(resolution.trim());
+      }}
+    >
+      <Field label={t("resolution")} required>
+        <input className={input} required minLength={3} maxLength={500} value={resolution} onChange={(e) => setResolution(e.target.value)} />
+      </Field>
+      <Button type="submit" variant="secondary" loading={busy} disabled={resolution.trim().length < 3}>
+        {t("resolveCta")}
+      </Button>
+    </form>
   );
 }
 

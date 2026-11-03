@@ -13,6 +13,7 @@ export default async function ShipmentPage({ params }: { params: Promise<{ id: s
       canRecord={!!user && can(user, "shipments.event.record")}
       canProve={!!user && can(user, "shipments.proof.upload")}
       canReissue={!!user && can(user, "logistics.exception.write")}
+      canResolve={!!user && can(user, "logistics.exception.write")}
       canSeeOrder={!!user && can(user, "orders.store.read")}
     />
   );

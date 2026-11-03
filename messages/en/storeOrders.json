@@ -57,12 +57,5 @@
     "PRODUCTS": "Store",
     "SOURCING": "Sourcing",
     "FREIGHT": "Freight"
-  },
-  "progress": {
-    "title": "Progress",
-    "hint": "Until shipments are tracked, record each step: the customer is emailed when it's on its way and delivered.",
-    "start": "Collected or bought",
-    "ship": "On its way",
-    "deliver": "Delivered"
   }
 }

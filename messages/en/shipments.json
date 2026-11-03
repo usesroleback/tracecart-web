@@ -156,5 +156,10 @@
   "newCodeHint": "Sends the customer a new code. The old one stops working, and a lock is lifted. Check who is asking first.",
   "newCodeCta": "Send a new code",
   "yourCodePoint": "Show this code at the pickup point:",
-  "yourCodeHome": "Give this code to the courier once the parcel is in your hands:"
+  "yourCodeHome": "Give this code to the courier once the parcel is in your hands:",
+  "collectFrom": "Collect from",
+  "handledBy": "Handled by",
+  "resolve": "Close this problem",
+  "resolution": "How it was dealt with",
+  "resolveCta": "Close it"
 }

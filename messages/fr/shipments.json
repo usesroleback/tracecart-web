@@ -156,5 +156,10 @@
   "newCodeHint": "Envoie un nouveau code au client. L'ancien ne fonctionne plus et le blocage est levé. Vérifiez d'abord qui le demande.",
   "newCodeCta": "Envoyer un nouveau code",
   "yourCodePoint": "Présentez ce code au point relais :",
-  "yourCodeHome": "Donnez ce code au livreur une fois le colis entre vos mains :"
+  "yourCodeHome": "Donnez ce code au livreur une fois le colis entre vos mains :",
+  "collectFrom": "À enlever chez",
+  "handledBy": "Géré par",
+  "resolve": "Clore ce problème",
+  "resolution": "Comment il a été réglé",
+  "resolveCta": "Le clore"
 }

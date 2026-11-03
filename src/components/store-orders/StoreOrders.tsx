@@ -29,13 +29,6 @@ const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"
   EXPIRED: "critical",
 };
 
-// A quoted order's next step, recorded by staff (ADR-038). Catalogue orders follow their shipments.
-const PROGRESS: Record<string, "fulfil.start" | "fulfil.ship" | "fulfil.deliver" | undefined> = {
-  PLACED: "fulfil.start",
-  PROCESSING: "fulfil.ship",
-  SHIPPED: "fulfil.deliver",
-};
-
 interface Row {
   id: string;
   reference: string;
@@ -182,7 +175,7 @@ interface OrderShipment {
 }
 
 /** One store order in the console: lines, payments, holds, history; cancel and confirm a transfer. */
-export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil, canRefund }: { id: string; canCancel: boolean; canConfirm: boolean; canFulfil: boolean; canRefund: boolean }) {
+export function StoreOrderDetail({ id, canCancel, canConfirm, canRefund }: { id: string; canCancel: boolean; canConfirm: boolean; canRefund: boolean }) {
   const t = useTranslations("storeOrders");
   const tShip = useTranslations("shipments");
   const ts = useTranslations("checkout.order.status");
@@ -346,15 +339,6 @@ export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil, canRefu
             ) : null}
           </div>
           <OrderRefunds key={order.status} orderId={order.id} currency={order.currency} canRefund={canRefund} />
-          {canFulfil && order.kind !== "PRODUCTS" && PROGRESS[order.status] ? (
-            <div className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm">
-              <h2 className="rb-label mb-2">{t("progress.title")}</h2>
-              <p className="mb-3 text-ink-muted">{t("progress.hint")}</p>
-              <Button variant="primary" loading={busy} onClick={() => act(() => call<StaffOrder>("POST", `/store-orders/${order.id}/progress`, { event: PROGRESS[order.status] }))}>
-                {t(`progress.${PROGRESS[order.status]!.replace("fulfil.", "")}` as "progress.start")}
-              </Button>
-            </div>
-          ) : null}
           {canCancel && !["CANCELLED", "SHIPPED", "DELIVERED", "COMPLETED", "PARTIALLY_SHIPPED", "PARTIALLY_DELIVERED"].includes(order.status) ? (
             <form
               className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm"
