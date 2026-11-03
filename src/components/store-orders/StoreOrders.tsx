@@ -11,12 +11,14 @@ import { input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
 import type { OrderView } from "@/components/checkout/types";
 
-const STATUSES = ["PENDING_PAYMENT", "PLACED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED", "ON_HOLD"] as const;
+const STATUSES = ["PENDING_PAYMENT", "PLACED", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "PARTIALLY_DELIVERED", "DELIVERED", "CANCELLED", "ON_HOLD"] as const;
 const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"> = {
   PENDING_PAYMENT: "attn",
   PLACED: "positive",
   PROCESSING: "info",
+  PARTIALLY_SHIPPED: "info",
   SHIPPED: "info",
+  PARTIALLY_DELIVERED: "info",
   DELIVERED: "positive",
   CANCELLED: "critical",
   ON_HOLD: "attn",
@@ -26,7 +28,7 @@ const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"
   EXPIRED: "critical",
 };
 
-// A quoted order's next step, recorded by staff until shipments exist (ADR-038).
+// A quoted order's next step, recorded by staff (ADR-038). Catalogue orders follow their shipments.
 const PROGRESS: Record<string, "fulfil.start" | "fulfil.ship" | "fulfil.deliver" | undefined> = {
   PLACED: "fulfil.start",
   PROCESSING: "fulfil.ship",
@@ -169,20 +171,34 @@ type StaffOrder = OrderView & {
   reservations: { id: string; quantity: number; state: string; expiresAt: string | null }[];
 };
 
+interface OrderShipment {
+  id: string;
+  reference: string;
+  status: string;
+  warehouse: { city: string };
+  carrier: { name: string } | null;
+  lines: { orderLineId: string }[];
+}
+
 /** One store order in the console: lines, payments, holds, history; cancel and confirm a transfer. */
 export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil }: { id: string; canCancel: boolean; canConfirm: boolean; canFulfil: boolean }) {
   const t = useTranslations("storeOrders");
+  const tShip = useTranslations("shipments");
   const ts = useTranslations("checkout.order.status");
   const format = useFormat();
   const [order, setOrder] = useState<StaffOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
+  const [shipments, setShipments] = useState<OrderShipment[]>([]);
 
   useEffect(() => {
     call<StaffOrder>("GET", `/store-orders/${id}`)
       .then(setOrder)
       .catch((e) => setError((e as Error).message));
+    call<{ shipments: OrderShipment[] }>("GET", `/store-orders/${id}/shipments`)
+      .then((r) => setShipments(r.shipments))
+      .catch(() => undefined);
   }, [id]);
 
   async function act(fn: () => Promise<StaffOrder>) {
@@ -254,6 +270,26 @@ export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil }: { id:
           <p className="mt-3 text-right font-semibold">
             {t("columns.total")}: <span className="rb-numeral">{money(order.totals.totalMinor)}</span>
           </p>
+
+          {shipments.length ? (
+            <>
+              <h2 className="rb-title mb-2 mt-6">{t("shipments")}</h2>
+              <ul className="divide-y divide-line text-sm">
+                {shipments.map((s) => (
+                  <li key={s.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
+                    <Link href={`/shipments/${s.id}`} className="rb-mono font-medium underline">
+                      {s.reference}
+                    </Link>
+                    <span className="text-ink-muted">
+                      {s.warehouse.city}
+                      {s.carrier ? ` · ${s.carrier.name}` : ""}
+                    </span>
+                    <span>{tShip(`statuses.${s.status}` as "statuses.PLANNED")}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
 
           <h2 className="rb-title mb-2 mt-6">{t("history")}</h2>
           <ol className="space-y-1 text-sm">

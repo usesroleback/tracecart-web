@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { OrderShipments } from "@/components/shipments/Shipments";
 import { useLocale, useTranslations } from "next-intl";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { Link } from "@/i18n/navigation";
@@ -193,6 +194,7 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
               )}
             </p>
           </div>
+          <OrderShipments shipments={order.shipments ?? []} boxClass={box} />
           {order.timeline.length > 1 ? (
             <div className={box}>
               <h2 className="rb-label mb-2">{t("progress")}</h2>

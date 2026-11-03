@@ -1,3 +1,4 @@
+import type { CustomerShipment } from "@/components/shipments/Shipments";
 // What the checkout and order routes return (they document no response shapes yet).
 
 export type Breakdown = { itemMinor: number; shippingMinor: number; dutiesMinor: number; taxesMinor: number; feesMinor: number; totalMinor: number };
@@ -95,4 +96,6 @@ export interface OrderView {
   canCancel: boolean;
   canPay: boolean;
   timeline: { status: string; at: string }[];
+  /** Only on the customer's own order. */
+  shipments?: CustomerShipment[];
 }

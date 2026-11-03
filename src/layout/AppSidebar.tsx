@@ -81,6 +81,7 @@ const CATALOG_NAV: NavGroup = {
   title: "store",
   items: [
     { icon: <DsPackageIcon />, name: "storeOrders", path: "/store-orders", permission: "orders.store.read" },
+    { icon: <DsTruckIcon />, name: "shipments", path: "/shipments", permission: "shipments.read" },
     { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
     { icon: <DsLayersIcon />, name: "catalog", path: "/catalog" },
     { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories" },
@@ -139,6 +140,7 @@ const AppSidebar: React.FC = () => {
     if (pathname.startsWith("/catalog/products")) return item.path === "/catalog";
     if (pathname.startsWith("/store-orders/")) return item.path === "/store-orders";
     if (pathname.startsWith("/freight-requests/")) return item.path === "/freight-requests";
+    if (pathname.startsWith("/shipments/")) return item.path === "/shipments";
     const onPath = item.path === "/dashboard" ? pathname === "/dashboard" : pathname === item.path;
     if (!onPath) return false;
     // An item with a tab query is current on that tab; a plain item is current

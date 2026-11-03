@@ -47,6 +47,7 @@
     "catalogImport": "Import and export",
     "searchTuning": "Search",
     "storeOrders": "Orders",
+    "shipments": "Shipments",
     "freight": "Freight"
   },
   "notifications": {

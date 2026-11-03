@@ -7,6 +7,7 @@
   "find": "Search",
   "empty": "No order matches.",
   "more": "Show more",
+  "shipments": "Shipments",
   "columns": {
     "order": "Order",
     "customer": "Customer",
