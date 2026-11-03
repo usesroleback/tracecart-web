@@ -83,7 +83,8 @@
     "ADJUSTMENT": "Correction",
     "TRANSFER_OUT": "Transfer out",
     "TRANSFER_IN": "Transfer in",
-    "COUNT": "Count"
+    "COUNT": "Count",
+    "RECEIPT": "Goods received"
   },
   "transferStatuses": {
     "PLANNED": "Planned",

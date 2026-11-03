@@ -83,7 +83,8 @@
     "ADJUSTMENT": "Correction",
     "TRANSFER_OUT": "Transfert sortant",
     "TRANSFER_IN": "Transfert entrant",
-    "COUNT": "Inventaire"
+    "COUNT": "Inventaire",
+    "RECEIPT": "Réception"
   },
   "transferStatuses": {
     "PLANNED": "Prévu",

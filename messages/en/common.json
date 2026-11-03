@@ -52,7 +52,8 @@
     "cash": "Cash on delivery",
     "returns": "Returns",
     "refunds": "Refunds",
-    "inventory": "Stock"
+    "inventory": "Stock",
+    "purchasing": "Purchasing"
   },
   "notifications": {
     "title": "Notifications",
