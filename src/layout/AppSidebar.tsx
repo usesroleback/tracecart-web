@@ -35,8 +35,8 @@ type NavItem = {
   path: string;
   query?: Record<string, string>;
   count?: (c: Counts) => number | undefined;
-  /** Shown only to holders of this permission (display only). */
-  permission?: string;
+  /** Shown only to holders of this permission, or any of these (display only). */
+  permission?: string | string[];
 };
 
 type NavGroup = { /** Key under common.nav.groups. */ title?: string; items: NavItem[] };
@@ -82,6 +82,7 @@ const CATALOG_NAV: NavGroup = {
   items: [
     { icon: <DsPackageIcon />, name: "storeOrders", path: "/store-orders", permission: "orders.store.read" },
     { icon: <DsTruckIcon />, name: "shipments", path: "/shipments", permission: "shipments.read" },
+    { icon: <DsPackageIcon />, name: "cash", path: "/cod", permission: ["shipments.cod.collect", "payments.read"] },
     { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
     { icon: <DsLayersIcon />, name: "catalog", path: "/catalog" },
     { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories" },
@@ -122,7 +123,7 @@ const AppSidebar: React.FC = () => {
   const [counts, setCounts] = useState<Counts>({});
   const isAdmin = user.role === "SUPER_ADMIN";
   const base = isAdmin ? ADMIN_NAV : user.role === "STAFF" ? STAFF_NAV : CARRIER_NAV;
-  const allowed = (i: NavItem) => !i.permission || !!user.permissions?.includes(i.permission);
+  const allowed = (i: NavItem) => !i.permission || [i.permission].flat().some((p) => !!user.permissions?.includes(p));
   const store: NavGroup = {
     ...CATALOG_NAV,
     items: CATALOG_NAV.items.filter((i) => (i.permission ? allowed(i) : !!user.permissions?.includes("catalog.read"))),

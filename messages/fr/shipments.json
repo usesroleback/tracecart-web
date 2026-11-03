@@ -82,7 +82,6 @@
     "transit": "En route",
     "out_for_delivery": "En cours de livraison",
     "at_pickup_point": "Arrivé au point relais",
-    "deliver": "Livré",
     "delivery_failed": "Livraison non aboutie",
     "return_start": "Retour engagé",
     "returned": "Revenu à l'entrepôt",
@@ -114,7 +113,8 @@
     "RETURNED": "Retourné",
     "LOST": "Perdu",
     "CANCELLED": "Annulé",
-    "POSITION_REPORTED": "Position signalée"
+    "POSITION_REPORTED": "Position signalée",
+    "COLLECTION_CODE_REISSUED": "Nouveau code envoyé"
   },
   "exceptions": {
     "DELAY": "Retard",
@@ -128,6 +128,33 @@
     "DAMAGED_OR_MISSING": "Abîmé ou manquant",
     "DELIVERY_FAILED": "Livraison non aboutie",
     "PRICE_CHANGED": "Prix modifié",
-    "OTHER": "Autre"
-  }
+    "OTHER": "Autre",
+    "COLLECTION_CODE_LOCKED": "Code de livraison bloqué"
+  },
+  "onlyProblems": "Seulement avec un problème",
+  "cashToCollect": "Espèces à encaisser",
+  "cashCollected": "Espèces encaissées",
+  "proofs": "Preuve de livraison",
+  "proofKinds": {
+    "CODE": "Code du client",
+    "PHOTO": "Photo",
+    "SIGNATURE": "Signature"
+  },
+  "deliver": "Livré",
+  "code": "Code du client",
+  "codeHintPoint": "Six chiffres, donnés par le client. Rien d'autre ne libère le colis.",
+  "codeHintHome": "Six chiffres, donnés par le client. S'il ne peut pas le donner, ajoutez d'abord une photo ou une signature.",
+  "amountCollected": "Espèces reçues ({currency})",
+  "amountMustMatch": "Le montant doit être exactement celui à encaisser. Si le client ne peut pas payer, enregistrez une livraison non aboutie.",
+  "recipient": "Remis à",
+  "deliverCta": "Confirmer la livraison",
+  "addProof": "Ajouter une photo ou une signature",
+  "proofKind": "Type",
+  "proofFile": "Image",
+  "addProofCta": "Ajouter",
+  "newCode": "Code du client",
+  "newCodeHint": "Envoie un nouveau code au client. L'ancien ne fonctionne plus et le blocage est levé. Vérifiez d'abord qui le demande.",
+  "newCodeCta": "Envoyer un nouveau code",
+  "yourCodePoint": "Présentez ce code au point relais :",
+  "yourCodeHome": "Donnez ce code au livreur une fois le colis entre vos mains :"
 }

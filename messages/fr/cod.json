@@ -1,0 +1,29 @@
+{
+  "title": "Espèces à la livraison",
+  "lead": "Les espèces reçues à la livraison, jusqu'à leur arrivée chez Tracecart.",
+  "held": "Espèces encore détenues",
+  "noneHeld": "Aucune espèce à reverser.",
+  "pick": "Choisir",
+  "pickOne": "Choisir {reference}",
+  "tracecart": "Tracecart",
+  "transferRef": "Référence du virement",
+  "transferRefShown": "Virement {ref}",
+  "declare": "Déclarer comme reversé",
+  "remittances": "Reversements",
+  "noRemittances": "Aucun reversement pour l'instant.",
+  "received": "Montant reçu ({currency})",
+  "confirm": "Confirmer la réception",
+  "rejectReason": "Ou, pourquoi il est refusé",
+  "reject": "Refuser",
+  "columns": {
+    "shipment": "Expédition",
+    "holder": "Détenu par",
+    "collectedAt": "Encaissé le",
+    "amount": "Montant"
+  },
+  "statuses": {
+    "DECLARED": "En attente de la finance",
+    "CONFIRMED": "Reçu",
+    "REJECTED": "Refusé"
+  }
+}

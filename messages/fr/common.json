@@ -48,7 +48,8 @@
     "searchTuning": "Recherche",
     "storeOrders": "Commandes",
     "shipments": "Expéditions",
-    "freight": "Fret"
+    "freight": "Fret",
+    "cash": "Espèces à la livraison"
   },
   "notifications": {
     "title": "Notifications",

@@ -11,6 +11,8 @@ export default async function ShipmentPage({ params }: { params: Promise<{ id: s
       canPack={!!user && can(user, "fulfillment.pick_pack")}
       canRoute={!!user && can(user, "logistics.routing.assign")}
       canRecord={!!user && can(user, "shipments.event.record")}
+      canProve={!!user && can(user, "shipments.proof.upload")}
+      canReissue={!!user && can(user, "logistics.exception.write")}
       canSeeOrder={!!user && can(user, "orders.store.read")}
     />
   );

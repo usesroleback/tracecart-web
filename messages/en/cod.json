@@ -1,0 +1,29 @@
+{
+  "title": "Cash on delivery",
+  "lead": "Cash taken at delivery, until it reaches Tracecart.",
+  "held": "Cash still held",
+  "noneHeld": "No cash waiting to be passed on.",
+  "pick": "Choose",
+  "pickOne": "Choose {reference}",
+  "tracecart": "Tracecart",
+  "transferRef": "Transfer reference",
+  "transferRefShown": "Transfer {ref}",
+  "declare": "Declare as passed on",
+  "remittances": "Remittances",
+  "noRemittances": "No remittance yet.",
+  "received": "Amount received ({currency})",
+  "confirm": "Confirm receipt",
+  "rejectReason": "Or, why it's refused",
+  "reject": "Refuse",
+  "columns": {
+    "shipment": "Shipment",
+    "holder": "Held by",
+    "collectedAt": "Collected on",
+    "amount": "Amount"
+  },
+  "statuses": {
+    "DECLARED": "Waiting for finance",
+    "CONFIRMED": "Received",
+    "REJECTED": "Refused"
+  }
+}

@@ -82,7 +82,6 @@
     "transit": "On its way",
     "out_for_delivery": "Out for delivery",
     "at_pickup_point": "Arrived at the pickup point",
-    "deliver": "Delivered",
     "delivery_failed": "Delivery attempt failed",
     "return_start": "Return started",
     "returned": "Back at the warehouse",
@@ -114,7 +113,8 @@
     "RETURNED": "Returned",
     "LOST": "Lost",
     "CANCELLED": "Cancelled",
-    "POSITION_REPORTED": "Position reported"
+    "POSITION_REPORTED": "Position reported",
+    "COLLECTION_CODE_REISSUED": "New code sent"
   },
   "exceptions": {
     "DELAY": "Delay",
@@ -128,6 +128,33 @@
     "DAMAGED_OR_MISSING": "Damaged or missing",
     "DELIVERY_FAILED": "Delivery failed",
     "PRICE_CHANGED": "Price changed",
-    "OTHER": "Other"
-  }
+    "OTHER": "Other",
+    "COLLECTION_CODE_LOCKED": "Delivery code locked"
+  },
+  "onlyProblems": "Only with a problem",
+  "cashToCollect": "Cash to collect",
+  "cashCollected": "Cash collected",
+  "proofs": "Proof of delivery",
+  "proofKinds": {
+    "CODE": "Customer's code",
+    "PHOTO": "Photo",
+    "SIGNATURE": "Signature"
+  },
+  "deliver": "Delivered",
+  "code": "Customer's code",
+  "codeHintPoint": "Six digits, from the customer. Nothing else releases the parcel.",
+  "codeHintHome": "Six digits, from the customer. If they can't give it, add a photo or signature first.",
+  "amountCollected": "Cash taken ({currency})",
+  "amountMustMatch": "It must be exactly the amount to collect. If the customer can't pay, record a failed attempt.",
+  "recipient": "Handed to",
+  "deliverCta": "Confirm delivery",
+  "addProof": "Add a photo or signature",
+  "proofKind": "Kind",
+  "proofFile": "Image",
+  "addProofCta": "Add",
+  "newCode": "Customer's code",
+  "newCodeHint": "Sends the customer a new code. The old one stops working, and a lock is lifted. Check who is asking first.",
+  "newCodeCta": "Send a new code",
+  "yourCodePoint": "Show this code at the pickup point:",
+  "yourCodeHome": "Give this code to the courier once the parcel is in your hands:"
 }

@@ -29,6 +29,7 @@ const NAMESPACES = [
   'services',
   'freightAdmin',
   'shipments',
+  'cod',
 ] as const;
 
 function isSupportedLocale(locale: string | undefined): locale is (typeof routing.locales)[number] {

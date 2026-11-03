@@ -4,7 +4,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useFormat } from "@/lib/format";
-import { toMajor } from "@/lib/currency";
+import { toMajor, toMinor } from "@/lib/currency";
 import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Field, input } from "@/components/ui/form/Form";
@@ -31,17 +31,19 @@ const TONE: Record<Status, "positive" | "attn" | "default" | "critical" | "info"
 };
 
 // What can happen next on the road, as the API's machine allows it (ADR-040).
-// Being collected at a pickup point isn't here: it takes the customer's code.
-type RoadAction = "transit" | "out_for_delivery" | "at_pickup_point" | "deliver" | "delivery_failed" | "return_start" | "returned" | "lost";
+// Being delivered isn't here: it takes proof, and any cash (ADR-041).
+type RoadAction = "transit" | "out_for_delivery" | "at_pickup_point" | "delivery_failed" | "return_start" | "returned" | "lost";
 const ROAD: Partial<Record<Status, RoadAction[]>> = {
   HANDED_OVER: ["transit", "out_for_delivery", "at_pickup_point", "lost"],
   IN_TRANSIT: ["out_for_delivery", "at_pickup_point", "lost"],
   AT_PICKUP_POINT: ["return_start", "lost"],
-  OUT_FOR_DELIVERY: ["deliver", "delivery_failed", "lost"],
+  OUT_FOR_DELIVERY: ["delivery_failed", "lost"],
   DELIVERY_FAILED: ["out_for_delivery", "return_start", "lost"],
   RETURNING: ["returned", "lost"],
 };
 const NEEDS_REASON: RoadAction[] = ["delivery_failed", "lost"];
+const CAN_DELIVER: Status[] = ["AT_PICKUP_POINT", "OUT_FOR_DELIVERY"];
+const TAKES_NEW_CODE: Status[] = ["AT_PICKUP_POINT", "OUT_FOR_DELIVERY", "DELIVERY_FAILED"];
 const ON_THE_ROAD: Status[] = ["HANDED_OVER", "IN_TRANSIT", "AT_PICKUP_POINT", "OUT_FOR_DELIVERY", "DELIVERY_FAILED", "RETURNING"];
 const NEWS = ["POSITION_REPORTED", "BORDER_PROCESSING", "CUSTOMS_DOCUMENTS_REQUIRED", "CUSTOMS_CLEARANCE_STARTED", "CUSTOMS_CLEARED", "DESTINATION_HUB_RECEIVED", "DELAY_REPORTED"] as const;
 
@@ -66,12 +68,14 @@ export function ShipmentsList() {
   const format = useFormat();
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("");
+  const [problems, setProblems] = useState(false);
   const [rows, setRows] = useState<Row[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async (after: string | null, query: string, st: string) => {
+  const load = useCallback(async (after: string | null, query: string, st: string, withProblems: boolean) => {
     const p = new URLSearchParams({ limit: "50" });
+    if (withProblems) p.set("problems", "open");
     if (query.trim()) p.set("q", query.trim());
     if (st) p.set("status", st);
     if (after) p.set("cursor", after);
@@ -86,7 +90,7 @@ export function ShipmentsList() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    load(null, "", "");
+    load(null, "", "", false);
   }, [load]);
 
   return (
@@ -98,7 +102,7 @@ export function ShipmentsList() {
         className="mb-4 flex flex-wrap gap-2"
         onSubmit={(e: FormEvent) => {
           e.preventDefault();
-          load(null, q, status);
+          load(null, q, status, problems);
         }}
       >
         <input className={`${input} max-w-sm`} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} aria-label={t("search")} />
@@ -108,7 +112,7 @@ export function ShipmentsList() {
           aria-label={t("status")}
           onChange={(e) => {
             setStatus(e.target.value);
-            load(null, q, e.target.value);
+            load(null, q, e.target.value, problems);
           }}
         >
           <option value="">{t("allStatuses")}</option>
@@ -118,6 +122,17 @@ export function ShipmentsList() {
             </option>
           ))}
         </select>
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={problems}
+            onChange={(e) => {
+              setProblems(e.target.checked);
+              load(null, q, status, e.target.checked);
+            }}
+          />
+          {t("onlyProblems")}
+        </label>
         <Button type="submit" variant="secondary">
           {t("find")}
         </Button>
@@ -159,7 +174,7 @@ export function ShipmentsList() {
         {rows.length === 0 && !error ? <p className="px-4 py-8 text-center text-ink-muted">{t("empty")}</p> : null}
       </div>
       {cursor ? (
-        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, q, status)}>
+        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, q, status, problems)}>
           {t("more")}
         </Button>
       ) : null}
@@ -187,6 +202,8 @@ interface Detail {
   events: { id: string; milestone: string; occurredAt: string; city: string | null; customerNote: string | null; internalNote: string | null; reason: string | null }[];
   openExceptions: { id: string; type: string; summary: string }[];
   carrierCost?: { amountMinor: number; currency: string } | null;
+  proofs: { id: string; kind: "CODE" | "PHOTO" | "SIGNATURE"; recipientName: string | null; hasFile: boolean; createdAt: string }[];
+  collect?: { amountMinor: number; currency: string; collectedAt: string | null };
 }
 
 interface RateOption {
@@ -203,7 +220,7 @@ interface RateOption {
 const box = "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
 
 /** One shipment: the pick list and, for those who may, the next step of its way. */
-export function ShipmentDetail({ id, canPack, canRoute, canRecord, canSeeOrder }: { id: string; canPack: boolean; canRoute: boolean; canRecord: boolean; canSeeOrder: boolean }) {
+export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, canReissue, canSeeOrder }: { id: string; canPack: boolean; canRoute: boolean; canRecord: boolean; canProve: boolean; canReissue: boolean; canSeeOrder: boolean }) {
   const t = useTranslations("shipments");
   const format = useFormat();
   const [s, setS] = useState<Detail | null>(null);
@@ -233,6 +250,8 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canSeeOrder }
   const post = (path: string, body?: unknown) => act(() => call<Detail>("POST", `/shipments/${s.id}/${path}`, body));
   const d = s.destination;
   const hasLabel = !["PLANNED", "PICKING", "PACKED", "CANCELLED"].includes(s.status);
+  const road = (ROAD[s.status] ?? []).filter((a) => !(s.deliveryMethod === "PICKUP" && a === "out_for_delivery") && !(s.deliveryMethod === "HOME" && a === "at_pickup_point"));
+  const money = (minor: number, currency: string) => `${format.number(toMajor(minor, currency))} ${currency}`;
 
   return (
     <div className="flex flex-col gap-6">
@@ -358,6 +377,33 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canSeeOrder }
             ) : null}
           </div>
 
+          {s.collect ? (
+            <div className={box}>
+              <h2 className="rb-label mb-2">{s.collect.collectedAt ? t("cashCollected") : t("cashToCollect")}</h2>
+              <p className="rb-numeral text-[22px]">{money(s.collect.amountMinor, s.collect.currency)}</p>
+              {s.collect.collectedAt ? <p className="text-ink-muted">{format.dayTime(s.collect.collectedAt)}</p> : null}
+            </div>
+          ) : null}
+          {s.proofs.length ? (
+            <div className={box}>
+              <h2 className="rb-label mb-2">{t("proofs")}</h2>
+              <ul className="space-y-1">
+                {s.proofs.map((p) => (
+                  <li key={p.id}>
+                    {p.hasFile ? (
+                      <a href={`/api/tracecart/shipments/${s.id}/proof/${p.id}/file`} target="_blank" rel="noreferrer" className="underline">
+                        {t(`proofKinds.${p.kind}`)}
+                      </a>
+                    ) : (
+                      t(`proofKinds.${p.kind}`)
+                    )}
+                    {p.recipientName ? ` · ${p.recipientName}` : ""}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
           {canPack && s.status === "PLANNED" ? (
             <div className={box}>
               <Button variant="primary" loading={busy} onClick={() => post("pick")}>
@@ -376,7 +422,18 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canSeeOrder }
             </div>
           ) : null}
           {canPack && s.status === "LABELLED" ? <HandOverForm busy={busy} onHandOver={(body) => post("handover", body)} /> : null}
-          {canRecord && ROAD[s.status] ? <RoadForm key={s.status} actions={ROAD[s.status]!} busy={busy} onAdvance={(body) => post("advance", body)} /> : null}
+          {canRecord && CAN_DELIVER.includes(s.status) ? <DeliverForm key={`deliver-${s.status}`} atPoint={s.status === "AT_PICKUP_POINT"} collect={s.collect} hasFile={s.proofs.some((p) => p.hasFile)} busy={busy} onDeliver={(body) => post("deliver", body)} /> : null}
+          {canProve && CAN_DELIVER.includes(s.status) ? <ProofForm busy={busy} onUpload={(body) => post("proof", body)} /> : null}
+          {canReissue && TAKES_NEW_CODE.includes(s.status) ? (
+            <div className={box}>
+              <h2 className="rb-label mb-2">{t("newCode")}</h2>
+              <p className="mb-3 text-ink-muted">{t("newCodeHint")}</p>
+              <Button variant="secondary" loading={busy} onClick={() => post("collection-code")}>
+                {t("newCodeCta")}
+              </Button>
+            </div>
+          ) : null}
+          {canRecord && road.length ? <RoadForm key={s.status} actions={road} busy={busy} onAdvance={(body) => post("advance", body)} /> : null}
           {canRecord && ON_THE_ROAD.includes(s.status) ? (
             <NewsForm
               busy={busy}
@@ -553,6 +610,76 @@ function RoadForm({ actions, busy, onAdvance }: { actions: RoadAction[]; busy: b
   );
 }
 
+/** Delivered, with the customer's code and any cash. The API checks both, and refuses a wrong amount. */
+function DeliverForm({ atPoint, collect, hasFile, busy, onDeliver }: { atPoint: boolean; collect?: Detail["collect"]; hasFile: boolean; busy: boolean; onDeliver: (body: unknown) => void }) {
+  const t = useTranslations("shipments");
+  const [code, setCode] = useState("");
+  const [amount, setAmount] = useState("");
+  const [recipient, setRecipient] = useState("");
+  const collectedMinor = collect ? toMinor(amount, collect.currency) : null;
+  const wrongAmount = !!collect && amount !== "" && collectedMinor !== collect.amountMinor;
+  return (
+    <form
+      className={`${box} grid gap-3`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        onDeliver({ ...(code.trim() ? { code: code.trim() } : {}), ...(collect && collectedMinor != null ? { collectedMinor } : {}), ...(recipient.trim() ? { recipientName: recipient.trim() } : {}) });
+      }}
+    >
+      <h2 className="rb-label">{t("deliver")}</h2>
+      <Field label={t("code")} required={atPoint || !hasFile} hint={atPoint ? t("codeHintPoint") : t("codeHintHome")}>
+        <input className={`${input} rb-mono`} inputMode="numeric" autoComplete="off" pattern="[0-9]{6}" maxLength={6} required={atPoint || !hasFile} value={code} onChange={(e) => setCode(e.target.value)} />
+      </Field>
+      {collect ? (
+        <Field label={t("amountCollected", { currency: collect.currency })} required hint={wrongAmount ? t("amountMustMatch") : undefined}>
+          <input className={input} inputMode="decimal" required value={amount} onChange={(e) => setAmount(e.target.value)} />
+        </Field>
+      ) : null}
+      <Field label={t("recipient")}>
+        <input className={input} maxLength={120} value={recipient} onChange={(e) => setRecipient(e.target.value)} />
+      </Field>
+      <Button type="submit" variant="primary" loading={busy} disabled={wrongAmount}>
+        {t("deliverCta")}
+      </Button>
+    </form>
+  );
+}
+
+function ProofForm({ busy, onUpload }: { busy: boolean; onUpload: (body: FormData) => void }) {
+  const t = useTranslations("shipments");
+  const [kind, setKind] = useState<"PHOTO" | "SIGNATURE">("PHOTO");
+  const [file, setFile] = useState<File | null>(null);
+  return (
+    <form
+      className={`${box} grid gap-3`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!file) return;
+        const form = new FormData();
+        form.append("kind", kind);
+        form.append("file", file);
+        onUpload(form);
+        setFile(null);
+        e.currentTarget.reset();
+      }}
+    >
+      <h2 className="rb-label">{t("addProof")}</h2>
+      <Field label={t("proofKind")} required>
+        <select className={input} value={kind} onChange={(e) => setKind(e.target.value as "PHOTO" | "SIGNATURE")}>
+          <option value="PHOTO">{t("proofKinds.PHOTO")}</option>
+          <option value="SIGNATURE">{t("proofKinds.SIGNATURE")}</option>
+        </select>
+      </Field>
+      <Field label={t("proofFile")} required>
+        <input className={input} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" required onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+      </Field>
+      <Button type="submit" variant="secondary" loading={busy}>
+        {t("addProofCta")}
+      </Button>
+    </form>
+  );
+}
+
 function NewsForm({ busy, onRecord }: { busy: boolean; onRecord: (body: unknown) => void }) {
   const t = useTranslations("shipments");
   const [milestone, setMilestone] = useState<(typeof NEWS)[number]>("POSITION_REPORTED");
@@ -597,6 +724,7 @@ export interface CustomerShipment {
   status: Status;
   carrier: string | null;
   eta: { from: string | null; to: string | null } | null;
+  collectionCode: string | null;
   lines: { sku: string; title: string; quantity: number }[];
   events: { milestone: string; occurredAt: string; city: string | null; note: string | null; reason: string | null }[];
 }
@@ -620,6 +748,12 @@ export function OrderShipments({ shipments, boxClass }: { shipments: CustomerShi
           </p>
           {shipments.length > 1 ? <p className="mt-1 text-sm text-ink-muted">{s.lines.map((l) => `${l.title} × ${l.quantity}`).join(", ")}</p> : null}
           {s.eta?.from && s.eta.to ? <p className="mt-2 text-sm">{t("arrives", { from: format.shortDate(s.eta.from), to: format.shortDate(s.eta.to) })}</p> : null}
+          {s.collectionCode ? (
+            <div className="mt-3">
+              <p className="text-sm text-ink-muted">{s.status === "AT_PICKUP_POINT" ? t("yourCodePoint") : t("yourCodeHome")}</p>
+              <p className="rb-mono text-[24px] font-medium tracking-[0.2em]">{s.collectionCode}</p>
+            </div>
+          ) : null}
           {s.events.length ? (
             <ol className="mt-3 grid gap-1.5 text-sm">
               {s.events.map((e, i) => (

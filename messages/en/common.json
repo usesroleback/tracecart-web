@@ -48,7 +48,8 @@
     "searchTuning": "Search",
     "storeOrders": "Orders",
     "shipments": "Shipments",
-    "freight": "Freight"
+    "freight": "Freight",
+    "cash": "Cash on delivery"
   },
   "notifications": {
     "title": "Notifications",
