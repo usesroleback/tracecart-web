@@ -25,7 +25,8 @@
       "operations": "Opérations",
       "catalogue": "Catalogue",
       "network": "Réseau",
-      "store": "Boutique"
+      "store": "Boutique",
+      "seller": "Vente"
     },
     "overview": "Vue d'ensemble",
     "requests": "Demandes",
@@ -54,7 +55,10 @@
     "refunds": "Remboursements",
     "inventory": "Stock",
     "purchasing": "Achats",
-    "partners": "Partenaires"
+    "partners": "Partenaires",
+    "sellers": "Vendeurs",
+    "sellerTerms": "Conditions vendeurs",
+    "sellerCenter": "Espace vendeur"
   },
   "notifications": {
     "title": "Notifications",

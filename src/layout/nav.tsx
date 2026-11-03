@@ -29,6 +29,8 @@ export type NavItem = {
   permission?: string | string[];
   /** And only to these account types, where the legacy service only admits them. */
   accountTypes?: Role[];
+  /** Only to holders of this role: staff hold every staff permission, but a shop isn't theirs. */
+  role?: string;
 };
 
 export type NavGroup = { /** Key under common.nav.groups. */ title?: string; items: NavItem[] };
@@ -53,6 +55,10 @@ const NAV: NavGroup[] = [
       { icon: <DsRouteIcon />, name: "routes", path: "/routes", permission: "logistics.carrier_service.read", accountTypes: ["LOGISTICS_PARTNER"] },
       { icon: <DsAlertIcon />, name: "exceptions", path: "/exceptions", accountTypes: ["SUPER_ADMIN"] },
     ],
+  },
+  {
+    title: "seller",
+    items: [{ icon: <DsBuildingIcon />, name: "sellerCenter", path: "/seller", role: "seller_owner" }],
   },
   {
     title: "catalogue",
@@ -82,6 +88,8 @@ const NAV: NavGroup[] = [
       { icon: <DsPackageIcon />, name: "returns", path: "/returns", permission: "returns.read" },
       { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
       { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
+      { icon: <DsBuildingIcon />, name: "sellers", path: "/sellers", permission: "sellers.review" },
+      { icon: <DsCoinIcon />, name: "sellerTerms", path: "/sellers/settings", permission: ["sellers.review", "finance.payout.read", "settings.read"] },
       { icon: <DsLayersIcon />, name: "catalog", path: "/catalog", permission: "catalog.read" },
       { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories", permission: "catalog.read" },
       { icon: <DsBuildingIcon />, name: "brands", path: "/catalog/brands", permission: "catalog.read" },
@@ -94,6 +102,6 @@ const NAV: NavGroup[] = [
 /** What this person is offered: the sidebar, global search and the shortcuts all use it. Display only. */
 export function allowedNav(user: SessionUser): NavGroup[] {
   const can = (permission: string) => !!user.permissions?.includes(permission);
-  const allowed = (i: NavItem) => (!i.permission || [i.permission].flat().some(can)) && (!i.accountTypes || i.accountTypes.includes(user.role));
+  const allowed = (i: NavItem) => (!i.permission || [i.permission].flat().some(can)) && (!i.accountTypes || i.accountTypes.includes(user.role)) && (!i.role || !!user.roles?.includes(i.role));
   return NAV.map((g) => ({ ...g, items: g.items.filter(allowed) })).filter((g) => g.items.length);
 }

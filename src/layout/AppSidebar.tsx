@@ -42,6 +42,7 @@ const AppSidebar: React.FC = () => {
     if (pathname.startsWith("/freight-requests/")) return item.path === "/freight-requests";
     if (pathname.startsWith("/shipments/")) return item.path === "/shipments";
     if (pathname.startsWith("/returns/")) return item.path === "/returns";
+    if (pathname.startsWith("/sellers/") && pathname !== "/sellers/settings") return item.path === "/sellers";
     const onPath = item.path === "/dashboard" ? pathname === "/dashboard" : pathname === item.path;
     if (!onPath) return false;
     // An item with a tab query is current on that tab; a plain item is current

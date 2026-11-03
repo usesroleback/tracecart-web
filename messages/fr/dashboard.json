@@ -95,7 +95,9 @@
       "noticesNew": "Nouveaux avis partenaires",
       "freightToQuote": "Demandes de fret à chiffrer",
       "requestsOpen": "Demandes ouvertes",
-      "productsToFinish": "Produits pas encore en ligne"
+      "productsToFinish": "Produits pas encore en ligne",
+      "sellersToReview": "Demandes vendeur à examiner",
+      "sellerPayoutsToConfirm": "Comptes de paiement vendeur à confirmer"
     }
   }
 }

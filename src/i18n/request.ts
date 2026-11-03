@@ -3,6 +3,7 @@ import { routing } from './routing';
 
 const NAMESPACES = [
   'common',
+  'sellers',
   'console',
   'site',
   'home',

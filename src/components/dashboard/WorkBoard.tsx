@@ -35,6 +35,8 @@ const PATHS: Record<string, string> = {
   freightToQuote: "/freight-requests",
   requestsOpen: "/sourcing",
   productsToFinish: "/catalog",
+  sellersToReview: "/sellers?queue=toReview",
+  sellerPayoutsToConfirm: "/sellers?queue=payoutToConfirm",
 };
 
 /** What's waiting on this person, the fullest queues first. */

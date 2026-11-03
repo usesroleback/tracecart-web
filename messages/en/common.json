@@ -25,7 +25,8 @@
       "operations": "Operations",
       "catalogue": "Catalogue",
       "network": "Network",
-      "store": "Store"
+      "store": "Store",
+      "seller": "Selling"
     },
     "overview": "Overview",
     "requests": "Requests",
@@ -54,7 +55,10 @@
     "refunds": "Refunds",
     "inventory": "Stock",
     "purchasing": "Purchasing",
-    "partners": "Partners"
+    "partners": "Partners",
+    "sellers": "Sellers",
+    "sellerTerms": "Seller terms",
+    "sellerCenter": "Seller Center"
   },
   "notifications": {
     "title": "Notifications",

@@ -42,6 +42,13 @@ async function clerkUserId(email: string): Promise<string> {
   return id;
 }
 
+/** Removes a person a test made for itself, so a development instance doesn't fill up. */
+export async function deleteClerkUser(email: string): Promise<void> {
+  const found = await clerk<{ id: string }[]>("GET", `/users?email_address=${encodeURIComponent(email)}`);
+  for (const user of found) await clerk("DELETE", `/users/${user.id}`);
+  userIds.delete(email);
+}
+
 /** The address of a role's demo account: "warehouse_manager" is demo.warehouse.manager+clerk_test@example.com. */
 export const demoEmail = (role: string) => `demo.${role.replace(/_/g, ".")}+clerk_test@example.com`;
 

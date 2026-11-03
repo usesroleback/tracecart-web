@@ -34,7 +34,7 @@ export NODE_ENV=production
 (cd "$API_DIR" && pnpm migrate:deploy && pnpm seed:e2e && NODE_ENV=test pnpm seed:demo && NODE_ENV=test AI_FAKE=true pnpm search:embed && pnpm build)
 (cd "$WEB_DIR" && pnpm build)
 
-(cd "$API_DIR" && NODE_ENV=test AI_FAKE=true exec node dist/index.js > "$WEB_DIR/e2e-api.log" 2>&1) &
+(cd "$API_DIR" && NODE_ENV=test AI_FAKE=true STORAGE_FAKE=true exec node dist/index.js > "$WEB_DIR/e2e-api.log" 2>&1) &
 API_PID=$!
 (cd "$WEB_DIR" && exec node_modules/.bin/next start -p 3000 > "$WEB_DIR/e2e-web.log" 2>&1) &
 WEB_PID=$!

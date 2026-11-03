@@ -95,7 +95,9 @@
       "noticesNew": "New partner notices",
       "freightToQuote": "Freight requests to quote",
       "requestsOpen": "Open requests",
-      "productsToFinish": "Products not live yet"
+      "productsToFinish": "Products not live yet",
+      "sellersToReview": "Seller applications to review",
+      "sellerPayoutsToConfirm": "Seller payout accounts to confirm"
     }
   }
 }
