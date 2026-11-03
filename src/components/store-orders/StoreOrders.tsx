@@ -10,6 +10,7 @@ import Button from "@/components/ui/button/Button";
 import { input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
 import type { OrderView } from "@/components/checkout/types";
+import { OrderRefunds } from "@/components/returns/Returns";
 
 const STATUSES = ["PENDING_PAYMENT", "PLACED", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "PARTIALLY_DELIVERED", "DELIVERED", "CANCELLED", "ON_HOLD"] as const;
 const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"> = {
@@ -181,7 +182,7 @@ interface OrderShipment {
 }
 
 /** One store order in the console: lines, payments, holds, history; cancel and confirm a transfer. */
-export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil }: { id: string; canCancel: boolean; canConfirm: boolean; canFulfil: boolean }) {
+export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil, canRefund }: { id: string; canCancel: boolean; canConfirm: boolean; canFulfil: boolean; canRefund: boolean }) {
   const t = useTranslations("storeOrders");
   const tShip = useTranslations("shipments");
   const ts = useTranslations("checkout.order.status");
@@ -344,6 +345,7 @@ export function StoreOrderDetail({ id, canCancel, canConfirm, canFulfil }: { id:
               </a>
             ) : null}
           </div>
+          <OrderRefunds key={order.status} orderId={order.id} currency={order.currency} canRefund={canRefund} />
           {canFulfil && order.kind !== "PRODUCTS" && PROGRESS[order.status] ? (
             <div className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm">
               <h2 className="rb-label mb-2">{t("progress.title")}</h2>

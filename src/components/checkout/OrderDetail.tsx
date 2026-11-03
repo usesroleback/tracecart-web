@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { OrderShipments } from "@/components/shipments/Shipments";
+import { OrderReturns } from "@/components/returns/MyReturns";
 import { useLocale, useTranslations } from "next-intl";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { Link } from "@/i18n/navigation";
@@ -195,6 +196,7 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
             </p>
           </div>
           <OrderShipments shipments={order.shipments ?? []} boxClass={box} />
+          <OrderReturns key={`${order.refunds?.length ?? 0}-${(order.returnOptions ?? []).reduce((n, o) => n + o.quantity, 0)}`} order={order} onChanged={load} boxClass={box} />
           {order.timeline.length > 1 ? (
             <div className={box}>
               <h2 className="rb-label mb-2">{t("progress")}</h2>

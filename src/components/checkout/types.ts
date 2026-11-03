@@ -98,4 +98,6 @@ export interface OrderView {
   timeline: { status: string; at: string }[];
   /** Only on the customer's own order. */
   shipments?: CustomerShipment[];
+  refunds?: { id: string; amountMinor: number; currency: string; paid: boolean; paidAt: string | null; creditNoteNumber: string | null }[];
+  returnOptions?: { orderLineId: string; quantity: number; returnUntil: string | null; warrantyUntil: string | null; canReturn: boolean; canClaimWarranty: boolean }[];
 }

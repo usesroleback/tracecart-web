@@ -49,7 +49,9 @@
     "storeOrders": "Orders",
     "shipments": "Shipments",
     "freight": "Freight",
-    "cash": "Cash on delivery"
+    "cash": "Cash on delivery",
+    "returns": "Returns",
+    "refunds": "Refunds"
   },
   "notifications": {
     "title": "Notifications",

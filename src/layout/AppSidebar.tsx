@@ -83,6 +83,8 @@ const CATALOG_NAV: NavGroup = {
     { icon: <DsPackageIcon />, name: "storeOrders", path: "/store-orders", permission: "orders.store.read" },
     { icon: <DsTruckIcon />, name: "shipments", path: "/shipments", permission: "shipments.read" },
     { icon: <DsPackageIcon />, name: "cash", path: "/cod", permission: ["shipments.cod.collect", "payments.read"] },
+    { icon: <DsPackageIcon />, name: "returns", path: "/returns", permission: "returns.read" },
+    { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
     { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
     { icon: <DsLayersIcon />, name: "catalog", path: "/catalog" },
     { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories" },
@@ -142,6 +144,7 @@ const AppSidebar: React.FC = () => {
     if (pathname.startsWith("/store-orders/")) return item.path === "/store-orders";
     if (pathname.startsWith("/freight-requests/")) return item.path === "/freight-requests";
     if (pathname.startsWith("/shipments/")) return item.path === "/shipments";
+    if (pathname.startsWith("/returns/")) return item.path === "/returns";
     const onPath = item.path === "/dashboard" ? pathname === "/dashboard" : pathname === item.path;
     if (!onPath) return false;
     // An item with a tab query is current on that tab; a plain item is current

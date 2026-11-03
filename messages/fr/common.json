@@ -49,7 +49,9 @@
     "storeOrders": "Commandes",
     "shipments": "Expéditions",
     "freight": "Fret",
-    "cash": "Espèces à la livraison"
+    "cash": "Espèces à la livraison",
+    "returns": "Retours",
+    "refunds": "Remboursements"
   },
   "notifications": {
     "title": "Notifications",
