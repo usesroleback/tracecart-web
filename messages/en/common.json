@@ -51,7 +51,8 @@
     "freight": "Freight",
     "cash": "Cash on delivery",
     "returns": "Returns",
-    "refunds": "Refunds"
+    "refunds": "Refunds",
+    "inventory": "Stock"
   },
   "notifications": {
     "title": "Notifications",

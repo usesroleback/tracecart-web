@@ -51,7 +51,8 @@
     "freight": "Fret",
     "cash": "Espèces à la livraison",
     "returns": "Retours",
-    "refunds": "Remboursements"
+    "refunds": "Remboursements",
+    "inventory": "Stock"
   },
   "notifications": {
     "title": "Notifications",
