@@ -74,8 +74,9 @@ jobs:
         env:
           TRACECART_API_SPEC: .api/openapi.json
 
-  # Browser tests of the pages that need no sign-in (customer quote page,
-  # public site, sign-in redirects), against the built API and web app.
+  # Browser tests against the built API and web app: the pages that need no
+  # sign-in, and, once the two CLERK_E2E_* secrets hold a Clerk development
+  # instance's keys, each role's screens and the full journey (ADR-047).
   e2e:
     runs-on: ubuntu-latest
     services:
@@ -94,6 +95,8 @@ jobs:
     env:
       DATABASE_URL: postgresql://test:test@localhost:5432/tracecart_e2e_test
       REDIS_URL: redis://localhost:6379
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_E2E_PUBLISHABLE_KEY }}
+      CLERK_SECRET_KEY: ${{ secrets.CLERK_E2E_SECRET_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:

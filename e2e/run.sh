@@ -19,7 +19,9 @@ esac
 WEB_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 API_DIR="$(cd "${TRACECART_API_DIR:-$WEB_DIR/../tracecart-api}" && pwd)"
 
-# Placeholders are enough: these tests only cover pages that need no sign-in.
+# Placeholders are enough for the pages that need no sign-in. With a Clerk
+# development instance's keys in the environment, the signed-in tests run too
+# (they skip otherwise; ADR-047).
 export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:4000}"
 export NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:-pk_test_Y2xlcmsuZXhhbXBsZS5jb20k}"
 export CLERK_SECRET_KEY="${CLERK_SECRET_KEY:-sk_test_e2e_placeholder}"

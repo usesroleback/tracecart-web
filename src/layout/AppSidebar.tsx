@@ -161,7 +161,7 @@ const AppSidebar: React.FC = () => {
     if (isAdmin && !user.hubId) return;
     let cancelled = false;
     Promise.all([
-      fetchStatusCounts().catch(() => ({})),
+      user.permissions?.includes("orders.read") ? fetchStatusCounts().catch(() => ({})) : {},
       isAdmin ? api.get<{ total: number }>("/sourcing-requests?limit=1&status=OPEN").catch(() => null) : null,
       isAdmin ? api.get<{ total: number }>("/reservations?limit=1&status=RESERVED").catch(() => null) : null,
     ]).then(([statusCounts, sourcing, reservations]) => {
@@ -171,7 +171,7 @@ const AppSidebar: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, [isAdmin, user.hubId]);
+  }, [isAdmin, user.hubId, user.permissions]);
 
   return (
     <aside

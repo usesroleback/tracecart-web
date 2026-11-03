@@ -18,6 +18,18 @@ async function jsonLd(page: Page): Promise<Ld[]> {
 }
 
 test.describe("the store", () => {
+  test("a phone's header shows the whole logo, and its menu lets you choose a country", async ({ page }) => {
+    await page.goto("/en");
+    const logo = page.getByRole("banner").getByRole("link", { name: "Tracecart" }).locator("img:visible");
+    expect((await logo.boundingBox())!.width).toBeGreaterThan(100);
+
+    await page.getByRole("button", { name: /menu/i }).click();
+    const picker = page.locator("#hp-menu select");
+    await picker.selectOption("ML");
+    await expect(picker).toHaveValue("ML");
+    await expect(page.locator("#hp-menu")).toBeVisible();
+  });
+
   test("browses from the home page to a product through a category and a filter", async ({ page }) => {
     await page.goto("/fr");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();

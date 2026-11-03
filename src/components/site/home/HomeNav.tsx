@@ -96,7 +96,7 @@ export function HomeNav() {
   return (
     <header className="sticky top-0 z-50 px-[var(--hp-gutter)] pt-3">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-4 rounded-[var(--hp-radius-control)] bg-[var(--hp-light)]/85 pl-5 pr-2 backdrop-blur-md">
-        <Link href="/" aria-label="Tracecart" className="flex items-center">
+        <Link href="/" aria-label="Tracecart" className="flex shrink-0 items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/logo/tracecart-lockup.svg" alt="" width={152} height={21} className="block h-[21px] w-auto dark:hidden" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -122,7 +122,10 @@ export function HomeNav() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <CountryPicker className="hidden text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] sm:inline-flex" />
+          {/* A wrapper, like the pill's below: the picker's own inline-flex would beat "hidden" and crush the logo. */}
+          <span className="hidden sm:block">
+            <CountryPicker className="text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]" />
+          </span>
           <ThemeSwitch className="grid size-10 place-items-center rounded-[var(--hp-radius-chip)] text-[var(--hp-text-muted)] hover:bg-[var(--hp-light-sunken)] hover:text-[var(--hp-text)]" />
           <CartLink className="rounded-[var(--hp-radius-chip)] px-2 py-2 text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]" />
           <Link href="/account" className="hidden rounded-[var(--hp-radius-chip)] px-3 py-2 text-sm font-medium text-[var(--hp-text-muted)] hover:text-[var(--hp-text)] md:block">
@@ -174,9 +177,9 @@ export function HomeNav() {
             <PillLink href={to("#quote")} tone="primary" block>
               {t("cta")}
             </PillLink>
-            <CountryPicker className="py-2 text-[var(--hp-on-dark-muted)] [&_option]:text-black" />
           </div>
-          {/* Outside the closing wrapper: switching the theme keeps the menu open. */}
+          {/* Outside the closing wrapper: choosing a country or a theme keeps the menu open. */}
+          <CountryPicker className="mt-3 py-2 text-[var(--hp-on-dark-muted)] [&_option]:text-black" />
           <ThemeSwitch withLabel className="mt-3 flex items-center gap-2 py-2 text-[var(--hp-on-dark-muted)]" />
         </div>
       )}
