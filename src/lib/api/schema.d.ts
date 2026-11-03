@@ -10546,6 +10546,72 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/me/work": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * What's waiting on the current user, as counts
+         * @description Only the queues their permissions allow, within their warehouses or company. Never money.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Each queue and how much is in it */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MyWork"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/notifications": {
         parameters: {
             query?: never;
@@ -22932,6 +22998,8 @@ export interface components {
         Me: components["schemas"]["PublicUser"] & {
             /** @description Every permission the user's roles give, sorted. */
             permissions: string[];
+            /** @description The keys of the user's roles, once each. */
+            roles: string[];
         };
         PublicUser: {
             /** Format: uuid */
@@ -22977,6 +23045,13 @@ export interface components {
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
+        };
+        MyWork: {
+            items: {
+                /** @enum {string} */
+                key: "shipmentsToPrepare" | "shipmentsNoCarrier" | "shipmentsToMove" | "parcelsAtPoint" | "shipmentProblems" | "cashHeld" | "remittancesToConfirm" | "paymentsToConfirm" | "approvalsToDecide" | "refundsToPay" | "returnsToDecide" | "returnsArriving" | "returnsToInspect" | "returnsToResolve" | "purchaseOrdersDraft" | "inboundToReceive" | "customsFiles" | "lowStock" | "countsOpen" | "noticesNew" | "freightToQuote" | "requestsOpen" | "productsToFinish";
+                count: number;
+            }[];
         };
         Health: {
             /** @enum {string} */

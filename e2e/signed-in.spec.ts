@@ -27,30 +27,57 @@ async function refused(page: Page, path: string) {
   expect(new URL(page.url()).pathname, `${path} is refused`).not.toBe(`/en${path}`);
 }
 
-// What each kind of person can open, and a few things they mustn't.
-const ROLES: { role: string; opens: string[]; refused: string[] }[] = [
-  {
-    role: "super_admin",
-    opens: ["/dashboard", "/orders", "/store-orders", "/shipments", "/cod", "/returns", "/refunds", "/inventory", "/purchasing", "/partners", "/catalog", "/freight-requests"],
-    refused: ["/deliveries"],
-  },
-  { role: "warehouse_manager", opens: ["/dashboard", "/store-orders", "/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/refunds", "/catalog", "/partners", "/cod"] },
-  { role: "warehouse_operator", opens: ["/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/store-orders", "/refunds", "/catalog", "/partners"] },
-  { role: "logistics_coordinator", opens: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing", "/partners", "/freight-requests"], refused: ["/refunds", "/catalog"] },
-  { role: "finance", opens: ["/store-orders", "/cod", "/refunds", "/purchasing"], refused: ["/shipments", "/inventory", "/catalog"] },
-  { role: "support_agent", opens: ["/store-orders", "/shipments", "/returns", "/refunds", "/freight-requests"], refused: ["/inventory", "/purchasing", "/catalog"] },
-  { role: "catalog_manager", opens: ["/catalog", "/catalog/brands", "/catalog/categories", "/catalog/search"], refused: ["/shipments", "/refunds", "/inventory"] },
-  { role: "sourcing_agent", opens: ["/purchasing", "/catalog"], refused: ["/shipments", "/refunds"] },
-  { role: "carrier", opens: ["/deliveries", "/shipments", "/cod", "/partners"], refused: ["/store-orders", "/refunds", "/inventory", "/catalog"] },
-  { role: "pickup_point_operator", opens: ["/shipments", "/cod", "/partners"], refused: ["/store-orders", "/refunds", "/inventory", "/catalog"] },
-  { role: "customer", opens: ["/account", "/account/returns"], refused: ["/dashboard", "/store-orders", "/shipments", "/refunds"] },
+const pathsIn = async (page: Page, selector: string) =>
+  [...new Set(await page.locator(selector).evaluateAll((links) => links.map((a) => new URL((a as HTMLAnchorElement).href).pathname.replace(/^\/en/, ""))))];
+
+// Who each role is on screen, what its sidebar must show, and a few things it mustn't reach.
+const CONSOLE: { role: string; name: string; shows: string[]; refused: string[] }[] = [
+  { role: "super_admin", name: "Super Administrator", shows: ["/orders", "/store-orders", "/shipments", "/pricing", "/catalog"], refused: ["/deliveries", "/routes"] },
+  { role: "admin", name: "Administrator", shows: ["/orders", "/store-orders", "/shipments", "/pricing", "/catalog"], refused: ["/deliveries"] },
+  { role: "catalog_manager", name: "Catalogue Manager", shows: ["/catalog", "/catalog/search"], refused: ["/shipments", "/refunds", "/inventory", "/pricing", "/orders"] },
+  { role: "sourcing_agent", name: "Sourcing Agent", shows: ["/sourcing", "/products", "/reservations", "/stores", "/purchasing", "/catalog"], refused: ["/shipments", "/refunds", "/pricing", "/orders"] },
+  { role: "pricing_analyst", name: "Pricing Analyst", shows: ["/pricing", "/catalog"], refused: ["/shipments", "/refunds", "/orders", "/sourcing"] },
+  { role: "warehouse_manager", name: "Warehouse Manager", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/refunds", "/catalog", "/partners", "/cod", "/orders"] },
+  { role: "warehouse_operator", name: "Warehouse Operator", shows: ["/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/store-orders", "/refunds", "/catalog", "/partners", "/orders"] },
+  { role: "logistics_coordinator", name: "Logistics Coordinator", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing", "/partners", "/freight-requests"], refused: ["/refunds", "/catalog", "/orders", "/consolidations"] },
+  { role: "customs_officer", name: "Customs Officer", shows: ["/store-orders", "/purchasing"], refused: ["/shipments", "/refunds", "/inventory", "/pricing"] },
+  { role: "support_agent", name: "Support Agent", shows: ["/store-orders", "/shipments", "/returns", "/refunds", "/freight-requests"], refused: ["/inventory", "/purchasing", "/catalog"] },
+  { role: "support_lead", name: "Support Lead", shows: ["/store-orders", "/shipments", "/returns", "/refunds"], refused: ["/inventory", "/purchasing", "/catalog"] },
+  { role: "finance", name: "Finance", shows: ["/store-orders", "/cod", "/refunds", "/purchasing"], refused: ["/shipments", "/inventory", "/catalog", "/pricing"] },
+  { role: "marketing", name: "Marketing", shows: ["/catalog"], refused: ["/store-orders", "/shipments", "/refunds", "/pricing"] },
+  { role: "content_moderator", name: "Content Moderator", shows: ["/catalog"], refused: ["/store-orders", "/shipments", "/refunds", "/pricing"] },
+  { role: "seller_owner", name: "Seller", shows: [], refused: ["/store-orders", "/shipments", "/catalog", "/refunds", "/orders"] },
+  { role: "seller_staff", name: "Seller Staff", shows: [], refused: ["/store-orders", "/shipments", "/catalog", "/refunds", "/orders"] },
+  { role: "carrier", name: "Carrier", shows: ["/deliveries", "/consolidations", "/routes", "/shipments", "/cod", "/partners"], refused: ["/store-orders", "/refunds", "/inventory", "/catalog", "/pricing"] },
+  { role: "pickup_point_operator", name: "Pickup Point", shows: ["/shipments", "/cod", "/partners"], refused: ["/deliveries", "/routes", "/consolidations", "/store-orders", "/refunds", "/inventory", "/pricing"] },
 ];
 
-for (const { role, opens: allowed, refused: forbidden } of ROLES) {
-  test(`${role} opens their screens, and not the others`, async ({ page }) => {
-    test.setTimeout(240_000);
+for (const { role, name, shows, refused: forbidden } of CONSOLE) {
+  test(`${role} has a dashboard, and every link they're offered works`, async ({ page }) => {
+    test.setTimeout(300_000);
     await signInAs(page, role);
-    for (const path of allowed) await opens(page, path);
-    for (const path of forbidden) await refused(page, path);
+    await opens(page, "/dashboard");
+    // Who they are, by their real role. On a phone it sits in the off-canvas sidebar too.
+    await expect(page.getByText(name, { exact: true }).first()).toBeAttached();
+
+    const sidebar = await pathsIn(page, 'nav[aria-label="Main navigation"] a');
+    expect(sidebar).toEqual(expect.arrayContaining(shows));
+    const queues = await pathsIn(page, 'section[aria-labelledby="work-title"] a');
+    for (const path of queues) expect(sidebar, `the sidebar leads to ${path} too`).toContain(path);
+    for (const path of sidebar) await opens(page, path);
+    for (const path of forbidden) {
+      expect(sidebar, `${path} isn't offered`).not.toContain(path);
+      await refused(page, path);
+    }
+  });
+}
+
+for (const role of ["customer", "b2b_buyer", "b2b_approver", "b2b_admin"]) {
+  test(`${role} has their account, and no console`, async ({ page }) => {
+    test.setTimeout(180_000);
+    await signInAs(page, role);
+    await opens(page, "/account");
+    await opens(page, "/account/returns");
+    for (const path of ["/dashboard", "/store-orders", "/shipments", "/refunds"]) await refused(page, path);
   });
 }

@@ -16,6 +16,9 @@ async function person(browser: Browser, role: string): Promise<Page> {
   return page;
 }
 
+/** Closes a person's browser once they're done: nine at once is a lot for a small machine. */
+const done = (page: Page) => page.context().close();
+
 const button = (page: Page, name: string | RegExp) => page.getByRole("button", { name, exact: typeof name === "string" });
 
 /** Finds a row by the order's reference on a list that has a search box, and opens it. */
@@ -68,6 +71,7 @@ test("an order from the shelf to the customer's door and back again", async ({ b
   await coordinator.getByLabel("Or a carrier with no rate card").selectOption({ label: "Sahel Express Logistique" });
   await coordinator.getByRole("button", { name: "Choose", exact: true }).last().click();
   await expect(coordinator.getByText("Sahel Express Logistique").first()).toBeVisible();
+  await done(coordinator);
 
   // The label, and the hand-off.
   await operator.reload();
@@ -90,6 +94,7 @@ test("an order from the shelf to the customer's door and back again", async ({ b
   await carrier.getByLabel("What happened?").first().selectOption({ label: "Arrived at the pickup point" });
   await button(carrier, "Record").first().click();
   await expect(carrier.getByText("At the pickup point").first()).toBeVisible();
+  await done(carrier);
 
   // The customer reads their code.
   await customer.goto(`/en/account/orders/${reference}`);
@@ -112,6 +117,7 @@ test("an order from the shelf to the customer's door and back again", async ({ b
   await point.getByLabel("Transfer reference").fill("OM-JOURNEY");
   await button(point, "Declare as passed on").click();
   await expect(point.getByText("Waiting for finance").first()).toBeVisible();
+  await done(point);
   const finance = await person(browser, "finance");
   await finance.goto("/en/cod");
   await finance.getByLabel("Amount received (XOF)").first().fill(total);
@@ -145,6 +151,8 @@ test("an order from the shelf to the customer's door and back again", async ({ b
   await manager.reload();
   await button(manager, "Record the inspection").click();
   await expect(manager.getByText("Checked").first()).toBeVisible();
+  await done(manager);
+  await done(operator);
 
   // Support decides: a defect gets back everything paid.
   const support = await person(browser, "support_lead");
@@ -152,6 +160,7 @@ test("an order from the shelf to the customer's door and back again", async ({ b
   await expect(support.getByLabel("Amount to refund (XOF)")).toHaveValue(total);
   await button(support, "Decide").click();
   await expect(support.getByText("To pay out")).toBeVisible();
+  await done(support);
 
   // Finance pays it, and the customer has the document.
   await finance.goto("/en/refunds");

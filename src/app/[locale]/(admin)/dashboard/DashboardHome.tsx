@@ -18,7 +18,9 @@ import { ExceptionCard } from "@/components/ui/exception-card/ExceptionCard";
 import { KpiStrip } from "@/components/ui/kpi-strip/KpiStrip";
 import Button from "@/components/ui/button/Button";
 import { DsSearchIcon, DsBuildingIcon, DsHubIcon, DsPackageIcon } from "@/icons";
+import { WorkBoard, WorkItem } from "@/components/dashboard/WorkBoard";
 import { nameFromEmail } from "@/lib/people";
+import { useRoleName } from "@/lib/useRoleName";
 import { useFormat } from "@/lib/format";
 import { Order, OrderStatus } from "@/lib/types";
 import { DashboardStats } from "@/lib/kpi/types";
@@ -41,10 +43,10 @@ function QuickAction({ href, icon, label, description }: { href: string; icon: R
   );
 }
 
-export function DashboardHome({ initialOrders, initialStats }: { initialOrders: Order[]; initialStats: DashboardStats | null }) {
+export function DashboardHome({ work, initialOrders, initialStats }: { work: WorkItem[]; initialOrders: Order[]; initialStats: DashboardStats | null }) {
   const user = useSession();
   const t = useTranslations("dashboard");
-  const tr = useTranslations("labels.role");
+  const roleName = useRoleName(user);
   const orders = initialOrders;
   const statsError = initialStats ? null : t("statsFailed");
   // The headline is who's signed in, taken from their email; no greeting.
@@ -62,7 +64,7 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
           <p className="rb-overline">{user.hub ? `${user.hub.city}, ${user.hub.country}` : t("noHub")}</p>
           <h1 className="rb-headline text-[32px]">{name}</h1>
           <p className="mt-1.5 max-w-xl text-sm text-ink-muted">
-            {tr(user.role)} ·{" "}
+            {roleName} ·{" "}
             {needsAttention.length === 0 ? t("admin.nothingToHandle") : t("admin.toHandle", { count: needsAttention.length })}
           </p>
         </div>
@@ -75,6 +77,8 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
             </Button>
           </div>
         )}
+
+        <WorkBoard items={work} />
 
         <div className="mb-6">
           <KpiRow stats={initialStats} loading={false} error={statsError} currency={user.hub?.currency ?? ""} />
@@ -128,7 +132,18 @@ export function DashboardHome({ initialOrders, initialStats }: { initialOrders: 
     );
   }
 
-  return <CarrierHome orders={orders} name={name} />;
+  if (user.permissions?.includes("orders.transition") && user.role === "LOGISTICS_PARTNER") return <CarrierHome orders={orders} name={name} work={work} />;
+
+  // Everyone else: who they are, and what's waiting on them.
+  return (
+    <div>
+      <div className="mb-6">
+        <p className="rb-overline">{roleName}</p>
+        <h1 className="rb-headline text-[32px]">{name}</h1>
+      </div>
+      <WorkBoard items={work} />
+    </div>
+  );
 }
 
 // Keys are deliveries.stages.* (the Livraisons tabs).
@@ -143,7 +158,7 @@ const CARRIER_STAGES: { key: string; statuses: OrderStatus[] }[] = [
  * The carrier's home: their own stages (not the admin's revenue KPIs), what
  * is waiting on them first, then their recent parcels in the ops table.
  */
-function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
+function CarrierHome({ orders, name, work }: { orders: Order[]; name: string; work: WorkItem[] }) {
   const router = useRouter();
   const t = useTranslations("dashboard");
   const td = useTranslations("deliveries");
@@ -170,6 +185,8 @@ function CarrierHome({ orders, name }: { orders: Order[]; name: string }) {
                 .join(" · ") + "."}
         </p>
       </div>
+
+      <WorkBoard items={work} />
 
       <KpiStrip
         className="mb-6"

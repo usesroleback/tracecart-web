@@ -8,7 +8,8 @@ import { useSession } from "../context/SessionContext";
 import { api } from "../lib/apiClient";
 import { fetchStatusCounts } from "../lib/kpi/adapter";
 import { nameFromEmail } from "../lib/people";
-import { OrderStatus } from "../lib/types";
+import { useRoleName } from "../lib/useRoleName";
+import { OrderStatus, Role } from "../lib/types";
 import {
   DsAlertIcon,
   DsBookmarkIcon,
@@ -37,6 +38,8 @@ type NavItem = {
   count?: (c: Counts) => number | undefined;
   /** Shown only to holders of this permission, or any of these (display only). */
   permission?: string | string[];
+  /** And only to these account types, where the legacy service only admits them. */
+  accountTypes?: Role[];
 };
 
 type NavGroup = { /** Key under common.nav.groups. */ title?: string; items: NavItem[] };
@@ -45,70 +48,56 @@ const sum = (c: Counts, statuses: OrderStatus[]) => statuses.reduce((n, s) => n 
 const ACTIVE: OrderStatus[] = ["INTENT_SUBMITTED", "QUOTING", "QUOTED", "QUOTE_SENT", "PAID", "PURCHASED", "RECEIVED_HUB", "CONFIRMED_HUB", "PICKED_UP", "IN_TRANSIT"];
 
 // The operational objects of the design system's TraceCartOps nav
-// (Requests → Orders → Exceptions), then what the hub manages.
-const ADMIN_NAV: NavGroup[] = [
+// (Requests → Orders → Exceptions), then what the hub manages, then the store.
+// One list for everyone (ADR-048): a permission, plus the account types where
+// the legacy service behind an item only admits those.
+const NAV: NavGroup[] = [
   {
     title: "operations",
     items: [
       { icon: <DsHomeIcon />, name: "overview", path: "/dashboard" },
-      { icon: <DsChatIcon />, name: "requests", path: "/sourcing", count: (c) => c.sourcing },
-      { icon: <DsPackageIcon />, name: "orders", path: "/orders", count: (c) => sum(c, ACTIVE) },
-      { icon: <DsLayersIcon />, name: "consolidations", path: "/consolidations" },
-      { icon: <DsAlertIcon />, name: "exceptions", path: "/exceptions" },
+      { icon: <DsChatIcon />, name: "requests", path: "/sourcing", permission: "sourcing.request.read", count: (c) => c.sourcing },
+      { icon: <DsPackageIcon />, name: "orders", path: "/orders", accountTypes: ["SUPER_ADMIN"], count: (c) => sum(c, ACTIVE) },
+      // What's waiting on the carrier: quotes to submit + parcels to handle.
+      { icon: <DsTruckIcon />, name: "deliveries", path: "/deliveries", permission: "orders.transition", accountTypes: ["LOGISTICS_PARTNER"], count: (c) => sum(c, ["QUOTING", "CONFIRMED_HUB"]) },
+      { icon: <DsLayersIcon />, name: "consolidations", path: "/consolidations", permission: "logistics.consolidation.read", accountTypes: ["SUPER_ADMIN", "LOGISTICS_PARTNER"] },
+      { icon: <DsRouteIcon />, name: "routes", path: "/routes", permission: "logistics.carrier_service.read", accountTypes: ["LOGISTICS_PARTNER"] },
+      { icon: <DsAlertIcon />, name: "exceptions", path: "/exceptions", accountTypes: ["SUPER_ADMIN"] },
     ],
   },
   {
     title: "catalogue",
     items: [
-      { icon: <DsSearchIcon />, name: "products", path: "/products" },
-      { icon: <DsBookmarkIcon />, name: "reservations", path: "/reservations", count: (c) => c.reservations },
-      { icon: <DsBuildingIcon />, name: "stores", path: "/stores" },
+      { icon: <DsSearchIcon />, name: "products", path: "/products", permission: "sourcing.supplier.search" },
+      { icon: <DsBookmarkIcon />, name: "reservations", path: "/reservations", permission: "sourcing.reservation.manage", count: (c) => c.reservations },
+      { icon: <DsBuildingIcon />, name: "stores", path: "/stores", permission: "sourcing.supplier.write" },
     ],
   },
   {
     title: "network",
     items: [
-      { icon: <DsHubIcon />, name: "hub", path: "/hub-setup" },
-      { icon: <DsCoinIcon />, name: "pricing", path: "/pricing" },
-      { icon: <DsTruckIcon />, name: "carriers", path: "/carriers" },
+      { icon: <DsHubIcon />, name: "hub", path: "/hub-setup", permission: ["sourcing.request.read", "pricing.settings.write"] },
+      { icon: <DsCoinIcon />, name: "pricing", path: "/pricing", permission: "pricing.settings.write" },
+      { icon: <DsTruckIcon />, name: "carriers", path: "/carriers", accountTypes: ["SUPER_ADMIN"] },
     ],
   },
-];
-
-// The store's catalogue (docs/PLAN.md phase 4), for whoever may see it
-// (catalog.read): hub admins and staff such as catalogue managers.
-const CATALOG_NAV: NavGroup = {
-  title: "store",
-  items: [
-    { icon: <DsPackageIcon />, name: "storeOrders", path: "/store-orders", permission: "orders.store.read" },
-    { icon: <DsTruckIcon />, name: "shipments", path: "/shipments", permission: "shipments.read" },
-    { icon: <DsPackageIcon />, name: "cash", path: "/cod", permission: ["shipments.cod.collect", "payments.read"] },
-    { icon: <DsLayersIcon />, name: "inventory", path: "/inventory", permission: "inventory.read" },
-    { icon: <DsPackageIcon />, name: "purchasing", path: "/purchasing", permission: ["purchasing.po.read", "inventory.receive", "customs.file.write"] },
-    { icon: <DsBuildingIcon />, name: "partners", path: "/partners", permission: ["partners.notice.handle", "partners.notice.send", "partners.manage"] },
-    { icon: <DsPackageIcon />, name: "returns", path: "/returns", permission: "returns.read" },
-    { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
-    { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
-    { icon: <DsLayersIcon />, name: "catalog", path: "/catalog" },
-    { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories" },
-    { icon: <DsBuildingIcon />, name: "brands", path: "/catalog/brands" },
-    { icon: <DsPackageIcon />, name: "catalogImport", path: "/catalog/import" },
-    { icon: <DsSearchIcon />, name: "searchTuning", path: "/catalog/search" },
-  ],
-};
-
-// Staff who aren't hub admins: their areas arrive as each is rebuilt.
-const STAFF_NAV: NavGroup[] = [{ items: [{ icon: <DsHomeIcon />, name: "overview", path: "/dashboard" }] }];
-
-// Deliveries, groupages and the carrier's own routes and rates. The steps (à coter, à gérer, en route…) are tabs on Livraisons.
-// The count is what's waiting on the carrier: quotes to submit + parcels to handle.
-const CARRIER_NAV: NavGroup[] = [
   {
+    title: "store",
     items: [
-      { icon: <DsHomeIcon />, name: "overview", path: "/dashboard" },
-      { icon: <DsTruckIcon />, name: "deliveries", path: "/deliveries", count: (c) => sum(c, ["QUOTING", "CONFIRMED_HUB"]) },
-      { icon: <DsLayersIcon />, name: "consolidations", path: "/consolidations" },
-      { icon: <DsRouteIcon />, name: "routes", path: "/routes" },
+      { icon: <DsPackageIcon />, name: "storeOrders", path: "/store-orders", permission: "orders.store.read" },
+      { icon: <DsTruckIcon />, name: "shipments", path: "/shipments", permission: "shipments.read" },
+      { icon: <DsPackageIcon />, name: "cash", path: "/cod", permission: ["shipments.cod.collect", "payments.read"] },
+      { icon: <DsLayersIcon />, name: "inventory", path: "/inventory", permission: "inventory.read" },
+      { icon: <DsPackageIcon />, name: "purchasing", path: "/purchasing", permission: ["purchasing.po.read", "inventory.receive", "customs.file.write"] },
+      { icon: <DsBuildingIcon />, name: "partners", path: "/partners", permission: ["partners.notice.handle", "partners.notice.send", "partners.manage"] },
+      { icon: <DsPackageIcon />, name: "returns", path: "/returns", permission: "returns.read" },
+      { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
+      { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
+      { icon: <DsLayersIcon />, name: "catalog", path: "/catalog", permission: "catalog.read" },
+      { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories", permission: "catalog.read" },
+      { icon: <DsBuildingIcon />, name: "brands", path: "/catalog/brands", permission: "catalog.read" },
+      { icon: <DsPackageIcon />, name: "catalogImport", path: "/catalog/import", permission: "catalog.read" },
+      { icon: <DsSearchIcon />, name: "searchTuning", path: "/catalog/search", permission: "search.tune" },
     ],
   },
 ];
@@ -124,16 +113,12 @@ const AppSidebar: React.FC = () => {
   const search = useSearchParams();
   const user = useSession();
   const t = useTranslations("common.nav");
-  const tr = useTranslations("labels.role");
+  const roleName = useRoleName(user);
   const [counts, setCounts] = useState<Counts>({});
   const isAdmin = user.role === "SUPER_ADMIN";
-  const base = isAdmin ? ADMIN_NAV : user.role === "STAFF" ? STAFF_NAV : CARRIER_NAV;
-  const allowed = (i: NavItem) => !i.permission || [i.permission].flat().some((p) => !!user.permissions?.includes(p));
-  const store: NavGroup = {
-    ...CATALOG_NAV,
-    items: CATALOG_NAV.items.filter((i) => (i.permission ? allowed(i) : !!user.permissions?.includes("catalog.read"))),
-  };
-  const groups = store.items.length ? [...base, store] : base;
+  const can = (permission: string) => !!user.permissions?.includes(permission);
+  const allowed = (i: NavItem) => (!i.permission || [i.permission].flat().some(can)) && (!i.accountTypes || i.accountTypes.includes(user.role));
+  const groups = NAV.map((g) => ({ ...g, items: g.items.filter(allowed) })).filter((g) => g.items.length);
   const showLabel = isExpanded || isHovered || isMobileOpen;
   const name = nameFromEmail(user.email);
 
@@ -157,13 +142,17 @@ const AppSidebar: React.FC = () => {
     return !groups.some((g) => g.items.some((i) => i.path === item.path && i.query && matches(i)));
   };
 
+  const readsOrders = isAdmin || user.role === "LOGISTICS_PARTNER" ? can("orders.read") : false;
+  const readsRequests = !!user.hubId && can("sourcing.request.read");
+  const readsReservations = !!user.hubId && can("sourcing.reservation.manage");
+
   useEffect(() => {
     if (isAdmin && !user.hubId) return;
     let cancelled = false;
     Promise.all([
-      user.permissions?.includes("orders.read") ? fetchStatusCounts().catch(() => ({})) : {},
-      isAdmin ? api.get<{ total: number }>("/sourcing-requests?limit=1&status=OPEN").catch(() => null) : null,
-      isAdmin ? api.get<{ total: number }>("/reservations?limit=1&status=RESERVED").catch(() => null) : null,
+      readsOrders ? fetchStatusCounts().catch(() => ({})) : {},
+      readsRequests ? api.get<{ total: number }>("/sourcing-requests?limit=1&status=OPEN").catch(() => null) : null,
+      readsReservations ? api.get<{ total: number }>("/reservations?limit=1&status=RESERVED").catch(() => null) : null,
     ]).then(([statusCounts, sourcing, reservations]) => {
       if (cancelled) return;
       setCounts({ ...statusCounts, sourcing: sourcing?.total, reservations: reservations?.total });
@@ -171,7 +160,7 @@ const AppSidebar: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, [isAdmin, user.hubId, user.permissions]);
+  }, [isAdmin, user.hubId, readsOrders, readsRequests, readsReservations]);
 
   return (
     <aside
@@ -233,7 +222,7 @@ const AppSidebar: React.FC = () => {
         {showLabel && (
           <span className="min-w-0 text-sm">
             <b className="block truncate font-semibold">{name}</b>
-            <span className="block text-xs text-ink-muted">{tr(user.role)}</span>
+            <span className="block text-xs text-ink-muted">{roleName}</span>
           </span>
         )}
       </div>

@@ -1,9 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from '@/i18n/navigation';
 
+import { useSession } from "@/context/SessionContext";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
@@ -17,6 +17,9 @@ const inputClasses =
 export function HubSetup({ currentHub }: { currentHub: { id: string; name: string; city: string } | null }) {
   const router = useRouter();
   const t = useTranslations("hubSetup");
+  const user = useSession();
+  const home = user.role === "SUPER_ADMIN" ? "/orders" : "/dashboard";
+  const canAddHub = !!user.permissions?.includes("network.hub.write");
   const [hubs, setHubs] = useState<Hub[]>([]);
   const [detect, setDetect] = useState<GeoDetectResult | null>(null);
   const [selectedHubId, setSelectedHubId] = useState<string>(currentHub?.id ?? "");
@@ -64,7 +67,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
     setError(null);
     try {
       await api.patch("/me/hub", { hubId: selectedHubId });
-      router.push("/orders");
+      router.push(home);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : t("saveFailed"));
@@ -78,7 +81,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
     setError(null);
     try {
       await api.patch("/me/hub", { newHub });
-      router.push("/orders");
+      router.push(home);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : t("createFailed"));
@@ -147,13 +150,17 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
           )}
 
           <div className="flex items-center justify-between pt-2">
-            <button
-              type="button"
-              onClick={() => setCreatingNew(true)}
-              className="rb-link text-sm font-medium"
-            >
-              {t("createNew")}
-            </button>
+            {canAddHub ? (
+              <button
+                type="button"
+                onClick={() => setCreatingNew(true)}
+                className="rb-link text-sm font-medium"
+              >
+                {t("createNew")}
+              </button>
+            ) : (
+              <span />
+            )}
             <Button onClick={confirmExisting} disabled={!selectedHubId} loading={saving}>
               {t("confirm")}
             </Button>

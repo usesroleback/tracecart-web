@@ -67,5 +67,35 @@
   "bullet": {
     "ofTarget": "/ objectif {target}",
     "target": "Objectif : {target}"
+  },
+  "work": {
+    "title": "À traiter",
+    "nothing": "Rien ne vous attend.",
+    "allClear": "Tout est à jour.",
+    "queues": {
+      "shipmentsToPrepare": "Colis à préparer",
+      "shipmentsNoCarrier": "Colis sans transporteur",
+      "shipmentsToMove": "Colis en route",
+      "parcelsAtPoint": "Colis en point relais",
+      "shipmentProblems": "Envois avec un problème",
+      "cashHeld": "Encaissements à reverser",
+      "remittancesToConfirm": "Reversements à confirmer",
+      "paymentsToConfirm": "Virements à confirmer",
+      "approvalsToDecide": "Approbations à décider",
+      "refundsToPay": "Remboursements à payer",
+      "returnsToDecide": "Demandes de retour à traiter",
+      "returnsArriving": "Retours en chemin",
+      "returnsToInspect": "Retours à contrôler",
+      "returnsToResolve": "Retours à trancher",
+      "purchaseOrdersDraft": "Commandes d'achat à envoyer",
+      "inboundToReceive": "Arrivages à réceptionner",
+      "customsFiles": "Dossiers en douane",
+      "lowStock": "Articles en stock bas",
+      "countsOpen": "Inventaires ouverts",
+      "noticesNew": "Nouveaux avis partenaires",
+      "freightToQuote": "Demandes de fret à chiffrer",
+      "requestsOpen": "Demandes ouvertes",
+      "productsToFinish": "Produits pas encore en ligne"
+    }
   }
 }

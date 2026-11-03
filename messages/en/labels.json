@@ -208,5 +208,29 @@
   "routeUnchecked": {
     "weight": "weight not checked yet",
     "size": "size not checked yet"
+  },
+  "systemRole": {
+    "super_admin": "Super Administrator",
+    "admin": "Administrator",
+    "catalog_manager": "Catalogue Manager",
+    "sourcing_agent": "Sourcing Agent",
+    "pricing_analyst": "Pricing Analyst",
+    "warehouse_manager": "Warehouse Manager",
+    "warehouse_operator": "Warehouse Operator",
+    "logistics_coordinator": "Logistics Coordinator",
+    "customs_officer": "Customs Officer",
+    "support_agent": "Support Agent",
+    "support_lead": "Support Lead",
+    "finance": "Finance",
+    "marketing": "Marketing",
+    "content_moderator": "Content Moderator",
+    "seller_owner": "Seller",
+    "seller_staff": "Seller Staff",
+    "carrier": "Carrier",
+    "pickup_point_operator": "Pickup Point",
+    "customer": "Customer",
+    "b2b_buyer": "Company Buyer",
+    "b2b_approver": "Company Approver",
+    "b2b_admin": "Company Administrator"
   }
 }

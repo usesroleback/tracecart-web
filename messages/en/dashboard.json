@@ -67,5 +67,35 @@
   "bullet": {
     "ofTarget": "/ target {target}",
     "target": "Target: {target}"
+  },
+  "work": {
+    "title": "Waiting on you",
+    "nothing": "Nothing is waiting on you.",
+    "allClear": "All clear for now.",
+    "queues": {
+      "shipmentsToPrepare": "Parcels to prepare",
+      "shipmentsNoCarrier": "Parcels with no carrier",
+      "shipmentsToMove": "Parcels on the road",
+      "parcelsAtPoint": "Parcels at a pickup point",
+      "shipmentProblems": "Shipments with a problem",
+      "cashHeld": "Cash collections to pass on",
+      "remittancesToConfirm": "Cash remittances to confirm",
+      "paymentsToConfirm": "Bank transfers to confirm",
+      "approvalsToDecide": "Approvals to decide",
+      "refundsToPay": "Refunds to pay",
+      "returnsToDecide": "Return requests to answer",
+      "returnsArriving": "Returns on their way back",
+      "returnsToInspect": "Returns to inspect",
+      "returnsToResolve": "Returns to decide on",
+      "purchaseOrdersDraft": "Purchase orders to send",
+      "inboundToReceive": "Deliveries to receive",
+      "customsFiles": "Files at customs",
+      "lowStock": "Items low on stock",
+      "countsOpen": "Stock counts open",
+      "noticesNew": "New partner notices",
+      "freightToQuote": "Freight requests to quote",
+      "requestsOpen": "Open requests",
+      "productsToFinish": "Products not live yet"
+    }
   }
 }

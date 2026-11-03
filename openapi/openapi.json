@@ -1209,10 +1209,18 @@
                   "type": "string"
                 },
                 "description": "Every permission the user's roles give, sorted."
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The keys of the user's roles, once each."
               }
             },
             "required": [
-              "permissions"
+              "permissions",
+              "roles"
             ]
           }
         ]
@@ -1383,6 +1391,58 @@
           "inboundPerKg",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "MyWork": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "enum": [
+                    "shipmentsToPrepare",
+                    "shipmentsNoCarrier",
+                    "shipmentsToMove",
+                    "parcelsAtPoint",
+                    "shipmentProblems",
+                    "cashHeld",
+                    "remittancesToConfirm",
+                    "paymentsToConfirm",
+                    "approvalsToDecide",
+                    "refundsToPay",
+                    "returnsToDecide",
+                    "returnsArriving",
+                    "returnsToInspect",
+                    "returnsToResolve",
+                    "purchaseOrdersDraft",
+                    "inboundToReceive",
+                    "customsFiles",
+                    "lowStock",
+                    "countsOpen",
+                    "noticesNew",
+                    "freightToQuote",
+                    "requestsOpen",
+                    "productsToFinish"
+                  ]
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "key",
+                "count"
+              ]
+            }
+          }
+        },
+        "required": [
+          "items"
         ]
       },
       "Health": {
@@ -14776,6 +14836,63 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/work": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "What's waiting on the current user, as counts",
+        "description": "Only the queues their permissions allow, within their warehouses or company. Never money.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "responses": {
+          "200": {
+            "description": "Each queue and how much is in it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyWork"
                 }
               }
             }

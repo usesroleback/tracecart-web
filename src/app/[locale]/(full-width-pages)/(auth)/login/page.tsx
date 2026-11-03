@@ -34,7 +34,7 @@ export default async function SignInPage() {
             appearance={{ elements: { footerAction: "hidden" } }}
           />
         ) : (
-          <AccessProblem kind={state.status === "no-account" ? "noAccount" : "unavailable"} />
+          <AccessProblem kind={state.status === "no-account" ? "noAccount" : state.status === "mfa-required" ? "mfaRequired" : "unavailable"} />
         )}
       </div>
     </div>

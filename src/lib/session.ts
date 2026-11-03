@@ -7,7 +7,8 @@ import { Role, SessionUser } from "./types";
 
 export const ROLE_HOME: Record<Role, string> = {
   SUPER_ADMIN: "/orders",
-  LOGISTICS_PARTNER: "/deliveries",
+  // Their dashboard: a pickup point has no deliveries page, so it can't be everyone's home.
+  LOGISTICS_PARTNER: "/dashboard",
   CUSTOMER: "/account",
   // Staff who are not hub admins; their areas of the console arrive as they are rebuilt.
   STAFF: "/dashboard",
@@ -24,6 +25,8 @@ export type SessionState =
   | { status: "ok"; user: SessionUser }
   // Signed in with Clerk, but the API has no Tracecart account for them.
   | { status: "no-account" }
+  // A staff account, in a session without a second factor (ADR-020).
+  | { status: "mfa-required" }
   // Signed in, but the API couldn't confirm who they are (down, misconfigured).
   | { status: "unavailable" };
 
@@ -38,7 +41,10 @@ export const getSessionState = cache(async (): Promise<SessionState> => {
       cache: "no-store",
     });
     if (res.ok) return { status: "ok", user: (await res.json()) as SessionUser };
-    if (res.status === 403) return { status: "no-account" };
+    if (res.status === 403) {
+      const body = (await res.json().catch(() => null)) as { error?: { code?: string } } | null;
+      return { status: body?.error?.code === "MFA_REQUIRED" ? "mfa-required" : "no-account" };
+    }
     return { status: "unavailable" };
   } catch {
     return { status: "unavailable" };
@@ -55,6 +61,16 @@ export async function requireRole(role: Role): Promise<SessionUser> {
   if (state.status !== "ok") return redirect({ href: "/login", locale });
   if (state.user.role !== role) return redirect({ href: ROLE_HOME[state.user.role], locale });
   return state.user;
+}
+
+/**
+ * A section whose legacy service behind it only admits some account types, on
+ * top of the permission (ADR-048). UX only, like requireRole.
+ */
+export async function requireAccess(permission: string, accountTypes: Role[]): Promise<SessionUser> {
+  const user = await requirePermission(permission);
+  if (!accountTypes.includes(user.role)) return redirect({ href: ROLE_HOME[user.role], locale: await getLocale() });
+  return user;
 }
 
 export const can = (user: SessionUser, permission: string) => user.permissions?.includes(permission) ?? false;

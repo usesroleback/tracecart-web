@@ -1,13 +1,14 @@
 "use client";
 
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
 import Button from "@/components/ui/button/Button";
 
 /** Signed in with Clerk, but not let into the console. */
-export function AccessProblem({ kind }: { kind: "noAccount" | "unavailable" }) {
+export function AccessProblem({ kind }: { kind: "noAccount" | "unavailable" | "mfaRequired" }) {
   const t = useTranslations("auth");
   const locale = useLocale();
+  const clerk = useClerk();
 
   return (
     <div className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-6">
@@ -17,6 +18,11 @@ export function AccessProblem({ kind }: { kind: "noAccount" | "unavailable" }) {
         {kind === "unavailable" && (
           <Button variant="primary" size="m" onClick={() => window.location.reload()}>
             {t("retry")}
+          </Button>
+        )}
+        {kind === "mfaRequired" && (
+          <Button variant="primary" size="m" onClick={() => clerk.openUserProfile()}>
+            {t("mfaRequired.cta")}
           </Button>
         )}
         <SignOutButton redirectUrl={`/${locale}/login`}>

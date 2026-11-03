@@ -7,12 +7,14 @@ import Image from "next/image";
 import { Link } from '@/i18n/navigation';
 
 import React from "react";
+import { getTranslations } from "next-intl/server";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const t = await getTranslations("auth");
   return (
     <div className="relative p-6 bg-surface z-1 sm:p-0">
       <ThemeProvider>
@@ -33,7 +35,7 @@ export default function AuthLayout({
                   />
                 </Link>
                 <p className="text-center text-white/60">
-                  Sourcing et logistique, pour les corridors les plus difficiles.
+                  {t("tagline")}
                 </p>
               </div>
             </div>

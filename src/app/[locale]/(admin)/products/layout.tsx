@@ -1,6 +1,6 @@
-import { requireRole } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  await requireRole("SUPER_ADMIN");
+  await requirePermission("sourcing.supplier.search");
   return children;
 }
