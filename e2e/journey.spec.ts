@@ -1,5 +1,6 @@
-import { expect, test, type Browser, type Page } from "@playwright/test";
-import { canSignIn, signInAs } from "./signIn";
+import { expect, test, type Page } from "@playwright/test";
+import { button, person, placeOrder } from "./order";
+import { canSignIn } from "./signIn";
 
 // The whole way through on the screens, each person in their own browser (docs/PLAN.md
 // phase 7's exit): an order reaches a pickup point, is collected with the code and cash,
@@ -7,19 +8,8 @@ import { canSignIn, signInAs } from "./signIn";
 
 test.skip(!canSignIn, "Needs a Clerk development instance's keys (CLERK_SECRET_KEY, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)");
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
-
-async function person(browser: Browser, role: string): Promise<Page> {
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  await signInAs(page, role);
-  return page;
-}
-
 /** Closes a person's browser once they're done: nine at once is a lot for a small machine. */
 const done = (page: Page) => page.context().close();
-
-const button = (page: Page, name: string | RegExp) => page.getByRole("button", { name, exact: typeof name === "string" });
 
 /** Finds a row by the order's reference on a list that has a search box, and opens it. */
 async function openRow(page: Page, list: string, searchLabel: string, reference: string) {
@@ -36,24 +26,8 @@ test("an order from the shelf to the customer's door and back again", async ({ b
   test.setTimeout(420_000);
 
   // The customer orders something in stock at Ouagadougou, to a pickup point, paying in cash.
-  const { items } = (await (await request.get(`${API_URL}/catalog/products?limit=50`)).json()) as { items: { slug: string; title: string; availability: { city: string | null } }[] };
-  const product = items.find((p) => p.availability.city === "Ouagadougou")!;
   const customer = await person(browser, "customer");
-  await customer.goto(`/en/p/${product.slug}`);
-  await button(customer, "Add to cart").first().click();
-  await expect(customer.getByText("Added to the cart.")).toBeVisible();
-  await customer.goto("/en/checkout");
-  await customer.getByRole("radio", { name: "To a pickup point" }).click();
-  await customer.getByLabel("Country").last().selectOption("BF");
-  await customer.getByRole("radio", { name: /Relais Zogona/ }).check();
-  await customer.getByLabel("Phone for the collection code").fill("+226 70 00 00 00");
-  await customer.getByRole("radio", { name: /Cash on delivery/ }).check();
-  const place = button(customer, /^Place the order · /);
-  await expect(place).toBeEnabled();
-  const total = (await place.textContent())!.replace(/.*· /, "").replace(/\D/g, "");
-  await place.click();
-  await customer.waitForURL(/\/checkout\/done\//);
-  const reference = customer.url().split("/").pop()!;
+  const { reference, total } = await placeOrder(customer, request);
 
   // The warehouse picks and packs.
   const operator = await person(browser, "warehouse_operator");

@@ -161,5 +161,21 @@
   "handledBy": "Géré par",
   "resolve": "Clore ce problème",
   "resolution": "Comment il a été réglé",
-  "resolveCta": "Le clore"
+  "resolveCta": "Le clore",
+  "queues": {
+    "toPrepare": "Colis à préparer",
+    "noCarrier": "Colis sans transporteur",
+    "toMove": "Colis en route",
+    "atPoint": "Colis en point relais",
+    "problems": "Envois avec un problème"
+  },
+  "bulk": {
+    "pick": "Sélectionner",
+    "pickOne": "Sélectionner {reference}",
+    "selected": "{count, plural, one {# sélectionnée} other {# sélectionnées}}",
+    "carrier": "Transporteur pour la sélection",
+    "assign": "Leur donner ce transporteur",
+    "clear": "Effacer la sélection",
+    "done": "{count, plural, one {# expédition traitée.} other {# expéditions traitées.}}"
+  }
 }

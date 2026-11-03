@@ -115,5 +115,11 @@
     "APPROVED": "To pay out",
     "PAID": "Paid",
     "REJECTED": "Refused"
+  },
+  "queues": {
+    "toDecide": "Return requests to answer",
+    "arriving": "Returns on their way back",
+    "toInspect": "Returns to inspect",
+    "toResolve": "Returns to decide on"
   }
 }

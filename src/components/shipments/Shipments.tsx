@@ -9,6 +9,10 @@ import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Field, input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
+import { ExportButton, QueueChip, SavedViews, useListFilters } from "@/components/console/ListTools";
+import { useSession } from "@/context/SessionContext";
+
+const LIST_FILTERS = ["q", "status", "problems", "queue"] as const;
 
 const STATUSES = ["PLANNED", "PICKING", "PACKED", "LABELLED", "HANDED_OVER", "IN_TRANSIT", "AT_PICKUP_POINT", "OUT_FOR_DELIVERY", "DELIVERY_FAILED", "DELIVERED", "RETURNING", "RETURNED", "LOST", "CANCELLED"] as const;
 type Status = (typeof STATUSES)[number];
@@ -66,23 +70,28 @@ interface Row {
 export function ShipmentsList() {
   const t = useTranslations("shipments");
   const format = useFormat();
-  const [q, setQ] = useState("");
-  const [status, setStatus] = useState("");
-  const [problems, setProblems] = useState(false);
+  const user = useSession();
+  const canPick = !!user.permissions?.includes("fulfillment.pick_pack");
+  const canAssign = !!user.permissions?.includes("logistics.routing.assign");
+  const { applied, query, apply } = useListFilters(LIST_FILTERS);
+  const [q, setQ] = useState(applied.q);
+  const status = applied.status;
+  const problems = applied.problems === "open";
   const [rows, setRows] = useState<Row[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [picked, setPicked] = useState<Set<string>>(new Set());
+  const [outcome, setOutcome] = useState<BulkOutcome | null>(null);
 
-  const load = useCallback(async (after: string | null, query: string, st: string, withProblems: boolean) => {
-    const p = new URLSearchParams({ limit: "50" });
-    if (withProblems) p.set("problems", "open");
-    if (query.trim()) p.set("q", query.trim());
-    if (st) p.set("status", st);
+  const load = useCallback(async (after: string | null, filters: string) => {
+    const p = new URLSearchParams(filters);
+    p.set("limit", "50");
     if (after) p.set("cursor", after);
     try {
       const res = await call<{ items: Row[]; nextCursor: string | null }>("GET", `/shipments?${p}`);
       setRows((prev) => (after ? [...prev, ...res.items] : res.items));
       setCursor(res.nextCursor);
+      setError(null);
     } catch (e) {
       setError((e as Error).message);
     }
@@ -90,19 +99,26 @@ export function ShipmentsList() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    load(null, "", "", false);
-  }, [load]);
+    setPicked(new Set());
+    setQ(applied.q);
+    load(null, query);
+  }, [load, query, applied.q]);
 
   return (
     <div>
       <h1 className="rb-headline mb-1 text-[28px]">{t("title")}</h1>
       <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <SavedViews list="shipments" query={query} onApply={apply} />
+        <ExportButton path="/shipments/export.csv" query={query} />
+      </div>
+      {applied.queue ? <QueueChip label={t(`queues.${applied.queue}` as "queues.toPrepare")} onClear={() => apply({ ...applied, queue: "" })} /> : null}
       <form
         role="search"
         className="mb-4 flex flex-wrap gap-2"
         onSubmit={(e: FormEvent) => {
           e.preventDefault();
-          load(null, q, status, problems);
+          apply({ ...applied, q });
         }}
       >
         <input className={`${input} max-w-sm`} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} aria-label={t("search")} />
@@ -110,10 +126,7 @@ export function ShipmentsList() {
           className={`${input} max-w-[14rem]`}
           value={status}
           aria-label={t("status")}
-          onChange={(e) => {
-            setStatus(e.target.value);
-            load(null, q, e.target.value, problems);
-          }}
+          onChange={(e) => apply({ ...applied, q, status: e.target.value })}
         >
           <option value="">{t("allStatuses")}</option>
           {STATUSES.map((s) => (
@@ -126,10 +139,7 @@ export function ShipmentsList() {
           <input
             type="checkbox"
             checked={problems}
-            onChange={(e) => {
-              setProblems(e.target.checked);
-              load(null, q, status, e.target.checked);
-            }}
+            onChange={(e) => apply({ ...applied, q, problems: e.target.checked ? "open" : "" })}
           />
           {t("onlyProblems")}
         </label>
@@ -138,10 +148,35 @@ export function ShipmentsList() {
         </Button>
       </form>
       {error ? <p className="mb-4 text-sm text-critical">{error}</p> : null}
+      {outcome ? (
+        <div role="status" className="mb-4 rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 text-sm">
+          <p>{t("bulk.done", { count: outcome.done })}</p>
+          {outcome.failed.map((f) => (
+            <p key={f.reference} className="text-critical">
+              {f.reference} · {f.message}
+            </p>
+          ))}
+        </div>
+      ) : null}
+      {picked.size ? (
+        <BulkBar
+          rows={rows}
+          picked={picked}
+          canPick={canPick}
+          canAssign={canAssign}
+          onDone={(result) => {
+            setOutcome(result);
+            setPicked(new Set());
+            load(null, query);
+          }}
+          onClear={() => setPicked(new Set())}
+        />
+      ) : null}
       <div className="overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-line text-ink-muted">
             <tr>
+              {canPick || canAssign ? <th className="w-8 px-4 py-3" aria-label={t("bulk.pick")} /> : null}
               <th className="px-4 py-3 font-medium">{t("columns.shipment")}</th>
               <th className="px-4 py-3 font-medium">{t("columns.status")}</th>
               <th className="px-4 py-3 font-medium">{t("columns.from")}</th>
@@ -153,6 +188,21 @@ export function ShipmentsList() {
           <tbody className="divide-y divide-line">
             {rows.map((r) => (
               <tr key={r.id} className="hover:bg-surface-sunken">
+                {canPick || canAssign ? (
+                  <td className="px-4 py-3">
+                    <input
+                      type="checkbox"
+                      aria-label={t("bulk.pickOne", { reference: r.reference })}
+                      checked={picked.has(r.id)}
+                      onChange={(e) => {
+                        const next = new Set(picked);
+                        if (e.target.checked) next.add(r.id);
+                        else next.delete(r.id);
+                        setPicked(next);
+                      }}
+                    />
+                  </td>
+                ) : null}
                 <td className="px-4 py-3">
                   <Link href={`/shipments/${r.id}`} className="rb-mono font-medium text-ink hover:underline">
                     {r.reference}
@@ -174,9 +224,80 @@ export function ShipmentsList() {
         {rows.length === 0 && !error ? <p className="px-4 py-8 text-center text-ink-muted">{t("empty")}</p> : null}
       </div>
       {cursor ? (
-        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, q, status, problems)}>
+        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, query)}>
           {t("more")}
         </Button>
+      ) : null}
+    </div>
+  );
+}
+
+interface BulkOutcome {
+  done: number;
+  failed: { reference: string; message: string }[];
+}
+
+/** Several shipments at once. Each succeeds or fails on its own, and those that fail say why. */
+function BulkBar({ rows, picked, canPick, canAssign, onDone, onClear }: { rows: Row[]; picked: Set<string>; canPick: boolean; canAssign: boolean; onDone: (outcome: BulkOutcome) => void; onClear: () => void }) {
+  const t = useTranslations("shipments");
+  const [carriers, setCarriers] = useState<{ id: string; name: string }[]>([]);
+  const [carrierId, setCarrierId] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!canAssign) return;
+    call<{ items: { id: string; name: string }[] }>("GET", "/shipments/carriers")
+      .then((list) => setCarriers(list.items))
+      .catch((e) => setError((e as Error).message));
+  }, [canAssign]);
+
+  async function run(body: { action: "pick" } | { action: "assign"; carrierOrganizationId: string }) {
+    setBusy(true);
+    setError(null);
+    try {
+      const { results } = await call<{ results: { id: string; ok: boolean; message?: string }[] }>("POST", "/shipments/bulk", { ...body, ids: [...picked] });
+      onDone({
+        done: results.filter((r) => r.ok).length,
+        failed: results.filter((r) => !r.ok).map((r) => ({ reference: rows.find((x) => x.id === r.id)?.reference ?? r.id, message: r.message ?? "" })),
+      });
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="mb-4 flex flex-wrap items-center gap-3 rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 text-sm">
+      <span className="font-medium">{t("bulk.selected", { count: picked.size })}</span>
+      {canPick ? (
+        <Button variant="secondary" loading={busy} onClick={() => run({ action: "pick" })}>
+          {t("startPicking")}
+        </Button>
+      ) : null}
+      {canAssign ? (
+        <span className="flex flex-wrap items-center gap-2">
+          <select className={`${input} max-w-[14rem]`} aria-label={t("bulk.carrier")} value={carrierId} onChange={(e) => setCarrierId(e.target.value)}>
+            <option value="">{t("pickCarrier")}</option>
+            {carriers.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <Button variant="secondary" loading={busy} disabled={!carrierId} onClick={() => run({ action: "assign", carrierOrganizationId: carrierId })}>
+            {t("bulk.assign")}
+          </Button>
+        </span>
+      ) : null}
+      <button type="button" className="underline" onClick={onClear}>
+        {t("bulk.clear")}
+      </button>
+      {error ? (
+        <p role="alert" className="w-full text-critical">
+          {error}
+        </p>
       ) : null}
     </div>
   );

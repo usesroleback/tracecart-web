@@ -11,6 +11,10 @@ import { input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
 import type { OrderView } from "@/components/checkout/types";
 import { OrderRefunds } from "@/components/returns/Returns";
+import { ExportButton, SavedViews, useListFilters } from "@/components/console/ListTools";
+import { useSession } from "@/context/SessionContext";
+
+const LIST_FILTERS = ["q", "status"] as const;
 
 const STATUSES = ["PENDING_PAYMENT", "PLACED", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "PARTIALLY_DELIVERED", "DELIVERED", "CANCELLED", "ON_HOLD"] as const;
 const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"> = {
@@ -49,21 +53,23 @@ export function StoreOrdersList() {
   const t = useTranslations("storeOrders");
   const ts = useTranslations("checkout.order.status");
   const format = useFormat();
-  const [q, setQ] = useState("");
-  const [status, setStatus] = useState("");
+  const user = useSession();
+  const { applied, query, apply } = useListFilters(LIST_FILTERS);
+  const [q, setQ] = useState(applied.q);
+  const status = applied.status;
   const [rows, setRows] = useState<Row[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async (after: string | null, query: string, st: string) => {
-    const p = new URLSearchParams({ limit: "50" });
-    if (query.trim()) p.set("q", query.trim());
-    if (st) p.set("status", st);
+  const load = useCallback(async (after: string | null, filters: string) => {
+    const p = new URLSearchParams(filters);
+    p.set("limit", "50");
     if (after) p.set("cursor", after);
     try {
       const res = await call<{ items: Row[]; nextCursor: string | null }>("GET", `/store-orders?${p}`);
       setRows((prev) => (after ? [...prev, ...res.items] : res.items));
       setCursor(res.nextCursor);
+      setError(null);
     } catch (e) {
       setError((e as Error).message);
     }
@@ -71,19 +77,24 @@ export function StoreOrdersList() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    load(null, "", "");
-  }, [load]);
+    setQ(applied.q);
+    load(null, query);
+  }, [load, query, applied.q]);
 
   return (
     <div>
       <h1 className="rb-headline mb-1 text-[28px]">{t("title")}</h1>
       <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <SavedViews list="storeOrders" query={query} onApply={apply} />
+        {user.permissions?.includes("orders.store.export") ? <ExportButton path="/store-orders/export.csv" query={query} /> : null}
+      </div>
       <form
         role="search"
         className="mb-4 flex flex-wrap gap-2"
         onSubmit={(e: FormEvent) => {
           e.preventDefault();
-          load(null, q, status);
+          apply({ ...applied, q });
         }}
       >
         <input className={`${input} max-w-sm`} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} aria-label={t("search")} />
@@ -91,10 +102,7 @@ export function StoreOrdersList() {
           className={`${input} max-w-[14rem]`}
           value={status}
           aria-label={t("status")}
-          onChange={(e) => {
-            setStatus(e.target.value);
-            load(null, q, e.target.value);
-          }}
+          onChange={(e) => apply({ ...applied, q, status: e.target.value })}
         >
           <option value="">{t("allStatuses")}</option>
           {STATUSES.map((s) => (
@@ -151,7 +159,7 @@ export function StoreOrdersList() {
         {rows.length === 0 && !error ? <p className="px-4 py-8 text-center text-ink-muted">{t("empty")}</p> : null}
       </div>
       {cursor ? (
-        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, q, status)}>
+        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, query)}>
           {t("more")}
         </Button>
       ) : null}

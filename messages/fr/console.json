@@ -1,0 +1,36 @@
+{
+  "seeAll": "Voir toute la liste",
+  "views": {
+    "label": "Vues enregistrées",
+    "all": "Toutes",
+    "save": "Enregistrer cette vue",
+    "name": "Nom de la vue",
+    "saveCta": "Enregistrer",
+    "delete": "Supprimer cette vue"
+  },
+  "export": {
+    "cta": "Exporter en CSV",
+    "failed": "L'export a échoué. Réessayez."
+  },
+  "search": {
+    "open": "Rechercher",
+    "placeholder": "Commande, expédition, retour, produit ou page",
+    "results": "Résultats",
+    "page": "Page",
+    "searching": "Recherche…",
+    "none": "Aucun résultat.",
+    "failed": "La recherche a échoué. Réessayez.",
+    "hint": "Flèches pour se déplacer, Entrée pour ouvrir, Échap pour fermer.",
+    "kinds": {
+      "order": "Commande",
+      "shipment": "Expédition",
+      "product": "Produit",
+      "return": "Retour"
+    }
+  },
+  "keys": {
+    "title": "Raccourcis clavier",
+    "help": "Ces raccourcis",
+    "close": "Fermer"
+  }
+}

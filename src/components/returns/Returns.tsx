@@ -9,6 +9,9 @@ import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Field, input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
+import { ExportButton, QueueChip, SavedViews, useListFilters } from "@/components/console/ListTools";
+
+const LIST_FILTERS = ["q", "status", "queue"] as const;
 
 // Returns and refunds in the console (ADR-042). The API checks every call and
 // scopes what it returns; amounts come only to those who see order prices.
@@ -42,21 +45,22 @@ interface Row {
 export function ReturnsList() {
   const t = useTranslations("returns");
   const format = useFormat();
-  const [q, setQ] = useState("");
-  const [status, setStatus] = useState("");
+  const { applied, query, apply } = useListFilters(LIST_FILTERS);
+  const [q, setQ] = useState(applied.q);
+  const status = applied.status;
   const [rows, setRows] = useState<Row[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async (after: string | null, query: string, st: string) => {
-    const p = new URLSearchParams({ limit: "50" });
-    if (query.trim()) p.set("q", query.trim());
-    if (st) p.set("status", st);
+  const load = useCallback(async (after: string | null, filters: string) => {
+    const p = new URLSearchParams(filters);
+    p.set("limit", "50");
     if (after) p.set("cursor", after);
     try {
       const res = await call<{ items: Row[]; nextCursor: string | null }>("GET", `/returns?${p}`);
       setRows((prev) => (after ? [...prev, ...res.items] : res.items));
       setCursor(res.nextCursor);
+      setError(null);
     } catch (e) {
       setError((e as Error).message);
     }
@@ -64,19 +68,25 @@ export function ReturnsList() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    load(null, "", "");
-  }, [load]);
+    setQ(applied.q);
+    load(null, query);
+  }, [load, query, applied.q]);
 
   return (
     <div>
       <h1 className="rb-headline mb-1 text-[28px]">{t("title")}</h1>
       <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <SavedViews list="returns" query={query} onApply={apply} />
+        <ExportButton path="/returns/export.csv" query={query} />
+      </div>
+      {applied.queue ? <QueueChip label={t(`queues.${applied.queue}` as "queues.toDecide")} onClear={() => apply({ ...applied, queue: "" })} /> : null}
       <form
         role="search"
         className="mb-4 flex flex-wrap gap-2"
         onSubmit={(e: FormEvent) => {
           e.preventDefault();
-          load(null, q, status);
+          apply({ ...applied, q });
         }}
       >
         <input className={`${input} max-w-sm`} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} aria-label={t("search")} />
@@ -84,10 +94,7 @@ export function ReturnsList() {
           className={`${input} max-w-[14rem]`}
           value={status}
           aria-label={t("status")}
-          onChange={(e) => {
-            setStatus(e.target.value);
-            load(null, q, e.target.value);
-          }}
+          onChange={(e) => apply({ ...applied, q, status: e.target.value })}
         >
           <option value="">{t("allStatuses")}</option>
           {RETURN_STATUSES.map((s) => (
@@ -134,7 +141,7 @@ export function ReturnsList() {
         {rows.length === 0 && !error ? <p className="px-4 py-8 text-center text-ink-muted">{t("empty")}</p> : null}
       </div>
       {cursor ? (
-        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, q, status)}>
+        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, query)}>
           {t("more")}
         </Button>
       ) : null}

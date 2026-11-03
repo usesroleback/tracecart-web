@@ -1,0 +1,36 @@
+{
+  "seeAll": "See the whole list",
+  "views": {
+    "label": "Saved views",
+    "all": "All",
+    "save": "Save this view",
+    "name": "Name of the view",
+    "saveCta": "Save",
+    "delete": "Delete this view"
+  },
+  "export": {
+    "cta": "Export to CSV",
+    "failed": "The export failed. Try again."
+  },
+  "search": {
+    "open": "Search",
+    "placeholder": "Order, shipment, return, product or page",
+    "results": "Results",
+    "page": "Page",
+    "searching": "Searching…",
+    "none": "Nothing found.",
+    "failed": "The search failed. Try again.",
+    "hint": "Arrows to move, Enter to open, Esc to close.",
+    "kinds": {
+      "order": "Order",
+      "shipment": "Shipment",
+      "product": "Product",
+      "return": "Return"
+    }
+  },
+  "keys": {
+    "title": "Keyboard shortcuts",
+    "help": "These shortcuts",
+    "close": "Close"
+  }
+}

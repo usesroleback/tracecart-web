@@ -161,5 +161,21 @@
   "handledBy": "Handled by",
   "resolve": "Close this problem",
   "resolution": "How it was dealt with",
-  "resolveCta": "Close it"
+  "resolveCta": "Close it",
+  "queues": {
+    "toPrepare": "Parcels to prepare",
+    "noCarrier": "Parcels with no carrier",
+    "toMove": "Parcels on the road",
+    "atPoint": "Parcels at a pickup point",
+    "problems": "Shipments with a problem"
+  },
+  "bulk": {
+    "pick": "Select",
+    "pickOne": "Select {reference}",
+    "selected": "{count, plural, one {# selected} other {# selected}}",
+    "carrier": "Carrier for those selected",
+    "assign": "Give them this carrier",
+    "clear": "Clear the selection",
+    "done": "{count, plural, one {# shipment done.} other {# shipments done.}}"
+  }
 }

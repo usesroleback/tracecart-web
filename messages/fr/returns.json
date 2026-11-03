@@ -115,5 +115,11 @@
     "APPROVED": "À payer",
     "PAID": "Payé",
     "REJECTED": "Refusé"
+  },
+  "queues": {
+    "toDecide": "Demandes de retour à traiter",
+    "arriving": "Retours en chemin",
+    "toInspect": "Retours à contrôler",
+    "toResolve": "Retours à trancher"
   }
 }
