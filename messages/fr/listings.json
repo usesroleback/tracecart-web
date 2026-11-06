@@ -87,5 +87,10 @@
   "takeDownWhy": "Pourquoi : le vendeur lit ce message",
   "takeDownCta": "Retirer cette annonce",
   "seller": "Vendeur",
-  "openShop": "Paramètres de la boutique"
+  "openShop": "Paramètres de la boutique",
+  "variants": "Autres variantes",
+  "variantsLead": "Ajoutez une taille, une tension ou un kit comme annonce distincte, avant l'examen de ce produit.",
+  "addVariant": "Ajouter cette variante",
+  "optionName": "Ce qui change",
+  "optionValue": "Valeur"
 }

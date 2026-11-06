@@ -87,5 +87,10 @@
   "takeDownWhy": "Why: the seller reads this",
   "takeDownCta": "Take this listing down",
   "seller": "Seller",
-  "openShop": "Shop settings"
+  "openShop": "Shop settings",
+  "variants": "Other variants",
+  "variantsLead": "Add a size, voltage or kit as its own listing, before this product is reviewed.",
+  "addVariant": "Add this variant",
+  "optionName": "What differs",
+  "optionValue": "Value"
 }

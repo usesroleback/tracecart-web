@@ -41,6 +41,7 @@ export interface Listing {
   seller: { id: string; name: string };
   warehouse: { id: string; city: string; countryCode: string } | null;
   variant: { id: string; sku: string; options: Record<string, string> | null; weightGrams: number | null };
+  siblings: { id: string; status: ListingStatus; sku: string; options: Record<string, string> }[];
   product: {
     id: string;
     slug: string;
@@ -57,7 +58,9 @@ export interface Listing {
 }
 
 export function listingTitle(l: Listing, locale: string) {
-  return l.product.title[locale] || l.product.title.fr || l.product.title.en || l.variant.sku;
+  const title = l.product.title[locale] || l.product.title.fr || l.product.title.en || l.variant.sku;
+  const options = l.variant.options ? Object.values(l.variant.options).filter(Boolean).join(" · ") : "";
+  return options ? `${title} · ${options}` : title;
 }
 
 export function SellerListings() {
@@ -227,6 +230,53 @@ export function SellerListingEditor({ id }: { id?: string }) {
         />
       ) : null}
 
+      {listing?.product.proposed && listing.product.status === "DRAFT" ? (
+        <section className={`${box} mt-4`} aria-labelledby="listing-variants">
+          <h2 id="listing-variants" className="rb-title mb-3">
+            {t("variants")}
+          </h2>
+          {listing.siblings.length ? (
+            <ul className="mb-3 grid gap-1">
+              {listing.siblings.map((s) => (
+                <li key={s.id}>
+                  <Link href={`/seller/listings/${s.id}`} className="text-sm underline">
+                    {[s.sku, ...Object.values(s.options)].filter(Boolean).join(" · ")} · {t(`statuses.${s.status}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mb-3 text-sm text-ink-muted">{t("variantsLead")}</p>
+          )}
+          <AddVariantForm
+            busy={busy}
+            fulfillmentType={listing.fulfillmentType}
+            onAdd={(body) =>
+              act(async () => {
+                const next = await call<Listing>("POST", `/seller/listings/${listing.id}/variants`, body);
+                router.push(`/seller/listings/${next.id}`);
+                return next;
+              })
+            }
+          />
+        </section>
+      ) : listing?.siblings.length ? (
+        <section className={`${box} mt-4`} aria-labelledby="listing-variants">
+          <h2 id="listing-variants" className="rb-title mb-3">
+            {t("variants")}
+          </h2>
+          <ul className="grid gap-1">
+            {listing.siblings.map((s) => (
+              <li key={s.id}>
+                <Link href={`/seller/listings/${s.id}`} className="text-sm underline">
+                  {[s.sku, ...Object.values(s.options)].filter(Boolean).join(" · ")} · {t(`statuses.${s.status}`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {listing?.product.proposed && draft ? (
         <section className={`${box} mt-4`} aria-labelledby="listing-photos">
           <h2 id="listing-photos" className="rb-title mb-3">
@@ -306,6 +356,60 @@ export function SellerListingEditor({ id }: { id?: string }) {
       ) : null}
       {listing ? <p className="mt-2 text-xs text-ink-muted">{format.money(listing.priceMinor, listing.currency)}</p> : null}
     </div>
+  );
+}
+
+function AddVariantForm({
+  busy,
+  fulfillmentType,
+  onAdd,
+}: {
+  busy: boolean;
+  fulfillmentType: Listing["fulfillmentType"];
+  onAdd: (body: unknown) => void;
+}) {
+  const t = useTranslations("listings");
+  const [optionName, setOptionName] = useState("size");
+  const [optionValue, setOptionValue] = useState("");
+  const [weightGrams, setWeightGrams] = useState("");
+  const [priceMinor, setPriceMinor] = useState("");
+  const [quantity, setQuantity] = useState("1");
+  return (
+    <form
+      className="grid gap-3 sm:grid-cols-2"
+      onSubmit={(e: FormEvent) => {
+        e.preventDefault();
+        onAdd({
+          options: { [optionName.trim()]: optionValue.trim() },
+          weightGrams: Number(weightGrams),
+          priceMinor: Number(priceMinor),
+          ...(fulfillmentType === "SELLER_FULFILLED" ? { quantity: Number(quantity) } : {}),
+        });
+      }}
+    >
+      <Field label={t("optionName")}>
+        <input className={input} value={optionName} onChange={(e) => setOptionName(e.target.value)} required />
+      </Field>
+      <Field label={t("optionValue")}>
+        <input className={input} value={optionValue} onChange={(e) => setOptionValue(e.target.value)} required />
+      </Field>
+      <Field label={t("weight")}>
+        <input className={input} type="number" min={1} value={weightGrams} onChange={(e) => setWeightGrams(e.target.value)} required />
+      </Field>
+      <Field label={t("price")}>
+        <input className={input} type="number" min={1} value={priceMinor} onChange={(e) => setPriceMinor(e.target.value)} required />
+      </Field>
+      {fulfillmentType === "SELLER_FULFILLED" ? (
+        <Field label={t("quantity")}>
+          <input className={input} type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+        </Field>
+      ) : null}
+      <div className="sm:col-span-2">
+        <Button type="submit" variant="secondary" loading={busy}>
+          {t("addVariant")}
+        </Button>
+      </div>
+    </form>
   );
 }
 
