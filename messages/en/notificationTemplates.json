@@ -1,0 +1,25 @@
+{
+  "title": "Notification templates",
+  "lead": "Override store-order emails per language. Empty subject and body restore the default. SMS and WhatsApp are listed but not sent.",
+  "placeholders": "Placeholders are reference, name, total, link and lead, each wrapped in double braces.",
+  "channels": "Channels",
+  "wired": "Sends",
+  "unwired": "Not wired",
+  "subject": "Subject",
+  "body": "Body",
+  "save": "Save",
+  "revert": "Use default",
+  "overridden": "Overridden",
+  "default": "Default",
+  "keys": {
+    "order_placed": "Order placed",
+    "payment_received": "Payment received",
+    "order_cancelled": "Order cancelled",
+    "order_part_shipped": "Part shipped",
+    "order_shipped": "Shipped",
+    "order_delivered": "Delivered",
+    "shipment_update": "Shipment update",
+    "return_update": "Return update",
+    "refund_paid": "Refund paid"
+  }
+}

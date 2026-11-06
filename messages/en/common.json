@@ -74,7 +74,8 @@
     "partnerNotices": "Notices",
     "payouts": "Seller payouts",
     "listings": "Listings",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "notificationTemplates": "Notification templates"
   },
   "notifications": {
     "title": "Notifications",

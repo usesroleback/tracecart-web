@@ -1,0 +1,25 @@
+{
+  "title": "Modèles de notification",
+  "lead": "Remplacez les e-mails de commande par langue. Un objet et un corps vides rétablissent le modèle par défaut. SMS et WhatsApp sont listés mais non envoyés.",
+  "placeholders": "Les variables sont reference, name, total, link et lead, chacune entre doubles accolades.",
+  "channels": "Canaux",
+  "wired": "Envoie",
+  "unwired": "Non branché",
+  "subject": "Objet",
+  "body": "Corps",
+  "save": "Enregistrer",
+  "revert": "Revenir au défaut",
+  "overridden": "Remplacé",
+  "default": "Défaut",
+  "keys": {
+    "order_placed": "Commande passée",
+    "payment_received": "Paiement reçu",
+    "order_cancelled": "Commande annulée",
+    "order_part_shipped": "Expédition partielle",
+    "order_shipped": "Expédiée",
+    "order_delivered": "Livrée",
+    "shipment_update": "Mise à jour d'expédition",
+    "return_update": "Mise à jour de retour",
+    "refund_paid": "Remboursement envoyé"
+  }
+}
