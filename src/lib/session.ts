@@ -67,10 +67,11 @@ export async function requireRole(role: Role): Promise<SessionUser> {
  * A section whose legacy service behind it only admits some account types, on
  * top of the permission (ADR-048). UX only, like requireRole.
  */
-export async function requireAccess(permission: string, accountTypes: Role[]): Promise<SessionUser> {
+export async function requireAccess(permission: string, accountTypes?: Role[], hubPermission?: string): Promise<SessionUser> {
   const user = await requirePermission(permission);
-  if (!accountTypes.includes(user.role)) return redirect({ href: ROLE_HOME[user.role], locale: await getLocale() });
-  return user;
+  if (!accountTypes) return user;
+  if (accountTypes.includes(user.role) || (hubPermission && can(user, hubPermission))) return user;
+  return redirect({ href: ROLE_HOME[user.role], locale: await getLocale() });
 }
 
 export const can = (user: SessionUser, permission: string) => user.permissions?.includes(permission) ?? false;

@@ -27,8 +27,10 @@ export type NavItem = {
   count?: (c: Counts) => number | undefined;
   /** Shown only to holders of this permission, or any of these (display only). */
   permission?: string | string[];
-  /** And only to these account types, where the legacy service only admits them. */
+  /** And only to these account types, where the leftover service only admits them. */
   accountTypes?: Role[];
+  /** STAFF with this permission stand in for the hub admin on that leftover screen (ADR-058). */
+  hubPermission?: string;
   /** Only to holders of this role (or any of these): staff hold every staff permission, but a shop isn't theirs. */
   role?: string | string[];
 };
@@ -48,12 +50,12 @@ const NAV: NavGroup[] = [
     items: [
       { icon: <DsHomeIcon />, name: "overview", path: "/dashboard" },
       { icon: <DsChatIcon />, name: "requests", path: "/sourcing", permission: "sourcing.request.read", count: (c) => c.sourcing },
-      { icon: <DsPackageIcon />, name: "orders", path: "/orders", accountTypes: ["SUPER_ADMIN"], count: (c) => sum(c, ACTIVE) },
+      { icon: <DsPackageIcon />, name: "orders", path: "/orders", accountTypes: ["SUPER_ADMIN"], hubPermission: "orders.shipment.write", count: (c) => sum(c, ACTIVE) },
       // What's waiting on the carrier: quotes to submit + parcels to handle.
       { icon: <DsTruckIcon />, name: "deliveries", path: "/deliveries", permission: "orders.transition", accountTypes: ["LOGISTICS_PARTNER"], count: (c) => sum(c, ["QUOTING", "CONFIRMED_HUB"]) },
-      { icon: <DsLayersIcon />, name: "consolidations", path: "/consolidations", permission: "logistics.consolidation.read", accountTypes: ["SUPER_ADMIN", "LOGISTICS_PARTNER"] },
+      { icon: <DsLayersIcon />, name: "consolidations", path: "/consolidations", permission: "logistics.consolidation.read", accountTypes: ["SUPER_ADMIN", "LOGISTICS_PARTNER"], hubPermission: "logistics.consolidation.write" },
       { icon: <DsRouteIcon />, name: "routes", path: "/routes", permission: "logistics.carrier_service.read", accountTypes: ["LOGISTICS_PARTNER"] },
-      { icon: <DsAlertIcon />, name: "exceptions", path: "/exceptions", accountTypes: ["SUPER_ADMIN"] },
+      { icon: <DsAlertIcon />, name: "exceptions", path: "/exceptions", permission: "logistics.exception.read", accountTypes: ["SUPER_ADMIN"], hubPermission: "logistics.exception.read" },
     ],
   },
   {
@@ -90,7 +92,7 @@ const NAV: NavGroup[] = [
       { icon: <DsHubIcon />, name: "hub", path: "/hub-setup", permission: ["sourcing.request.read", "pricing.settings.write"] },
       { icon: <DsCoinIcon />, name: "pricing", path: "/pricing", permission: "pricing.settings.write" },
       { icon: <DsCoinIcon />, name: "customsRates", path: "/customs-rates", permission: "customs.rate.write" },
-      { icon: <DsTruckIcon />, name: "carriers", path: "/carriers", accountTypes: ["SUPER_ADMIN"] },
+      { icon: <DsTruckIcon />, name: "carriers", path: "/carriers", permission: "logistics.carrier.read", accountTypes: ["SUPER_ADMIN"], hubPermission: "logistics.carrier.read" },
     ],
   },
   {
@@ -122,6 +124,8 @@ const NAV: NavGroup[] = [
 export function allowedNav(user: SessionUser): NavGroup[] {
   const can = (permission: string) => !!user.permissions?.includes(permission);
   const allowed = (i: NavItem) =>
-    (!i.permission || [i.permission].flat().some(can)) && (!i.accountTypes || i.accountTypes.includes(user.role)) && (!i.role || [i.role].flat().some((r) => !!user.roles?.includes(r)));
+    (!i.permission || [i.permission].flat().some(can)) &&
+    (!i.accountTypes || i.accountTypes.includes(user.role) || (!!i.hubPermission && can(i.hubPermission))) &&
+    (!i.role || [i.role].flat().some((r) => !!user.roles?.includes(r)));
   return NAV.map((g) => ({ ...g, items: g.items.filter(allowed) })).filter((g) => g.items.length);
 }

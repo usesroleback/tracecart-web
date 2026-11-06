@@ -9,7 +9,7 @@ export default async function RootPage() {
   const state = await getSessionState();
   const user = state.status === "ok" ? state.user : null;
   // Legacy orders only mean something to hub admins and carriers (ADR-048).
-  const readsOrders = !!user && can(user, "orders.read") && user.role !== "STAFF";
+  const readsOrders = !!user && (can(user, "orders.shipment.write") || (can(user, "orders.read") && user.role === "LOGISTICS_PARTNER"));
   const [work, result, stats] = await Promise.all([
     serverGet<{ items: WorkItem[] }>("/me/work"),
     readsOrders ? serverGet<{ items: Order[] }>("/orders?limit=50") : null,

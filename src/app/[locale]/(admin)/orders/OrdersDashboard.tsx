@@ -135,6 +135,7 @@ export function OrdersDashboard({ initialOrders, initialTotal }: { initialOrders
             {updatedAt && t("updatedAt", { time: f.time(updatedAt) })}
           </p>
         </div>
+        {user.permissions?.includes("orders.create") ? (
         <div className="flex flex-wrap gap-2">
           <Button
             variant="secondary"
@@ -150,6 +151,7 @@ export function OrdersDashboard({ initialOrders, initialTotal }: { initialOrders
             {formMode === "customer_owned" ? t("close") : t("transportOnly")}
           </Button>
         </div>
+        ) : null}
       </div>
 
       <KpiStrip

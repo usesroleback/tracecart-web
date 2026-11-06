@@ -25,7 +25,7 @@ const AppSidebar: React.FC = () => {
   const t = useTranslations("common.nav");
   const roleName = useRoleName(user);
   const [counts, setCounts] = useState<Counts>({});
-  const isAdmin = user.role === "SUPER_ADMIN";
+  const isAdmin = user.role === "SUPER_ADMIN" || !!user.permissions?.includes("orders.shipment.write");
   const can = (permission: string) => !!user.permissions?.includes(permission);
   const groups = allowedNav(user);
   const showLabel = isExpanded || isHovered || isMobileOpen;

@@ -59,7 +59,7 @@ export function ShipmentDetail({ initialOrder, initialHistory }: { initialOrder:
   const tl = useTranslations("labels");
   const f = useFormat();
   const dayTime = f.dayTime;
-  const isAdmin = user.role === "SUPER_ADMIN";
+  const isAdmin = user.role === "SUPER_ADMIN" || !!user.permissions?.includes("orders.shipment.write");
   const [order, setOrder] = useState(initialOrder);
   const [history, setHistory] = useState(initialHistory);
   const [copied, setCopied] = useState(false);
