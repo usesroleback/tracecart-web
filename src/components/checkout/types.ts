@@ -1,7 +1,15 @@
 import type { CustomerShipment } from "@/components/shipments/Shipments";
 // What the checkout and order routes return (they document no response shapes yet).
 
-export type Breakdown = { itemMinor: number; shippingMinor: number; dutiesMinor: number; taxesMinor: number; feesMinor: number; totalMinor: number };
+export type Breakdown = {
+  itemMinor: number;
+  shippingMinor: number;
+  dutiesMinor: number;
+  taxesMinor: number;
+  feesMinor: number;
+  discountMinor?: number;
+  totalMinor: number;
+};
 
 export type PaymentMethod = "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE";
 
@@ -48,6 +56,7 @@ export interface Quote {
   totals: Breakdown;
   promise: { from: string; to: string } | null;
   paymentMethods: { method: PaymentMethod; available: boolean; blockers: string[]; instructions: string | null }[];
+  coupon: { code: string; discountMinor: number; error: string | null } | null;
 }
 
 export interface PaymentView {
@@ -74,6 +83,8 @@ export interface OrderView {
   cancelReason: string | null;
   currency: string;
   totals: Breakdown;
+  couponCode?: string | null;
+  discountMinor?: number;
   deliveryMethod: "HOME" | "PICKUP";
   delivery: {
     recipientName?: string;

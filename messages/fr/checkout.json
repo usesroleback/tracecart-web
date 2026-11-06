@@ -83,6 +83,18 @@
       "NOT_ENABLED": "Indisponible."
     },
     "note": "Un mot pour la livraison (facultatif)",
+    "coupon": "Code promo",
+    "applyCoupon": "Appliquer",
+    "couponErrors": {
+      "INVALID": "Ce n'est pas un code promo utilisable.",
+      "NOT_FOUND": "Ce code n'est pas valable.",
+      "INACTIVE": "Ce code n'est pas disponible.",
+      "NOT_STARTED": "Ce code n'est pas encore disponible.",
+      "EXPIRED": "Ce code est terminé.",
+      "MIN_NOT_MET": "Les articles ne suffisent pas pour ce code.",
+      "USED_UP": "Ce code a déjà été utilisé autant de fois que prévu.",
+      "USED_BY_YOU": "Vous avez déjà utilisé ce code."
+    },
     "summary": "Récapitulatif",
     "chooseDelivery": "Choisissez où livrer pour voir le prix livré.",
     "pricing": "Calcul du prix…",
@@ -94,6 +106,7 @@
       "duties": "Droits de douane",
       "taxes": "Taxes à l'importation",
       "fees": "Frais de dédouanement",
+      "discount": "Remise",
       "total": "Total"
     },
     "allIncluded": "Tout compris : rien de plus à payer à la livraison.",
@@ -170,6 +183,7 @@
       "duties": "Droits de douane",
       "taxes": "Taxes à l'importation",
       "fees": "Frais de dédouanement",
+      "discount": "Remise",
       "total": "Total"
     },
     "deliverTo": "Livrée à",

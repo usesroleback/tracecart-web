@@ -1,0 +1,21 @@
+{
+  "title": "Coupons",
+  "lead": "A code cuts the item subtotal at checkout. Delivery, duties and the seller's share stay as they were.",
+  "code": "Code",
+  "kind": "Kind",
+  "kinds": {
+    "PERCENT": "Percent of items",
+    "AMOUNT": "Fixed amount"
+  },
+  "percentBps": "Basis points",
+  "percentBpsHint": "1000 is 10%.",
+  "amountMinor": "Amount (minor units)",
+  "minItemMinor": "Minimum items (minor units)",
+  "add": "Create",
+  "percentOf": "{bps} bps",
+  "redeemed": "Used {used} / {max}",
+  "active": "On",
+  "inactive": "Off",
+  "activate": "Turn on",
+  "deactivate": "Turn off"
+}

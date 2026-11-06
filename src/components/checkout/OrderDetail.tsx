@@ -160,9 +160,10 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
                 ["duties", order.totals.dutiesMinor],
                 ["taxes", order.totals.taxesMinor],
                 ["fees", order.totals.feesMinor],
+                ["discount", -(order.totals.discountMinor ?? order.discountMinor ?? 0)],
               ] as const
             )
-              .filter(([k, v]) => v > 0 || k === "shipping")
+              .filter(([k, v]) => (k === "discount" ? v < 0 : v > 0 || k === "shipping"))
               .map(([k, v]) => (
                 <div key={k} className="flex justify-between">
                   <dt className="text-ink-muted">{t(`totals.${k}`)}</dt>

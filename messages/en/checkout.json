@@ -83,6 +83,18 @@
       "NOT_ENABLED": "Not available."
     },
     "note": "A note for the delivery (optional)",
+    "coupon": "Coupon code",
+    "applyCoupon": "Apply",
+    "couponErrors": {
+      "INVALID": "That isn't a usable coupon code.",
+      "NOT_FOUND": "This code isn't valid.",
+      "INACTIVE": "This code isn't available.",
+      "NOT_STARTED": "This code isn't available yet.",
+      "EXPIRED": "This code has ended.",
+      "MIN_NOT_MET": "The items aren't enough for this code.",
+      "USED_UP": "This code has been used as many times as allowed.",
+      "USED_BY_YOU": "You've already used this code."
+    },
     "summary": "Summary",
     "chooseDelivery": "Choose where it goes to see the delivered price.",
     "pricing": "Working out the price…",
@@ -94,6 +106,7 @@
       "duties": "Customs duties",
       "taxes": "Import taxes",
       "fees": "Customs clearance",
+      "discount": "Discount",
       "total": "Total"
     },
     "allIncluded": "Everything included: nothing more to pay on delivery.",
@@ -170,6 +183,7 @@
       "duties": "Customs duties",
       "taxes": "Import taxes",
       "fees": "Customs clearance",
+      "discount": "Discount",
       "total": "Total"
     },
     "deliverTo": "Delivered to",

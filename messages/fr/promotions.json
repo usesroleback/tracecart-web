@@ -1,0 +1,21 @@
+{
+  "title": "Codes promo",
+  "lead": "Un code réduit le sous-total des articles à la commande. La livraison, les droits et la part vendeur restent inchangés.",
+  "code": "Code",
+  "kind": "Type",
+  "kinds": {
+    "PERCENT": "Pourcentage des articles",
+    "AMOUNT": "Montant fixe"
+  },
+  "percentBps": "Points de base",
+  "percentBpsHint": "1000 correspond à 10 %.",
+  "amountMinor": "Montant (unités mineures)",
+  "minItemMinor": "Minimum articles (unités mineures)",
+  "add": "Créer",
+  "percentOf": "{bps} pdb",
+  "redeemed": "Utilisé {used} / {max}",
+  "active": "Actif",
+  "inactive": "Inactif",
+  "activate": "Activer",
+  "deactivate": "Désactiver"
+}

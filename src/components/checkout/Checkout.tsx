@@ -107,6 +107,8 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
   const [quoting, setQuoting] = useState(false);
   const [payment, setPayment] = useState<PaymentMethod | null>(null);
   const [note, setNote] = useState("");
+  const [couponDraft, setCouponDraft] = useState("");
+  const [couponApplied, setCouponApplied] = useState<string | undefined>();
   const [placing, setPlacing] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const attempt = useRef<string | null>(null);
@@ -129,11 +131,11 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
       .catch(() => setPoints([]));
   }, [method, pickupCountry]);
 
-  const requote = useCallback(async (d: Delivery) => {
+  const requote = useCallback(async (d: Delivery, code?: string) => {
     setQuoting(true);
     setMessage(null);
     try {
-      const q = await call<Quote>("POST", "/checkout/quote", { delivery: d });
+      const q = await call<Quote>("POST", "/checkout/quote", { delivery: d, ...(code ? { couponCode: code } : {}) });
       setQuote(q);
       setPayment((current) => (q.paymentMethods.some((m) => m.method === current && m.available) ? current : (q.paymentMethods.find((m) => m.available)?.method ?? null)));
     } catch (e) {
@@ -149,9 +151,9 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
     attempt.current = null;
     // requote() sets the quote when the API answers (and clears it without a destination).
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (delivery) requote(delivery);
+    if (delivery) requote(delivery, couponApplied);
     else setQuote(null);
-  }, [delivery, requote]);
+  }, [delivery, couponApplied, requote]);
 
   async function place() {
     if (!delivery || !quote || !payment) return;
@@ -162,7 +164,7 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
       const order = await call<{ reference: string; payment: { checkoutUrl: string | null } | null }>(
         "POST",
         "/checkout/orders",
-        { delivery, paymentMethod: payment, expectedTotalMinor: quote.totals.totalMinor, ...(note.trim() ? { note: note.trim() } : {}) },
+        { delivery, paymentMethod: payment, expectedTotalMinor: quote.totals.totalMinor, ...(note.trim() ? { note: note.trim() } : {}), ...(couponApplied ? { couponCode: couponApplied } : {}) },
         { "Idempotency-Key": attempt.current }
       );
       window.dispatchEvent(new CustomEvent("tc:cart", { detail: 0 }));
@@ -294,6 +296,25 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
             <Field label={t("note")} className="mt-4">
               <textarea className={`${input} h-auto min-h-[4rem] py-2`} value={note} maxLength={500} onChange={(e) => setNote(e.target.value)} />
             </Field>
+            <form
+              className="mt-4 flex flex-wrap items-end gap-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setCouponApplied(couponDraft.trim() ? couponDraft.trim() : undefined);
+              }}
+            >
+              <Field label={t("coupon")} className="min-w-[12rem] flex-1">
+                <input className={input} value={couponDraft} onChange={(e) => setCouponDraft(e.target.value)} maxLength={20} autoComplete="off" />
+              </Field>
+              <button type="submit" className="h-10 rounded-[var(--radius-s)] border border-ink px-4 text-sm font-medium">
+                {t("applyCoupon")}
+              </button>
+            </form>
+            {quote.coupon?.error ? (
+              <p role="alert" className="mt-2 text-sm text-critical">
+                {t(`couponErrors.${quote.coupon.error}` as "couponErrors.NOT_FOUND")}
+              </p>
+            ) : null}
           </section>
         ) : null}
       </div>
@@ -332,9 +353,10 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
                   ["duties", quote.totals.dutiesMinor],
                   ["taxes", quote.totals.taxesMinor],
                   ["fees", quote.totals.feesMinor],
+                  ["discount", -(quote.totals.discountMinor ?? 0)],
                 ] as const
               )
-                .filter(([k, v]) => v > 0 || k === "items" || k === "shipping")
+                .filter(([k, v]) => (k === "discount" ? v < 0 : v > 0 || k === "items" || k === "shipping"))
                 .map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-3">
                     <dt className="text-ink-muted">{t(`totals.${k}`)}</dt>

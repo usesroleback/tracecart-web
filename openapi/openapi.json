@@ -7713,6 +7713,10 @@
                   "note": {
                     "type": "string",
                     "maxLength": 500
+                  },
+                  "couponCode": {
+                    "type": "string",
+                    "maxLength": 20
                   }
                 },
                 "required": [
@@ -7831,7 +7835,7 @@
         "tags": [
           "Store"
         ],
-        "summary": "The cart's landed price for a delivery: each line's item, shipping, duties, taxes and fees, the shipments, the delivery promise, and the payment methods that can take it",
+        "summary": "The cart's landed price for a delivery: each line's item, shipping, duties, taxes and fees, an optional coupon on the item subtotal, the shipments, the delivery promise, and the payment methods that can take it",
         "description": "Unavailable (with the problems listed) when anything needed to price it is missing: nothing is ever counted as zero.",
         "security": [
           {
@@ -7895,6 +7899,10 @@
                         ]
                       }
                     ]
+                  },
+                  "couponCode": {
+                    "type": "string",
+                    "maxLength": 20
                   }
                 },
                 "required": [
@@ -9282,6 +9290,259 @@
             "in": "path"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/coupons": {
+      "get": {
+        "tags": [
+          "Promotions"
+        ],
+        "summary": "Every coupon",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "promotions.write",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Promotions"
+        ],
+        "summary": "Create a coupon code",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "promotions.write",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 20
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "PERCENT",
+                      "AMOUNT"
+                    ]
+                  },
+                  "percentBps": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10000
+                  },
+                  "amountMinor": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "minItemMinor": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "maxRedemptions": {
+                    "type": "integer",
+                    "nullable": true,
+                    "minimum": 1
+                  },
+                  "maxPerCustomer": {
+                    "type": "integer",
+                    "nullable": true,
+                    "minimum": 1
+                  },
+                  "startsAt": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time"
+                  },
+                  "endsAt": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "code",
+                  "kind"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/coupons/{id}": {
+      "patch": {
+        "tags": [
+          "Promotions"
+        ],
+        "summary": "Turn a coupon on or off",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "promotions.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "active": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "active"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -13822,6 +14083,55 @@
         }
       }
     },
+    "/me/company/invites/accept": {
+      "post": {
+        "tags": [
+          "My company"
+        ],
+        "summary": "Join any company that invited this account's email",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/me/company/orders": {
       "get": {
         "tags": [
@@ -13943,6 +14253,279 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/company/staff": {
+      "get": {
+        "tags": [
+          "My company"
+        ],
+        "summary": "Who acts for one's company: the admin, colleagues, and waiting invites",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "b2b.account.manage",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "My company"
+        ],
+        "summary": "Invite someone by email as a buyer or an approver. The owner stays the only admin.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "b2b.account.manage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "format": "email"
+                  },
+                  "roleKey": {
+                    "type": "string",
+                    "enum": [
+                      "b2b_buyer",
+                      "b2b_approver"
+                    ],
+                    "default": "b2b_approver"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/company/staff/invites/{id}": {
+      "delete": {
+        "tags": [
+          "My company"
+        ],
+        "summary": "Withdraw an invite that has not been accepted",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "b2b.account.manage",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/company/staff/{userId}": {
+      "delete": {
+        "tags": [
+          "My company"
+        ],
+        "summary": "Remove a colleague. The owner stays.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "b2b.account.manage",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "userId",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
