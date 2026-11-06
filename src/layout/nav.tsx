@@ -61,6 +61,7 @@ const NAV: NavGroup[] = [
     items: [
       { icon: <DsBuildingIcon />, name: "sellerCenter", path: "/seller", role: "seller_owner" },
       { icon: <DsPackageIcon />, name: "sellerListings", path: "/seller/listings", permission: "seller.listing.write", role: ["seller_owner", "seller_staff"] },
+      { icon: <DsCoinIcon />, name: "sellerPayouts", path: "/seller/payouts", permission: "seller.payout.read", role: "seller_owner" },
     ],
   },
   {
@@ -93,6 +94,7 @@ const NAV: NavGroup[] = [
       { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
       { icon: <DsBuildingIcon />, name: "sellers", path: "/sellers", permission: "sellers.review" },
       { icon: <DsPackageIcon />, name: "listings", path: "/listings", permission: "catalog.listing.review" },
+      { icon: <DsCoinIcon />, name: "payouts", path: "/payouts", permission: "finance.payout.read" },
       { icon: <DsCoinIcon />, name: "sellerTerms", path: "/sellers/settings", permission: ["sellers.review", "finance.payout.read", "settings.read"] },
       { icon: <DsLayersIcon />, name: "catalog", path: "/catalog", permission: "catalog.read" },
       { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories", permission: "catalog.read" },

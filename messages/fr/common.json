@@ -60,6 +60,8 @@
     "sellerTerms": "Conditions vendeurs",
     "sellerCenter": "Espace vendeur",
     "sellerListings": "Annonces",
+    "sellerPayouts": "Paiements",
+    "payouts": "Paiements vendeurs",
     "listings": "Annonces"
   },
   "notifications": {

@@ -1,0 +1,32 @@
+{
+  "title": "Paiements vendeurs",
+  "lead": "L'argent dû aux vendeurs après la livraison et le délai. Changer de prestataire change le prochain envoi, pas ces enregistrements.",
+  "mine": "Mes paiements",
+  "mineLead": "Ce que Tracecart vous verse, après le délai qui suit la livraison.",
+  "empty": "Aucun paiement ne correspond.",
+  "search": "Référence ou vendeur",
+  "find": "Rechercher",
+  "more": "Voir plus",
+  "loading": "Chargement",
+  "assemble": "Regrouper ce qui est dû",
+  "send": "Envoyer avec le prestataire actuel",
+  "markPaid": "Enregistrer un virement",
+  "transferRef": "Référence banque ou prestataire",
+  "process": "Envoyer maintenant",
+  "cancel": "Annuler",
+  "back": "Tous les paiements",
+  "amountDue": "Montant dû",
+  "via": "Via {provider}",
+  "queues": {
+    "toSend": "Paiements à envoyer",
+    "sending": "Paiements en cours d'envoi"
+  },
+  "statuses": {
+    "DUE": "Dû",
+    "PENDING_APPROVAL": "En attente d'approbation",
+    "SENDING": "Envoi",
+    "PAID": "Payé",
+    "FAILED": "Échoué",
+    "CANCELLED": "Annulé"
+  }
+}

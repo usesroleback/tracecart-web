@@ -12,9 +12,14 @@ export default async function SellerCenterPage() {
     <div className="max-w-3xl">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <h1 className="rb-headline text-[28px]">{t("center")}</h1>
-        <Link href="/seller/listings" className="text-sm font-medium underline">
-          {listings("mine")}
-        </Link>
+        <div className="flex flex-wrap gap-4">
+          <Link href="/seller/listings" className="text-sm font-medium underline">
+            {listings("mine")}
+          </Link>
+          <Link href="/seller/payouts" className="text-sm font-medium underline">
+            {t("payoutsLink")}
+          </Link>
+        </div>
       </div>
       <SellerPanel />
     </div>

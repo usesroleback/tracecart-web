@@ -99,7 +99,8 @@
       "sellersToReview": "Demandes vendeur à examiner",
       "sellerPayoutsToConfirm": "Comptes de paiement vendeur à confirmer",
       "listingsToReview": "Annonces à examiner",
-      "listingsToFix": "Annonces à corriger"
+      "listingsToFix": "Annonces à corriger",
+      "payoutsToSend": "Paiements vendeurs à envoyer"
     }
   }
 }

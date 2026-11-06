@@ -1,0 +1,32 @@
+{
+  "title": "Seller payouts",
+  "lead": "Money due to sellers after delivery and the hold. Switching the payout provider changes the next send, not these records.",
+  "mine": "My payouts",
+  "mineLead": "What Tracecart pays you, after the hold that follows delivery.",
+  "empty": "No payout matches.",
+  "search": "Reference or seller",
+  "find": "Search",
+  "more": "Show more",
+  "loading": "Loading",
+  "assemble": "Collect what is due",
+  "send": "Send with the current provider",
+  "markPaid": "Record a transfer",
+  "transferRef": "Bank or provider reference",
+  "process": "Send now",
+  "cancel": "Cancel",
+  "back": "All payouts",
+  "amountDue": "Amount due",
+  "via": "Via {provider}",
+  "queues": {
+    "toSend": "Payouts to send",
+    "sending": "Payouts sending"
+  },
+  "statuses": {
+    "DUE": "Due",
+    "PENDING_APPROVAL": "Waiting for approval",
+    "SENDING": "Sending",
+    "PAID": "Paid",
+    "FAILED": "Failed",
+    "CANCELLED": "Cancelled"
+  }
+}

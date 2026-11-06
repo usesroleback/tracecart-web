@@ -3,6 +3,7 @@
   "title": "Vendeurs",
   "lead": "Les demandes pour vendre sur Tracecart, et les vendeurs déjà actifs.",
   "center": "Espace vendeur",
+  "payoutsLink": "Mes paiements",
   "search": "Nom ou email du vendeur",
   "status": "Statut",
   "allStatuses": "Tous les statuts",
