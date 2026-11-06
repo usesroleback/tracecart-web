@@ -121,7 +121,7 @@ function PayoutsList({ staff }: { staff: boolean }) {
               <div className={box}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-medium font-mono">{row.reference}</p>
-                  <Badge tone={TONE[row.status]}>{t(`statuses.${row.status}`)}</Badge>
+                  <Badge variant={TONE[row.status]}>{t(`statuses.${row.status}`)}</Badge>
                 </div>
                 <p className="mt-1 text-ink-muted">{staff ? row.seller.name : t("amountDue")}</p>
                 <p className="rb-numeral mt-2 text-[22px]">{format.money(toMajor(row.amountMinor, row.currency), row.currency)}</p>
@@ -205,7 +205,7 @@ export function PayoutDetail({ id, staff }: { id: string; staff: boolean }) {
     <div className="max-w-3xl">
       <p className="rb-overline">{row.reference}</p>
       <h1 className="rb-headline mb-2 text-[28px]">{staff ? row.seller.name : t("mine")}</h1>
-      <Badge tone={TONE[row.status]}>{t(`statuses.${row.status}`)}</Badge>
+      <Badge variant={TONE[row.status]}>{t(`statuses.${row.status}`)}</Badge>
       <p className="rb-numeral mt-4 text-[32px]">{money(row.amountMinor)}</p>
       <p className="mt-1 text-sm text-ink-muted">{t("via", { provider: row.provider })}{row.providerRef ? ` · ${row.providerRef}` : ""}</p>
       {row.failedReason ? <p className="mt-2 text-sm text-critical">{row.failedReason}</p> : null}

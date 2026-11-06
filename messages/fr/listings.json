@@ -59,6 +59,14 @@
   "compareAt": "Prix précédent",
   "handling": "Jours avant l'envoi",
   "quantity": "Quantité disponible",
+  "fulfillment": "Qui détient le stock",
+  "warehouse": "Entrepôt Tracecart",
+  "inboundQuantity": "{count, plural, =0 {Rien encore à l'entrepôt.} one {# à l'entrepôt.} other {# à l'entrepôt.}}",
+  "inboundCta": "Envoyer du stock",
+  "fulfillmentTypes": {
+    "SELLER_FULFILLED": "Je l'expédie",
+    "FULFILLED_BY_TRACECART": "Tracecart le détient"
+  },
   "condition": "État",
   "commission": "Commission sur cette vente : {rate}.",
   "create": "Enregistrer en brouillon",

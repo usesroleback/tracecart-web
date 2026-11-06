@@ -100,7 +100,9 @@
       "sellerPayoutsToConfirm": "Seller payout accounts to confirm",
       "listingsToReview": "Listings to review",
       "listingsToFix": "Listings to fix",
-      "payoutsToSend": "Seller payouts to send"
+      "payoutsToSend": "Seller payouts to send",
+      "sellerStockToReceive": "Seller stock to receive",
+      "sellerInboundsOpen": "Stock inbound"
     }
   }
 }

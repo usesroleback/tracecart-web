@@ -22,6 +22,9 @@ export default async function SellerCenterPage() {
           <Link href="/seller/staff" className="text-sm font-medium underline">
             {t("staffLink")}
           </Link>
+          <Link href="/seller/inbounds" className="text-sm font-medium underline">
+            {t("inboundLink")}
+          </Link>
         </div>
       </div>
       <SellerPanel />

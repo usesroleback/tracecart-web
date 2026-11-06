@@ -5,6 +5,7 @@
   "center": "Espace vendeur",
   "payoutsLink": "Mes paiements",
   "staffLink": "Équipe",
+  "inboundLink": "Stock en entrée",
   "staff": {
     "title": "Équipe",
     "lead": "Les personnes qui peuvent annoncer et expédier pour cette boutique. Elles ne voient pas les paiements et ne changent pas qui vous êtes.",
@@ -17,6 +18,26 @@
     "roles": {
       "owner": "Propriétaire",
       "staff": "Équipe"
+    }
+  },
+  "inbound": {
+    "title": "Stock en entrée",
+    "lead": "Envoyez votre stock vers un entrepôt Tracecart. L'entrepôt le réceptionne ; vous ne saisissez pas combien ils ont.",
+    "warehouse": "Entrepôt",
+    "listing": "Annonce",
+    "quantity": "Combien vous envoyez",
+    "send": "C'est en route",
+    "cancel": "Annuler",
+    "empty": "Aucun envoi pour le moment.",
+    "noListings": "Aucune annonce pour cet entrepôt. Créez d'abord une annonce tenue par Tracecart.",
+    "progress": "{accepted} sur {quantity} acceptés",
+    "rejected": "{count} refusés",
+    "statuses": {
+      "DRAFT": "En préparation",
+      "SENT": "En route",
+      "PARTIALLY_RECEIVED": "Reçu en partie",
+      "RECEIVED": "Reçu",
+      "CANCELLED": "Annulé"
     }
   },
   "search": "Nom ou email du vendeur",

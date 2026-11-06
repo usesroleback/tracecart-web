@@ -100,7 +100,9 @@
       "sellerPayoutsToConfirm": "Comptes de paiement vendeur à confirmer",
       "listingsToReview": "Annonces à examiner",
       "listingsToFix": "Annonces à corriger",
-      "payoutsToSend": "Paiements vendeurs à envoyer"
+      "payoutsToSend": "Paiements vendeurs à envoyer",
+      "sellerStockToReceive": "Stock vendeur à réceptionner",
+      "sellerInboundsOpen": "Stock en entrée"
     }
   }
 }

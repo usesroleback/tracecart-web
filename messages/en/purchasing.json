@@ -65,8 +65,11 @@
   "tabs": {
     "toBuy": "To buy",
     "orders": "Purchase orders",
-    "inbound": "Inbound"
+    "inbound": "Inbound",
+    "sellerStock": "Seller stock"
   },
+  "sellerStockHint": "A seller's stock arriving at your warehouse. No prices.",
+  "noSellerStock": "No seller stock waiting.",
   "orderStatuses": {
     "DRAFT": "Draft",
     "SENT": "With the supplier",

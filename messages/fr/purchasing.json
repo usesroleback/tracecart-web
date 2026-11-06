@@ -65,8 +65,11 @@
   "tabs": {
     "toBuy": "À acheter",
     "orders": "Bons de commande",
-    "inbound": "Entrant"
+    "inbound": "Entrant",
+    "sellerStock": "Stock vendeur"
   },
+  "sellerStockHint": "Le stock d'un vendeur qui arrive à votre entrepôt. Pas de prix.",
+  "noSellerStock": "Aucun stock vendeur en attente.",
   "orderStatuses": {
     "DRAFT": "Brouillon",
     "SENT": "Chez le fournisseur",

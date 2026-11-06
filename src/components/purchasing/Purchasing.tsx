@@ -95,8 +95,8 @@ export function Purchasing(can: PurchasingPermissions) {
   const t = useTranslations("purchasing");
   // Customs work on shipments only: purchase orders aren't theirs to read.
   const seesOrders = can.seesCosts || can.canReceive;
-  const tabs = [...(can.seesCosts ? (["toBuy"] as const) : []), ...(seesOrders ? (["orders"] as const) : []), "inbound"] as const;
-  const [tab, setTab] = useState<"toBuy" | "orders" | "inbound">(can.seesCosts ? "toBuy" : seesOrders ? "orders" : "inbound");
+  const tabs = [...(can.seesCosts ? (["toBuy"] as const) : []), ...(seesOrders ? (["orders"] as const) : []), "inbound", ...(can.canReceive ? (["sellerStock"] as const) : [])] as const;
+  const [tab, setTab] = useState<"toBuy" | "orders" | "inbound" | "sellerStock">(can.seesCosts ? "toBuy" : seesOrders ? "orders" : "inbound");
   const [options, setOptions] = useState<Options>({ warehouses: [], carrierServices: [], suppliers: [] });
 
   useEffect(() => {
@@ -120,6 +120,7 @@ export function Purchasing(can: PurchasingPermissions) {
       {tab === "toBuy" ? <ToBuy canBuy={can.canBuy} options={options} /> : null}
       {tab === "orders" ? <Orders can={can} options={options} /> : null}
       {tab === "inbound" ? <InboundList can={can} options={options} /> : null}
+      {tab === "sellerStock" ? <SellerStock /> : null}
     </div>
   );
 }
@@ -827,5 +828,88 @@ function CustomsForm({ shipment: s, busy, act }: { shipment: Inbound; busy: bool
         {t("save")}
       </Button>
     </form>
+  );
+}
+
+interface SellerInbound {
+  id: string;
+  reference: string;
+  status: string;
+  seller: { name: string };
+  destination: { city: string; code: string };
+  lines: { id: string; title: string; sku: string; quantity: number; acceptedQuantity: number; rejectedQuantity: number }[];
+}
+
+/** Seller stock at this warehouse: SKU and counts, never a price (ADR-055). */
+function SellerStock() {
+  const t = useTranslations("purchasing");
+  const [rows, setRows] = useState<SellerInbound[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [accepted, setAccepted] = useState<Record<string, string>>({});
+
+  const load = useCallback(async () => {
+    setRows((await call<{ items: SellerInbound[] }>("GET", "/seller-inbounds?queue=toReceive&limit=50")).items);
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    load().catch((e) => setError((e as Error).message));
+  }, [load]);
+
+  async function receive(row: SellerInbound) {
+    setBusy(true);
+    setError(null);
+    try {
+      const lines = row.lines
+        .map((l) => ({ lineId: l.id, accepted: Number(accepted[l.id] ?? l.quantity - l.acceptedQuantity), rejected: 0 }))
+        .filter((l) => l.accepted > 0);
+      await call("POST", `/seller-inbounds/${row.id}/receive`, { lines });
+      await load();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-sm text-ink-muted">{t("sellerStockHint")}</p>
+      {error ? (
+        <p role="alert" className="text-sm text-critical">
+          {error}
+        </p>
+      ) : null}
+      {rows.length === 0 ? <p className="text-ink-muted">{t("noSellerStock")}</p> : null}
+      {rows.map((r) => (
+        <div key={r.id} className={box}>
+          <p className="font-medium">
+            {r.seller.name} <span className="rb-mono-s text-ink-muted">{r.reference}</span>
+          </p>
+          <ul className="mt-2 grid gap-2">
+            {r.lines.map((l) => (
+              <li key={l.id} className="flex flex-wrap items-center justify-between gap-2">
+                <span>
+                  {l.title} <span className="rb-mono-s text-ink-muted">{l.sku}</span>
+                </span>
+                <input
+                  className={`${input} w-24`}
+                  type="number"
+                  min={0}
+                  max={l.quantity - l.acceptedQuantity}
+                  aria-label={t("quantityOf", { title: l.title })}
+                  value={accepted[l.id] ?? String(l.quantity - l.acceptedQuantity)}
+                  onChange={(e) => setAccepted((prev) => ({ ...prev, [l.id]: e.target.value }))}
+                />
+              </li>
+            ))}
+          </ul>
+          <Button className="mt-3" variant="primary" loading={busy} onClick={() => receive(r)}>
+            {t("receive")}
+          </Button>
+        </div>
+      ))}
+    </div>
   );
 }

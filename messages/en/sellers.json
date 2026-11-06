@@ -5,6 +5,7 @@
   "center": "Seller Center",
   "payoutsLink": "My payouts",
   "staffLink": "Staff",
+  "inboundLink": "Stock inbound",
   "staff": {
     "title": "Staff",
     "lead": "People who can list and fulfil for this shop. They never see payouts or change who you are.",
@@ -17,6 +18,26 @@
     "roles": {
       "owner": "Owner",
       "staff": "Staff"
+    }
+  },
+  "inbound": {
+    "title": "Stock inbound",
+    "lead": "Send your stock to a Tracecart warehouse. Warehouse staff receive it; you don't type how many they have.",
+    "warehouse": "Warehouse",
+    "listing": "Listing",
+    "quantity": "How many you're sending",
+    "send": "It's on its way",
+    "cancel": "Cancel",
+    "empty": "No inbound yet.",
+    "noListings": "No listing at this warehouse yet. Make one fulfilled by Tracecart first.",
+    "progress": "{accepted} of {quantity} accepted",
+    "rejected": "{count} rejected",
+    "statuses": {
+      "DRAFT": "Being prepared",
+      "SENT": "On its way",
+      "PARTIALLY_RECEIVED": "Partly received",
+      "RECEIVED": "Received",
+      "CANCELLED": "Cancelled"
     }
   },
   "search": "Seller's name or email",

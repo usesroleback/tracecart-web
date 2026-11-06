@@ -59,6 +59,14 @@
   "compareAt": "Previous price",
   "handling": "Days to hand it over",
   "quantity": "How many you have",
+  "fulfillment": "Who holds the stock",
+  "warehouse": "Tracecart warehouse",
+  "inboundQuantity": "{count, plural, =0 {None at the warehouse yet.} one {# at the warehouse.} other {# at the warehouse.}}",
+  "inboundCta": "Send stock in",
+  "fulfillmentTypes": {
+    "SELLER_FULFILLED": "I ship it",
+    "FULFILLED_BY_TRACECART": "Tracecart holds it"
+  },
   "condition": "Condition",
   "commission": "Commission on this sale: {rate}.",
   "create": "Save as a draft",

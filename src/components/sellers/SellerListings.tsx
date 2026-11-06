@@ -32,6 +32,7 @@ export interface Listing {
   compareAtMinor: number | null;
   currency: string;
   handlingDays: number;
+  fulfillmentType: "SELLER_FULFILLED" | "FULFILLED_BY_TRACECART";
   quantity: number;
   held: number;
   commissionBps: number;
@@ -319,6 +320,9 @@ function CreateForm({ busy, onCreate }: { busy: boolean; onCreate: (body: unknow
   const [quantity, setQuantity] = useState("1");
   const [handlingDays, setHandlingDays] = useState("1");
   const [condition, setCondition] = useState("NEW");
+  const [fulfillmentType, setFulfillmentType] = useState<"SELLER_FULFILLED" | "FULFILLED_BY_TRACECART">("SELLER_FULFILLED");
+  const [warehouseId, setWarehouseId] = useState("");
+  const [warehouses, setWarehouses] = useState<{ id: string; city: string; countryCode: string; code: string }[]>([]);
   const [titleFr, setTitleFr] = useState("");
   const [titleEn, setTitleEn] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -328,6 +332,12 @@ function CreateForm({ busy, onCreate }: { busy: boolean; onCreate: (body: unknow
   useEffect(() => {
     call<{ categories: { id: string; parentId: string | null; name: Record<string, string> }[] }>("GET", "/seller/listings/references")
       .then((r) => setCategories(r.categories))
+      .catch(() => undefined);
+    call<{ items: { id: string; city: string; countryCode: string; code: string }[] }>("GET", "/seller/listings/warehouses")
+      .then((r) => {
+        setWarehouses(r.items);
+        setWarehouseId((id) => id || r.items[0]?.id || "");
+      })
       .catch(() => undefined);
   }, []);
 
@@ -343,7 +353,13 @@ function CreateForm({ busy, onCreate }: { busy: boolean; onCreate: (body: unknow
       className={`${box} grid gap-3`}
       onSubmit={(e: FormEvent) => {
         e.preventDefault();
-        const terms = { priceMinor: Number(priceMinor), quantity: Number(quantity), handlingDays: Number(handlingDays), condition };
+        const terms = {
+          priceMinor: Number(priceMinor),
+          handlingDays: Number(handlingDays),
+          condition,
+          fulfillmentType,
+          ...(fulfillmentType === "FULFILLED_BY_TRACECART" ? { warehouseId } : { quantity: Number(quantity) }),
+        };
         if (kind === "catalog") onCreate({ ...terms, variantId });
         else onCreate({ ...terms, product: { title: { fr: titleFr || undefined, en: titleEn || undefined }, categoryId, weightGrams: Number(weightGrams) } });
       }}
@@ -418,9 +434,27 @@ function CreateForm({ busy, onCreate }: { busy: boolean; onCreate: (body: unknow
       <Field label={t("price")} required>
         <input className={input} type="number" min={1} required value={priceMinor} onChange={(e) => setPriceMinor(e.target.value)} />
       </Field>
-      <Field label={t("quantity")}>
-        <input className={input} type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+      <Field label={t("fulfillment")} required>
+        <select className={input} value={fulfillmentType} onChange={(e) => setFulfillmentType(e.target.value as typeof fulfillmentType)}>
+          <option value="SELLER_FULFILLED">{t("fulfillmentTypes.SELLER_FULFILLED")}</option>
+          <option value="FULFILLED_BY_TRACECART">{t("fulfillmentTypes.FULFILLED_BY_TRACECART")}</option>
+        </select>
       </Field>
+      {fulfillmentType === "FULFILLED_BY_TRACECART" ? (
+        <Field label={t("warehouse")} required>
+          <select className={input} required value={warehouseId} onChange={(e) => setWarehouseId(e.target.value)}>
+            {warehouses.map((w) => (
+              <option key={w.id} value={w.id}>
+                {w.city} · {w.code}
+              </option>
+            ))}
+          </select>
+        </Field>
+      ) : (
+        <Field label={t("quantity")}>
+          <input className={input} type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+        </Field>
+      )}
       <Field label={t("handling")}>
         <input className={input} type="number" min={0} max={60} value={handlingDays} onChange={(e) => setHandlingDays(e.target.value)} />
       </Field>
@@ -504,20 +538,29 @@ function TermsForm({
           </div>
         ) : null}
       </form>
-      <form
-        className="sm:col-span-2 flex flex-wrap items-end gap-2"
-        onSubmit={(e: FormEvent) => {
-          e.preventDefault();
-          onQuantity(Number(quantity));
-        }}
-      >
-        <Field label={t("quantity")} className="min-w-[10rem] flex-1">
-          <input className={input} type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-        </Field>
-        <Button type="submit" variant="secondary" loading={busy}>
-          {t("save")}
-        </Button>
-      </form>
+      {listing.fulfillmentType === "FULFILLED_BY_TRACECART" ? (
+        <p className="sm:col-span-2 text-sm text-ink-muted">
+          {t("inboundQuantity", { count: listing.quantity })}{" "}
+          <Link href="/seller/inbounds" className="underline">
+            {t("inboundCta")}
+          </Link>
+        </p>
+      ) : (
+        <form
+          className="sm:col-span-2 flex flex-wrap items-end gap-2"
+          onSubmit={(e: FormEvent) => {
+            e.preventDefault();
+            onQuantity(Number(quantity));
+          }}
+        >
+          <Field label={t("quantity")} className="min-w-[10rem] flex-1">
+            <input className={input} type="number" min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+          </Field>
+          <Button type="submit" variant="secondary" loading={busy}>
+            {t("save")}
+          </Button>
+        </form>
+      )}
     </div>
   );
 }
