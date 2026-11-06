@@ -11,6 +11,7 @@ import { ProductList } from "@/components/store/ProductCard";
 import { JsonLd } from "@/components/store/JsonLd";
 import { AddToCart } from "@/components/store/AddToCart";
 import { ProductReviews } from "@/components/store/ProductReviews";
+import { ProductQuestions } from "@/components/store/ProductQuestions";
 import { categoryHref, STORE_CURRENCY, storeApi, storeCountry, toMajor, type ProductDetail, type PublicOffer } from "@/lib/store";
 import { alternates, siteUrl } from "@/lib/siteUrl";
 
@@ -344,6 +345,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
       ) : null}
 
       <ProductReviews slug={p.slug} />
+      <ProductQuestions slug={p.slug} />
     </StoreShell>
   );
 }

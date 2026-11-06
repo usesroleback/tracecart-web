@@ -172,6 +172,16 @@
         "APPROVED": "Votre avis est sur cette page.",
         "REJECTED": "Votre avis n'a pas été publié."
       }
+    },
+    "questions": {
+      "title": "Questions",
+      "empty": "Pas encore de questions.",
+      "askedBy": "{name} a demandé",
+      "answer": "Réponse",
+      "pending": "Votre question est en attente de publication.",
+      "body": "Votre question",
+      "submit": "Poser la question",
+      "signIn": "Connectez-vous pour poser une question sur ce produit."
     }
   },
   "brands": {

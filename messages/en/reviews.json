@@ -1,10 +1,18 @@
 {
   "title": "Reviews",
   "lead": "A review of a product someone received. Publish it onto the product page, or reject it.",
+  "questionsTitle": "Questions",
+  "questionsLead": "A question about a product. Publish it, reject it, or answer it.",
   "empty": "Nothing waiting.",
   "approve": "Publish",
   "reject": "Reject",
+  "answer": "Answer",
+  "answerLabel": "Answer",
   "stars": "{rating, plural, one {# star} other {# stars}}",
+  "tabs": {
+    "reviews": "Reviews",
+    "questions": "Questions"
+  },
   "queues": {
     "toReview": "Waiting to publish"
   },

@@ -172,6 +172,16 @@
         "APPROVED": "Your review is on this page.",
         "REJECTED": "Your review wasn't published."
       }
+    },
+    "questions": {
+      "title": "Questions",
+      "empty": "No questions yet.",
+      "askedBy": "{name} asked",
+      "answer": "Answer",
+      "pending": "Your question is waiting to be published.",
+      "body": "Your question",
+      "submit": "Ask",
+      "signIn": "Sign in to ask a question about this product."
     }
   },
   "brands": {

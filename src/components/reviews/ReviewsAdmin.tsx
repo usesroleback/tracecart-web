@@ -13,32 +13,39 @@ type Status = "PENDING" | "APPROVED" | "REJECTED";
 interface Row {
   id: string;
   status: Status;
-  rating: number;
-  title: string | null;
+  rating?: number;
+  title?: string | null;
   body: string;
+  answer?: string | null;
   createdAt: string;
   author: { name: string; email: string };
   product: { slug: string; title: string };
 }
 
 const TONE: Record<Status, "info" | "positive" | "critical"> = { PENDING: "info", APPROVED: "positive", REJECTED: "critical" };
-const LIST_FILTERS = ["queue"] as const;
+const LIST_FILTERS = ["tab", "queue"] as const;
 
 export function ReviewsList() {
   const t = useTranslations("reviews");
   const { applied, query, apply } = useListFilters(LIST_FILTERS);
+  const questions = applied.tab === "questions";
   const [rows, setRows] = useState<Row[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<Record<string, string>>({});
 
   const load = useCallback(async (filters: string) => {
+    const params = new URLSearchParams(filters);
+    params.delete("tab");
+    const q = params.toString();
+    const path = questions ? "/questions" : "/reviews";
     try {
-      const res = await call<{ items: Row[] }>("GET", `/reviews${filters ? `?${filters}` : ""}`);
+      const res = await call<{ items: Row[] }>("GET", `${path}${q ? `?${q}` : ""}`);
       setRows(res.items);
       setError(null);
     } catch (e) {
       setError((e as Error).message);
     }
-  }, []);
+  }, [questions]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -48,8 +55,21 @@ export function ReviewsList() {
   async function decide(id: string, decision: "APPROVE" | "REJECT") {
     setError(null);
     try {
-      const next = await call<Row>("POST", `/reviews/${id}/decide`, { decision });
+      const next = await call<Row>("POST", `${questions ? "/questions" : "/reviews"}/${id}/decide`, { decision });
       setRows((prev) => prev.map((r) => (r.id === id ? next : r)).filter((r) => (applied.queue === "toReview" ? r.status === "PENDING" : true)));
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+
+  async function reply(id: string) {
+    const text = (answer[id] ?? "").trim();
+    if (!text) return;
+    setError(null);
+    try {
+      const next = await call<Row>("POST", `/questions/${id}/answer`, { answer: text });
+      setRows((prev) => prev.map((r) => (r.id === id ? next : r)).filter((r) => (applied.queue === "toReview" ? r.status === "PENDING" : true)));
+      setAnswer((a) => ({ ...a, [id]: "" }));
     } catch (e) {
       setError((e as Error).message);
     }
@@ -57,9 +77,17 @@ export function ReviewsList() {
 
   return (
     <div>
-      <h1 className="rb-headline mb-1 text-[28px]">{t("title")}</h1>
-      <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
-      {applied.queue ? <QueueChip label={t("queues.toReview")} onClear={() => apply({ queue: "" })} /> : null}
+      <h1 className="rb-headline mb-1 text-[28px]">{questions ? t("questionsTitle") : t("title")}</h1>
+      <p className="mb-4 text-sm text-ink-muted">{questions ? t("questionsLead") : t("lead")}</p>
+      <div className="mb-6 flex gap-2" role="tablist">
+        <button type="button" role="tab" aria-selected={!questions} className={`rounded-[var(--radius-s)] border px-3 py-2 text-sm ${!questions ? "border-ink bg-ink text-ink-inverse" : "border-line"}`} onClick={() => apply({ ...applied, tab: "" })}>
+          {t("tabs.reviews")}
+        </button>
+        <button type="button" role="tab" aria-selected={questions} className={`rounded-[var(--radius-s)] border px-3 py-2 text-sm ${questions ? "border-ink bg-ink text-ink-inverse" : "border-line"}`} onClick={() => apply({ ...applied, tab: "questions" })}>
+          {t("tabs.questions")}
+        </button>
+      </div>
+      {applied.queue ? <QueueChip label={t("queues.toReview")} onClear={() => apply({ ...applied, queue: "" })} /> : null}
       {error ? <p className="mb-4 text-sm text-critical">{error}</p> : null}
       {rows.length === 0 ? <p className="text-sm text-ink-muted">{t("empty")}</p> : null}
       <ul className="grid gap-3">
@@ -67,7 +95,7 @@ export function ReviewsList() {
           <li key={r.id} className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm">
             <div className="mb-2 flex flex-wrap items-center gap-2">
               <Badge variant={TONE[r.status]}>{t(`statuses.${r.status}`)}</Badge>
-              <span className="rb-numeral">{t("stars", { rating: r.rating })}</span>
+              {r.rating != null ? <span className="rb-numeral">{t("stars", { rating: r.rating })}</span> : null}
               <Link href={`/p/${r.product.slug}`} className="font-medium underline">
                 {r.product.title}
               </Link>
@@ -75,6 +103,7 @@ export function ReviewsList() {
             </div>
             {r.title ? <p className="font-medium">{r.title}</p> : null}
             <p className="mt-1 text-ink">{r.body}</p>
+            {r.answer ? <p className="mt-2 text-ink-muted">{t("answerLabel")}: {r.answer}</p> : null}
             {r.status === "PENDING" ? (
               <div className="mt-4 flex gap-2">
                 <Button type="button" variant="primary" onClick={() => decide(r.id, "APPROVE")}>
@@ -84,6 +113,20 @@ export function ReviewsList() {
                   {t("reject")}
                 </Button>
               </div>
+            ) : null}
+            {questions && r.status !== "REJECTED" && !r.answer ? (
+              <form
+                className="mt-4 grid gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  reply(r.id);
+                }}
+              >
+                <textarea className="min-h-[4rem] rounded-[var(--radius-s)] border border-line-strong px-3 py-2" value={answer[r.id] ?? ""} onChange={(e) => setAnswer((a) => ({ ...a, [r.id]: e.target.value }))} required maxLength={2000} />
+                <Button type="submit" variant="secondary">
+                  {t("answer")}
+                </Button>
+              </form>
             ) : null}
           </li>
         ))}

@@ -1,10 +1,18 @@
 {
   "title": "Avis",
   "lead": "L'avis d'un client qui a reçu le produit. Publiez-le sur la fiche, ou refusez-le.",
+  "questionsTitle": "Questions",
+  "questionsLead": "Une question sur un produit. Publiez-la, refusez-la, ou répondez.",
   "empty": "Rien en attente.",
   "approve": "Publier",
   "reject": "Refuser",
+  "answer": "Répondre",
+  "answerLabel": "Réponse",
   "stars": "{rating, plural, one {# étoile} other {# étoiles}}",
+  "tabs": {
+    "reviews": "Avis",
+    "questions": "Questions"
+  },
   "queues": {
     "toReview": "En attente de publication"
   },
