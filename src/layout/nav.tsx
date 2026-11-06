@@ -89,6 +89,7 @@ const NAV: NavGroup[] = [
     items: [
       { icon: <DsHubIcon />, name: "hub", path: "/hub-setup", permission: ["sourcing.request.read", "pricing.settings.write"] },
       { icon: <DsCoinIcon />, name: "pricing", path: "/pricing", permission: "pricing.settings.write" },
+      { icon: <DsCoinIcon />, name: "customsRates", path: "/customs-rates", permission: "customs.rate.write" },
       { icon: <DsTruckIcon />, name: "carriers", path: "/carriers", accountTypes: ["SUPER_ADMIN"] },
     ],
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, ReactNode, useMemo, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
 import Button from "@/components/ui/button/Button";
@@ -47,6 +47,31 @@ function SavedRow({ muted = false, children, actions }: { muted?: boolean; child
   );
 }
 
+/** Customs rates on their own page, for people who cannot open prices and margins (ADR-057). */
+export function CustomsRatesBoard() {
+  const t = useTranslations("pricing.settings.customs");
+  const [rates, setRates] = useState<Settings["customsRates"]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = async () => {
+    const res = await api.get<{ items: Settings["customsRates"] }>("/pricing-settings/customs-rates");
+    setRates(res.items);
+  };
+
+  useEffect(() => {
+    load().catch((e) => setError(e instanceof Error ? e.message : t("title")));
+  }, []);
+
+  return (
+    <div>
+      <h1 className="rb-headline mb-1 text-[28px]">{t("title")}</h1>
+      <p className="mb-6 max-w-3xl text-sm text-ink-muted">{t("intro")}</p>
+      {error ? <p className="mb-4 text-sm text-critical">{error}</p> : null}
+      <CustomsRates rates={rates} defaultCurrency="" onSaved={load} framed={false} />
+    </div>
+  );
+}
+
 /**
  * What prices are built from beyond carrier rates
  * (docs/design/catalogue-pricing-and-revenue.md): the hub's margins, exchange
@@ -70,7 +95,7 @@ export function PricingSettings({ initial }: { initial: Settings }) {
       <ExchangeRates settings={settings} missing={readiness?.exchangeRates.missing ?? []} onSaved={reload} />
       <Margins settings={settings} onSaved={reload} />
       <OtherHubsInbound settings={settings} waiting={readiness?.inbound.missingHubs ?? []} onSaved={reload} />
-      <CustomsRates settings={settings} onSaved={reload} />
+      <CustomsRates rates={settings.customsRates} defaultCurrency={settings.margins.currency} onSaved={reload} />
       <CategoryDefaults settings={settings} onSaved={reload} />
     </div>
   );
@@ -360,16 +385,16 @@ function ExchangeRates({ settings, missing, onSaved }: { settings: Settings; mis
 
 const emptyCustoms = { destinationCountry: "", productCategory: "", dutyPercent: "", taxPercent: "", brokerFee: "", currency: "" };
 
-function CustomsRates({ settings, onSaved }: { settings: Settings; onSaved: () => Promise<void> }) {
+export function CustomsRates({ rates, defaultCurrency, onSaved, framed = true }: { rates: Settings["customsRates"]; defaultCurrency: string; onSaved: () => Promise<void>; framed?: boolean }) {
   const t = useTranslations("pricing.settings.customs");
   const f = useFormat();
   const [editing, setEditing] = useState<string | null>(null);
-  const [v, setV] = useState({ ...emptyCustoms, currency: settings.margins.currency });
+  const [v, setV] = useState({ ...emptyCustoms, currency: defaultCurrency });
   const { busy, error, saved, run } = useSubmit(onSaved);
   const set = (k: keyof typeof v) => (e: { target: { value: string } }) => setV({ ...v, [k]: e.target.value });
   const reset = () => {
     setEditing(null);
-    setV({ ...emptyCustoms, currency: settings.margins.currency });
+    setV({ ...emptyCustoms, currency: defaultCurrency });
   };
 
   async function submit(e: FormEvent) {
@@ -385,11 +410,11 @@ function CustomsRates({ settings, onSaved }: { settings: Settings; onSaved: () =
     if (await run(() => (editing ? api.patch(`/pricing-settings/customs-rates/${editing}`, body) : api.post("/pricing-settings/customs-rates", body)))) reset();
   }
 
-  return (
-    <Section id="customs-rates" step={5} need="required" title={t("title")} intro={t("intro")}>
-      {settings.customsRates.length > 0 && (
+  const body = (
+    <>
+      {rates.length > 0 && (
         <SavedList>
-          {settings.customsRates.map((r) => (
+          {rates.map((r) => (
             <SavedRow
               key={r.id}
               muted={!r.active}
@@ -459,6 +484,12 @@ function CustomsRates({ settings, onSaved }: { settings: Settings; onSaved: () =
           )}
         </FormActions>
       </form>
+    </>
+  );
+  if (!framed) return <div className="mt-6">{body}</div>;
+  return (
+    <Section id="customs-rates" step={5} need="required" title={t("title")} intro={t("intro")}>
+      {body}
     </Section>
   );
 }
