@@ -80,6 +80,7 @@ test("from an application to a Seller Center", async ({ browser }) => {
     await expect(applicant).toHaveURL(/\/en\/seller$/);
     await expect(applicant.getByRole("heading", { name: "Seller Center" })).toBeVisible();
     await expect(applicant.getByRole("link", { name: "My payouts" })).toBeVisible();
+    await expect(applicant.getByRole("link", { name: "Staff" })).toBeVisible();
     await expect(applicant.getByLabel("Business name")).toBeDisabled();
 
     // A listing on a catalogue product, then a person's approval (ADR-051).

@@ -4,6 +4,21 @@
   "lead": "Applications to sell on Tracecart, and the sellers already selling.",
   "center": "Seller Center",
   "payoutsLink": "My payouts",
+  "staffLink": "Staff",
+  "staff": {
+    "title": "Staff",
+    "lead": "People who can list and fulfil for this shop. They never see payouts or change who you are.",
+    "email": "Email",
+    "invite": "Invite",
+    "remove": "Remove from the shop",
+    "pending": "Waiting to join",
+    "withdraw": "Withdraw invite",
+    "expires": "Expires {date}",
+    "roles": {
+      "owner": "Owner",
+      "staff": "Staff"
+    }
+  },
   "search": "Seller's name or email",
   "status": "Status",
   "allStatuses": "All statuses",

@@ -4,6 +4,21 @@
   "lead": "Les demandes pour vendre sur Tracecart, et les vendeurs déjà actifs.",
   "center": "Espace vendeur",
   "payoutsLink": "Mes paiements",
+  "staffLink": "Équipe",
+  "staff": {
+    "title": "Équipe",
+    "lead": "Les personnes qui peuvent annoncer et expédier pour cette boutique. Elles ne voient pas les paiements et ne changent pas qui vous êtes.",
+    "email": "Email",
+    "invite": "Inviter",
+    "remove": "Retirer de la boutique",
+    "pending": "En attente",
+    "withdraw": "Retirer l'invitation",
+    "expires": "Expire le {date}",
+    "roles": {
+      "owner": "Propriétaire",
+      "staff": "Équipe"
+    }
+  },
   "search": "Nom ou email du vendeur",
   "status": "Statut",
   "allStatuses": "Tous les statuts",

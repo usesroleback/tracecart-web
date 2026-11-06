@@ -62,6 +62,7 @@ const NAV: NavGroup[] = [
       { icon: <DsBuildingIcon />, name: "sellerCenter", path: "/seller", role: "seller_owner" },
       { icon: <DsPackageIcon />, name: "sellerListings", path: "/seller/listings", permission: "seller.listing.write", role: ["seller_owner", "seller_staff"] },
       { icon: <DsCoinIcon />, name: "sellerPayouts", path: "/seller/payouts", permission: "seller.payout.read", role: "seller_owner" },
+      { icon: <DsBuildingIcon />, name: "sellerStaff", path: "/seller/staff", permission: "seller.settings.write", role: "seller_owner" },
     ],
   },
   {
