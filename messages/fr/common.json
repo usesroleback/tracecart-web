@@ -58,7 +58,9 @@
     "partners": "Partenaires",
     "sellers": "Vendeurs",
     "sellerTerms": "Conditions vendeurs",
-    "sellerCenter": "Espace vendeur"
+    "sellerCenter": "Espace vendeur",
+    "sellerListings": "Annonces",
+    "listings": "Annonces"
   },
   "notifications": {
     "title": "Notifications",

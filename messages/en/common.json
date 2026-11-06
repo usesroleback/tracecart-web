@@ -58,7 +58,9 @@
     "partners": "Partners",
     "sellers": "Sellers",
     "sellerTerms": "Seller terms",
-    "sellerCenter": "Seller Center"
+    "sellerCenter": "Seller Center",
+    "sellerListings": "Listings",
+    "listings": "Listings"
   },
   "notifications": {
     "title": "Notifications",

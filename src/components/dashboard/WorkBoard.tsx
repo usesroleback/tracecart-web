@@ -37,6 +37,8 @@ const PATHS: Record<string, string> = {
   productsToFinish: "/catalog",
   sellersToReview: "/sellers?queue=toReview",
   sellerPayoutsToConfirm: "/sellers?queue=payoutToConfirm",
+  listingsToReview: "/listings?queue=toReview",
+  listingsToFix: "/seller/listings?queue=toFix",
 };
 
 /** What's waiting on this person, the fullest queues first. */

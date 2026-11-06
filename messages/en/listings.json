@@ -1,0 +1,83 @@
+{
+  "title": "Listings",
+  "lead": "What sellers want on sale. A person approves every listing first.",
+  "mine": "My listings",
+  "mineLead": "Offer a product from the catalogue, or propose a new one. Nothing goes on sale until a person reviews it.",
+  "new": "New listing",
+  "empty": "No listing matches.",
+  "search": "Product title or SKU",
+  "find": "Search",
+  "more": "Show more",
+  "status": "Status",
+  "allStatuses": "All statuses",
+  "columns": {
+    "product": "Product",
+    "status": "Status",
+    "price": "Price",
+    "quantity": "Quantity"
+  },
+  "queues": {
+    "toReview": "Listings to review",
+    "toFix": "Listings to fix"
+  },
+  "statuses": {
+    "DRAFT": "Being prepared",
+    "IN_REVIEW": "In review",
+    "ACTIVE": "On sale",
+    "PAUSED": "Paused",
+    "DELISTED": "Removed"
+  },
+  "explain": {
+    "DRAFT": "Finish the details, then send it for review.",
+    "IN_REVIEW": "We're reviewing this listing. We'll email you when there's a decision.",
+    "ACTIVE": "Customers can buy this.",
+    "PAUSED": "Off sale for now. You can put it back without another review.",
+    "DELISTED": "This listing was removed. Make a new one to sell it again."
+  },
+  "conditions": {
+    "NEW": "New",
+    "REFURBISHED": "Refurbished",
+    "USED": "Used"
+  },
+  "missing": {
+    "QUANTITY": "How many you have",
+    "PHOTO": "A photo",
+    "WEIGHT": "Packed weight"
+  },
+  "kindCatalog": "A product already in the catalogue",
+  "kindPropose": "A product that isn't there yet",
+  "catalogSearch": "Find a product",
+  "noCatalog": "No product matches.",
+  "pickVariant": "Which variant",
+  "titleFr": "Title in French",
+  "titleEn": "Title in English",
+  "category": "Category",
+  "brand": "Brand",
+  "noBrand": "No brand",
+  "weight": "Packed weight (grams)",
+  "price": "Price",
+  "compareAt": "Previous price",
+  "handling": "Days to hand it over",
+  "quantity": "How many you have",
+  "condition": "Condition",
+  "commission": "Commission on this sale: {rate}.",
+  "create": "Save as a draft",
+  "save": "Save",
+  "photos": "Photos",
+  "addPhoto": "Add a photo",
+  "removePhoto": "Remove",
+  "submit": "Send for review",
+  "withdraw": "Bring it back to change something",
+  "pause": "Take off sale",
+  "resume": "Put back on sale",
+  "delist": "Remove for good",
+  "note": "Message from review",
+  "approve": "Approve this listing",
+  "reject": "Ask for changes",
+  "rejectWhy": "What to change: the seller reads this",
+  "takeDown": "Take down",
+  "takeDownWhy": "Why: the seller reads this",
+  "takeDownCta": "Take this listing down",
+  "seller": "Seller",
+  "openShop": "Shop settings"
+}

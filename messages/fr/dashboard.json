@@ -97,7 +97,9 @@
       "requestsOpen": "Demandes ouvertes",
       "productsToFinish": "Produits pas encore en ligne",
       "sellersToReview": "Demandes vendeur à examiner",
-      "sellerPayoutsToConfirm": "Comptes de paiement vendeur à confirmer"
+      "sellerPayoutsToConfirm": "Comptes de paiement vendeur à confirmer",
+      "listingsToReview": "Annonces à examiner",
+      "listingsToFix": "Annonces à corriger"
     }
   }
 }

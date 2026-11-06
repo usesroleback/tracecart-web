@@ -81,6 +81,32 @@ test("from an application to a Seller Center", async ({ browser }) => {
     await expect(applicant.getByRole("heading", { name: "Seller Center" })).toBeVisible();
     await expect(applicant.getByLabel("Business name")).toBeDisabled();
 
+    // A listing on a catalogue product, then a person's approval (ADR-051).
+    await applicant.getByRole("link", { name: "My listings" }).click();
+    await expect(applicant).toHaveURL(/\/en\/seller\/listings$/);
+    await applicant.getByRole("link", { name: "New listing" }).click();
+    await applicant.getByLabel("Find a product").fill("Voltline");
+    await button(applicant, "Search").click();
+    await expect(applicant.getByLabel("Which variant")).toBeVisible();
+    await applicant.getByLabel("Price").fill("25000");
+    await applicant.getByLabel("How many you have").fill("4");
+    await button(applicant, "Save as a draft").click();
+    await expect(applicant).toHaveURL(/\/en\/seller\/listings\/[0-9a-f-]{36}$/);
+    await button(applicant, "Send for review").click();
+    await expect(applicant.getByText("In review")).toBeVisible();
+
+    const reviewer = await person(browser, "catalog_manager");
+    await reviewer.goto("/en/dashboard");
+    await reviewer.getByRole("link", { name: /Listings to review/ }).click();
+    await expect(reviewer).toHaveURL(/\/en\/listings\?queue=toReview$/);
+    await reviewer.getByRole("link", { name: /Voltline/ }).first().click();
+    await button(reviewer, "Approve this listing").click();
+    await expect(reviewer.getByText("On sale").first()).toBeVisible();
+    await reviewer.context().close();
+
+    await applicant.reload();
+    await expect(applicant.getByText("On sale").first()).toBeVisible();
+
     // Changing where the money goes needs checking again.
     await applicant.getByLabel("Account number").fill("+22699999999");
     await button(applicant, "Save this account").click();

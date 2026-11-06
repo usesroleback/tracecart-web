@@ -29,8 +29,8 @@ export type NavItem = {
   permission?: string | string[];
   /** And only to these account types, where the legacy service only admits them. */
   accountTypes?: Role[];
-  /** Only to holders of this role: staff hold every staff permission, but a shop isn't theirs. */
-  role?: string;
+  /** Only to holders of this role (or any of these): staff hold every staff permission, but a shop isn't theirs. */
+  role?: string | string[];
 };
 
 export type NavGroup = { /** Key under common.nav.groups. */ title?: string; items: NavItem[] };
@@ -58,7 +58,10 @@ const NAV: NavGroup[] = [
   },
   {
     title: "seller",
-    items: [{ icon: <DsBuildingIcon />, name: "sellerCenter", path: "/seller", role: "seller_owner" }],
+    items: [
+      { icon: <DsBuildingIcon />, name: "sellerCenter", path: "/seller", role: "seller_owner" },
+      { icon: <DsPackageIcon />, name: "sellerListings", path: "/seller/listings", permission: "seller.listing.write", role: ["seller_owner", "seller_staff"] },
+    ],
   },
   {
     title: "catalogue",
@@ -89,6 +92,7 @@ const NAV: NavGroup[] = [
       { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
       { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
       { icon: <DsBuildingIcon />, name: "sellers", path: "/sellers", permission: "sellers.review" },
+      { icon: <DsPackageIcon />, name: "listings", path: "/listings", permission: "catalog.listing.review" },
       { icon: <DsCoinIcon />, name: "sellerTerms", path: "/sellers/settings", permission: ["sellers.review", "finance.payout.read", "settings.read"] },
       { icon: <DsLayersIcon />, name: "catalog", path: "/catalog", permission: "catalog.read" },
       { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories", permission: "catalog.read" },
@@ -102,6 +106,7 @@ const NAV: NavGroup[] = [
 /** What this person is offered: the sidebar, global search and the shortcuts all use it. Display only. */
 export function allowedNav(user: SessionUser): NavGroup[] {
   const can = (permission: string) => !!user.permissions?.includes(permission);
-  const allowed = (i: NavItem) => (!i.permission || [i.permission].flat().some(can)) && (!i.accountTypes || i.accountTypes.includes(user.role)) && (!i.role || !!user.roles?.includes(i.role));
+  const allowed = (i: NavItem) =>
+    (!i.permission || [i.permission].flat().some(can)) && (!i.accountTypes || i.accountTypes.includes(user.role)) && (!i.role || [i.role].flat().some((r) => !!user.roles?.includes(r)));
   return NAV.map((g) => ({ ...g, items: g.items.filter(allowed) })).filter((g) => g.items.length);
 }

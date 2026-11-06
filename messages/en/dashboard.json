@@ -97,7 +97,9 @@
       "requestsOpen": "Open requests",
       "productsToFinish": "Products not live yet",
       "sellersToReview": "Seller applications to review",
-      "sellerPayoutsToConfirm": "Seller payout accounts to confirm"
+      "sellerPayoutsToConfirm": "Seller payout accounts to confirm",
+      "listingsToReview": "Listings to review",
+      "listingsToFix": "Listings to fix"
     }
   }
 }

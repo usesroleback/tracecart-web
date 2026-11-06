@@ -1,0 +1,83 @@
+{
+  "title": "Annonces",
+  "lead": "Ce que les vendeurs veulent mettre en vente. Une personne approuve chaque annonce d'abord.",
+  "mine": "Mes annonces",
+  "mineLead": "Proposez un produit du catalogue, ou un produit nouveau. Rien n'est en vente tant qu'une personne n'a pas examiné l'annonce.",
+  "new": "Nouvelle annonce",
+  "empty": "Aucune annonce ne correspond.",
+  "search": "Titre du produit ou SKU",
+  "find": "Rechercher",
+  "more": "Afficher plus",
+  "status": "Statut",
+  "allStatuses": "Tous les statuts",
+  "columns": {
+    "product": "Produit",
+    "status": "Statut",
+    "price": "Prix",
+    "quantity": "Quantité"
+  },
+  "queues": {
+    "toReview": "Annonces à examiner",
+    "toFix": "Annonces à corriger"
+  },
+  "statuses": {
+    "DRAFT": "En préparation",
+    "IN_REVIEW": "En examen",
+    "ACTIVE": "En vente",
+    "PAUSED": "En pause",
+    "DELISTED": "Retirée"
+  },
+  "explain": {
+    "DRAFT": "Terminez les détails, puis envoyez pour examen.",
+    "IN_REVIEW": "Nous examinons cette annonce. Nous vous écrirons dès qu'une décision est prise.",
+    "ACTIVE": "Les clients peuvent l'acheter.",
+    "PAUSED": "Hors vente pour l'instant. Vous pouvez la remettre sans nouvel examen.",
+    "DELISTED": "Cette annonce a été retirée. Faites-en une nouvelle pour la vendre à nouveau."
+  },
+  "conditions": {
+    "NEW": "Neuf",
+    "REFURBISHED": "Reconditionné",
+    "USED": "Occasion"
+  },
+  "missing": {
+    "QUANTITY": "La quantité dont vous disposez",
+    "PHOTO": "Une photo",
+    "WEIGHT": "Le poids emballé"
+  },
+  "kindCatalog": "Un produit déjà au catalogue",
+  "kindPropose": "Un produit qui n'y est pas encore",
+  "catalogSearch": "Trouver un produit",
+  "noCatalog": "Aucun produit ne correspond.",
+  "pickVariant": "Quelle variante",
+  "titleFr": "Titre en français",
+  "titleEn": "Titre en anglais",
+  "category": "Catégorie",
+  "brand": "Marque",
+  "noBrand": "Sans marque",
+  "weight": "Poids emballé (grammes)",
+  "price": "Prix",
+  "compareAt": "Prix précédent",
+  "handling": "Jours avant l'envoi",
+  "quantity": "Quantité disponible",
+  "condition": "État",
+  "commission": "Commission sur cette vente : {rate}.",
+  "create": "Enregistrer en brouillon",
+  "save": "Enregistrer",
+  "photos": "Photos",
+  "addPhoto": "Ajouter une photo",
+  "removePhoto": "Retirer",
+  "submit": "Envoyer pour examen",
+  "withdraw": "Ramener pour modifier",
+  "pause": "Retirer de la vente",
+  "resume": "Remettre en vente",
+  "delist": "Retirer définitivement",
+  "note": "Message de l'examen",
+  "approve": "Approuver cette annonce",
+  "reject": "Demander des changements",
+  "rejectWhy": "Quoi changer : le vendeur lit ce message",
+  "takeDown": "Retirer",
+  "takeDownWhy": "Pourquoi : le vendeur lit ce message",
+  "takeDownCta": "Retirer cette annonce",
+  "seller": "Vendeur",
+  "openShop": "Paramètres de la boutique"
+}

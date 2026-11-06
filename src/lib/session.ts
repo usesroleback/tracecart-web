@@ -86,3 +86,12 @@ export async function requirePermission(permission: string | string[]): Promise<
   if (![permission].flat().some((p) => can(state.user, p))) return redirect({ href: ROLE_HOME[state.user.role], locale });
   return state.user;
 }
+
+/** A console page that belongs to a named role (Seller Center), not just a permission staff also hold. */
+export async function requireRoleKey(key: string | string[]): Promise<SessionUser> {
+  const state = await getSessionState();
+  const locale = await getLocale();
+  if (state.status !== "ok") return redirect({ href: "/login", locale });
+  if (![key].flat().some((k) => state.user.roles?.includes(k))) return redirect({ href: ROLE_HOME[state.user.role], locale });
+  return state.user;
+}
