@@ -26,7 +26,8 @@
       "catalogue": "Catalogue",
       "network": "Network",
       "store": "Store",
-      "seller": "Selling"
+      "seller": "Selling",
+      "partner": "Partner"
     },
     "overview": "Overview",
     "requests": "Requests",
@@ -62,6 +63,11 @@
     "sellerListings": "Listings",
     "sellerPayouts": "Payouts",
     "sellerStaff": "Staff",
+    "partnerCenter": "Partner portal",
+    "partnerPickups": "Pickups",
+    "partnerDeliveries": "On the road",
+    "partnerCash": "Cash to pass on",
+    "partnerNotices": "Notices",
     "payouts": "Seller payouts",
     "listings": "Listings"
   },

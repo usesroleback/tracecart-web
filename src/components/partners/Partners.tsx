@@ -36,13 +36,13 @@ interface Notice {
   createdAt: string;
 }
 
-export function Partners(can: PartnerPermissions) {
+export function Partners(can: PartnerPermissions & { heading?: string; intro?: string }) {
   const t = useTranslations("partners");
   const [tab, setTab] = useState<"notices" | "access">("notices");
   return (
     <div>
-      <h1 className="rb-headline mb-1 text-[28px]">{t("title")}</h1>
-      <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
+      <h1 className="rb-headline mb-1 text-[28px]">{can.heading ?? t("title")}</h1>
+      <p className="mb-6 text-sm text-ink-muted">{can.intro ?? t("lead")}</p>
       {can.canManage ? (
         <div role="tablist" className="mb-6 flex flex-wrap gap-4 border-b border-line">
           {(["notices", "access"] as const).map((x) => (

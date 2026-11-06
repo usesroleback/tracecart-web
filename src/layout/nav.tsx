@@ -66,6 +66,16 @@ const NAV: NavGroup[] = [
     ],
   },
   {
+    title: "partner",
+    items: [
+      { icon: <DsTruckIcon />, name: "partnerCenter", path: "/partner", role: ["carrier", "pickup_point_operator"] },
+      { icon: <DsPackageIcon />, name: "partnerPickups", path: "/partner/pickups", permission: "shipments.event.record", role: ["carrier", "pickup_point_operator"] },
+      { icon: <DsTruckIcon />, name: "partnerDeliveries", path: "/partner/deliveries", permission: "shipments.event.record", role: ["carrier", "pickup_point_operator"] },
+      { icon: <DsCoinIcon />, name: "partnerCash", path: "/partner/cash", permission: "shipments.cod.collect", role: ["carrier", "pickup_point_operator"] },
+      { icon: <DsChatIcon />, name: "partnerNotices", path: "/partner/notices", permission: "partners.notice.send", role: ["carrier", "pickup_point_operator"] },
+    ],
+  },
+  {
     title: "catalogue",
     items: [
       { icon: <DsSearchIcon />, name: "products", path: "/products", permission: "sourcing.supplier.search" },

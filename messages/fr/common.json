@@ -26,7 +26,8 @@
       "catalogue": "Catalogue",
       "network": "Réseau",
       "store": "Boutique",
-      "seller": "Vente"
+      "seller": "Vente",
+      "partner": "Partenaire"
     },
     "overview": "Vue d'ensemble",
     "requests": "Demandes",
@@ -62,6 +63,11 @@
     "sellerListings": "Annonces",
     "sellerPayouts": "Paiements",
     "sellerStaff": "Équipe",
+    "partnerCenter": "Espace partenaire",
+    "partnerPickups": "Retraits",
+    "partnerDeliveries": "En route",
+    "partnerCash": "Espèces à remettre",
+    "partnerNotices": "Avis",
     "payouts": "Paiements vendeurs",
     "listings": "Annonces"
   },

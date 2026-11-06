@@ -67,7 +67,7 @@ interface Row {
 }
 
 /** Shipments in the console: what the API lets this person work on, newest first. */
-export function ShipmentsList() {
+export function ShipmentsList({ heading, intro }: { heading?: string; intro?: string } = {}) {
   const t = useTranslations("shipments");
   const format = useFormat();
   const user = useSession();
@@ -106,8 +106,8 @@ export function ShipmentsList() {
 
   return (
     <div>
-      <h1 className="rb-headline mb-1 text-[28px]">{t("title")}</h1>
-      <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
+      <h1 className="rb-headline mb-1 text-[28px]">{heading ?? t("title")}</h1>
+      <p className="mb-6 text-sm text-ink-muted">{intro ?? t("lead")}</p>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <SavedViews list="shipments" query={query} onApply={apply} />
         <ExportButton path="/shipments/export.csv" query={query} />
