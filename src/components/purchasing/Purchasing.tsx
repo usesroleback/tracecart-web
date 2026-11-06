@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Field, input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 
 // Buying and bringing goods in, in the console (ADR-044). The API checks every
 // call, scopes receivers to their warehouse, and sends costs only to those who
@@ -95,9 +97,20 @@ export function Purchasing(can: PurchasingPermissions) {
   const t = useTranslations("purchasing");
   // Customs work on shipments only: purchase orders aren't theirs to read.
   const seesOrders = can.seesCosts || can.canReceive;
-  const tabs = [...(can.seesCosts ? (["toBuy"] as const) : []), ...(seesOrders ? (["orders"] as const) : []), "inbound", ...(can.canReceive ? (["sellerStock"] as const) : [])] as const;
-  const [tab, setTab] = useState<"toBuy" | "orders" | "inbound" | "sellerStock">(can.seesCosts ? "toBuy" : seesOrders ? "orders" : "inbound");
+  type Tab = "toBuy" | "orders" | "inbound" | "sellerStock";
+  const tabs: Tab[] = [...(can.seesCosts ? (["toBuy"] as const) : []), ...(seesOrders ? (["orders"] as const) : []), "inbound", ...(can.canReceive ? (["sellerStock"] as const) : [])];
+  const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const requested = params.get("tab");
+  const fromUrl = tabs.includes(requested as Tab) ? (requested as Tab) : undefined;
+  const fallbackTab: Tab = can.seesCosts ? "toBuy" : seesOrders ? "orders" : "inbound";
+  const [tab, setTab] = useState<Tab>(fromUrl ?? fallbackTab);
   const [options, setOptions] = useState<Options>({ warehouses: [], carrierServices: [], suppliers: [] });
+
+  useEffect(() => {
+    setTab(fromUrl ?? fallbackTab);
+  }, [fromUrl, fallbackTab]);
 
   useEffect(() => {
     if (!can.seesCosts && !can.canLogistics) return;
@@ -112,7 +125,17 @@ export function Purchasing(can: PurchasingPermissions) {
       <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
       <div role="tablist" className="mb-6 flex flex-wrap gap-4 border-b border-line">
         {tabs.map((x) => (
-          <button key={x} type="button" role="tab" aria-selected={tab === x} onClick={() => setTab(x)} className={`pb-2 text-sm ${tab === x ? "border-b-2 border-ink font-medium text-ink" : "text-ink-muted hover:text-ink"}`}>
+            <button
+              key={x}
+              type="button"
+              role="tab"
+              aria-selected={tab === x}
+              onClick={() => {
+                setTab(x);
+                router.replace(x === tabs[0] ? pathname : `${pathname}?tab=${x}`, { scroll: false });
+              }}
+              className={`pb-2 text-sm ${tab === x ? "border-b-2 border-ink font-medium text-ink" : "text-ink-muted hover:text-ink"}`}
+            >
             {t(`tabs.${x}`)}
           </button>
         ))}

@@ -6,6 +6,9 @@
   "allStatuses": "All statuses",
   "find": "Search",
   "empty": "No order matches.",
+  "queues": {
+    "paymentsToConfirm": "Bank transfers to confirm"
+  },
   "more": "Show more",
   "shipments": "Shipments",
   "columns": {

@@ -9,6 +9,10 @@
   "more": "Show more",
   "empty": "No stock matches.",
   "onlyLow": "Only what's running low",
+  "queues": {
+    "low": "Running low",
+    "open": "Counts still open"
+  },
   "noBin": "No location",
   "edit": "Change",
   "adjust": "Correct the stock",

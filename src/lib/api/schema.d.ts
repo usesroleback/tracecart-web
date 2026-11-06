@@ -6841,6 +6841,8 @@ export interface paths {
             parameters: {
                 query?: {
                     status?: "OPEN" | "SUBMITTED" | "APPLIED" | "CANCELLED";
+                    /** @description The dashboard's open counts */
+                    queue?: "open";
                     cursor?: string;
                     limit?: number;
                 };
@@ -27684,6 +27686,8 @@ export interface paths {
             parameters: {
                 query?: {
                     status?: "PENDING_PAYMENT" | "PLACED" | "PROCESSING" | "PARTIALLY_SHIPPED" | "SHIPPED" | "PARTIALLY_DELIVERED" | "DELIVERED" | "COMPLETED" | "CANCELLED" | "ON_HOLD";
+                    /** @description The dashboard's bank transfers to confirm */
+                    queue?: "paymentsToConfirm";
                     /** @description Reference, customer email or name */
                     q?: string;
                     cursor?: string;
@@ -27760,6 +27764,8 @@ export interface paths {
             parameters: {
                 query?: {
                     status?: "PENDING_PAYMENT" | "PLACED" | "PROCESSING" | "PARTIALLY_SHIPPED" | "SHIPPED" | "PARTIALLY_DELIVERED" | "DELIVERED" | "COMPLETED" | "CANCELLED" | "ON_HOLD";
+                    /** @description The dashboard's bank transfers to confirm */
+                    queue?: "paymentsToConfirm";
                     /** @description Reference, customer email or name */
                     q?: string;
                 };

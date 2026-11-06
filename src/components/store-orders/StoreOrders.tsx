@@ -11,10 +11,10 @@ import { input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
 import type { OrderView } from "@/components/checkout/types";
 import { OrderRefunds } from "@/components/returns/Returns";
-import { ExportButton, SavedViews, useListFilters } from "@/components/console/ListTools";
+import { ExportButton, QueueChip, SavedViews, useListFilters } from "@/components/console/ListTools";
 import { useSession } from "@/context/SessionContext";
 
-const LIST_FILTERS = ["q", "status"] as const;
+const LIST_FILTERS = ["q", "status", "queue"] as const;
 
 const STATUSES = ["PENDING_PAYMENT", "PLACED", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "PARTIALLY_DELIVERED", "DELIVERED", "CANCELLED", "ON_HOLD"] as const;
 const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"> = {
@@ -89,6 +89,7 @@ export function StoreOrdersList() {
         <SavedViews list="storeOrders" query={query} onApply={apply} />
         {user.permissions?.includes("orders.store.export") ? <ExportButton path="/store-orders/export.csv" query={query} /> : null}
       </div>
+      {applied.queue ? <QueueChip label={t("queues.paymentsToConfirm")} onClear={() => apply({ ...applied, queue: "" })} /> : null}
       <form
         role="search"
         className="mb-4 flex flex-wrap gap-2"

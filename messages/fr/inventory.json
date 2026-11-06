@@ -9,6 +9,10 @@
   "more": "Afficher plus",
   "empty": "Aucun stock ne correspond.",
   "onlyLow": "Seulement ce qui se fait rare",
+  "queues": {
+    "low": "Stock bas",
+    "open": "Inventaires encore ouverts"
+  },
   "noBin": "Sans emplacement",
   "edit": "Modifier",
   "adjust": "Corriger le stock",

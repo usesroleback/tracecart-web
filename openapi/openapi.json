@@ -10637,6 +10637,19 @@
           {
             "schema": {
               "type": "string",
+              "enum": [
+                "open"
+              ],
+              "description": "The dashboard's open counts"
+            },
+            "required": false,
+            "description": "The dashboard's open counts",
+            "name": "queue",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
               "format": "uuid"
             },
             "required": false,
@@ -35369,6 +35382,19 @@
           {
             "schema": {
               "type": "string",
+              "enum": [
+                "paymentsToConfirm"
+              ],
+              "description": "The dashboard's bank transfers to confirm"
+            },
+            "required": false,
+            "description": "The dashboard's bank transfers to confirm",
+            "name": "queue",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
               "maxLength": 100,
               "description": "Reference, customer email or name"
             },
@@ -35476,6 +35502,19 @@
             },
             "required": false,
             "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "paymentsToConfirm"
+              ],
+              "description": "The dashboard's bank transfers to confirm"
+            },
+            "required": false,
+            "description": "The dashboard's bank transfers to confirm",
+            "name": "queue",
             "in": "query"
           },
           {

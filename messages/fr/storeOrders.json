@@ -6,6 +6,9 @@
   "allStatuses": "Tous les statuts",
   "find": "Rechercher",
   "empty": "Aucune commande ne correspond.",
+  "queues": {
+    "paymentsToConfirm": "Virements à confirmer"
+  },
   "more": "Afficher plus",
   "shipments": "Expéditions",
   "columns": {

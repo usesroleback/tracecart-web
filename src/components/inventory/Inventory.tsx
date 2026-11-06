@@ -7,6 +7,9 @@ import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Field, input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
+import { QueueChip } from "@/components/console/ListTools";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 
 // Stock in the console (ADR-043): levels, the ledger, transfers and counts.
 // The API checks every call and scopes everything to one's warehouses.
@@ -44,7 +47,35 @@ export interface InventoryPermissions {
 
 export function Inventory(can: InventoryPermissions) {
   const t = useTranslations("inventory");
-  const [tab, setTab] = useState<Tab>("levels");
+  const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const tabParam = TABS.includes(params.get("tab") as Tab) ? (params.get("tab") as Tab) : "levels";
+  const [tab, setTab] = useState<Tab>(tabParam);
+  const openCounts = params.get("queue") === "open";
+  const lowStock = params.get("low") === "true";
+
+  useEffect(() => {
+    setTab(tabParam);
+  }, [tabParam]);
+
+  function setQuery(mutate: (out: URLSearchParams) => void) {
+    const out = new URLSearchParams(params.toString());
+    mutate(out);
+    const text = out.toString();
+    router.replace(text ? `${pathname}?${text}` : pathname, { scroll: false });
+  }
+
+  function go(next: Tab) {
+    setTab(next);
+    const out = new URLSearchParams(params.toString());
+    if (next === "levels") out.delete("tab");
+    else out.set("tab", next);
+    if (next !== "counts") out.delete("queue");
+    if (next !== "levels") out.delete("low");
+    const text = out.toString();
+    router.replace(text ? `${pathname}?${text}` : pathname, { scroll: false });
+  }
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [destinations, setDestinations] = useState<Warehouse[]>([]);
 
@@ -63,15 +94,17 @@ export function Inventory(can: InventoryPermissions) {
       <p className="mb-6 text-sm text-ink-muted">{t("lead")}</p>
       <div role="tablist" className="mb-6 flex flex-wrap gap-4 border-b border-line">
         {TABS.map((x) => (
-          <button key={x} type="button" role="tab" aria-selected={tab === x} onClick={() => setTab(x)} className={`pb-2 text-sm ${tab === x ? "border-b-2 border-ink font-medium text-ink" : "text-ink-muted hover:text-ink"}`}>
+            <button key={x} type="button" role="tab" aria-selected={tab === x} onClick={() => go(x)} className={`pb-2 text-sm ${tab === x ? "border-b-2 border-ink font-medium text-ink" : "text-ink-muted hover:text-ink"}`}>
             {t(`tabs.${x}`)}
           </button>
         ))}
       </div>
-      {tab === "levels" ? <Levels warehouses={warehouses} canAdjust={can.canAdjust} /> : null}
+      {tab === "levels" && lowStock ? <QueueChip label={t("queues.low")} onClear={() => setQuery((out) => out.delete("low"))} /> : null}
+      {tab === "counts" && openCounts ? <QueueChip label={t("queues.open")} onClear={() => setQuery((out) => out.delete("queue"))} /> : null}
+      {tab === "levels" ? <Levels warehouses={warehouses} canAdjust={can.canAdjust} lowOnly={lowStock} onLowChange={(on) => setQuery((out) => (on ? out.set("low", "true") : out.delete("low")))} /> : null}
       {tab === "movements" ? <Movements warehouses={warehouses} /> : null}
       {tab === "transfers" ? <Transfers warehouses={warehouses} destinations={destinations} can={can} /> : null}
-      {tab === "counts" ? <Counts warehouses={warehouses} can={can} /> : null}
+      {tab === "counts" ? <Counts warehouses={warehouses} can={can} openOnly={openCounts} /> : null}
     </div>
   );
 }
@@ -93,11 +126,11 @@ function WarehouseSelect({ warehouses, value, onChange, all }: { warehouses: War
 // ---------------------------------------------------------------------------
 // Levels
 
-function Levels({ warehouses, canAdjust }: { warehouses: Warehouse[]; canAdjust: boolean }) {
+function Levels({ warehouses, canAdjust, lowOnly, onLowChange }: { warehouses: Warehouse[]; canAdjust: boolean; lowOnly: boolean; onLowChange: (on: boolean) => void }) {
   const t = useTranslations("inventory");
   const [warehouseId, setWarehouseId] = useState("");
   const [q, setQ] = useState("");
-  const [low, setLow] = useState(false);
+  const [low, setLow] = useState(lowOnly);
   const [rows, setRows] = useState<Level[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
@@ -120,8 +153,9 @@ function Levels({ warehouses, canAdjust }: { warehouses: Warehouse[]; canAdjust:
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    load(null, "", "", false);
-  }, [load]);
+    setLow(lowOnly);
+    load(null, "", "", lowOnly);
+  }, [load, lowOnly]);
 
   return (
     <div>
@@ -149,6 +183,7 @@ function Levels({ warehouses, canAdjust }: { warehouses: Warehouse[]; canAdjust:
             checked={low}
             onChange={(e) => {
               setLow(e.target.checked);
+              onLowChange(e.target.checked);
               load(null, warehouseId, q, e.target.checked);
             }}
           />
@@ -642,7 +677,7 @@ interface CountDetail extends Omit<CountRow, "lineCount"> {
 
 const COUNT_TONE: Record<CountRow["status"], "attn" | "info" | "positive" | "default"> = { OPEN: "attn", SUBMITTED: "info", APPLIED: "positive", CANCELLED: "default" };
 
-function Counts({ warehouses, can }: { warehouses: Warehouse[]; can: InventoryPermissions }) {
+function Counts({ warehouses, can, openOnly }: { warehouses: Warehouse[]; can: InventoryPermissions; openOnly: boolean }) {
   const t = useTranslations("inventory");
   const format = useFormat();
   const [rows, setRows] = useState<CountRow[]>([]);
@@ -653,9 +688,9 @@ function Counts({ warehouses, can }: { warehouses: Warehouse[]; can: InventoryPe
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const res = await call<{ items: CountRow[] }>("GET", "/inventory/counts?limit=100");
+    const res = await call<{ items: CountRow[] }>("GET", `/inventory/counts?limit=100${openOnly ? "&queue=open" : ""}`);
     setRows(res.items);
-  }, []);
+  }, [openOnly]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
