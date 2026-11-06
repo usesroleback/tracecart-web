@@ -25,6 +25,27 @@
   "companyOrders": "Commandes en attente d'un collègue",
   "colleagues": "Collègues",
   "bulkOrder": "Commander depuis un tableur",
+  "rfqLink": "Demander un devis",
+  "rfq": {
+    "title": "Demander un devis",
+    "lead": "Demandez un tarif sur des SKU du catalogue. Un agent envoie un devis ; vous l'acceptez comme les autres. Le plafond et le net-30 s'appliquent encore.",
+    "signIn": "Connectez-vous pour demander un devis",
+    "signInLead": "Utilisez le compte qui commande pour votre entreprise.",
+    "address": "Livrer à",
+    "sku": "SKU",
+    "quantity": "Quantité",
+    "addLine": "Ajouter",
+    "remove": "Retirer",
+    "note": "Note pour l'agent",
+    "send": "Envoyer la demande",
+    "seeQuote": "Voir le devis {reference}",
+    "statuses": {
+      "OPEN": "En attente d'un devis",
+      "MATCHED": "Devisé",
+      "CONVERTED": "Accepté",
+      "CLOSED": "Fermé"
+    }
+  },
   "bulk": {
     "title": "Commander depuis un tableur",
     "lead": "Ajoutez des SKU au panier, puis commandez comme d'habitude. Les prix rendu, le plafond et les conditions de paiement s'appliquent encore.",

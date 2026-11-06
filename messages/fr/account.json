@@ -49,6 +49,7 @@
   "companyOrders": "Commandes entreprise",
   "colleagues": "Collègues",
   "bulkOrder": "Commander depuis un tableur",
+  "rfq": "Demander un devis",
   "quotes": {
     "title": "Devis",
     "status": {

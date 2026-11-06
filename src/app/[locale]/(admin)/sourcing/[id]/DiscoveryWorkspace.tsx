@@ -93,9 +93,19 @@ export function DiscoveryWorkspace({ initial }: { initial: DiscoveryState }) {
             <span className="text-sm text-ink-muted">
               {t("d.customer", { name: r.customerName, destination: destinationOf(r) ?? t("noDestination"), quantity: f.number(r.quantity) })}
             </span>
+            {r.organization ? <span className="text-sm text-ink-muted">{t("d.rfqCompany", { name: r.organization.name })}</span> : null}
           </div>
         </div>
       </div>
+      {r.rfqLines?.length ? (
+        <ul className="mt-4 rounded-[var(--radius-m)] border border-line bg-surface-raised p-4 text-sm">
+          {r.rfqLines.map((l) => (
+            <li key={`${l.sku}-${l.title}`}>
+              {t("d.rfqLine", { quantity: f.number(l.quantity), sku: l.sku, title: l.title })}
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       {error && <Alert tone="critical" title={error} className="mt-5" />}
       {r.order && <Alert tone="positive" title={t("d.order.done", { reference: r.order.reference })} className="mt-5" />}

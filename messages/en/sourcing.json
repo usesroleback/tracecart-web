@@ -63,6 +63,8 @@
     "back": "Requests",
     "title": "Product search",
     "customer": "{name} · {destination} · qty {quantity}",
+    "rfqCompany": "Company RFQ · {name}",
+    "rfqLine": "{quantity} × {sku} · {title}",
     "inputs": {
       "title": "What the customer showed us",
       "description": "Description",

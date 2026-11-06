@@ -49,6 +49,7 @@
   "companyOrders": "Company orders",
   "colleagues": "Colleagues",
   "bulkOrder": "Order from a spreadsheet",
+  "rfq": "Request a quote",
   "quotes": {
     "title": "Quotes",
     "status": {

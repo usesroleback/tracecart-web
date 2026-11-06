@@ -25,6 +25,27 @@
   "companyOrders": "Orders waiting for a colleague",
   "colleagues": "Colleagues",
   "bulkOrder": "Order from a spreadsheet",
+  "rfqLink": "Request a quote",
+  "rfq": {
+    "title": "Request a quote",
+    "lead": "Ask for a deal on catalogue SKUs. Staff send a quote; you accept it like any other quote. Your spend limit and net-30 still apply.",
+    "signIn": "Sign in to request a quote",
+    "signInLead": "Use the account that places orders for your company.",
+    "address": "Deliver to",
+    "sku": "SKU",
+    "quantity": "Quantity",
+    "addLine": "Add",
+    "remove": "Remove",
+    "note": "Note for the agent",
+    "send": "Send the request",
+    "seeQuote": "See quote {reference}",
+    "statuses": {
+      "OPEN": "Waiting for a quote",
+      "MATCHED": "Quoted",
+      "CONVERTED": "Accepted",
+      "CLOSED": "Closed"
+    }
+  },
   "bulk": {
     "title": "Order from a spreadsheet",
     "lead": "Add SKUs to your cart, then check out as usual. Landed prices, your spend limit and payment terms still apply.",

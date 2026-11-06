@@ -126,12 +126,12 @@ function Accept({ quote, onDeclined }: { quote: CustomerQuote; onDeclined: () =>
     setError(null);
     try {
       const delivery = needsDelivery ? (pickup ? { method: "PICKUP", pickupPointId: choice } : { method: "HOME", addressId: choice }) : undefined;
-      const res = await call<{ reference: string; payment: PaymentView }>("POST", `/me/quotes/${quote.reference}/accept`, {
+      const res = await call<{ reference: string; payment: PaymentView | null }>("POST", `/me/quotes/${quote.reference}/accept`, {
         paymentMethod: payment,
         expectedTotalMinor: quote.totals.totalMinor,
         ...(delivery ? { delivery } : {}),
       });
-      if (res.payment.checkoutUrl) window.location.assign(res.payment.checkoutUrl);
+      if (res.payment?.checkoutUrl) window.location.assign(res.payment.checkoutUrl);
       else router.push(`/checkout/done/${res.reference}`);
     } catch (err) {
       setError((err as Error).message);

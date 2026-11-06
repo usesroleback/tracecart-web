@@ -153,6 +153,9 @@ function CompanyPanel() {
           <Link href="/account/company/cart" className="text-sm font-medium underline">
             {t("bulkOrder")}
           </Link>
+          <Link href="/account/company/rfq" className="text-sm font-medium underline">
+            {t("rfqLink")}
+          </Link>
         </p>
       ) : null}
     </div>

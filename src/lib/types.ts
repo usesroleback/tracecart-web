@@ -620,6 +620,8 @@ export interface SourcingRequest {
   quantity: number;
   destinationCity: string;
   destinationCountry: string;
+  organization?: { id: string; name: string } | null;
+  rfqLines?: { sku: string; quantity: number; title: string; cataloguePriceMinor: number; currency: string }[] | null;
   status: SourcingRequestStatus;
   /** The customer account that sent it from the public site, if any. */
   customerUserId?: string | null;
