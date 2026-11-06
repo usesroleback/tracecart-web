@@ -100,9 +100,14 @@ function CompanyPanel() {
       ) : null}
       {application.decisionNote ? <p className="whitespace-pre-line">{application.decisionNote}</p> : null}
       {application.status === "ACTIVE" ? (
-        <Link href="/account/company/orders" className="text-sm font-medium underline">
-          {t("companyOrders")}
-        </Link>
+        <p className="flex flex-wrap gap-4">
+          <Link href="/account/company/orders" className="text-sm font-medium underline">
+            {t("companyOrders")}
+          </Link>
+          <Link href="/account/company/staff" className="text-sm font-medium underline">
+            {t("colleagues")}
+          </Link>
+        </p>
       ) : null}
     </div>
   );

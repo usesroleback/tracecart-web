@@ -13,6 +13,24 @@
   "apply": "Envoyer la demande",
   "limit": "Les commandes au-dessus de {amount} attendent un collègue.",
   "companyOrders": "Commandes en attente d'un collègue",
+  "colleagues": "Collègues",
+  "staff": {
+    "title": "Collègues de l'entreprise",
+    "lead": "Invitez un acheteur ou quelqu'un qui peut approuver les commandes au-dessus du plafond. Vous restez le seul administrateur.",
+    "signIn": "Connectez-vous pour gérer les collègues",
+    "email": "E-mail",
+    "role": "Rôle",
+    "invite": "Inviter",
+    "remove": "Retirer",
+    "pending": "En attente de rejoindre",
+    "expires": "Expire le {date}",
+    "withdraw": "Retirer l'invitation",
+    "roles": {
+      "admin": "Administrateur",
+      "approver": "Approbateur",
+      "buyer": "Acheteur"
+    }
+  },
   "statuses": {
     "PENDING": "En examen",
     "ACTIVE": "Approuvée",

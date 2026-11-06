@@ -13,6 +13,24 @@
   "apply": "Send the application",
   "limit": "Orders over {amount} wait for a colleague.",
   "companyOrders": "Orders waiting for a colleague",
+  "colleagues": "Colleagues",
+  "staff": {
+    "title": "Company colleagues",
+    "lead": "Invite a buyer or someone who can approve orders over the limit. You stay the only admin.",
+    "signIn": "Sign in to manage colleagues",
+    "email": "Email",
+    "role": "Role",
+    "invite": "Invite",
+    "remove": "Remove",
+    "pending": "Waiting to join",
+    "expires": "Expires {date}",
+    "withdraw": "Withdraw",
+    "roles": {
+      "admin": "Admin",
+      "approver": "Approver",
+      "buyer": "Buyer"
+    }
+  },
   "statuses": {
     "PENDING": "Waiting for review",
     "ACTIVE": "Approved",
