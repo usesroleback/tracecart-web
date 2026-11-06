@@ -40,6 +40,7 @@ const NAMESPACES = [
   'purchasing',
   'partners',
   'promotions',
+  'reviews',
 ] as const;
 
 function isSupportedLocale(locale: string | undefined): locale is (typeof routing.locales)[number] {

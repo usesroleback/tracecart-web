@@ -73,7 +73,8 @@
     "partnerCash": "Espèces à remettre",
     "partnerNotices": "Avis",
     "payouts": "Paiements vendeurs",
-    "listings": "Annonces"
+    "listings": "Annonces",
+    "reviews": "Avis"
   },
   "notifications": {
     "title": "Notifications",

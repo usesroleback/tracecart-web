@@ -73,7 +73,8 @@
     "partnerCash": "Cash to pass on",
     "partnerNotices": "Notices",
     "payouts": "Seller payouts",
-    "listings": "Listings"
+    "listings": "Listings",
+    "reviews": "Reviews"
   },
   "notifications": {
     "title": "Notifications",

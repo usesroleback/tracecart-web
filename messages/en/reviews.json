@@ -1,0 +1,16 @@
+{
+  "title": "Reviews",
+  "lead": "A review of a product someone received. Publish it onto the product page, or reject it.",
+  "empty": "Nothing waiting.",
+  "approve": "Publish",
+  "reject": "Reject",
+  "stars": "{rating, plural, one {# star} other {# stars}}",
+  "queues": {
+    "toReview": "Waiting to publish"
+  },
+  "statuses": {
+    "PENDING": "Waiting",
+    "APPROVED": "Published",
+    "REJECTED": "Rejected"
+  }
+}

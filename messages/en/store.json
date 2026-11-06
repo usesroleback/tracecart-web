@@ -155,7 +155,24 @@
       "FREQUENTLY_BOUGHT_WITH_to": "Often bought together"
     },
     "related": "More in {category}",
-    "askInstead": "Can't find what you need? Ask us for it"
+    "askInstead": "Can't find what you need? Ask us for it",
+    "reviews": {
+      "title": "Reviews",
+      "summary": "{average} / 5 · {count, plural, one {# review} other {# reviews}}",
+      "empty": "No reviews yet.",
+      "stars": "{rating, plural, one {# star} other {# stars}}",
+      "verified": "Verified purchase",
+      "rating": "Rating",
+      "reviewTitle": "Title (optional)",
+      "body": "Your review",
+      "submit": "Send for review",
+      "signIn": "Sign in to review this product once it has been delivered.",
+      "mine": {
+        "PENDING": "Your review is waiting to be published.",
+        "APPROVED": "Your review is on this page.",
+        "REJECTED": "Your review wasn't published."
+      }
+    }
   },
   "brands": {
     "title": "Brands",

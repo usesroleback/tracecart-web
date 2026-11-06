@@ -118,6 +118,7 @@ const NAV: NavGroup[] = [
       { icon: <DsPackageIcon />, name: "catalogImport", path: "/catalog/import", permission: "catalog.read" },
       { icon: <DsSearchIcon />, name: "searchTuning", path: "/catalog/search", permission: "search.tune" },
       { icon: <DsCoinIcon />, name: "coupons", path: "/coupons", permission: "promotions.write" },
+      { icon: <DsChatIcon />, name: "reviews", path: "/reviews", permission: "content.moderate" },
     ],
   },
 ];

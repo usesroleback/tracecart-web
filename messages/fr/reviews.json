@@ -1,0 +1,16 @@
+{
+  "title": "Avis",
+  "lead": "L'avis d'un client qui a reçu le produit. Publiez-le sur la fiche, ou refusez-le.",
+  "empty": "Rien en attente.",
+  "approve": "Publier",
+  "reject": "Refuser",
+  "stars": "{rating, plural, one {# étoile} other {# étoiles}}",
+  "queues": {
+    "toReview": "En attente de publication"
+  },
+  "statuses": {
+    "PENDING": "En attente",
+    "APPROVED": "Publié",
+    "REJECTED": "Refusé"
+  }
+}

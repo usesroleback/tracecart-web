@@ -39,6 +39,7 @@ const PATHS: Record<string, string> = {
   sellerPayoutsToConfirm: "/sellers?queue=payoutToConfirm",
   listingsToReview: "/listings?queue=toReview",
   b2bToReview: "/b2b?queue=toReview",
+  reviewsToReview: "/reviews?queue=toReview",
   listingsToFix: "/seller/listings?queue=toFix",
   payoutsToSend: "/payouts?queue=toSend",
   sellerStockToReceive: "/purchasing?tab=sellerStock",

@@ -155,7 +155,24 @@
       "FREQUENTLY_BOUGHT_WITH_to": "Souvent achetés ensemble"
     },
     "related": "Plus dans {category}",
-    "askInstead": "Pas ce qu'il vous faut ? Demandez-le-nous"
+    "askInstead": "Pas ce qu'il vous faut ? Demandez-le-nous",
+    "reviews": {
+      "title": "Avis",
+      "summary": "{average} / 5 · {count, plural, one {# avis} other {# avis}}",
+      "empty": "Pas encore d'avis.",
+      "stars": "{rating, plural, one {# étoile} other {# étoiles}}",
+      "verified": "Achat vérifié",
+      "rating": "Note",
+      "reviewTitle": "Titre (facultatif)",
+      "body": "Votre avis",
+      "submit": "Envoyer pour examen",
+      "signIn": "Connectez-vous pour donner votre avis une fois le produit livré.",
+      "mine": {
+        "PENDING": "Votre avis est en attente de publication.",
+        "APPROVED": "Votre avis est sur cette page.",
+        "REJECTED": "Votre avis n'a pas été publié."
+      }
+    }
   },
   "brands": {
     "title": "Marques",
