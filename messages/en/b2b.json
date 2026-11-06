@@ -1,0 +1,60 @@
+{
+  "title": "Buy as a company",
+  "lead": "A company account lets colleagues approve purchases over your spend limit before anyone pays.",
+  "gateTitle": "Sign in to apply",
+  "gateLead": "Use the same account you shop with.",
+  "loading": "Loading…",
+  "name": "Company name",
+  "country": "Country",
+  "city": "City",
+  "address": "Address",
+  "phone": "Phone",
+  "taxId": "Tax number",
+  "apply": "Send the application",
+  "limit": "Orders over {amount} wait for a colleague.",
+  "companyOrders": "Orders waiting for a colleague",
+  "statuses": {
+    "PENDING": "Waiting for review",
+    "ACTIVE": "Approved",
+    "CLOSED": "Closed",
+    "SUSPENDED": "Suspended"
+  },
+  "orders": {
+    "title": "Company orders to approve",
+    "lead": "A colleague placed these over the company's limit. Approving starts payment; refusing puts the items back on sale.",
+    "signIn": "Sign in to see company orders",
+    "loading": "Loading…",
+    "empty": "Nothing is waiting.",
+    "note": "Note",
+    "approve": "Approve",
+    "reject": "Refuse",
+    "see": "See the order"
+  },
+  "admin": {
+    "title": "Companies",
+    "lead": "Business accounts: approve them and set the spend limit.",
+    "loading": "Loading…",
+    "empty": "No company matches.",
+    "more": "Show more",
+    "queues": {
+      "toReview": "To review"
+    },
+    "columns": {
+      "company": "Company",
+      "status": "Status",
+      "place": "Place"
+    },
+    "statuses": {
+      "PENDING": "Waiting for review",
+      "ACTIVE": "Approved",
+      "CLOSED": "Closed",
+      "SUSPENDED": "Suspended"
+    },
+    "ownApplication": "Someone else has to review your own company.",
+    "limit": "Spend limit (store currency)",
+    "note": "Note",
+    "theyRead": "The applicant reads this.",
+    "approve": "Approve",
+    "reject": "Refuse"
+  }
+}

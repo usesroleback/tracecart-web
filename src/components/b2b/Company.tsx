@@ -1,0 +1,155 @@
+"use client";
+
+import { FormEvent, useCallback, useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import Button from "@/components/ui/button/Button";
+import { Field, input } from "@/components/ui/form/Form";
+import { box, SignInGate } from "@/components/services/SignInGate";
+import { Badge } from "@/components/ui/badge/Badge";
+import { call } from "@/components/checkout/http";
+import { COUNTRY_CODES, countryName } from "@/lib/country";
+import { toMajor } from "@/lib/currency";
+import { useFormat } from "@/lib/format";
+
+type Status = "PENDING" | "ACTIVE" | "CLOSED" | "SUSPENDED";
+
+interface Application {
+  id: string;
+  status: Status;
+  name: string;
+  countryCode: string | null;
+  city: string;
+  addressLine: string;
+  phone: string | null;
+  taxId: string | null;
+  orderLimitMinor: number;
+  currency: string;
+  decisionNote: string | null;
+}
+
+const TONE: Record<Status, "info" | "positive" | "critical" | "attn"> = { PENDING: "info", ACTIVE: "positive", CLOSED: "critical", SUSPENDED: "attn" };
+
+/** Apply for a company account, then see where the application stands (ADR-060). */
+export function ApplyForCompany() {
+  const t = useTranslations("b2b");
+  return (
+    <SignInGate title={t("gateTitle")} lead={t("gateLead")}>
+      {() => <CompanyPanel />}
+    </SignInGate>
+  );
+}
+
+function CompanyPanel() {
+  const t = useTranslations("b2b");
+  const locale = useLocale();
+  const format = useFormat();
+  const [application, setApplication] = useState<Application | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(async () => {
+    setApplication((await call<{ application: Application | null }>("GET", "/me/company")).application);
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    load().catch((e) => setError((e as Error).message));
+  }, [load]);
+
+  if (!loaded) return error ? <p className="text-sm text-critical">{error}</p> : <p className="text-sm text-ink-muted">{t("loading")}</p>;
+
+  if (!application) {
+    return (
+      <>
+        {error ? <p className="mb-4 text-sm text-critical">{error}</p> : null}
+        <CompanyForm
+          busy={busy}
+          onSave={async (body) => {
+            setBusy(true);
+            setError(null);
+            try {
+              setApplication((await call<{ application: Application }>("POST", "/me/company", body)).application);
+            } catch (e) {
+              setError((e as Error).message);
+            } finally {
+              setBusy(false);
+            }
+          }}
+        />
+      </>
+    );
+  }
+
+  return (
+    <div className={`${box} grid gap-3`}>
+      {error ? <p className="text-sm text-critical">{error}</p> : null}
+      <div className="flex flex-wrap items-center gap-3">
+        <h2 className="rb-title">{application.name}</h2>
+        <Badge variant={TONE[application.status]}>{t(`statuses.${application.status}`)}</Badge>
+      </div>
+      <p>
+        {application.addressLine}, {application.city}
+        {application.countryCode ? `, ${countryName(application.countryCode, locale)}` : ""}
+      </p>
+      {application.status === "ACTIVE" ? (
+        <p>
+          {t("limit", { amount: `${format.number(toMajor(application.orderLimitMinor, application.currency))} ${application.currency}` })}
+        </p>
+      ) : null}
+      {application.decisionNote ? <p className="whitespace-pre-line">{application.decisionNote}</p> : null}
+      {application.status === "ACTIVE" ? (
+        <Link href="/account/company/orders" className="text-sm font-medium underline">
+          {t("companyOrders")}
+        </Link>
+      ) : null}
+    </div>
+  );
+}
+
+function CompanyForm({ busy, onSave }: { busy: boolean; onSave: (body: unknown) => void }) {
+  const t = useTranslations("b2b");
+  const locale = useLocale();
+  const [form, setForm] = useState({ name: "", countryCode: "BF", city: "", addressLine: "", phone: "", taxId: "" });
+  const set = (key: keyof typeof form) => (e: { target: { value: string } }) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  return (
+    <form
+      className={`${box} grid gap-3 sm:grid-cols-2`}
+      onSubmit={(e: FormEvent) => {
+        e.preventDefault();
+        onSave({ ...form, taxId: form.taxId.trim() || undefined });
+      }}
+    >
+      <Field label={t("name")} required>
+        <input className={input} required minLength={2} maxLength={120} value={form.name} onChange={set("name")} />
+      </Field>
+      <Field label={t("country")} required>
+        <select className={input} required value={form.countryCode} onChange={set("countryCode")}>
+          {COUNTRY_CODES.map((c) => (
+            <option key={c} value={c}>
+              {countryName(c, locale)}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label={t("city")} required>
+        <input className={input} required minLength={2} maxLength={120} value={form.city} onChange={set("city")} />
+      </Field>
+      <Field label={t("address")} required>
+        <input className={input} required minLength={3} maxLength={300} value={form.addressLine} onChange={set("addressLine")} />
+      </Field>
+      <Field label={t("phone")} required>
+        <input className={input} type="tel" required minLength={6} maxLength={30} value={form.phone} onChange={set("phone")} />
+      </Field>
+      <Field label={t("taxId")}>
+        <input className={input} maxLength={60} value={form.taxId} onChange={set("taxId")} />
+      </Field>
+      <div className="sm:col-span-2">
+        <Button type="submit" variant="primary" loading={busy}>
+          {t("apply")}
+        </Button>
+      </div>
+    </form>
+  );
+}

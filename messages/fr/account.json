@@ -45,6 +45,8 @@
     "to": "vers {destination}"
   },
   "orders": "Mes commandes",
+  "company": "Compte entreprise",
+  "companyOrders": "Commandes entreprise",
   "quotes": {
     "title": "Devis",
     "status": {

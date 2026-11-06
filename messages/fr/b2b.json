@@ -1,0 +1,60 @@
+{
+  "title": "Acheter en entreprise",
+  "lead": "Un compte entreprise permet à un collègue d'approuver les achats au-dessus de votre plafond avant tout paiement.",
+  "gateTitle": "Connectez-vous pour postuler",
+  "gateLead": "Utilisez le même compte que pour vos achats.",
+  "loading": "Chargement…",
+  "name": "Nom de l'entreprise",
+  "country": "Pays",
+  "city": "Ville",
+  "address": "Adresse",
+  "phone": "Téléphone",
+  "taxId": "Numéro fiscal",
+  "apply": "Envoyer la demande",
+  "limit": "Les commandes au-dessus de {amount} attendent un collègue.",
+  "companyOrders": "Commandes en attente d'un collègue",
+  "statuses": {
+    "PENDING": "En examen",
+    "ACTIVE": "Approuvée",
+    "CLOSED": "Fermée",
+    "SUSPENDED": "Suspendue"
+  },
+  "orders": {
+    "title": "Commandes entreprise à approuver",
+    "lead": "Un collègue a passé ces commandes au-dessus du plafond. Les approuver lance le paiement ; les refuser remet les articles en vente.",
+    "signIn": "Connectez-vous pour voir les commandes de l'entreprise",
+    "loading": "Chargement…",
+    "empty": "Rien n'attend.",
+    "note": "Note",
+    "approve": "Approuver",
+    "reject": "Refuser",
+    "see": "Voir la commande"
+  },
+  "admin": {
+    "title": "Entreprises",
+    "lead": "Comptes professionnels : approuvez-les et fixez le plafond.",
+    "loading": "Chargement…",
+    "empty": "Aucune entreprise ne correspond.",
+    "more": "Afficher plus",
+    "queues": {
+      "toReview": "À examiner"
+    },
+    "columns": {
+      "company": "Entreprise",
+      "status": "Statut",
+      "place": "Lieu"
+    },
+    "statuses": {
+      "PENDING": "En examen",
+      "ACTIVE": "Approuvée",
+      "CLOSED": "Fermée",
+      "SUSPENDED": "Suspendue"
+    },
+    "ownApplication": "Quelqu'un d'autre doit examiner votre propre entreprise.",
+    "limit": "Plafond (devise de la boutique)",
+    "note": "Note",
+    "theyRead": "Le demandeur lira ce message.",
+    "approve": "Approuver",
+    "reject": "Refuser"
+  }
+}

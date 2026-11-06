@@ -4,6 +4,7 @@ import { routing } from './routing';
 const NAMESPACES = [
   'common',
   'sellers',
+  'b2b',
   'listings',
   'payouts',
   'console',

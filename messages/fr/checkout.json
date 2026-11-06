@@ -135,11 +135,13 @@
     "signInCta": "Se connecter",
     "headline": {
       "thanks": "Merci : votre commande est confirmée",
+      "awaitingApproval": "Votre commande attend un collègue",
       "awaitingPayment": "Votre commande attend le paiement",
       "awaitingTransfer": "Votre commande attend votre virement",
       "cancelled": "Cette commande est annulée"
     },
     "status": {
+      "PENDING_APPROVAL": "En attente d'un collègue",
       "PENDING_PAYMENT": "En attente de paiement",
       "PLACED": "Confirmée",
       "PROCESSING": "En préparation",

@@ -108,6 +108,7 @@ const NAV: NavGroup[] = [
       { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
       { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
       { icon: <DsBuildingIcon />, name: "sellers", path: "/sellers", permission: "sellers.review" },
+      { icon: <DsBuildingIcon />, name: "b2b", path: "/b2b", permission: "customers.b2b.approve" },
       { icon: <DsPackageIcon />, name: "listings", path: "/listings", permission: "catalog.listing.review" },
       { icon: <DsCoinIcon />, name: "payouts", path: "/payouts", permission: "finance.payout.read" },
       { icon: <DsCoinIcon />, name: "sellerTerms", path: "/sellers/settings", permission: ["sellers.review", "finance.payout.read", "settings.read"] },

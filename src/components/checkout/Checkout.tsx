@@ -159,14 +159,14 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
     setMessage(null);
     attempt.current ??= crypto.randomUUID();
     try {
-      const order = await call<{ reference: string; payment: { checkoutUrl: string | null } }>(
+      const order = await call<{ reference: string; payment: { checkoutUrl: string | null } | null }>(
         "POST",
         "/checkout/orders",
         { delivery, paymentMethod: payment, expectedTotalMinor: quote.totals.totalMinor, ...(note.trim() ? { note: note.trim() } : {}) },
         { "Idempotency-Key": attempt.current }
       );
       window.dispatchEvent(new CustomEvent("tc:cart", { detail: 0 }));
-      if (order.payment.checkoutUrl) window.location.href = order.payment.checkoutUrl;
+      if (order.payment?.checkoutUrl) window.location.href = order.payment.checkoutUrl;
       else router.push(`/checkout/done/${order.reference}`);
     } catch (e) {
       attempt.current = null;

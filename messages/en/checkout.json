@@ -135,11 +135,13 @@
     "signInCta": "Sign in",
     "headline": {
       "thanks": "Thank you: your order is confirmed",
+      "awaitingApproval": "Your order is waiting for a colleague",
       "awaitingPayment": "Your order is waiting for payment",
       "awaitingTransfer": "Your order is waiting for your transfer",
       "cancelled": "This order is cancelled"
     },
     "status": {
+      "PENDING_APPROVAL": "Waiting for a colleague",
       "PENDING_PAYMENT": "Waiting for payment",
       "PLACED": "Confirmed",
       "PROCESSING": "Being prepared",

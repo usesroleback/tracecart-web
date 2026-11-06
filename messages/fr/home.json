@@ -139,6 +139,7 @@
     "copyright": "© {year} Tracecart",
     "byline": "Une société Roleback",
     "disclaimer": "Le prix affiché à la commande comprend l'article, la livraison, les droits de douane et les taxes. Il est fixé quand vous commandez, et rien n'est ajouté à la livraison. Les dates de livraison sont des estimations. Une estimation de fret est indicative, et un devis vaut jusqu'à la date qu'il indique. Les marques appartiennent à leurs propriétaires.",
-    "sell": "Vendre sur Tracecart"
+    "sell": "Vendre sur Tracecart",
+    "business": "Acheter en entreprise"
   }
 }

@@ -45,6 +45,8 @@
     "to": "to {destination}"
   },
   "orders": "My orders",
+  "company": "Company account",
+  "companyOrders": "Company orders",
   "quotes": {
     "title": "Quotes",
     "status": {

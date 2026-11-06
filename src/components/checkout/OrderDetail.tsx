@@ -91,7 +91,9 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
   const headline =
     order.status === "CANCELLED"
       ? t("headline.cancelled")
-      : order.status === "PENDING_PAYMENT"
+      : order.status === "PENDING_APPROVAL"
+        ? t("headline.awaitingApproval")
+        : order.status === "PENDING_PAYMENT"
         ? order.paymentMethod === "BANK_TRANSFER"
           ? t("headline.awaitingTransfer")
           : t("headline.awaitingPayment")

@@ -43,7 +43,7 @@ const withClerk = clerkMiddleware(async (auth, req) => {
   const bare = stripLocale(pathname);
   // Checkout, the account's pages and "Find it for me" ask for sign-in on the page (Clerk's modal), keeping what was typed.
   const signsInItself =
-    bare === "/login" || bare === "/account" || bare.startsWith("/account/") || bare === "/ship" || bare === "/sell" || bare === "/find" || bare === "/checkout" || bare.startsWith("/checkout/");
+    bare === "/login" || bare === "/account" || bare.startsWith("/account/") || bare === "/ship" || bare === "/sell" || bare === "/business" || bare === "/find" || bare === "/checkout" || bare.startsWith("/checkout/");
   if (!signsInItself) {
     const { userId } = await auth();
     if (!userId) {

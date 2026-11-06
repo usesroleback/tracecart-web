@@ -16,8 +16,9 @@ import { useSession } from "@/context/SessionContext";
 
 const LIST_FILTERS = ["q", "status", "queue"] as const;
 
-const STATUSES = ["PENDING_PAYMENT", "PLACED", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "PARTIALLY_DELIVERED", "DELIVERED", "CANCELLED", "ON_HOLD"] as const;
+const STATUSES = ["PENDING_APPROVAL", "PENDING_PAYMENT", "PLACED", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "PARTIALLY_DELIVERED", "DELIVERED", "CANCELLED", "ON_HOLD"] as const;
 const TONE: Record<string, "positive" | "attn" | "default" | "critical" | "info"> = {
+  PENDING_APPROVAL: "attn",
   PENDING_PAYMENT: "attn",
   PLACED: "positive",
   PROCESSING: "info",
