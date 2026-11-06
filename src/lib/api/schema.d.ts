@@ -2821,7 +2821,70 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /** Grant or withdraw net-30, or change the spend limit, on an approved company */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        net30?: boolean;
+                        orderLimitMinor?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/b2b/{id}/decision": {
@@ -2850,6 +2913,7 @@ export interface paths {
                         decision: "APPROVE" | "REJECT";
                         note?: string;
                         orderLimitMinor?: number;
+                        net30?: boolean;
                     };
                 };
             };
@@ -4496,7 +4560,7 @@ export interface paths {
                             phone?: string;
                         };
                         /** @enum {string} */
-                        paymentMethod: "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE";
+                        paymentMethod: "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE" | "NET_30";
                         expectedTotalMinor: number;
                         note?: string;
                         couponCode?: string;

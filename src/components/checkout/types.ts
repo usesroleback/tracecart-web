@@ -11,7 +11,7 @@ export type Breakdown = {
   totalMinor: number;
 };
 
-export type PaymentMethod = "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE";
+export type PaymentMethod = "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE" | "NET_30";
 
 export interface Address {
   id: string;

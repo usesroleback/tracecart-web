@@ -7,7 +7,7 @@
   "find": "Search",
   "empty": "No order matches.",
   "queues": {
-    "paymentsToConfirm": "Bank transfers to confirm"
+    "paymentsToConfirm": "Transfers and net-30 to confirm"
   },
   "more": "Show more",
   "shipments": "Shipments",
@@ -27,7 +27,8 @@
     "CINETPAY": "CinetPay",
     "CASH_ON_DELIVERY": "Cash on delivery",
     "BANK_TRANSFER": "Bank transfer",
-    "FAKE": "Test payment"
+    "FAKE": "Test payment",
+    "NET_30": "Net 30"
   },
   "paymentStatus": {
     "PENDING": "Pending",
@@ -51,7 +52,7 @@
   "pickup": "Pickup point",
   "promise": "Promised between {from} and {to}",
   "payments": "Payments",
-  "confirmTransfer": "Record the transfer as received",
+  "confirmTransfer": "Record the payment as received",
   "invoice": "Invoice {number} (PDF)",
   "cancel": "Cancel the order",
   "cancelReason": "Why (the customer is told it's cancelled)",

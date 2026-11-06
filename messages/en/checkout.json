@@ -64,13 +64,15 @@
       "CINETPAY": "Mobile money or card",
       "CASH_ON_DELIVERY": "Cash on delivery",
       "BANK_TRANSFER": "Bank transfer",
-      "FAKE": "Test payment"
+      "FAKE": "Test payment",
+      "NET_30": "Net 30"
     },
     "paymentHints": {
       "CINETPAY": "Orange Money, Moov, Wave, MTN, Visa or Mastercard, on CinetPay's secure page.",
       "CASH_ON_DELIVERY": "Pay the exact total when it's delivered. Nothing more.",
       "BANK_TRANSFER": "We confirm the order when the transfer arrives; the items are held for you meanwhile.",
-      "FAKE": "For tests: no money moves."
+      "FAKE": "For tests: no money moves.",
+      "NET_30": "The order is confirmed now. Pay the frozen total within 30 days."
     },
     "blockers": {
       "NOT_CONFIGURED": "Not available yet.",
@@ -189,11 +191,13 @@
     "deliverTo": "Delivered to",
     "pickupPoint": "Pickup point",
     "paymentTitle": "Payment",
+    "net30Due": "Pay by {when}.",
     "methods": {
       "CINETPAY": "Mobile money or card",
       "CASH_ON_DELIVERY": "Cash on delivery",
       "BANK_TRANSFER": "Bank transfer",
-      "FAKE": "Test payment"
+      "FAKE": "Test payment",
+      "NET_30": "Net 30"
     },
     "invoice": "Invoice {number} (PDF)",
     "cancel": "Cancel this order",

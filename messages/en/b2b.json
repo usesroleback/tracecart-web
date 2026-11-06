@@ -12,6 +12,8 @@
   "taxId": "Tax number",
   "apply": "Send the application",
   "limit": "Orders over {amount} wait for a colleague.",
+  "net30On": "You can place on net-30 terms: pay the frozen total within 30 days.",
+  "net30Off": "Net-30 is not granted on this account.",
   "companyOrders": "Orders waiting for a colleague",
   "colleagues": "Colleagues",
   "staff": {
@@ -50,7 +52,7 @@
   },
   "admin": {
     "title": "Companies",
-    "lead": "Business accounts: approve them and set the spend limit.",
+    "lead": "Business accounts: approve them, set the spend limit, and grant net-30.",
     "loading": "Loading…",
     "empty": "No company matches.",
     "more": "Show more",
@@ -72,6 +74,9 @@
     "limit": "Spend limit (store currency)",
     "note": "Note",
     "theyRead": "The applicant reads this.",
+    "net30": "Grant net-30",
+    "net30Hint": "Checkout will offer payment in 30 days. The order is placed at once.",
+    "save": "Save",
     "approve": "Approve",
     "reject": "Refuse"
   }

@@ -216,6 +216,9 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
           <div className={box}>
             <h2 className="rb-label mb-2">{t("paymentTitle")}</h2>
             <p className="text-sm">{t(`methods.${order.paymentMethod}`)}</p>
+            {order.paymentMethod === "NET_30" && payment?.status === "PENDING" && payment.expiresAt ? (
+              <p className="mt-2 text-sm text-ink-muted">{t("net30Due", { when: format.shortDate(payment.expiresAt) })}</p>
+            ) : null}
             {order.invoice ? (
               <a href={`/api/tracecart/me/orders/${order.reference}/invoice`} className="mt-3 inline-block text-sm font-medium text-ink underline">
                 {t("invoice", { number: order.invoice.number })}

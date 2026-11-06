@@ -7,7 +7,7 @@
   "find": "Rechercher",
   "empty": "Aucune commande ne correspond.",
   "queues": {
-    "paymentsToConfirm": "Virements à confirmer"
+    "paymentsToConfirm": "Virements et net-30 à confirmer"
   },
   "more": "Afficher plus",
   "shipments": "Expéditions",
@@ -27,7 +27,8 @@
     "CINETPAY": "CinetPay",
     "CASH_ON_DELIVERY": "Paiement à la livraison",
     "BANK_TRANSFER": "Virement bancaire",
-    "FAKE": "Paiement de test"
+    "FAKE": "Paiement de test",
+    "NET_30": "Net 30"
   },
   "paymentStatus": {
     "PENDING": "En attente",
@@ -51,7 +52,7 @@
   "pickup": "Point relais",
   "promise": "Promise entre le {from} et le {to}",
   "payments": "Paiements",
-  "confirmTransfer": "Enregistrer le virement comme reçu",
+  "confirmTransfer": "Enregistrer le paiement comme reçu",
   "invoice": "Facture {number} (PDF)",
   "cancel": "Annuler la commande",
   "cancelReason": "Pourquoi (le client est prévenu de l'annulation)",

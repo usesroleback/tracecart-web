@@ -64,13 +64,15 @@
       "CINETPAY": "Mobile money ou carte",
       "CASH_ON_DELIVERY": "Paiement à la livraison",
       "BANK_TRANSFER": "Virement bancaire",
-      "FAKE": "Paiement de test"
+      "FAKE": "Paiement de test",
+      "NET_30": "Net 30"
     },
     "paymentHints": {
       "CINETPAY": "Orange Money, Moov, Wave, MTN, Visa ou Mastercard, sur la page sécurisée de CinetPay.",
       "CASH_ON_DELIVERY": "Payez le total exact à la livraison. Rien de plus.",
       "BANK_TRANSFER": "Nous confirmons la commande à réception du virement ; les articles vous sont réservés d'ici là.",
-      "FAKE": "Pour les tests : aucun argent ne circule."
+      "FAKE": "Pour les tests : aucun argent ne circule.",
+      "NET_30": "La commande est confirmée maintenant. Réglez le total figé sous 30 jours."
     },
     "blockers": {
       "NOT_CONFIGURED": "Pas encore disponible.",
@@ -189,11 +191,13 @@
     "deliverTo": "Livrée à",
     "pickupPoint": "Point relais",
     "paymentTitle": "Paiement",
+    "net30Due": "À régler d'ici le {when}.",
     "methods": {
       "CINETPAY": "Mobile money ou carte",
       "CASH_ON_DELIVERY": "Paiement à la livraison",
       "BANK_TRANSFER": "Virement bancaire",
-      "FAKE": "Paiement de test"
+      "FAKE": "Paiement de test",
+      "NET_30": "Net 30"
     },
     "invoice": "Facture {number} (PDF)",
     "cancel": "Annuler cette commande",

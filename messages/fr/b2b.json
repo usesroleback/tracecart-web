@@ -12,6 +12,8 @@
   "taxId": "Numéro fiscal",
   "apply": "Envoyer la demande",
   "limit": "Les commandes au-dessus de {amount} attendent un collègue.",
+  "net30On": "Vous pouvez commander en net-30 : réglez le total figé sous 30 jours.",
+  "net30Off": "Le net-30 n'est pas accordé sur ce compte.",
   "companyOrders": "Commandes en attente d'un collègue",
   "colleagues": "Collègues",
   "staff": {
@@ -50,7 +52,7 @@
   },
   "admin": {
     "title": "Entreprises",
-    "lead": "Comptes professionnels : approuvez-les et fixez le plafond.",
+    "lead": "Comptes professionnels : approuvez-les, fixez le plafond et accordez le net-30.",
     "loading": "Chargement…",
     "empty": "Aucune entreprise ne correspond.",
     "more": "Afficher plus",
@@ -72,6 +74,9 @@
     "limit": "Plafond (devise de la boutique)",
     "note": "Note",
     "theyRead": "Le demandeur lira ce message.",
+    "net30": "Accorder le net-30",
+    "net30Hint": "Le paiement sous 30 jours sera proposé à la commande. La commande est placée tout de suite.",
+    "save": "Enregistrer",
     "approve": "Approuver",
     "reject": "Refuser"
   }

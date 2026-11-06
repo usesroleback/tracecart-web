@@ -22,6 +22,7 @@ interface Row {
   countryCode: string | null;
   city: string;
   orderLimitMinor: number;
+  net30: boolean;
   currency: string;
   ownerUserId: string;
 }
@@ -118,12 +119,14 @@ export function B2bDetail({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState("");
   const [limit, setLimit] = useState("");
+  const [net30, setNet30] = useState(false);
 
   useEffect(() => {
     call<{ application: Detail }>("GET", `/b2b/${id}`).then(
       (d) => {
         setS(d.application);
         setLimit(String(toMajor(d.application.orderLimitMinor, d.application.currency)));
+        setNet30(d.application.net30);
       },
       (e) => setError((e as Error).message)
     );
@@ -138,6 +141,7 @@ export function B2bDetail({ id }: { id: string }) {
         decision,
         note: note.trim() || undefined,
         ...(decision === "APPROVE" && orderLimitMinor != null ? { orderLimitMinor } : {}),
+        ...(decision === "APPROVE" ? { net30 } : {}),
       });
       setS(res.application);
     } catch (e) {
@@ -166,7 +170,12 @@ export function B2bDetail({ id }: { id: string }) {
           {s.taxId ? ` · ${s.taxId}` : ""}
         </p>
         <p>{[s.addressLine, s.city, s.countryCode ? countryName(s.countryCode, locale) : null].filter(Boolean).join(", ")}</p>
-        {s.status === "ACTIVE" ? <p className="mt-2">{format.number(toMajor(s.orderLimitMinor, s.currency))} {s.currency}</p> : null}
+        {s.status === "ACTIVE" ? (
+          <p className="mt-2">
+            {format.number(toMajor(s.orderLimitMinor, s.currency))} {s.currency}
+            {s.net30 ? ` · ${t("net30")}` : ""}
+          </p>
+        ) : null}
         {s.decisionNote ? <p className="mt-2 whitespace-pre-line">{s.decisionNote}</p> : null}
       </section>
       {s.status === "PENDING" ? (
@@ -175,6 +184,11 @@ export function B2bDetail({ id }: { id: string }) {
           <Field label={t("limit")}>
             <input className={input} inputMode="decimal" value={limit} onChange={(e) => setLimit(e.target.value)} />
           </Field>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={net30} onChange={(e) => setNet30(e.target.checked)} />
+            {t("net30")}
+          </label>
+          <p className="text-sm text-ink-muted">{t("net30Hint")}</p>
           <Field label={t("note")} hint={t("theyRead")}>
             <textarea className={`${input} h-auto min-h-[4rem] py-2`} maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} />
           </Field>
@@ -183,6 +197,33 @@ export function B2bDetail({ id }: { id: string }) {
           </Button>
           <Button variant="secondary" loading={busy} disabled={own} onClick={() => decide("REJECT")}>
             {t("reject")}
+          </Button>
+        </section>
+      ) : null}
+      {s.status === "ACTIVE" && !own ? (
+        <section className={`${box} grid gap-3`}>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={net30} onChange={(e) => setNet30(e.target.checked)} />
+            {t("net30")}
+          </label>
+          <p className="text-sm text-ink-muted">{t("net30Hint")}</p>
+          <Button
+            variant="secondary"
+            loading={busy}
+            onClick={async () => {
+              setBusy(true);
+              setError(null);
+              try {
+                const res = await call<{ application: Detail }>("PATCH", `/b2b/${id}`, { net30 });
+                setS(res.application);
+              } catch (e) {
+                setError((e as Error).message);
+              } finally {
+                setBusy(false);
+              }
+            }}
+          >
+            {t("save")}
           </Button>
         </section>
       ) : null}

@@ -220,7 +220,7 @@ export function StoreOrderDetail({ id, canCancel, canConfirm, canRefund }: { id:
   if (error && !order) return <p className="text-critical">{error}</p>;
   if (!order) return <p className="text-ink-muted">…</p>;
   const money = (minor: number) => `${format.number(toMajor(minor, order.currency))} ${order.currency}`;
-  const transfer = order.payments.find((p) => p.method === "BANK_TRANSFER" && p.status === "PENDING");
+  const transfer = order.payments.find((p) => (p.method === "BANK_TRANSFER" || p.method === "NET_30") && p.status === "PENDING");
   const d = order.delivery;
 
   return (

@@ -24,6 +24,7 @@ interface Application {
   phone: string | null;
   taxId: string | null;
   orderLimitMinor: number;
+  net30: boolean;
   currency: string;
   decisionNote: string | null;
 }
@@ -94,9 +95,12 @@ function CompanyPanel() {
         {application.countryCode ? `, ${countryName(application.countryCode, locale)}` : ""}
       </p>
       {application.status === "ACTIVE" ? (
-        <p>
-          {t("limit", { amount: `${format.number(toMajor(application.orderLimitMinor, application.currency))} ${application.currency}` })}
-        </p>
+        <>
+          <p>
+            {t("limit", { amount: `${format.number(toMajor(application.orderLimitMinor, application.currency))} ${application.currency}` })}
+          </p>
+          <p>{application.net30 ? t("net30On") : t("net30Off")}</p>
+        </>
       ) : null}
       {application.decisionNote ? <p className="whitespace-pre-line">{application.decisionNote}</p> : null}
       {application.status === "ACTIVE" ? (
