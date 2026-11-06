@@ -48,6 +48,7 @@
   "company": "Compte entreprise",
   "companyOrders": "Commandes entreprise",
   "colleagues": "Collègues",
+  "bulkOrder": "Commander depuis un tableur",
   "quotes": {
     "title": "Devis",
     "status": {

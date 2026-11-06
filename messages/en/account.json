@@ -48,6 +48,7 @@
   "company": "Company account",
   "companyOrders": "Company orders",
   "colleagues": "Colleagues",
+  "bulkOrder": "Order from a spreadsheet",
   "quotes": {
     "title": "Quotes",
     "status": {

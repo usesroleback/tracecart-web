@@ -24,6 +24,22 @@
   },
   "companyOrders": "Commandes en attente d'un collègue",
   "colleagues": "Collègues",
+  "bulkOrder": "Commander depuis un tableur",
+  "bulk": {
+    "title": "Commander depuis un tableur",
+    "lead": "Ajoutez des SKU au panier, puis commandez comme d'habitude. Les prix rendu, le plafond et les conditions de paiement s'appliquent encore.",
+    "signIn": "Connectez-vous pour importer une commande",
+    "signInLead": "Utilisez le compte qui commande pour votre entreprise.",
+    "template": "Télécharger un modèle",
+    "file": "Fichier CSV",
+    "check": "Vérifier",
+    "apply": "Ajouter au panier",
+    "checked": "Le fichier est valide. Rien n'a encore été ajouté.",
+    "imported": "{count, plural, one {# ligne ajoutée au panier.} other {# lignes ajoutées au panier.}}",
+    "rows": "{count, plural, one {# ligne} other {# lignes}}",
+    "rowError": "Ligne {line} ({sku}) : {message}",
+    "toCart": "Aller au panier"
+  },
   "staff": {
     "title": "Collègues de l'entreprise",
     "lead": "Invitez un acheteur ou quelqu'un qui peut approuver les commandes au-dessus du plafond. Vous restez le seul administrateur.",

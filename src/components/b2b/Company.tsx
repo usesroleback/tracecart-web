@@ -150,6 +150,9 @@ function CompanyPanel() {
           <Link href="/account/company/staff" className="text-sm font-medium underline">
             {t("colleagues")}
           </Link>
+          <Link href="/account/company/cart" className="text-sm font-medium underline">
+            {t("bulkOrder")}
+          </Link>
         </p>
       ) : null}
     </div>

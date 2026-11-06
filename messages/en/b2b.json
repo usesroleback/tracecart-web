@@ -24,6 +24,22 @@
   },
   "companyOrders": "Orders waiting for a colleague",
   "colleagues": "Colleagues",
+  "bulkOrder": "Order from a spreadsheet",
+  "bulk": {
+    "title": "Order from a spreadsheet",
+    "lead": "Add SKUs to your cart, then check out as usual. Landed prices, your spend limit and payment terms still apply.",
+    "signIn": "Sign in to import an order",
+    "signInLead": "Use the account that places orders for your company.",
+    "template": "Download a template",
+    "file": "CSV file",
+    "check": "Check",
+    "apply": "Add to cart",
+    "checked": "The file is valid. Nothing has been added yet.",
+    "imported": "{count, plural, one {# line added to the cart.} other {# lines added to the cart.}}",
+    "rows": "{count, plural, one {# row} other {# rows}}",
+    "rowError": "Line {line} ({sku}): {message}",
+    "toCart": "Go to the cart"
+  },
   "staff": {
     "title": "Company colleagues",
     "lead": "Invite a buyer or someone who can approve orders over the limit. You stay the only admin.",
