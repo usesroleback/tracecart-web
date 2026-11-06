@@ -25,6 +25,8 @@ interface Application {
   taxId: string | null;
   orderLimitMinor: number;
   net30: boolean;
+  taxExempt: boolean;
+  documents: { id: string; fileName: string; status: "PENDING" | "APPROVED" | "REJECTED"; rejectNote: string | null }[];
   currency: string;
   decisionNote: string | null;
 }
@@ -100,6 +102,43 @@ function CompanyPanel() {
             {t("limit", { amount: `${format.number(toMajor(application.orderLimitMinor, application.currency))} ${application.currency}` })}
           </p>
           <p>{application.net30 ? t("net30On") : t("net30Off")}</p>
+          <p>{application.taxExempt ? t("taxExemptOn") : t("taxExemptOff")}</p>
+          <ul className="grid gap-2">
+            {application.documents.map((d) => (
+              <li key={d.id}>
+                <a href={`/api/tracecart/me/company/documents/${d.id}/file`} target="_blank" rel="noreferrer" className="underline">
+                  {d.fileName}
+                </a>{" "}
+                <span className="text-ink-muted">{t(`documentStatuses.${d.status}`)}</span>
+                {d.rejectNote ? <p className="text-critical">{d.rejectNote}</p> : null}
+              </li>
+            ))}
+          </ul>
+          <label className="text-sm text-ink-muted">
+            {t("uploadCertificate")}
+            <input
+              className={`${input} mt-1`}
+              type="file"
+              accept="application/pdf,image/jpeg,image/png,image/webp,image/heic,image/heif"
+              disabled={busy}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const form = new FormData();
+                form.append("file", file);
+                setBusy(true);
+                setError(null);
+                try {
+                  setApplication((await call<{ application: Application }>("POST", "/me/company/documents", form)).application);
+                } catch (err) {
+                  setError((err as Error).message);
+                } finally {
+                  setBusy(false);
+                  e.target.value = "";
+                }
+              }}
+            />
+          </label>
         </>
       ) : null}
       {application.decisionNote ? <p className="whitespace-pre-line">{application.decisionNote}</p> : null}

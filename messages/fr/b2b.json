@@ -14,6 +14,14 @@
   "limit": "Les commandes au-dessus de {amount} attendent un collègue.",
   "net30On": "Vous pouvez commander en net-30 : réglez le total figé sous 30 jours.",
   "net30Off": "Le net-30 n'est pas accordé sur ce compte.",
+  "taxExemptOn": "La taxe d'importation n'est pas facturée sur vos commandes. Les droits le restent.",
+  "taxExemptOff": "La taxe d'importation est facturée comme d'habitude jusqu'à l'approbation d'un certificat.",
+  "uploadCertificate": "Certificat d'exonération (PDF ou image)",
+  "documentStatuses": {
+    "PENDING": "En examen",
+    "APPROVED": "Approuvé",
+    "REJECTED": "Refusé"
+  },
   "companyOrders": "Commandes en attente d'un collègue",
   "colleagues": "Collègues",
   "staff": {
@@ -76,6 +84,16 @@
     "theyRead": "Le demandeur lira ce message.",
     "net30": "Accorder le net-30",
     "net30Hint": "Le paiement sous 30 jours sera proposé à la commande. La commande est placée tout de suite.",
+    "taxExempt": "Exonéré de taxe",
+    "certificates": "Certificats d'exonération",
+    "documentStatuses": {
+      "PENDING": "En examen",
+      "APPROVED": "Approuvé",
+      "REJECTED": "Refusé"
+    },
+    "approveDoc": "Accepter le certificat",
+    "rejectDoc": "Refuser",
+    "rejectDocWhy": "Dites ce qui ne va pas : l'entreprise lira ce message.",
     "save": "Enregistrer",
     "approve": "Approuver",
     "reject": "Refuser"

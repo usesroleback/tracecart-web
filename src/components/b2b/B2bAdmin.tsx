@@ -31,6 +31,8 @@ interface Detail extends Row {
   addressLine: string;
   phone: string | null;
   taxId: string | null;
+  taxExempt: boolean;
+  documents: { id: string; fileName: string; status: "PENDING" | "APPROVED" | "REJECTED"; rejectNote: string | null }[];
   decisionNote: string | null;
 }
 
@@ -174,10 +176,67 @@ export function B2bDetail({ id }: { id: string }) {
           <p className="mt-2">
             {format.number(toMajor(s.orderLimitMinor, s.currency))} {s.currency}
             {s.net30 ? ` · ${t("net30")}` : ""}
+            {s.taxExempt ? ` · ${t("taxExempt")}` : ""}
           </p>
         ) : null}
         {s.decisionNote ? <p className="mt-2 whitespace-pre-line">{s.decisionNote}</p> : null}
       </section>
+      {s.documents.length ? (
+        <section className={`${box} grid gap-3`}>
+          <h2 className="rb-title">{t("certificates")}</h2>
+          {s.documents.map((d) => (
+            <div key={d.id} className="grid gap-2">
+              <p>
+                <a href={`/api/tracecart/b2b/${id}/documents/${d.id}/file`} target="_blank" rel="noreferrer" className="underline">
+                  {d.fileName}
+                </a>{" "}
+                <span className="text-ink-muted">{t(`documentStatuses.${d.status}`)}</span>
+              </p>
+              {d.rejectNote ? <p className="text-critical">{d.rejectNote}</p> : null}
+              {d.status === "PENDING" && !own ? (
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant="primary"
+                    loading={busy}
+                    onClick={async () => {
+                      setBusy(true);
+                      setError(null);
+                      try {
+                        setS((await call<{ application: Detail }>("POST", `/b2b/${id}/documents/${d.id}/review`, { decision: "APPROVE" })).application);
+                      } catch (e) {
+                        setError((e as Error).message);
+                      } finally {
+                        setBusy(false);
+                      }
+                    }}
+                  >
+                    {t("approveDoc")}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    loading={busy}
+                    onClick={async () => {
+                      const why = window.prompt(t("rejectDocWhy"));
+                      if (!why?.trim()) return;
+                      setBusy(true);
+                      setError(null);
+                      try {
+                        setS((await call<{ application: Detail }>("POST", `/b2b/${id}/documents/${d.id}/review`, { decision: "REJECT", note: why.trim() })).application);
+                      } catch (e) {
+                        setError((e as Error).message);
+                      } finally {
+                        setBusy(false);
+                      }
+                    }}
+                  >
+                    {t("rejectDoc")}
+                  </Button>
+                </div>
+              ) : null}
+            </div>
+          ))}
+        </section>
+      ) : null}
       {s.status === "PENDING" ? (
         <section className={`${box} grid gap-3`}>
           {own ? <p className="text-critical">{t("ownApplication")}</p> : null}

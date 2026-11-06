@@ -14,6 +14,14 @@
   "limit": "Orders over {amount} wait for a colleague.",
   "net30On": "You can place on net-30 terms: pay the frozen total within 30 days.",
   "net30Off": "Net-30 is not granted on this account.",
+  "taxExemptOn": "Import tax is not charged on your orders. Duties still are.",
+  "taxExemptOff": "Import tax is charged as usual until a certificate is approved.",
+  "uploadCertificate": "Tax-exemption certificate (PDF or image)",
+  "documentStatuses": {
+    "PENDING": "Waiting for review",
+    "APPROVED": "Approved",
+    "REJECTED": "Refused"
+  },
   "companyOrders": "Orders waiting for a colleague",
   "colleagues": "Colleagues",
   "staff": {
@@ -76,6 +84,16 @@
     "theyRead": "The applicant reads this.",
     "net30": "Grant net-30",
     "net30Hint": "Checkout will offer payment in 30 days. The order is placed at once.",
+    "taxExempt": "Tax-exempt",
+    "certificates": "Exemption certificates",
+    "documentStatuses": {
+      "PENDING": "Waiting for review",
+      "APPROVED": "Approved",
+      "REJECTED": "Refused"
+    },
+    "approveDoc": "Accept certificate",
+    "rejectDoc": "Refuse",
+    "rejectDocWhy": "Say what's wrong: the company reads this.",
     "save": "Save",
     "approve": "Approve",
     "reject": "Refuse"
