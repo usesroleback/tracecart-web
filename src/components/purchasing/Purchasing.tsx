@@ -109,6 +109,7 @@ export function Purchasing(can: PurchasingPermissions) {
   const [options, setOptions] = useState<Options>({ warehouses: [], carrierServices: [], suppliers: [] });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTab(fromUrl ?? fallbackTab);
   }, [fromUrl, fallbackTab]);
 

@@ -45,6 +45,7 @@ export function CompanyStaff() {
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load().catch((e) => setError((e as Error).message));
   }, [isLoaded, isSignedIn, load]);
 

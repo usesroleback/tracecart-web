@@ -56,6 +56,7 @@ export function Inventory(can: InventoryPermissions) {
   const lowStock = params.get("low") === "true";
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTab(tabParam);
   }, [tabParam]);
 

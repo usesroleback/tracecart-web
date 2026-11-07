@@ -74,6 +74,7 @@ function RfqPanel() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load().catch((e) => setError((e as Error).message));
   }, [load]);
 

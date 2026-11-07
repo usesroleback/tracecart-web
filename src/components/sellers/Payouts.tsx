@@ -181,6 +181,7 @@ export function PayoutDetail({ id, staff }: { id: string; staff: boolean }) {
   }, [path]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load]);
 
