@@ -1,10 +1,10 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Field, input } from "@/components/ui/form/Form";
-import { call } from "@/components/checkout/http";
+import { ApiError, call } from "@/components/checkout/http";
 
 interface PublicQuestion {
   id: string;
@@ -22,8 +22,8 @@ interface Mine {
 
 export function ProductQuestions({ slug }: { slug: string }) {
   const t = useTranslations("store.product.questions");
-  const { isLoaded, isSignedIn } = useAuth();
-  const clerk = useClerk();
+  // Store pages run without Clerk (ADR-030): the API says who is signed in, from the session cookie.
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [list, setList] = useState<PublicQuestion[] | null>(null);
   const [mine, setMine] = useState<Mine | null>(null);
   const [body, setBody] = useState("");
@@ -39,16 +39,15 @@ export function ProductQuestions({ slug }: { slug: string }) {
   }, [slug]);
 
   const loadMine = useCallback(async () => {
-    if (!isSignedIn) {
-      setMine(null);
-      return;
-    }
     try {
       setMine(await call<Mine>("GET", `/me/questions/for/${slug}`));
-    } catch {
+      setSignedIn(true);
+    } catch (e) {
       setMine(null);
+      // Signed out is a 401; anything else says nothing about who this is.
+      setSignedIn(e instanceof ApiError && e.status === 401 ? false : null);
     }
-  }, [isSignedIn, slug]);
+  }, [slug]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -57,8 +56,8 @@ export function ProductQuestions({ slug }: { slug: string }) {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (isLoaded) loadMine();
-  }, [isLoaded, loadMine]);
+    loadMine();
+  }, [loadMine]);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -101,7 +100,7 @@ export function ProductQuestions({ slug }: { slug: string }) {
         ))}
       </ul>
       {pending.length ? <p className="mt-4 text-sm text-ink-muted">{t("pending")}</p> : null}
-      {isLoaded && isSignedIn && mine?.canAsk ? (
+      {signedIn && mine?.canAsk ? (
         <form onSubmit={submit} className="mt-6 grid max-w-xl gap-3 rounded-[var(--radius-m)] border border-line bg-surface-raised p-4">
           <Field label={t("body")}>
             <textarea className={`${input} min-h-[5rem] py-2`} value={body} onChange={(e) => setBody(e.target.value)} required minLength={10} maxLength={500} />
@@ -116,11 +115,11 @@ export function ProductQuestions({ slug }: { slug: string }) {
           </button>
         </form>
       ) : null}
-      {isLoaded && !isSignedIn ? (
+      {signedIn === false ? (
         <p className="mt-4 text-sm text-ink-muted">
-          <button type="button" className="underline" onClick={() => clerk.openSignIn()}>
+          <Link href="/account" className="underline">
             {t("signIn")}
-          </button>
+          </Link>
         </p>
       ) : null}
     </section>

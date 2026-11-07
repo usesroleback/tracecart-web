@@ -79,8 +79,8 @@ test("from an application to a Seller Center", async ({ browser }) => {
     await applicant.getByRole("link", { name: "Open the Seller Center" }).click();
     await expect(applicant).toHaveURL(/\/en\/seller$/);
     await expect(applicant.getByRole("heading", { name: "Seller Center" })).toBeVisible();
-    await expect(applicant.getByRole("link", { name: "My payouts" })).toBeVisible();
-    await expect(applicant.getByRole("link", { name: "Staff" })).toBeVisible();
+    await expect(applicant.getByRole("main").getByRole("link", { name: "My payouts" })).toBeVisible();
+    await expect(applicant.getByRole("main").getByRole("link", { name: "Staff" })).toBeVisible();
     await expect(applicant.getByLabel("Business name")).toBeDisabled();
 
     // A listing on a catalogue product, then a person's approval (ADR-051).
@@ -109,7 +109,8 @@ test("from an application to a Seller Center", async ({ browser }) => {
     await applicant.reload();
     await expect(applicant.getByText("On sale").first()).toBeVisible();
 
-    // Changing where the money goes needs checking again.
+    // Changing where the money goes needs checking again: it's on the Seller Center's own page.
+    await applicant.goto("/en/seller");
     await applicant.getByLabel("Account number").fill("+22699999999");
     await button(applicant, "Save this account").click();
     await expect(applicant.getByText("Payout account to confirm: nothing is paid to it until then.")).toBeVisible();

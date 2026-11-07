@@ -1,10 +1,10 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Field, input } from "@/components/ui/form/Form";
-import { call } from "@/components/checkout/http";
+import { ApiError, call } from "@/components/checkout/http";
 
 interface PublicReview {
   id: string;
@@ -24,8 +24,8 @@ interface Mine {
 
 export function ProductReviews({ slug }: { slug: string }) {
   const t = useTranslations("store.product.reviews");
-  const { isLoaded, isSignedIn } = useAuth();
-  const clerk = useClerk();
+  // Store pages run without Clerk (ADR-030): the API says who is signed in, from the session cookie.
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [list, setList] = useState<{ count: number; average: number | null; reviews: PublicReview[] } | null>(null);
   const [mine, setMine] = useState<Mine | null>(null);
   const [rating, setRating] = useState(5);
@@ -43,16 +43,15 @@ export function ProductReviews({ slug }: { slug: string }) {
   }, [slug]);
 
   const loadMine = useCallback(async () => {
-    if (!isSignedIn) {
-      setMine(null);
-      return;
-    }
     try {
       setMine(await call<Mine>("GET", `/me/reviews/for/${slug}`));
-    } catch {
+      setSignedIn(true);
+    } catch (e) {
       setMine(null);
+      // Signed out is a 401; anything else says nothing about who this is.
+      setSignedIn(e instanceof ApiError && e.status === 401 ? false : null);
     }
-  }, [isSignedIn, slug]);
+  }, [slug]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -61,8 +60,8 @@ export function ProductReviews({ slug }: { slug: string }) {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (isLoaded) loadMine();
-  }, [isLoaded, loadMine]);
+    loadMine();
+  }, [loadMine]);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -100,10 +99,10 @@ export function ProductReviews({ slug }: { slug: string }) {
           </li>
         ))}
       </ul>
-      {isLoaded && isSignedIn && mine?.review ? (
+      {signedIn && mine?.review ? (
         <p className="mt-4 text-sm text-ink-muted">{t(`mine.${mine.review.status}` as "mine.PENDING")}</p>
       ) : null}
-      {isLoaded && isSignedIn && mine?.canWrite ? (
+      {signedIn && mine?.canWrite ? (
         <form onSubmit={submit} className="mt-6 grid max-w-xl gap-3 rounded-[var(--radius-m)] border border-line bg-surface-raised p-4">
           <Field label={t("rating")}>
             <select className={input} value={rating} onChange={(e) => setRating(Number(e.target.value))}>
@@ -130,11 +129,11 @@ export function ProductReviews({ slug }: { slug: string }) {
           </button>
         </form>
       ) : null}
-      {isLoaded && !isSignedIn ? (
+      {signedIn === false ? (
         <p className="mt-4 text-sm text-ink-muted">
-          <button type="button" className="underline" onClick={() => clerk.openSignIn()}>
+          <Link href="/account" className="underline">
             {t("signIn")}
-          </button>
+          </Link>
         </p>
       ) : null}
     </section>

@@ -39,7 +39,7 @@ const CONSOLE: { role: string; name: string; shows: string[]; refused: string[] 
   { role: "pricing_analyst", name: "Pricing Analyst", shows: ["/pricing", "/catalog"], refused: ["/shipments", "/refunds", "/orders", "/sourcing"] },
   { role: "warehouse_manager", name: "Warehouse Manager", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/refunds", "/catalog", "/partners", "/cod", "/orders"] },
   { role: "warehouse_operator", name: "Warehouse Operator", shows: ["/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/store-orders", "/refunds", "/catalog", "/partners", "/orders"] },
-  { role: "logistics_coordinator", name: "Logistics Coordinator", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing", "/partners", "/freight-requests"], refused: ["/refunds", "/catalog", "/orders", "/consolidations"] },
+  { role: "logistics_coordinator", name: "Logistics Coordinator", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing", "/partners", "/freight-requests", "/orders", "/consolidations"], refused: ["/refunds", "/catalog"] },
   { role: "customs_officer", name: "Customs Officer", shows: ["/store-orders", "/purchasing"], refused: ["/shipments", "/refunds", "/inventory", "/pricing"] },
   { role: "support_agent", name: "Support Agent", shows: ["/store-orders", "/shipments", "/returns", "/refunds", "/freight-requests"], refused: ["/inventory", "/purchasing", "/catalog"] },
   { role: "support_lead", name: "Support Lead", shows: ["/store-orders", "/shipments", "/returns", "/refunds"], refused: ["/inventory", "/purchasing", "/catalog"] },
