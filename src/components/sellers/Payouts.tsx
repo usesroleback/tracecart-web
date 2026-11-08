@@ -11,8 +11,7 @@ import { call } from "@/components/checkout/http";
 import { useFormat } from "@/lib/format";
 import { toMajor } from "@/lib/currency";
 
-const STATUSES = ["DUE", "PENDING_APPROVAL", "SENDING", "PAID", "FAILED", "CANCELLED"] as const;
-type Status = (typeof STATUSES)[number];
+type Status = "DUE" | "PENDING_APPROVAL" | "SENDING" | "PAID" | "FAILED" | "CANCELLED";
 const TONE: Record<Status, "default" | "info" | "positive" | "attn" | "critical"> = {
   DUE: "attn",
   PENDING_APPROVAL: "info",

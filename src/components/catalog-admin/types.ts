@@ -32,6 +32,7 @@ export interface AdminCategory {
   slug: string;
   parentId: string | null;
   name: L;
+  description: L | null;
   active: boolean;
   position: number;
   productCount: number;

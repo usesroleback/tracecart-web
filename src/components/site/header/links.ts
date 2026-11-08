@@ -7,3 +7,6 @@ export const LINKS = [
   { key: "sell", href: "/sell" },
   { key: "about", href: "/about" },
 ] as const;
+
+/** "Find it for me", with what's needed already written in. */
+export const findHref = (need?: string) => (need ? `/find?q=${encodeURIComponent(need)}` : "/find");

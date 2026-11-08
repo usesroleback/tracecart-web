@@ -8,9 +8,9 @@ import { CartLink } from "@/components/store/CartLink";
 import { SearchBox } from "@/components/store/SearchBox";
 import { CountryPicker } from "../CountryPicker";
 import { CurrencyPicker, LanguageSwitch, ThemeSwitch } from "./Preferences";
-import { DepartmentMenu, findHref } from "./DepartmentMenu";
+import { DepartmentMenu } from "./DepartmentMenu";
 import { MobileDrawer } from "./MobileDrawer";
-import { LINKS } from "./links";
+import { findHref, LINKS } from "./links";
 
 const quiet = "rounded-[var(--hp-radius-chip)] text-[var(--hp-text-muted)] hover:bg-[var(--hp-light-sunken)] hover:text-[var(--hp-text)]";
 

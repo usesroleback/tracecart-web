@@ -4051,6 +4051,67 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/catalog/cards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Cards for the products named, in that order (recently viewed); products no longer listed are left out */
+        get: {
+            parameters: {
+                query: {
+                    /** @description Product slugs, repeated (up to 24); the cards come back in this order. */
+                    slug: string[];
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CardList"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/catalog/categories": {
         parameters: {
             query?: never;
@@ -4761,6 +4822,66 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["SearchSuggestions"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/trending": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Products ordered by the most different customers over the last `days` days, at least two each (ADR-078). Empty when nothing qualifies. */
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TrendingList"];
                     };
                 };
                 /** @description Invalid request */
@@ -32331,6 +32452,8 @@ export interface components {
         ProductCard: {
             id: string;
             slug: string;
+            /** @description The shown offer's variant (the first variant when there is no price): what a wish list keeps. */
+            sku: string;
             title: string;
             brand: {
                 slug: string;
@@ -32340,14 +32463,26 @@ export interface components {
                 url: string;
                 alt: string;
             } | null;
+            /** @description null: no confirmed price in this currency; the store offers to quote it (ADR-078). */
             price: {
                 amountMinor: number;
                 currency: string;
-            };
+            } | null;
             compareAtMinor: number | null;
             /** @description When the shown price is a deal (ADR-070): when it ends. */
             dealEndsAt: string | null;
-            availability: components["schemas"]["Availability"];
+            availability: components["schemas"]["Availability"] & unknown;
+            /** @description Who sells the shown offer; null: Tracecart, or no offer yet. */
+            seller: {
+                name: string;
+                /** @description A person approved the seller's company and documents (ADR-050). */
+                verified: boolean;
+            } | null;
+            /** @description From approved reviews by customers who received it; null: none yet. */
+            rating: {
+                average: number;
+                count: number;
+            } | null;
             offerCount: number;
             variantCount: number;
         };
@@ -32485,9 +32620,10 @@ export interface components {
             }[];
             /** @description When this price is a deal (ADR-070): when it ends. */
             dealEndsAt: string | null;
-            /** @description null: sold by Tracecart. */
+            /** @description null: sold by Tracecart. verified: a person approved the seller (ADR-050). */
             seller: {
                 name: string;
+                verified: boolean;
             } | null;
             availability: components["schemas"]["Availability"];
         };
@@ -32546,6 +32682,8 @@ export interface components {
                 otherOffers: components["schemas"]["PublicOffer"][];
             }[];
             selectedSku: string;
+            /** @description No variant has a price in this currency: the product shows without one, and the store offers to quote it (ADR-078). */
+            quoteOnly: boolean;
             compatibility: {
                 /** @enum {string} */
                 kind: "FITS" | "CHARGES" | "REPLACES" | "ACCESSORY_FOR" | "CONSUMABLE_FOR" | "FREQUENTLY_BOUGHT_WITH";
@@ -32570,7 +32708,7 @@ export interface components {
                 price: {
                     amountMinor: number;
                     currency: string;
-                };
+                } | null;
             }[];
             categories: {
                 slug: string;
@@ -32694,6 +32832,13 @@ export interface components {
             }[];
         };
         DealList: {
+            items: components["schemas"]["ProductCard"][];
+        };
+        TrendingList: {
+            days: number;
+            items: components["schemas"]["ProductCard"][];
+        };
+        CardList: {
             items: components["schemas"]["ProductCard"][];
         };
     };

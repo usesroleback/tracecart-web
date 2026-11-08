@@ -32,7 +32,7 @@
   "home": {
     "title": "Find what you need. Even if you don't know its name.",
     "lead": "Search with words or a photo, compare what's on offer, buy it or have it found for you, and ship it. The full delivered price before you pay.",
-    "categoriesTitle": "Shop by category",
+    "categoriesTitle": "Shop by department",
     "localTitle": "In stock in {country}",
     "localTitleAnywhere": "In stock now",
     "newTitle": "New in the catalogue",
@@ -41,7 +41,35 @@
     "finderEyebrow": "Can't find it?",
     "finderTitle": "Describe it, or send a photo. We'll find it for you.",
     "howItWorks": "How Tracecart works",
-    "products": "{count, plural, one {# product} other {# products}}"
+    "products": "{count, plural, one {# product} other {# products}}",
+    "nothingYet": "Nothing yet",
+    "trendingTitle": "Popular right now",
+    "trendingLead": "Ordered by several customers in the last {days} days.",
+    "dealsTitle": "Deals",
+    "seenTitle": "Recently viewed",
+    "seenClear": "Clear",
+    "photoEyebrow": "Search with a photo",
+    "photoTitle": "Have a photo of it? That's enough to start.",
+    "photoLead": "Add a photo or a short video, or describe it in your own words. Tracecart works out what it is and shows the closest products, with why each one matches.",
+    "photoCta": "Search with a photo",
+    "servicesTitle": "More than a store",
+    "services": {
+      "ship": {
+        "title": "Ship something",
+        "body": "Send goods you already have: we estimate the cargo, quote it, and handle pickup, transport and customs.",
+        "cta": "Request a shipment"
+      },
+      "sell": {
+        "title": "Sell on Tracecart",
+        "body": "List your products, reach buyers in several countries, and get paid once orders are delivered.",
+        "cta": "Become a seller"
+      },
+      "business": {
+        "title": "Buy for a company",
+        "body": "Company accounts, colleagues who order, approvals, bulk orders, requests for quotes and Net 30.",
+        "cta": "Open a company account"
+      }
+    }
   },
   "listing": {
     "results": "{count, plural, =0 {No products} one {# product} other {# products}}",
@@ -102,7 +130,18 @@
   },
   "card": {
     "offers": "{count, plural, one {# offer} other {# offers}}",
-    "versions": "{count, plural, one {# version} other {# versions}}"
+    "versions": "{count, plural, one {# version} other {# versions}}",
+    "onRequest": "Price on request",
+    "requestQuote": "Request a quote",
+    "soldBy": "Sold by {seller}",
+    "soldByTracecart": "Sold by Tracecart",
+    "verified": "Verified",
+    "verifiedTitle": "A person checked this seller's company and documents",
+    "rating": "Rated {value} out of 5 from {count, plural, one {# review} other {# reviews}}",
+    "save": "Save",
+    "saved": "Saved",
+    "compare": "Compare",
+    "compareFull": "You can compare up to {max} products"
   },
   "availability": {
     "IN_STOCK": "In stock in {city}",
@@ -193,7 +232,8 @@
       "body": "Your question",
       "submit": "Ask",
       "signIn": "Sign in to ask a question about this product."
-    }
+    },
+    "quoteBody": "No price is confirmed for this product yet. Tell us how many you need and where they should go: we'll confirm a price and a delivery date."
   },
   "brands": {
     "title": "Brands",
@@ -210,5 +250,42 @@
   },
   "price": {
     "approxTitle": "Approximate, at a rate kept on {date}. You pay in {currency}."
+  },
+  "compareTray": {
+    "label": "Products to compare",
+    "count": "{count} of {max} to compare",
+    "pickAnother": "pick at least one more",
+    "clear": "Clear",
+    "open": "Compare"
+  },
+  "compare": {
+    "title": "Compare products",
+    "lead": "Up to four products side by side, with what each one lists.",
+    "empty": "Nothing to compare yet. Choose Compare on a product to add it here.",
+    "one": "Pick at least one more product to compare.",
+    "browse": "Browse the departments",
+    "product": "Product",
+    "remove": "Remove {title} from the comparison",
+    "removeShort": "Remove",
+    "price": "Price",
+    "availability": "Availability",
+    "seller": "Sold by",
+    "rating": "Reviews",
+    "noRating": "No reviews yet",
+    "brand": "Brand",
+    "category": "Category",
+    "warranty": "Warranty",
+    "months": "{count, plural, one {# month} other {# months}}",
+    "notice": "This shows what each product lists. A dash means it doesn't say. It doesn't tell you that one product replaces or fits another: ask us when that matters."
+  },
+  "saved": {
+    "title": "Saved",
+    "signIn": "Sign in to see what you saved",
+    "loading": "Loading…",
+    "empty": "Nothing saved yet. Choose Save on a product to keep it here.",
+    "browse": "Browse the departments",
+    "gone": "no longer sold",
+    "remove": "Remove",
+    "removeLabel": "Remove {title}"
   }
 }

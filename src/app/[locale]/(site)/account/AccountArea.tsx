@@ -110,6 +110,9 @@ export function AccountArea() {
           <Button href="/account/orders" variant="secondary">
             {t("orders")}
           </Button>
+          <Button href="/account/saved" variant="secondary">
+            {t("saved")}
+          </Button>
           <Button href="/business" variant="secondary">
             {t("company")}
           </Button>

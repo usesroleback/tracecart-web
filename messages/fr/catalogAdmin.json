@@ -134,7 +134,13 @@
     "searchable": "Recherche",
     "required": "Obligatoire",
     "delete": "Supprimer",
-    "confirmDelete": "Supprimer l'attribut {key} ? Les produits gardent leurs valeurs, qui ne sont plus affichées."
+    "confirmDelete": "Supprimer l'attribut {key} ? Les produits gardent leurs valeurs, qui ne sont plus affichées.",
+    "textTitle": "Nom et description",
+    "descriptionFr": "Description (français)",
+    "descriptionEn": "Description (anglais)",
+    "descriptionHint": "Affichée en haut de la page de la catégorie dans la boutique. Laissez vide pour aucune.",
+    "saveText": "Enregistrer le nom et la description",
+    "textSaved": "Enregistré."
   },
   "brands": {
     "title": "Marques",

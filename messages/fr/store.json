@@ -32,7 +32,7 @@
   "home": {
     "title": "Trouvez ce qu'il vous faut. Même sans connaître son nom.",
     "lead": "Cherchez avec des mots ou une photo, comparez les offres, achetez ou faites-le trouver, et faites-le livrer. Le prix livré complet avant de payer.",
-    "categoriesTitle": "Par catégorie",
+    "categoriesTitle": "Par rayon",
     "localTitle": "En stock dans votre pays : {country}",
     "localTitleAnywhere": "En stock maintenant",
     "newTitle": "Nouveautés du catalogue",
@@ -41,7 +41,35 @@
     "finderEyebrow": "Vous ne trouvez pas ?",
     "finderTitle": "Décrivez-le, ou envoyez une photo. Nous le trouvons pour vous.",
     "howItWorks": "Comment fonctionne Tracecart",
-    "products": "{count, plural, one {# produit} other {# produits}}"
+    "products": "{count, plural, one {# produit} other {# produits}}",
+    "nothingYet": "Rien pour l'instant",
+    "trendingTitle": "Populaires en ce moment",
+    "trendingLead": "Commandés par plusieurs clients ces {days} derniers jours.",
+    "dealsTitle": "Bonnes affaires",
+    "seenTitle": "Vus récemment",
+    "seenClear": "Effacer",
+    "photoEyebrow": "Recherche par photo",
+    "photoTitle": "Vous en avez une photo ? Ça suffit pour commencer.",
+    "photoLead": "Ajoutez une photo ou une courte vidéo, ou décrivez-le avec vos mots. Tracecart comprend ce que c'est et montre les produits les plus proches, avec ce qui correspond pour chacun.",
+    "photoCta": "Chercher avec une photo",
+    "servicesTitle": "Plus qu'une boutique",
+    "services": {
+      "ship": {
+        "title": "Expédier un colis",
+        "body": "Envoyez des marchandises que vous avez déjà : nous estimons le chargement, le chiffrons, et gérons l'enlèvement, le transport et la douane.",
+        "cta": "Demander une expédition"
+      },
+      "sell": {
+        "title": "Vendre sur Tracecart",
+        "body": "Proposez vos produits, touchez des acheteurs dans plusieurs pays, et soyez payé une fois les commandes livrées.",
+        "cta": "Devenir vendeur"
+      },
+      "business": {
+        "title": "Acheter pour une entreprise",
+        "body": "Comptes entreprise, collègues qui commandent, validations, commandes en volume, demandes de devis et paiement à 30 jours.",
+        "cta": "Ouvrir un compte entreprise"
+      }
+    }
   },
   "listing": {
     "results": "{count, plural, =0 {Aucun produit} one {# produit} other {# produits}}",
@@ -102,7 +130,18 @@
   },
   "card": {
     "offers": "{count, plural, one {# offre} other {# offres}}",
-    "versions": "{count, plural, one {# version} other {# versions}}"
+    "versions": "{count, plural, one {# version} other {# versions}}",
+    "onRequest": "Prix sur demande",
+    "requestQuote": "Demander un devis",
+    "soldBy": "Vendu par {seller}",
+    "soldByTracecart": "Vendu par Tracecart",
+    "verified": "Vérifié",
+    "verifiedTitle": "Une personne a vérifié l'entreprise et les documents de ce vendeur",
+    "rating": "Noté {value} sur 5 par {count, plural, one {# avis} other {# avis}}",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "compare": "Comparer",
+    "compareFull": "Vous pouvez comparer jusqu'à {max} produits"
   },
   "availability": {
     "IN_STOCK": "En stock à {city}",
@@ -193,7 +232,8 @@
       "body": "Votre question",
       "submit": "Poser la question",
       "signIn": "Connectez-vous pour poser une question sur ce produit."
-    }
+    },
+    "quoteBody": "Aucun prix n'est encore confirmé pour ce produit. Dites-nous combien il vous en faut et où les livrer : nous confirmons un prix et une date de livraison."
   },
   "brands": {
     "title": "Marques",
@@ -210,5 +250,42 @@
   },
   "price": {
     "approxTitle": "Indicatif, au taux enregistré le {date}. Vous payez en {currency}."
+  },
+  "compareTray": {
+    "label": "Produits à comparer",
+    "count": "{count} sur {max} à comparer",
+    "pickAnother": "choisissez-en au moins un autre",
+    "clear": "Effacer",
+    "open": "Comparer"
+  },
+  "compare": {
+    "title": "Comparer des produits",
+    "lead": "Jusqu'à quatre produits côte à côte, avec ce que chacun indique.",
+    "empty": "Rien à comparer pour l'instant. Choisissez Comparer sur un produit pour l'ajouter ici.",
+    "one": "Choisissez au moins un autre produit à comparer.",
+    "browse": "Parcourir les rayons",
+    "product": "Produit",
+    "remove": "Retirer {title} de la comparaison",
+    "removeShort": "Retirer",
+    "price": "Prix",
+    "availability": "Disponibilité",
+    "seller": "Vendu par",
+    "rating": "Avis",
+    "noRating": "Pas encore d'avis",
+    "brand": "Marque",
+    "category": "Catégorie",
+    "warranty": "Garantie",
+    "months": "{count, plural, one {# mois} other {# mois}}",
+    "notice": "Ce tableau montre ce que chaque produit indique. Un tiret signifie qu'il ne le précise pas. Il ne dit pas qu'un produit en remplace un autre ou lui convient : demandez-nous quand c'est important."
+  },
+  "saved": {
+    "title": "Enregistrés",
+    "signIn": "Connectez-vous pour voir ce que vous avez enregistré",
+    "loading": "Chargement…",
+    "empty": "Rien d’enregistré pour l’instant. Choisissez Enregistrer sur un produit pour le retrouver ici.",
+    "browse": "Parcourir les rayons",
+    "gone": "n'est plus vendu",
+    "remove": "Retirer",
+    "removeLabel": "Retirer {title}"
   }
 }

@@ -7,7 +7,7 @@ import type { CategoryNode } from "@/lib/store";
 import type { CurrencyOptions } from "@/lib/displayCurrency";
 import { CountryPicker } from "../CountryPicker";
 import { CurrencyPicker, LanguageSwitch, ThemeSwitch } from "./Preferences";
-import { findHref } from "./DepartmentMenu";
+import { findHref } from "./links";
 import { LINKS } from "./links";
 
 /**

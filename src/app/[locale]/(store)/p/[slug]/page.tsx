@@ -13,6 +13,8 @@ import { AddToCart } from "@/components/store/AddToCart";
 import { DealNote } from "@/components/store/DealNote";
 import { ProductReviews } from "@/components/store/ProductReviews";
 import { ProductQuestions } from "@/components/store/ProductQuestions";
+import { RememberSeen, SaveCompare } from "@/components/store/SaveCompare";
+import { findHref } from "@/components/site/header/links";
 import { categoryHref, STORE_CURRENCY, storeApi, storeCountry, toMajor, type ProductDetail, type PublicOffer } from "@/lib/store";
 import { alternates, siteUrl } from "@/lib/siteUrl";
 
@@ -73,7 +75,8 @@ function productJsonLd(p: ProductDetail, url: string, locale: string) {
     category: p.breadcrumbs.map((b) => b.name).join(" > "),
     inLanguage: locale,
     url,
-    offers: offers.map(({ o, v }) => ({
+    // A product quoted on request has no offer to describe (ADR-078).
+    offers: offers.length === 0 ? undefined : offers.map(({ o, v }) => ({
       "@type": "Offer",
       sku: v.sku,
       price: String(toMajor(o.price.amountMinor, o.price.currency)),
@@ -102,13 +105,15 @@ async function OfferLine({ offer, primary = false }: { offer: PublicOffer; prima
     offer.seller?.name != null
       ? t("soldBy", { seller: offer.seller.name })
       : t("soldByTracecart");
+  const ts = await getTranslations("store.card");
   return (
     <div className="flex flex-col gap-2">
       <Price amountMinor={offer.price.amountMinor} currency={offer.price.currency} compareAtMinor={offer.compareAtMinor} size={primary ? "l" : "m"} wasLabel={(price) => t("was", { price })} />
       <DealNote endsAt={offer.dealEndsAt} />
       <AvailabilityNote availability={offer.availability} detailed />
       <p className="text-sm text-ink-muted">
-        {seller}
+        <span>{seller}</span>
+        {offer.seller?.verified ? <span title={ts("verifiedTitle")}>{` · ${ts("verified")}`}</span> : null}
         {offer.fulfillmentType === "FULFILLED_BY_TRACECART" ? ` · ${t("fulfilledByTracecart")}` : ""}
       </p>
     </div>
@@ -136,6 +141,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
   return (
     <StoreShell>
       <JsonLd data={productJsonLd(p, url, locale)} />
+      <RememberSeen slug={p.slug} />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -181,6 +187,9 @@ export default async function ProductPage({ params, searchParams }: Props) {
             <p className="rb-mono-s mt-2 text-ink-muted">
               {t("product.sku")}: {variant.sku}
             </p>
+            <div className="mt-4">
+              <SaveCompare slug={p.slug} sku={variant.sku} title={p.title} layout="page" />
+            </div>
           </div>
 
           {p.optionAxes.map((axis) => (
@@ -225,12 +234,21 @@ export default async function ProductPage({ params, searchParams }: Props) {
                 ) : (
                   <AddToCart sku={variant.sku} offerId={offer.id} max={null} />
                 )}
-                <Link href={`/?need=${encodeURIComponent(`${p.title} (${variant.sku})`)}#quote`} className="mt-3 inline-block text-sm text-ink-muted underline">
+                <Link href={findHref(`${p.title} (${variant.sku})`)} className="mt-3 inline-block text-sm text-ink-muted underline">
                   {t("product.askInstead")}
                 </Link>
               </div>
             </div>
-          ) : null}
+          ) : (
+            // No confirmed price (ADR-078): ask for one.
+            <div className="rounded-[var(--radius-m)] border border-line bg-surface-raised p-5">
+              <p className="text-lg font-semibold text-ink">{t("card.onRequest")}</p>
+              <p className="mt-2 text-sm text-ink-muted">{t("product.quoteBody")}</p>
+              <Link href={findHref(`${p.title} (${variant.sku})`)} className="mt-4 inline-flex h-11 items-center rounded-[var(--radius-s)] bg-ink px-5 font-medium text-ink-inverse hover:opacity-90">
+                {t("card.requestQuote")}
+              </Link>
+            </div>
+          )}
 
           {variant.otherOffers.length ? (
             <details className="rounded-[var(--radius-m)] border border-line bg-surface-raised">

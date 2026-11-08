@@ -90,6 +90,7 @@ export function CategoriesAdmin({ canWrite }: { canWrite: boolean }) {
               </div>
               {open === c.id ? (
                 <div className="mt-3 rounded-[var(--radius-s)] bg-surface-sunken p-3">
+                  {canWrite ? <CategoryText category={c} onSave={(body) => run(() => api.patch(`/admin/catalog/categories/${c.id}`, body))} /> : null}
                   <ul className="mb-3 divide-y divide-line text-sm">
                     {c.attributes.map((a) => (
                       <li key={a.id} className="flex flex-wrap items-center gap-3 py-2">
@@ -123,6 +124,52 @@ export function CategoriesAdmin({ canWrite }: { canWrite: boolean }) {
         })}
       </ul>
     </div>
+  );
+}
+
+/** The names and the description shown at the top of the category's page in the store, in both languages. */
+function CategoryText({ category, onSave }: { category: AdminCategory; onSave: (body: unknown) => Promise<void> }) {
+  const t = useTranslations("catalogAdmin.categories");
+  const [f, setF] = useState({
+    fr: category.name?.fr ?? "",
+    en: category.name?.en ?? "",
+    descFr: category.description?.fr ?? "",
+    descEn: category.description?.en ?? "",
+  });
+  const [saved, setSaved] = useState(false);
+  const set = (k: keyof typeof f) => (e: { target: { value: string } }) => (setSaved(false), setF((x) => ({ ...x, [k]: e.target.value })));
+  const both = (fr: string, en: string) => ({ ...(fr.trim() ? { fr: fr.trim() } : {}), ...(en.trim() ? { en: en.trim() } : {}) });
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    const description = both(f.descFr, f.descEn);
+    await onSave({ name: both(f.fr, f.en), description: Object.keys(description).length ? description : null });
+    setSaved(true);
+  }
+  return (
+    <form onSubmit={submit} aria-label={t("textTitle")} className="mb-4 grid gap-3 border-b border-line pb-4 sm:grid-cols-2">
+      <Field label={t("nameFr")}>
+        <input className={input} value={f.fr} onChange={set("fr")} required maxLength={120} />
+      </Field>
+      <Field label={t("nameEn")}>
+        <input className={input} value={f.en} onChange={set("en")} maxLength={120} />
+      </Field>
+      <Field label={t("descriptionFr")} hint={t("descriptionHint")}>
+        <textarea className={input} rows={3} value={f.descFr} onChange={set("descFr")} maxLength={2000} />
+      </Field>
+      <Field label={t("descriptionEn")}>
+        <textarea className={input} rows={3} value={f.descEn} onChange={set("descEn")} maxLength={2000} />
+      </Field>
+      <div className="flex items-center gap-3 sm:col-span-2">
+        <Button type="submit" variant="primary" size="s">
+          {t("saveText")}
+        </Button>
+        {saved ? (
+          <span role="status" className="text-sm text-ink-muted">
+            {t("textSaved")}
+          </span>
+        ) : null}
+      </div>
+    </form>
   );
 }
 

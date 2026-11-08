@@ -114,6 +114,10 @@
           "slug": {
             "type": "string"
           },
+          "sku": {
+            "type": "string",
+            "description": "The shown offer's variant (the first variant when there is no price): what a wish list keeps."
+          },
           "title": {
             "type": "string"
           },
@@ -151,6 +155,7 @@
           },
           "price": {
             "type": "object",
+            "nullable": true,
             "properties": {
               "amountMinor": {
                 "type": "integer"
@@ -162,7 +167,8 @@
             "required": [
               "amountMinor",
               "currency"
-            ]
+            ],
+            "description": "null: no confirmed price in this currency; the store offers to quote it (ADR-078)."
           },
           "compareAtMinor": {
             "type": "integer",
@@ -174,7 +180,50 @@
             "description": "When the shown price is a deal (ADR-070): when it ends."
           },
           "availability": {
-            "$ref": "#/components/schemas/Availability"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Availability"
+              },
+              {
+                "nullable": true,
+                "description": "null when there is no price."
+              }
+            ]
+          },
+          "seller": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "verified": {
+                "type": "boolean",
+                "description": "A person approved the seller's company and documents (ADR-050)."
+              }
+            },
+            "required": [
+              "name",
+              "verified"
+            ],
+            "description": "Who sells the shown offer; null: Tracecart, or no offer yet."
+          },
+          "rating": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "average": {
+                "type": "number"
+              },
+              "count": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "average",
+              "count"
+            ],
+            "description": "From approved reviews by customers who received it; null: none yet."
           },
           "offerCount": {
             "type": "integer"
@@ -186,6 +235,7 @@
         "required": [
           "id",
           "slug",
+          "sku",
           "title",
           "brand",
           "image",
@@ -193,6 +243,8 @@
           "compareAtMinor",
           "dealEndsAt",
           "availability",
+          "seller",
+          "rating",
           "offerCount",
           "variantCount"
         ]
@@ -766,12 +818,16 @@
             "properties": {
               "name": {
                 "type": "string"
+              },
+              "verified": {
+                "type": "boolean"
               }
             },
             "required": [
-              "name"
+              "name",
+              "verified"
             ],
-            "description": "null: sold by Tracecart."
+            "description": "null: sold by Tracecart. verified: a person approved the seller (ADR-050)."
           },
           "availability": {
             "$ref": "#/components/schemas/Availability"
@@ -1034,6 +1090,10 @@
           "selectedSku": {
             "type": "string"
           },
+          "quoteOnly": {
+            "type": "boolean",
+            "description": "No variant has a price in this currency: the product shows without one, and the store offers to quote it (ADR-078)."
+          },
           "compatibility": {
             "type": "array",
             "items": {
@@ -1100,6 +1160,7 @@
           "optionAxes",
           "variants",
           "selectedSku",
+          "quoteOnly",
           "compatibility",
           "related",
           "updatedAt"
@@ -1137,6 +1198,7 @@
                 },
                 "price": {
                   "type": "object",
+                  "nullable": true,
                   "properties": {
                     "amountMinor": {
                       "type": "integer"
@@ -1644,6 +1706,38 @@
         ]
       },
       "DealList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductCard"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "TrendingList": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductCard"
+            }
+          }
+        },
+        "required": [
+          "days",
+          "items"
+        ]
+      },
+      "CardList": {
         "type": "object",
         "properties": {
           "items": {
@@ -7406,6 +7500,91 @@
         }
       }
     },
+    "/catalog/cards": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Cards for the products named, in that order (recently viewed); products no longer listed are left out",
+        "security": [],
+        "x-tracecart-access": "public",
+        "parameters": [
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "minItems": 1,
+              "maxItems": 24,
+              "description": "Product slugs, repeated (up to 24); the cards come back in this order."
+            },
+            "required": true,
+            "description": "Product slugs, repeated (up to 24); the cards come back in this order.",
+            "name": "slug",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{2}$",
+              "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first."
+            },
+            "required": false,
+            "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first.",
+            "name": "country",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$",
+              "default": "XOF",
+              "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion)."
+            },
+            "required": false,
+            "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion).",
+            "name": "currency",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/catalog/categories": {
       "get": {
         "tags": [
@@ -8421,6 +8600,84 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SearchSuggestions"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/trending": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Products ordered by the most different customers over the last `days` days, at least two each (ADR-078). Empty when nothing qualifies.",
+        "security": [],
+        "x-tracecart-access": "public",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 24,
+              "default": 12
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{2}$",
+              "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first."
+            },
+            "required": false,
+            "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first.",
+            "name": "country",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$",
+              "default": "XOF",
+              "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion)."
+            },
+            "required": false,
+            "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion).",
+            "name": "currency",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrendingList"
                 }
               }
             }

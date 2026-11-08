@@ -1,12 +1,12 @@
 "use client";
 
+import { findHref } from "./links";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { CategoryNode } from "@/lib/store";
 
 /** "Find it for me", with a department's name already typed. */
-export const findHref = (need?: string) => (need ? `/find?q=${encodeURIComponent(need)}` : "/find");
 
 /**
  * "All departments": a panel with the department list on the left and the

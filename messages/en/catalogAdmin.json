@@ -134,7 +134,13 @@
     "searchable": "Search",
     "required": "Required",
     "delete": "Delete",
-    "confirmDelete": "Delete the attribute {key}? Products keep their values, which are no longer shown."
+    "confirmDelete": "Delete the attribute {key}? Products keep their values, which are no longer shown.",
+    "textTitle": "Name and description",
+    "descriptionFr": "Description (French)",
+    "descriptionEn": "Description (English)",
+    "descriptionHint": "Shown at the top of the category's page in the store. Leave empty for none.",
+    "saveText": "Save name and description",
+    "textSaved": "Saved."
   },
   "brands": {
     "title": "Brands",
