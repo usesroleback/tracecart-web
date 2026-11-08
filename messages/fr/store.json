@@ -1,24 +1,22 @@
 {
   "meta": {
-    "homeTitle": "Tracecart : outils, pièces et consommables, livrés",
-    "homeDescription": "Outillage électroportatif, outils à main, pièces détachées, accessoires et consommables, avec le prix livré complet avant de payer. Livrés au Burkina Faso, au Mali, au Niger et au-delà.",
+    "homeTitle": "Tracecart : trouvez ce qu'il vous faut, même sans connaître son nom",
+    "homeDescription": "Cherchez avec des mots ou une photo, comparez les offres, achetez ou faites-le trouver, et faites-le livrer. Le prix livré complet avant de payer.",
     "catalogueTitle": "Toutes les catégories",
-    "catalogueDescription": "Toutes les catégories d'outils, de pièces et de consommables sur Tracecart.",
+    "catalogueDescription": "Tous les rayons et toutes les catégories de Tracecart.",
     "categoryDescription": "{category} : {count, plural, one {# produit} other {# produits}} sur Tracecart, avec le prix livré complet avant de payer.",
     "brandsTitle": "Marques",
-    "brandsDescription": "Les marques d'outils sur Tracecart.",
+    "brandsDescription": "Les marques sur Tracecart.",
     "brandDescription": "{brand} sur Tracecart : {count, plural, one {# produit} other {# produits}}.",
     "searchTitle": "{query} : recherche",
     "searchEmptyTitle": "Recherche",
     "aboutTitle": "Comment fonctionne Tracecart",
     "dealsTitle": "Promotions",
-    "dealsDescription": "Outils, pièces et consommables à prix réduit pour une durée limitée sur Tracecart."
+    "dealsDescription": "Des produits à prix réduit pour une durée limitée sur Tracecart."
   },
   "nav": {
-    "categories": "Toutes les catégories",
-    "brands": "Marques",
     "searchLabel": "Rechercher dans le catalogue",
-    "searchPlaceholder": "Outils, pièces, marques…",
+    "searchPlaceholder": "Cherchez un produit, décrivez votre besoin ou utilisez une photo…",
     "search": "Rechercher",
     "suggestions": "Suggestions",
     "suggestedProducts": "Produits",
@@ -27,11 +25,13 @@
     "seeAll": "Tous les résultats pour « {query} »",
     "didYouMean": "Vouliez-vous dire « {query} » ?",
     "aiSearch": "Chercher avec une photo",
-    "deals": "Promotions"
+    "department": "Rayon",
+    "allDepartments": "Tous les rayons",
+    "photoSearch": "Photo"
   },
   "home": {
-    "title": "Les outils qu'il vous faut, livrés là où les autres ne vont pas.",
-    "lead": "Électroportatif, outils à main, pièces détachées et consommables. Le prix livré complet avant de payer, rien de plus à la livraison.",
+    "title": "Trouvez ce qu'il vous faut. Même sans connaître son nom.",
+    "lead": "Cherchez avec des mots ou une photo, comparez les offres, achetez ou faites-le trouver, et faites-le livrer. Le prix livré complet avant de payer.",
     "categoriesTitle": "Par catégorie",
     "localTitle": "En stock dans votre pays : {country}",
     "localTitleAnywhere": "En stock maintenant",
@@ -96,7 +96,9 @@
       "used": "D'occasion",
       "refurbished": "Reconditionné",
       "inStock": "En stock près de vous"
-    }
+    },
+    "emptyDepartmentTitle": "Rien dans {name} pour l'instant",
+    "emptyDepartmentLead": "Les vendeurs ajoutent encore des produits ici. Décrivez ce qu'il vous faut, ou envoyez une photo, et nous le trouvons pour vous."
   },
   "card": {
     "offers": "{count, plural, one {# offre} other {# offres}}",
@@ -144,7 +146,7 @@
     "certifications": "Certifications : {list}",
     "description": "Description",
     "compatibility": {
-      "FITS_from": "Compatible avec ces outils",
+      "FITS_from": "Compatible avec",
       "FITS_to": "Batteries et pièces compatibles",
       "CHARGES_from": "Charge ces batteries",
       "CHARGES_to": "Chargeurs compatibles",
@@ -205,5 +207,8 @@
     "lead": "Des prix plus bas pour une durée limitée. Le prix livré est calculé à la commande, avant de payer.",
     "empty": "Aucune promotion en ce moment.",
     "ends": "Promotion · jusqu'au {date}"
+  },
+  "price": {
+    "approxTitle": "Indicatif, au taux enregistré le {date}. Vous payez en {currency}."
   }
 }

@@ -1,28 +1,37 @@
 {
   "meta": {
     "title": "Tracecart — Find it. Get it there.",
-    "description": "Tell us the tool or equipment you need, even if you don't know its name: we find it, buy it and deliver it. Already have the goods? We move them. One delivered price."
+    "description": "Tell us what you need, even if you don't know its name: we find it, buy it and deliver it. Already have the goods? We move them. One delivered price."
   },
   "nav": {
     "label": "Main",
-    "home": "Home",
-    "catalogue": "Catalogue",
     "brands": "Brands",
     "about": "How it works",
-    "ship": "Freight",
-    "account": "My account",
-    "cta": "Find what you need",
+    "ship": "Ship something",
+    "account": "Account",
     "openMenu": "Open the menu",
-    "closeMenu": "Close the menu"
+    "closeMenu": "Close the menu",
+    "deals": "Deals",
+    "sell": "Sell on Tracecart",
+    "orders": "Orders",
+    "allDepartments": "All departments",
+    "departments": "Departments",
+    "findForMe": "Find it for me",
+    "seeAllIn": "See all in {name}",
+    "emptyDepartment": "Nothing is listed in {name} yet.",
+    "language": "Language",
+    "currency": "Show prices in",
+    "currencyHint": "Other currencies are approximate: you pay in {currency}.",
+    "menu": "Menu"
   },
   "hero": {
-    "eyebrow": "Find the tools you need. Get them delivered.",
-    "titleBefore": "What if the tool you need",
+    "eyebrow": "Find what you need. Get it delivered.",
+    "titleBefore": "What if the thing you need",
     "titleAfter": "was already on its way?",
     "subtitleChip1": "Find",
     "subtitleChip2": "Buy",
     "subtitleChip3": "Deliver",
-    "subtitleRest": "the tools, equipment and parts you're looking for, or move the goods you already have.",
+    "subtitleRest": "the products and parts you're looking for, from a dress in a photo to a replacement motor, or move the goods you already have.",
     "imageAlt": "A woman in safety glasses drilling into a wall",
     "showcase": {
       "label": "What we solve",
@@ -32,7 +41,7 @@
       "goTo": "Show: {title}",
       "items": {
         "tool": {
-          "title": "A new tool",
+          "title": "Something new",
           "body": "A drill, a saw, a measuring device: describe it or show it, and we find where to buy it and deliver it."
         },
         "equipment": {
@@ -54,7 +63,7 @@
     "eyebrow": "Our point of view",
     "before": "Most suppliers sell what they have in stock. Most forwarders sell a truck.",
     "accent": "We start from what you need,",
-    "after": "find the right tool, and bring it to your door for one price."
+    "after": "find the right product, and bring it to your door for one price."
   },
   "services": {
     "eyebrow": "From the first search to your door",
@@ -62,7 +71,7 @@
     "tabsLabel": "What we do",
     "items": {
       "sourcing": {
-        "title": "Find the right tool",
+        "title": "Find the right product",
         "body": "A photo, a part number or a few words is enough. We identify the product, compare suppliers and check it's the right one before you pay.",
         "imageAlt": "A coordinator reviewing a request at her desk"
       },
@@ -93,7 +102,7 @@
     "steps": {
       "tell": {
         "title": "Tell us what you need",
-        "body": "Describe the tool or send a photo, even without its name. Or give us the pickup address of goods you already have."
+        "body": "Describe it or send a photo, even without its name. Or give us the pickup address of goods you already have."
       },
       "price": {
         "title": "Get one delivered price",

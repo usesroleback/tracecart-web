@@ -88,7 +88,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           </>
         }
         intro={category.description ? <p className="mt-2 max-w-3xl text-ink-muted">{category.description}</p> : null}
-        empty={<EmptyListing />}
+        empty={<EmptyListing department={category.count === 0 ? category.name : undefined} />}
       />
     </StoreShell>
   );

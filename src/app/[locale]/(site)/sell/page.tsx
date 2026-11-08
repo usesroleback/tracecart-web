@@ -19,7 +19,7 @@ export default async function SellPage() {
   const res = await fetch(`${SERVER_API_URL}/sellers/terms`, { cache: "no-store" }).catch(() => null);
   const terms = res?.ok ? ((await res.json()) as { commissionBps: number; payoutHoldDays: number; requiredDocuments: string[] }) : null;
   return (
-    <StoreShell search={false}>
+    <StoreShell>
       <h1 className="rb-headline text-[28px] sm:text-[36px]">{t("title")}</h1>
       <p className="mb-6 mt-2 max-w-2xl text-ink-muted">{t("lead")}</p>
       <SellOnTracecart terms={terms} />

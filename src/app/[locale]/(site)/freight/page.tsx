@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function FreightPage() {
   const t = await getTranslations("services.freight");
   return (
-    <StoreShell search={false}>
+    <StoreShell>
       <h1 className="rb-headline text-[28px] sm:text-[36px]">{t("title")}</h1>
       <p className="mb-6 mt-2 max-w-2xl text-ink-muted">{t("lead")}</p>
       <Freight />

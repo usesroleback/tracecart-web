@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function FakePayPage({ params }: { params: Promise<{ paymentId: string }> }) {
   const { paymentId } = await params;
   return (
-    <StoreShell search={false}>
+    <StoreShell>
       <FakePay paymentId={paymentId} />
     </StoreShell>
   );

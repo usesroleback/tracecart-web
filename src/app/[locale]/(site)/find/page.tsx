@@ -17,7 +17,7 @@ export default async function FindPage({ searchParams }: Props) {
   const t = await getTranslations("services.find");
   const searchId = typeof search === "string" && /^[0-9a-f-]{36}$/i.test(search) ? search : undefined;
   return (
-    <StoreShell search={false}>
+    <StoreShell>
       <h1 className="rb-headline text-[28px] sm:text-[36px]">{t("title")}</h1>
       <p className="mb-6 mt-2 max-w-2xl text-ink-muted">{t("lead")}</p>
       <FindForMe searchId={searchId} initialWhat={typeof q === "string" ? q.slice(0, 500) : undefined} />

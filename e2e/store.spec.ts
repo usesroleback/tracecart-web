@@ -1,7 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
 // The store over tracecart-api's demo catalogue (pnpm seed:demo: 202 tools,
-// fictional brands, prices in XOF). Phone-sized, like most of its visitors.
+// fictional brands, prices in XOF), under the marketplace's departments
+// (ADR-074, ADR-077). Phone-sized, like most of its visitors.
 
 type Ld = {
   "@type": string;
@@ -18,29 +19,72 @@ async function jsonLd(page: Page): Promise<Ld[]> {
 }
 
 test.describe("the store", () => {
-  test("a phone's header shows the whole logo, and its menu lets you choose a country", async ({ page }) => {
+  test("a phone's header shows the whole logo and the search, and its menu has the departments and a country", async ({ page }) => {
     await page.goto("/en");
     const logo = page.getByRole("banner").getByRole("link", { name: "Tracecart" }).locator("img:visible");
     expect((await logo.boundingBox())!.width).toBeGreaterThan(100);
+    await expect(page.getByRole("banner").getByRole("combobox", { name: "Search the catalogue" })).toBeVisible();
+    await expect(page.getByRole("banner").getByRole("link", { name: "Search with a photo" })).toBeVisible();
 
-    await page.getByRole("button", { name: /menu/i }).click();
-    const picker = page.locator("#hp-menu select");
+    await page.getByRole("button", { name: "Open the menu" }).click();
+    const drawer = page.locator("#shop-drawer");
+    await expect(drawer).toBeVisible();
+    // A department with tools in it opens on its categories; an empty one says so.
+    await drawer.getByRole("button", { name: "Tools & Hardware" }).click();
+    await expect(drawer.getByRole("link", { name: "Power tools" })).toBeVisible();
+    await drawer.getByRole("button", { name: "Fashion" }).click();
+    await expect(drawer.getByText("Nothing is listed in Fashion yet.")).toBeVisible();
+    await expect(drawer.getByRole("link", { name: "Find it for me" })).toHaveAttribute("href", /\/find\?q=Fashion/);
+
+    const picker = drawer.locator("select").first();
     await picker.selectOption("ML");
     await expect(picker).toHaveValue("ML");
-    await expect(page.locator("#hp-menu")).toBeVisible();
+    await expect(drawer).toBeVisible();
+  });
+
+  test("on a computer, All departments opens the tree, and other currencies are approximate", async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 1360, height: 900 } });
+    const page = await context.newPage();
+    await page.goto("/en");
+    await page.getByRole("button", { name: "All departments" }).click();
+    const panel = page.locator("#department-panel");
+    await panel.getByRole("link", { name: "Tools & Hardware" }).hover();
+    await expect(panel.getByRole("link", { name: "Power tools" })).toBeVisible();
+    await panel.getByRole("link", { name: "Drills and drivers" }).click();
+    await expect(page).toHaveURL(/\/en\/c\/tools-hardware\/power-tools\/drills-drivers$/);
+
+    // An empty department says so instead of showing nothing.
+    await page.goto("/en/c/fashion");
+    await expect(page.getByRole("heading", { name: "Nothing in Fashion yet" })).toBeVisible();
+
+    // The search narrows to a department.
+    await page.getByRole("banner").getByLabel("Department", { exact: true }).selectOption("tools-hardware");
+    await page.getByRole("banner").getByRole("combobox", { name: "Search the catalogue" }).fill("drill");
+    await page.getByRole("banner").getByRole("combobox", { name: "Search the catalogue" }).press("Enter");
+    await expect(page).toHaveURL(/\/en\/s\?q=drill&category=tools-hardware/);
+
+    // Euros, beside the real price, marked as approximate.
+    await page.getByRole("banner").getByLabel("Show prices in").selectOption("EUR");
+    await page.goto("/en/c/tools-hardware/power-tools");
+    await expect(page.locator("article").first().getByText(/≈ [\d.,]+ EUR/)).toBeVisible();
+    await expect(page.locator("article").first().getByText(/XOF$/).first()).toBeVisible();
+    await context.close();
   });
 
   test("browses from the home page to a product through a category and a filter", async ({ page }) => {
     await page.goto("/fr");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await page.getByRole("link", { name: /^Outillage et quincaillerie/ }).first().click();
+    await expect(page).toHaveURL(/\/fr\/c\/tools-hardware$/);
+    await page.getByText("Filtrer et trier").click();
     await page.getByRole("link", { name: /^Outillage électroportatif/ }).first().click();
-    await expect(page).toHaveURL(/\/fr\/c\/power-tools$/);
+    await expect(page).toHaveURL(/\/fr\/c\/tools-hardware\/power-tools$/);
     await expect(page.getByRole("heading", { level: 1, name: "Outillage électroportatif" })).toBeVisible();
 
     // Filters fold out on a phone.
     await page.getByText("Filtrer et trier").click();
     await page.getByRole("link", { name: /^Perceuses et visseuses/ }).first().click();
-    await expect(page).toHaveURL(/\/fr\/c\/power-tools\/drills-drivers$/);
+    await expect(page).toHaveURL(/\/fr\/c\/tools-hardware\/power-tools\/drills-drivers$/);
     const all = Number((await page.getByText(/\d+ produits/).first().textContent())!.match(/\d+/)![0]);
 
     await page.getByText("Filtrer et trier").click();

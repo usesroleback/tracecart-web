@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default function CompanyStaffPage() {
   return (
-    <StoreShell search={false}>
+    <StoreShell>
       <CompanyStaff />
     </StoreShell>
   );

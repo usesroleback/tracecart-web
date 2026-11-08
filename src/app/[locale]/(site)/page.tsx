@@ -41,7 +41,7 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
   const base = await siteUrl();
 
   return (
-    <StoreShell search={false}>
+    <StoreShell>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -59,7 +59,8 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
         </div>
         {tree?.categories.length ? (
           <ul className="mt-6 flex flex-wrap gap-2">
-            {tree.categories.slice(0, 8).map((c) => (
+            {/* Departments with something in them first (ADR-077). */}
+            {[...tree.categories].sort((a, b) => Number(b.count > 0) - Number(a.count > 0)).slice(0, 8).map((c) => (
               <li key={c.slug}>
                 <Link href={`/c/${c.slug}`} className="inline-flex rounded-[var(--radius-xs)] border border-line bg-surface-raised px-3 py-1.5 text-sm text-ink hover:border-ink">
                   {c.name}

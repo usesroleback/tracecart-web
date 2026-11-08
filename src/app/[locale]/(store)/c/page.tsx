@@ -29,6 +29,14 @@ export default async function Catalogue({ params }: { params: Promise<{ locale: 
               </Link>
               <span className="rb-mono-s ml-2 text-ink-muted">{c.count}</span>
             </h2>
+            {c.count === 0 ? (
+              <p className="mt-3 text-sm text-ink-muted">
+                {t("listing.emptyDepartmentTitle", { name: c.name })} ·{" "}
+                <Link href={`/find?q=${encodeURIComponent(c.name)}`} className="font-medium text-ink underline">
+                  {t("listing.askUs")}
+                </Link>
+              </p>
+            ) : null}
             <ul className="mt-3 space-y-1.5">
               {c.children
                 .filter((k) => k.count > 0)

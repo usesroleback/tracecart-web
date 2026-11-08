@@ -4058,7 +4058,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** The category tree, with how many products each lists (its subcategories' included). Empty categories are left out. */
+        /** The category tree, with how many products each lists (its subcategories' included). Departments (the top level) always show; below them, empty categories are left out. */
         get: {
             parameters: {
                 query?: {
@@ -4141,6 +4141,63 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["CategoryDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/currencies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Currencies the store can show approximate prices in: those staff keep a rate for. Display only; orders are charged in the store's currency. */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DisplayCurrencies"];
                     };
                 };
                 /** @description Invalid request */
@@ -32625,6 +32682,16 @@ export interface components {
         Ready: components["schemas"]["Health"] & {
             /** @enum {string} */
             migrations: "applied" | "pending" | "unknown";
+        };
+        DisplayCurrencies: {
+            base: string;
+            rates: {
+                currency: string;
+                /** @description Units of `currency` for one unit of `base`. */
+                rate: string;
+                source: string | null;
+                updatedAt: string;
+            }[];
         };
         DealList: {
             items: components["schemas"]["ProductCard"][];

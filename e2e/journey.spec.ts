@@ -85,18 +85,23 @@ test("an order from the shelf to the customer's door and back again", async ({ b
   await button(point, "Confirm delivery").click();
   await expect(point.getByText("Cash collected")).toBeVisible();
 
-  // The cash reaches finance.
+  // The cash reaches finance: everything the point holds, which after other
+  // tests can include more than this parcel, so finance checks what was declared.
   await point.goto("/en/cod");
-  await point.getByRole("checkbox").first().check();
-  await point.getByLabel("Transfer reference").fill("OM-JOURNEY");
+  for (const box of await point.getByRole("checkbox").all()) await box.check();
+  const transfer = `OM-JOURNEY-${Date.now().toString(36)}`;
+  await point.getByLabel("Transfer reference").fill(transfer);
   await button(point, "Declare as passed on").click();
   await expect(point.getByText("Waiting for finance").first()).toBeVisible();
   await done(point);
   const finance = await person(browser, "finance");
   await finance.goto("/en/cod");
-  await finance.getByLabel("Amount received (XOF)").first().fill(total);
-  await button(finance, "Confirm receipt").first().click();
-  await expect(finance.getByText("Received", { exact: true }).first()).toBeVisible();
+  const remittance = finance.getByRole("listitem").filter({ hasText: `Transfer ${transfer}` }).filter({ hasText: "Waiting for finance" });
+  const declared = (await remittance.getByText(/^[\d\s,.]+ XOF$/).first().textContent())!.replace(/\D/g, "");
+  expect(Number(declared)).toBeGreaterThanOrEqual(Number(total));
+  await remittance.getByLabel("Amount received (XOF)").fill(declared);
+  await remittance.getByRole("button", { name: "Confirm receipt" }).click();
+  await expect(finance.getByRole("listitem").filter({ hasText: `Transfer ${transfer}` }).getByText("Received", { exact: true })).toBeVisible();
 
   // It doesn't work: the customer sends it back.
   await customer.goto(`/en/account/orders/${reference}`);

@@ -1,24 +1,22 @@
 {
   "meta": {
-    "homeTitle": "Tracecart: tools, parts and consumables, delivered",
-    "homeDescription": "Power tools, hand tools, spare parts, accessories and consumables, with the full delivered price before you pay. Delivered to Burkina Faso, Mali, Niger and beyond.",
+    "homeTitle": "Tracecart: find what you need, even if you don't know its name",
+    "homeDescription": "Search by words or a photo, compare offers, buy or have it found for you, and ship it. The full delivered price before you pay.",
     "catalogueTitle": "All categories",
-    "catalogueDescription": "Every category of tools, parts and consumables on Tracecart.",
+    "catalogueDescription": "Every department and category on Tracecart.",
     "categoryDescription": "{category}: {count, plural, one {# product} other {# products}} on Tracecart, with the full delivered price before you pay.",
     "brandsTitle": "Brands",
-    "brandsDescription": "The tool brands on Tracecart.",
+    "brandsDescription": "The brands on Tracecart.",
     "brandDescription": "{brand} on Tracecart: {count, plural, one {# product} other {# products}}.",
     "searchTitle": "{query}: search",
     "searchEmptyTitle": "Search",
     "aboutTitle": "How Tracecart works",
     "dealsTitle": "Deals",
-    "dealsDescription": "Tools, parts and consumables at a lower price for a limited time on Tracecart."
+    "dealsDescription": "Products at a lower price for a limited time on Tracecart."
   },
   "nav": {
-    "categories": "All categories",
-    "brands": "Brands",
     "searchLabel": "Search the catalogue",
-    "searchPlaceholder": "Search tools, parts, brands…",
+    "searchPlaceholder": "Search products, describe what you need, or use a photo…",
     "search": "Search",
     "suggestions": "Suggestions",
     "suggestedProducts": "Products",
@@ -27,11 +25,13 @@
     "seeAll": "All results for “{query}”",
     "didYouMean": "Did you mean “{query}”?",
     "aiSearch": "Search with a photo",
-    "deals": "Deals"
+    "department": "Department",
+    "allDepartments": "All departments",
+    "photoSearch": "Photo"
   },
   "home": {
-    "title": "The tools you need, delivered where others don't.",
-    "lead": "Power tools, hand tools, spare parts and consumables. The full delivered price before you pay, nothing added at the door.",
+    "title": "Find what you need. Even if you don't know its name.",
+    "lead": "Search with words or a photo, compare what's on offer, buy it or have it found for you, and ship it. The full delivered price before you pay.",
     "categoriesTitle": "Shop by category",
     "localTitle": "In stock in {country}",
     "localTitleAnywhere": "In stock now",
@@ -96,7 +96,9 @@
       "used": "Used",
       "refurbished": "Refurbished",
       "inStock": "In stock near you"
-    }
+    },
+    "emptyDepartmentTitle": "Nothing in {name} yet",
+    "emptyDepartmentLead": "Sellers are still adding products here. Describe what you need, or send a photo, and we'll find it for you."
   },
   "card": {
     "offers": "{count, plural, one {# offer} other {# offers}}",
@@ -144,7 +146,7 @@
     "certifications": "Certifications: {list}",
     "description": "Description",
     "compatibility": {
-      "FITS_from": "Fits these tools",
+      "FITS_from": "Fits these",
       "FITS_to": "Batteries and parts that fit",
       "CHARGES_from": "Charges these batteries",
       "CHARGES_to": "Chargers for it",
@@ -195,7 +197,7 @@
   },
   "brands": {
     "title": "Brands",
-    "lead": "Every brand with tools in the catalogue."
+    "lead": "Every brand with products in the catalogue."
   },
   "catalogue": {
     "title": "All categories"
@@ -205,5 +207,8 @@
     "lead": "Lower prices for a limited time. The delivered price is worked out at checkout, before you pay.",
     "empty": "No deals right now.",
     "ends": "Deal · ends {date}"
+  },
+  "price": {
+    "approxTitle": "Approximate, at a rate kept on {date}. You pay in {currency}."
   }
 }

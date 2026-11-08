@@ -1603,6 +1603,46 @@
           }
         ]
       },
+      "DisplayCurrencies": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "string"
+          },
+          "rates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "currency": {
+                  "type": "string"
+                },
+                "rate": {
+                  "type": "string",
+                  "description": "Units of `currency` for one unit of `base`."
+                },
+                "source": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "currency",
+                "rate",
+                "source",
+                "updatedAt"
+              ]
+            }
+          }
+        },
+        "required": [
+          "base",
+          "rates"
+        ]
+      },
       "DealList": {
         "type": "object",
         "properties": {
@@ -7371,7 +7411,7 @@
         "tags": [
           "Catalogue"
         ],
-        "summary": "The category tree, with how many products each lists (its subcategories' included). Empty categories are left out.",
+        "summary": "The category tree, with how many products each lists (its subcategories' included). Departments (the top level) always show; below them, empty categories are left out.",
         "security": [],
         "x-tracecart-access": "public",
         "parameters": [
@@ -7484,6 +7524,62 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CategoryDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/currencies": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Currencies the store can show approximate prices in: those staff keep a rate for. Display only; orders are charged in the store's currency.",
+        "security": [],
+        "x-tracecart-access": "public",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$",
+              "default": "XOF",
+              "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion)."
+            },
+            "required": false,
+            "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion).",
+            "name": "currency",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisplayCurrencies"
                 }
               }
             }

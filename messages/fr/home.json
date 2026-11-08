@@ -1,28 +1,37 @@
 {
   "meta": {
     "title": "Tracecart — Trouvé. Livré.",
-    "description": "Dites-nous l'outil ou l'équipement qu'il vous faut, même sans connaître son nom : nous le trouvons, l'achetons et le livrons. Vous avez déjà la marchandise ? Nous la transportons. Un seul prix livré."
+    "description": "Dites-nous ce qu'il vous faut, même sans connaître son nom : nous le trouvons, l'achetons et le livrons. Vous avez déjà la marchandise ? Nous la transportons. Un seul prix livré."
   },
   "nav": {
-    "label": "Principale",
-    "home": "Accueil",
-    "catalogue": "Catalogue",
+    "label": "Principal",
     "brands": "Marques",
     "about": "Comment ça marche",
-    "ship": "Fret",
-    "account": "Mon compte",
-    "cta": "Rechercher un outil",
+    "ship": "Expédier un colis",
+    "account": "Compte",
     "openMenu": "Ouvrir le menu",
-    "closeMenu": "Fermer le menu"
+    "closeMenu": "Fermer le menu",
+    "deals": "Promotions",
+    "sell": "Vendre sur Tracecart",
+    "orders": "Commandes",
+    "allDepartments": "Tous les rayons",
+    "departments": "Rayons",
+    "findForMe": "Trouvez-le pour moi",
+    "seeAllIn": "Tout voir dans {name}",
+    "emptyDepartment": "Rien n'est encore en vente dans {name}.",
+    "language": "Langue",
+    "currency": "Afficher les prix en",
+    "currencyHint": "Les autres devises sont indicatives : vous payez en {currency}.",
+    "menu": "Menu"
   },
   "hero": {
-    "eyebrow": "Trouvez les outils qu'il vous faut. Faites-les livrer.",
-    "titleBefore": "Et si l'outil qu'il vous faut",
+    "eyebrow": "Trouvez ce qu'il vous faut. Faites-le livrer.",
+    "titleBefore": "Et si ce qu'il vous faut",
     "titleAfter": "était déjà en route ?",
     "subtitleChip1": "Trouver",
     "subtitleChip2": "Acheter",
     "subtitleChip3": "Livrer",
-    "subtitleRest": "les outils, équipements et pièces que vous cherchez, ou transporter les marchandises que vous avez déjà.",
+    "subtitleRest": "les produits et les pièces que vous cherchez, d'une robe vue en photo à un moteur de remplacement, ou transporter les marchandises que vous avez déjà.",
     "imageAlt": "Une femme en lunettes de protection perce un mur",
     "showcase": {
       "label": "Ce que nous réglons",
@@ -32,7 +41,7 @@
       "goTo": "Voir : {title}",
       "items": {
         "tool": {
-          "title": "Un nouvel outil",
+          "title": "Quelque chose de nouveau",
           "body": "Une perceuse, une scie, un appareil de mesure : décrivez-le ou montrez-le, nous trouvons où l'acheter et vous le livrons."
         },
         "equipment": {
@@ -54,7 +63,7 @@
     "eyebrow": "Notre point de vue",
     "before": "La plupart des fournisseurs vendent ce qu'ils ont en stock. La plupart des transitaires vendent un camion.",
     "accent": "Nous partons de ce dont vous avez besoin,",
-    "after": "trouvons le bon outil et le livrons à votre porte, pour un seul prix."
+    "after": "trouvons le bon produit et le livrons à votre porte, pour un seul prix."
   },
   "services": {
     "eyebrow": "De la première recherche à votre porte",
@@ -62,7 +71,7 @@
     "tabsLabel": "Ce que nous faisons",
     "items": {
       "sourcing": {
-        "title": "Trouver le bon outil",
+        "title": "Trouver le bon produit",
         "body": "Une photo, une référence ou quelques mots suffisent. Nous identifions le produit, comparons les fournisseurs et vérifions que c'est le bon avant que vous payiez.",
         "imageAlt": "Une coordinatrice relit une demande à son bureau"
       },
@@ -93,7 +102,7 @@
     "steps": {
       "tell": {
         "title": "Dites-nous ce qu'il vous faut",
-        "body": "Décrivez l'outil ou envoyez une photo, même sans son nom. Ou donnez-nous l'adresse d'enlèvement des marchandises que vous avez déjà."
+        "body": "Décrivez-le ou envoyez une photo, même sans son nom. Ou donnez-nous l'adresse d'enlèvement des marchandises que vous avez déjà."
       },
       "price": {
         "title": "Recevez un prix livré",
@@ -129,7 +138,7 @@
   },
   "closing": {
     "title": "Dites-nous ce qu'il vous faut.",
-    "cta": "Rechercher un outil"
+    "cta": "Rechercher un produit"
   },
   "footer": {
     "pages": "Pages",
