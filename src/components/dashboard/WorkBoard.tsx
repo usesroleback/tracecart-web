@@ -43,6 +43,7 @@ const PATHS: Record<string, string> = {
   questionsToReview: "/reviews?tab=questions&queue=toReview",
   listingsToFix: "/seller/listings?queue=toFix",
   payoutsToSend: "/payouts?queue=toSend",
+  payoutsToApprove: "/payouts?queue=toApprove",
   sellerStockToReceive: "/purchasing?tab=sellerStock",
   sellerInboundsOpen: "/seller/inbounds",
 };

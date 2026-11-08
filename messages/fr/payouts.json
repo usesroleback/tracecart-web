@@ -19,7 +19,8 @@
   "via": "Via {provider}",
   "queues": {
     "toSend": "Paiements à envoyer",
-    "sending": "Paiements en cours d'envoi"
+    "sending": "Paiements en cours d'envoi",
+    "toApprove": "Paiements à approuver"
   },
   "statuses": {
     "DUE": "Dû",
@@ -28,5 +29,12 @@
     "PAID": "Payé",
     "FAILED": "Échoué",
     "CANCELLED": "Annulé"
+  },
+  "approval": {
+    "send": "Demandé : envoyer ce paiement avec le prestataire actuel.",
+    "markPaid": "Demandé : l'enregistrer comme payé par le virement {ref}.",
+    "yours": "Vous l'avez demandé : quelqu'un d'autre décide.",
+    "approve": "Approuver",
+    "reject": "Refuser"
   }
 }

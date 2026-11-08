@@ -19,7 +19,8 @@
   "via": "Via {provider}",
   "queues": {
     "toSend": "Payouts to send",
-    "sending": "Payouts sending"
+    "sending": "Payouts sending",
+    "toApprove": "Payouts to approve"
   },
   "statuses": {
     "DUE": "Due",
@@ -28,5 +29,12 @@
     "PAID": "Paid",
     "FAILED": "Failed",
     "CANCELLED": "Cancelled"
+  },
+  "approval": {
+    "send": "Asked: send this payout with the current provider.",
+    "markPaid": "Asked: record it as paid by transfer {ref}.",
+    "yours": "You asked for this, so someone else decides.",
+    "approve": "Approve",
+    "reject": "Refuse"
   }
 }

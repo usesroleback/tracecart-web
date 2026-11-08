@@ -18893,7 +18893,7 @@ export interface paths {
                 query?: {
                     q?: string;
                     status?: "DUE" | "PENDING_APPROVAL" | "SENDING" | "PAID" | "FAILED" | "CANCELLED";
-                    queue?: "toSend" | "sending";
+                    queue?: "toSend" | "sending" | "toApprove";
                     sellerId?: string;
                     cursor?: string;
                     limit?: number;
@@ -19172,7 +19172,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** One payout, with its lines */
+        /** One payout, with its lines and, while it waits, the approval a second person decides */
         get: {
             parameters: {
                 query?: never;
@@ -26505,7 +26505,7 @@ export interface paths {
                 query?: {
                     q?: string;
                     status?: "DUE" | "PENDING_APPROVAL" | "SENDING" | "PAID" | "FAILED" | "CANCELLED";
-                    queue?: "toSend" | "sending";
+                    queue?: "toSend" | "sending" | "toApprove";
                     sellerId?: string;
                     cursor?: string;
                     limit?: number;
@@ -31359,7 +31359,7 @@ export interface components {
         MyWork: {
             items: {
                 /** @enum {string} */
-                key: "shipmentsToPrepare" | "shipmentsNoCarrier" | "shipmentsToMove" | "parcelsAtPoint" | "shipmentProblems" | "cashHeld" | "remittancesToConfirm" | "paymentsToConfirm" | "approvalsToDecide" | "refundsToPay" | "returnsToDecide" | "returnsArriving" | "returnsToInspect" | "returnsToResolve" | "purchaseOrdersDraft" | "inboundToReceive" | "customsFiles" | "lowStock" | "countsOpen" | "noticesNew" | "freightToQuote" | "requestsOpen" | "productsToFinish" | "sellersToReview" | "sellerPayoutsToConfirm" | "listingsToReview" | "listingsToFix" | "payoutsToSend" | "sellerStockToReceive" | "sellerInboundsOpen" | "b2bToReview" | "reviewsToReview" | "questionsToReview";
+                key: "shipmentsToPrepare" | "shipmentsNoCarrier" | "shipmentsToMove" | "parcelsAtPoint" | "shipmentProblems" | "cashHeld" | "remittancesToConfirm" | "paymentsToConfirm" | "approvalsToDecide" | "refundsToPay" | "returnsToDecide" | "returnsArriving" | "returnsToInspect" | "returnsToResolve" | "purchaseOrdersDraft" | "inboundToReceive" | "customsFiles" | "lowStock" | "countsOpen" | "noticesNew" | "freightToQuote" | "requestsOpen" | "productsToFinish" | "sellersToReview" | "sellerPayoutsToConfirm" | "listingsToReview" | "listingsToFix" | "payoutsToSend" | "payoutsToApprove" | "sellerStockToReceive" | "sellerInboundsOpen" | "b2bToReview" | "reviewsToReview" | "questionsToReview";
                 count: number;
             }[];
         };

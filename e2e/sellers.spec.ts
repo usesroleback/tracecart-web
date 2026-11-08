@@ -1,11 +1,15 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { button, person } from "./order";
 import { canSignIn, deleteClerkUser, signInAs } from "./signIn";
 
 // Selling on Tracecart (ADR-050): applying, a person's decision, the Seller
-// Center, and terms that staff change without touching code.
+// Center, a listing sold and paid out (docs/PLAN.md phase 8's exit), and terms
+// that staff change without touching code.
 
 test.skip(!canSignIn, "Needs a Clerk development instance's keys (CLERK_SECRET_KEY, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)");
+
+/** Closes a person's browser once they're done: many at once is a lot for a small machine. */
+const done = (page: Page) => page.context().close();
 
 const pdf = (name: string) => ({ name, mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.4 test") });
 
@@ -18,10 +22,13 @@ test("anyone can read the terms before signing in", async ({ page }) => {
   await expect(button(page, "Start my application")).toHaveCount(0);
 });
 
-test("from an application to a Seller Center", async ({ browser }) => {
-  test.setTimeout(240_000);
-  // A new person each run, removed from Clerk at the end.
-  const email = `demo.applicant.${Date.now()}+clerk_test@example.com`;
+test("from an application to a sale paid out", async ({ browser }) => {
+  test.setTimeout(480_000);
+  // New people and a new shop each run, removed from Clerk at the end.
+  const stamp = Date.now();
+  const email = `demo.applicant.${stamp}+clerk_test@example.com`;
+  const buyerEmail = `demo.buyer.${stamp}+clerk_test@example.com`;
+  const shop = `Quincaillerie ${stamp.toString(36)}`;
   try {
     const context = await browser.newContext();
     const applicant = await context.newPage();
@@ -29,7 +36,7 @@ test("from an application to a Seller Center", async ({ browser }) => {
 
     // The application.
     await applicant.goto("/en/sell");
-    await applicant.getByLabel("Business name").fill("Quincaillerie Faso");
+    await applicant.getByLabel("Business name").fill(shop);
     await applicant.getByLabel("Country").last().selectOption("BF");
     await applicant.getByRole("textbox", { name: /^City/ }).fill("Ouagadougou");
     await applicant.getByLabel("Address").fill("Avenue Kwame Nkrumah");
@@ -58,7 +65,7 @@ test("from an application to a Seller Center", async ({ browser }) => {
     await admin.goto("/en/dashboard");
     await admin.getByRole("link", { name: /Seller applications to review/ }).click();
     await expect(admin).toHaveURL(/\/en\/sellers\?queue=toReview$/);
-    await admin.getByRole("link", { name: "Quincaillerie Faso" }).click();
+    await admin.getByRole("link", { name: shop }).click();
     await expect(admin).toHaveURL(/\/en\/sellers\/[0-9a-f-]{36}$/);
     await expect(admin.getByText("Ending in 3456")).toBeVisible();
     await expect(admin.getByText("+22670123456")).toHaveCount(0);
@@ -96,6 +103,7 @@ test("from an application to a Seller Center", async ({ browser }) => {
     await expect(applicant).toHaveURL(/\/en\/seller\/listings\/[0-9a-f-]{36}$/);
     await button(applicant, "Send for review").click();
     await expect(applicant.getByText("In review")).toBeVisible();
+    const listingId = applicant.url().split("/").pop()!;
 
     const reviewer = await person(browser, "catalog_manager");
     await reviewer.goto("/en/dashboard");
@@ -108,6 +116,121 @@ test("from an application to a Seller Center", async ({ browser }) => {
 
     await applicant.reload();
     await expect(applicant.getByText("On sale").first()).toBeVisible();
+    const listing = await applicant.evaluate(async (id) => (await (await fetch(`/api/tracecart/seller/listings/${id}`)).json()) as { product: { slug: string } }, listingId);
+
+    // A customer finds the shop's offer on the product page (cached for a minute) and buys it.
+    const buyer = await (await browser.newContext()).newPage();
+    await signInAs(buyer, buyerEmail);
+    const soldBy = buyer.getByText(`Sold by ${shop}`);
+    await expect
+      .poll(
+        async () => {
+          await buyer.goto(`/en/p/${listing.product.slug}`);
+          return soldBy.count();
+        },
+        { timeout: 120_000, intervals: [5_000] }
+      )
+      .toBe(1);
+    const offerBox = soldBy.locator("xpath=ancestor::*[.//button[normalize-space()='Add to cart']][1]");
+    if (!(await soldBy.isVisible())) await buyer.getByText(/other offer/).click();
+    await offerBox.getByRole("button", { name: "Add to cart" }).click();
+    await expect(buyer.getByText("Added to the cart.")).toBeVisible();
+    await buyer.goto("/en/checkout");
+    await buyer.getByRole("radio", { name: "To a pickup point" }).click();
+    await buyer.getByLabel("Country").last().selectOption("BF");
+    await buyer.getByRole("radio", { name: /Relais Zogona/ }).check();
+    await buyer.getByLabel("Phone for the collection code").fill("+226 70 00 00 02");
+    await buyer.getByRole("radio", { name: /Cash on delivery/ }).check();
+    const place = button(buyer, /^Place the order · /);
+    await expect(place).toBeEnabled();
+    const total = (await place.textContent())!.replace(/.*· /, "").replace(/\D/g, "");
+    await place.click();
+    await buyer.waitForURL(/\/checkout\/done\//);
+    const reference = buyer.url().split("/").pop()!;
+
+    // Logistics prepares it from the seller's location and hands it to a carrier.
+    const coordinator = await person(browser, "logistics_coordinator");
+    await coordinator.goto("/en/shipments");
+    await coordinator.getByLabel("Shipment or order reference").fill(reference);
+    await button(coordinator, "Search").click();
+    const row = coordinator.locator('table a[href*="/shipments/"]');
+    await expect(row).toHaveCount(1);
+    await row.click();
+    await expect(coordinator).toHaveURL(/\/en\/shipments\/[^/]+$/);
+    const shipment = new URL(coordinator.url()).pathname;
+    await button(coordinator, "Start picking").click();
+    await coordinator.getByLabel("Total weight (kg)").fill("1.2");
+    await coordinator.getByLabel("Number of packages").fill("1");
+    await button(coordinator, "Packed").click();
+    await coordinator.getByLabel("Or a carrier with no rate card").selectOption({ label: "Sahel Express Logistique" });
+    await coordinator.getByRole("button", { name: "Choose", exact: true }).last().click();
+    await button(coordinator, "Make the label").click();
+    await expect(coordinator.getByRole("link", { name: "Download the label" })).toBeVisible();
+    await button(coordinator, "Handed to the carrier").click();
+    await expect(coordinator.getByText("Handed to the carrier").first()).toBeVisible();
+    await done(coordinator);
+
+    const carrier = await person(browser, "carrier");
+    await carrier.goto(shipment);
+    await carrier.getByLabel("What happened?").first().selectOption({ label: "Arrived at the pickup point" });
+    await button(carrier, "Record").first().click();
+    await expect(carrier.getByText("At the pickup point").first()).toBeVisible();
+    await done(carrier);
+
+    await buyer.goto(`/en/account/orders/${reference}`);
+    const codeLine = buyer.getByText("Show this code at the pickup point:").locator("..");
+    const code = (await codeLine.textContent())!.match(/\d{6}/)![0];
+    await done(buyer);
+    const point = await person(browser, "pickup_point_operator");
+    await point.goto(shipment);
+    await point.getByLabel("Customer's code").fill(code);
+    await point.getByLabel("Cash taken (XOF)").fill(total);
+    await point.getByLabel("Handed to").fill("Aïcha");
+    await button(point, "Confirm delivery").click();
+    await expect(point.getByText("Cash collected")).toBeVisible();
+    await done(point);
+
+    // Delivered. With no hold, finance collects what is due: the sale less 10 %.
+    const boss = await person(browser, "super_admin");
+    await boss.goto("/en/sellers/settings");
+    await boss.getByLabel("Days before paying out").fill("0");
+    await button(boss, "Save the terms").click();
+    await expect(boss.getByText("Saved.")).toBeVisible();
+    const asker = await person(browser, "admin");
+    try {
+      await asker.goto("/en/payouts");
+      await button(asker, "Collect what is due").click();
+      await expect(asker.getByRole("link", { name: new RegExp(shop) })).toBeVisible();
+    } finally {
+      await boss.getByLabel("Days before paying out").fill("14");
+      await button(boss, "Save the terms").click();
+      await expect(boss.getByText("Saved.")).toBeVisible();
+      await done(boss);
+    }
+    await asker.getByRole("link", { name: new RegExp(shop) }).click();
+    await expect(asker.getByText(/22[,.\s\u202f]?500/).first()).toBeVisible();
+    await expect(asker.getByText(reference)).toBeVisible();
+    await asker.getByLabel("Bank or provider reference").fill("OM-SELLER");
+    await button(asker, "Record a transfer").click();
+    await expect(asker.getByText("Waiting for approval")).toBeVisible();
+    await expect(asker.getByText("You asked for this, so someone else decides.")).toBeVisible();
+    await expect(button(asker, "Approve")).toHaveCount(0);
+    await done(asker);
+
+    // A second person approves it from their dashboard.
+    const finance = await person(browser, "finance");
+    await finance.goto("/en/dashboard");
+    await finance.getByRole("link", { name: /Seller payouts to approve/ }).click();
+    await expect(finance).toHaveURL(/\/en\/payouts\?queue=toApprove$/);
+    await finance.getByRole("link", { name: new RegExp(shop) }).click();
+    await expect(finance.getByText("Asked: record it as paid by transfer OM-SELLER.")).toBeVisible();
+    await button(finance, "Approve").click();
+    await expect(finance.getByText("Paid", { exact: true })).toBeVisible();
+    await done(finance);
+
+    // The seller sees it paid.
+    await applicant.goto("/en/seller/payouts");
+    await expect(applicant.getByText("Paid", { exact: true }).first()).toBeVisible();
 
     // Changing where the money goes needs checking again: it's on the Seller Center's own page.
     await applicant.goto("/en/seller");
@@ -117,6 +240,7 @@ test("from an application to a Seller Center", async ({ browser }) => {
     await context.close();
   } finally {
     await deleteClerkUser(email);
+    await deleteClerkUser(buyerEmail);
   }
 });
 

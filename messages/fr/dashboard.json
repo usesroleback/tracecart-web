@@ -81,7 +81,7 @@
       "cashHeld": "Encaissements à reverser",
       "remittancesToConfirm": "Reversements à confirmer",
       "paymentsToConfirm": "Virements à confirmer",
-      "approvalsToDecide": "Approbations à décider",
+      "approvalsToDecide": "Remboursements à approuver",
       "refundsToPay": "Remboursements à payer",
       "returnsToDecide": "Demandes de retour à traiter",
       "returnsArriving": "Retours en chemin",
@@ -105,7 +105,8 @@
       "listingsToFix": "Annonces à corriger",
       "payoutsToSend": "Paiements vendeurs à envoyer",
       "sellerStockToReceive": "Stock vendeur à réceptionner",
-      "sellerInboundsOpen": "Stock en entrée"
+      "sellerInboundsOpen": "Stock en entrée",
+      "payoutsToApprove": "Paiements vendeurs à approuver"
     }
   }
 }

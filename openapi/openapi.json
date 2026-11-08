@@ -1432,6 +1432,7 @@
                     "listingsToReview",
                     "listingsToFix",
                     "payoutsToSend",
+                    "payoutsToApprove",
                     "sellerStockToReceive",
                     "sellerInboundsOpen",
                     "b2bToReview",
@@ -24677,7 +24678,8 @@
               "type": "string",
               "enum": [
                 "toSend",
-                "sending"
+                "sending",
+                "toApprove"
               ]
             },
             "required": false,
@@ -24914,7 +24916,7 @@
         "tags": [
           "Payouts"
         ],
-        "summary": "One payout, with its lines",
+        "summary": "One payout, with its lines and, while it waits, the approval a second person decides",
         "security": [
           {
             "bearerAuth": []
@@ -33818,7 +33820,8 @@
               "type": "string",
               "enum": [
                 "toSend",
-                "sending"
+                "sending",
+                "toApprove"
               ]
             },
             "required": false,

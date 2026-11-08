@@ -81,7 +81,7 @@
       "cashHeld": "Cash collections to pass on",
       "remittancesToConfirm": "Cash remittances to confirm",
       "paymentsToConfirm": "Bank transfers to confirm",
-      "approvalsToDecide": "Approvals to decide",
+      "approvalsToDecide": "Refunds to approve",
       "refundsToPay": "Refunds to pay",
       "returnsToDecide": "Return requests to answer",
       "returnsArriving": "Returns on their way back",
@@ -105,7 +105,8 @@
       "listingsToFix": "Listings to fix",
       "payoutsToSend": "Seller payouts to send",
       "sellerStockToReceive": "Seller stock to receive",
-      "sellerInboundsOpen": "Stock inbound"
+      "sellerInboundsOpen": "Stock inbound",
+      "payoutsToApprove": "Seller payouts to approve"
     }
   }
 }

@@ -47,6 +47,8 @@ interface Row {
   paidAt: string | null;
   failedReason: string | null;
   lines?: Line[];
+  // On the staff detail, while a second person must decide.
+  approval?: { id: string; action: "SEND" | "MARK_PAID"; providerRef: string | null; requestedByMe: boolean; canDecide: boolean } | null;
 }
 
 export function FinancePayouts() {
@@ -189,10 +191,11 @@ export function PayoutDetail({ id, staff }: { id: string; staff: boolean }) {
   if (!row) return <p className="text-sm text-ink-muted">{t("loading")}</p>;
 
   const money = (n: number) => format.money(toMajor(n, row.currency), row.currency);
-  const act = async (method: "send" | "mark-paid" | "cancel" | "process", body?: unknown) => {
+  const act = async (method: "send" | "mark-paid" | "cancel" | "process" | "APPROVE" | "REJECT", body?: unknown) => {
     setBusy(true);
     try {
       if (method === "process") await call("POST", "/payouts/process");
+      else if (method === "APPROVE" || method === "REJECT") await call("POST", `/approvals/${row.approval!.id}/decision`, { decision: method });
       else await call("POST", `/payouts/${id}/${method}`, body);
       await load();
     } catch (e) {
@@ -241,6 +244,22 @@ export function PayoutDetail({ id, staff }: { id: string; staff: boolean }) {
           <Button type="button" disabled={busy} variant="ghost" onClick={() => act("cancel")}>
             {t("cancel")}
           </Button>
+        </div>
+      ) : null}
+      {staff && row.approval ? (
+        <div className={`${box} mt-6`}>
+          <p>{row.approval.action === "SEND" ? t("approval.send") : t("approval.markPaid", { ref: row.approval.providerRef ?? "" })}</p>
+          {row.approval.requestedByMe ? <p className="mt-1 text-ink-muted">{t("approval.yours")}</p> : null}
+          {row.approval.canDecide ? (
+            <div className="mt-3 flex flex-wrap gap-3">
+              <Button type="button" disabled={busy} onClick={() => act("APPROVE")}>
+                {t("approval.approve")}
+              </Button>
+              <Button type="button" disabled={busy} variant="ghost" onClick={() => act("REJECT")}>
+                {t("approval.reject")}
+              </Button>
+            </div>
+          ) : null}
         </div>
       ) : null}
       {staff && row.status === "SENDING" ? (
