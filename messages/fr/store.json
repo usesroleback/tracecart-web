@@ -196,7 +196,11 @@
       "ACCESSORY_FOR_from": "Accessoire pour",
       "ACCESSORY_FOR_to": "Accessoires",
       "FREQUENTLY_BOUGHT_WITH_from": "Souvent achetés ensemble",
-      "FREQUENTLY_BOUGHT_WITH_to": "Souvent achetés ensemble"
+      "FREQUENTLY_BOUGHT_WITH_to": "Souvent achetés ensemble",
+      "COMPONENT_OF_from": "Pièce de",
+      "COMPONENT_OF_to": "Ses pièces",
+      "EQUIVALENT_TO_from": "Équivalent à",
+      "EQUIVALENT_TO_to": "Pièces équivalentes"
     },
     "related": "Plus dans {category}",
     "askInstead": "Pas ce qu'il vous faut ? Demandez-le-nous",
@@ -233,7 +237,9 @@
       "submit": "Poser la question",
       "signIn": "Connectez-vous pour poser une question sur ce produit."
     },
-    "quoteBody": "Aucun prix n'est encore confirmé pour ce produit. Dites-nous combien il vous en faut et où les livrer : nous confirmons un prix et une date de livraison."
+    "quoteBody": "Aucun prix n'est encore confirmé pour ce produit. Dites-nous combien il vous en faut et où les livrer : nous confirmons un prix et une date de livraison.",
+    "compatibilityVerified": "Vérifié : document du fabricant, référence d'origine ou test par Tracecart.",
+    "compatibilityUnverified": "Pourrait convenir : pas encore vérifié. Vérifiez les détails, ou demandez-nous."
   },
   "brands": {
     "title": "Marques",
@@ -287,5 +293,78 @@
     "gone": "n'est plus vendu",
     "remove": "Retirer",
     "removeLabel": "Retirer {title}"
+  },
+  "fit": {
+    "title": {
+      "VEHICLE": "Convient-il à votre véhicule ?",
+      "DEVICE": "Convient-il à votre appareil ?",
+      "APPLIANCE": "Convient-il à votre électroménager ?"
+    },
+    "listedLead": "Indiqué pour :",
+    "noneListed": "Rien n'est encore indiqué pour cette pièce. Vérifiez ci-dessous, ou demandez-nous.",
+    "verified": "Vérifié",
+    "mayFit": "Pourrait convenir",
+    "evidence": {
+      "MANUFACTURER_DOCUMENT": "document du fabricant",
+      "OEM_CROSS_REFERENCE": "référence d'origine (OEM)",
+      "STAFF_TESTED": "testé par Tracecart",
+      "SELLER_DECLARED": "selon le vendeur seulement",
+      "UNVERIFIED": "pas encore de preuve"
+    },
+    "formLabel": "Vérifier la compatibilité",
+    "make": {
+      "VEHICLE": "Marque",
+      "DEVICE": "Marque",
+      "APPLIANCE": "Marque"
+    },
+    "model": {
+      "VEHICLE": "Modèle",
+      "DEVICE": "Modèle",
+      "APPLIANCE": "Référence du modèle"
+    },
+    "year": "Année",
+    "detail": {
+      "VEHICLE": "Moteur (facultatif)",
+      "DEVICE": "Version (facultatif)",
+      "APPLIANCE": "Suffixe (facultatif)"
+    },
+    "check": "Vérifier",
+    "result": {
+      "verified": "Convient à votre {target}.",
+      "potential": "Pourrait convenir à votre {target}.",
+      "insufficient": "Nous ne pouvons pas confirmer qu'il convient à votre {target}."
+    },
+    "missing": "Pour en être sûr, ajoutez : {fields}.",
+    "fields": {
+      "make": "la marque",
+      "model": "le modèle",
+      "year": "l'année",
+      "detail": "le moteur ou la version"
+    },
+    "notSure": "« Pourrait convenir » ou non indiqué ne veut pas dire « ne convient pas » : nous ne disons qu'il convient que si un document du fabricant, une référence d'origine ou notre propre test le montre.",
+    "otherParts": "Autres pièces indiquées pour votre {target}",
+    "askUs": "Demandez-nous de vérifier"
+  },
+  "parts": {
+    "title": "Trouver des pièces pour ce que vous avez",
+    "lead": "Votre véhicule, votre ordinateur ou téléphone, votre électroménager : voyez les pièces indiquées pour lui. Les vérifiées d'abord.",
+    "kindLegend": "C'est pour mon",
+    "kinds": {
+      "VEHICLE": "Véhicule",
+      "DEVICE": "Ordinateur ou téléphone",
+      "APPLIANCE": "Électroménager"
+    },
+    "modelLabel": "Modèle (ou référence)",
+    "yearLabel": "Année (véhicules)",
+    "detailLabel": "Moteur ou version (facultatif)",
+    "search": "Trouver des pièces",
+    "verifiedTitle": "Vérifiées pour {target}",
+    "verifiedLead": "Chacune repose sur un document du fabricant, une référence d'origine ou un test par Tracecart.",
+    "noneVerified": "Aucune pièce n'est encore vérifiée pour lui.",
+    "potentialTitle": "Pourraient convenir",
+    "potentialLead": "Indiquées par le vendeur, ou il manque un détail pour être sûr. Vérifiez avant d'acheter, ou demandez-nous.",
+    "notListed": "Pas ce qu'il vous faut ?",
+    "findForMe": "Nous le trouvons pour vous",
+    "findNeed": "Une pièce pour : {target}"
   }
 }

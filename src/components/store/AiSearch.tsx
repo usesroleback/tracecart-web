@@ -230,5 +230,9 @@ function reasonText(t: ReturnType<typeof useTranslations<"ai">>, r: Reason): str
       return t("reasons.words");
     case "looksLike":
       return t("reasons.looksLike");
+    case "fits":
+      return t("reasons.fits", { target: r.target });
+    case "mayFit":
+      return t("reasons.mayFit", { target: r.target });
   }
 }

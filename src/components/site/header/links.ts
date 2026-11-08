@@ -3,6 +3,7 @@
 export const LINKS = [
   { key: "deals", href: "/deals" },
   { key: "brands", href: "/brands" },
+  { key: "parts", href: "/parts" },
   { key: "ship", href: "/freight" },
   { key: "sell", href: "/sell" },
   { key: "about", href: "/about" },

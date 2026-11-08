@@ -99,10 +99,37 @@
       "REPLACES": "replaces",
       "ACCESSORY_FOR": "is an accessory for",
       "CONSUMABLE_FOR": "is a consumable for",
-      "FREQUENTLY_BOUGHT_WITH": "is often bought with"
+      "FREQUENTLY_BOUGHT_WITH": "is often bought with",
+      "COMPONENT_OF": "is a part of",
+      "EQUIVALENT_TO": "is equivalent to"
     },
     "saved": "Saved.",
-    "leadDays": "{min}–{max} days"
+    "leadDays": "{min}–{max} days",
+    "evidence": {
+      "MANUFACTURER_DOCUMENT": "Manufacturer document",
+      "OEM_CROSS_REFERENCE": "OEM reference",
+      "STAFF_TESTED": "Tested by Tracecart",
+      "SELLER_DECLARED": "Seller's word only",
+      "UNVERIFIED": "No evidence yet"
+    },
+    "evidenceLabel": "Rests on",
+    "evidenceRef": "Reference",
+    "evidenceRefNeeded": "Which document, or which OEM reference: shown to customers.",
+    "fitments": "Fits (vehicles, devices, appliances)",
+    "fitmentsHint": "What each variant fits outside the catalogue. Only a manufacturer document, an OEM reference or a staff test makes it verified; anything else shows as \"may fit\".",
+    "noFitments": "Nothing listed yet.",
+    "fitmentKind": "Kind",
+    "fitmentKinds": {
+      "VEHICLE": "Vehicle",
+      "DEVICE": "Device",
+      "APPLIANCE": "Appliance"
+    },
+    "make": "Make or brand",
+    "model": "Model",
+    "yearFrom": "From year",
+    "yearTo": "To year",
+    "detail": "Engine / version",
+    "addFitment": "Add"
   },
   "categories": {
     "title": "Categories and attributes",
@@ -139,8 +166,16 @@
     "descriptionFr": "Description (French)",
     "descriptionEn": "Description (English)",
     "descriptionHint": "Shown at the top of the category's page in the store. Leave empty for none.",
-    "saveText": "Save name and description",
-    "textSaved": "Saved."
+    "saveText": "Save",
+    "textSaved": "Saved.",
+    "fitmentKind": "What its products fit",
+    "fitmentKindHint": "Shows \"Will it fit?\" on its products and those of its subcategories (unless one sets its own).",
+    "fitmentNone": "Nothing (or inherited)",
+    "fitmentKinds": {
+      "VEHICLE": "A vehicle",
+      "DEVICE": "A device (laptop, phone…)",
+      "APPLIANCE": "An appliance"
+    }
   },
   "brands": {
     "title": "Brands",

@@ -24,7 +24,7 @@ function stripLocale(pathname: string): string {
  * on pages that don't use it. /freight is here too: anyone gets an estimate,
  * and asking for the firm quote signs in over the page (client side).
  */
-const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/deals", "/compare", "/s", "/s/ai", "/freight", "/cart", "/shop"]);
+const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/deals", "/compare", "/parts", "/s", "/s/ai", "/freight", "/cart", "/shop"]);
 const ANONYMOUS_PREFIXES = ["/q/", "/legal/", "/c/", "/p/", "/b/"];
 
 function isAnonymousPage(bare: string): boolean {

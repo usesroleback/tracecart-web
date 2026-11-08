@@ -196,7 +196,11 @@
       "ACCESSORY_FOR_from": "Accessory for",
       "ACCESSORY_FOR_to": "Accessories",
       "FREQUENTLY_BOUGHT_WITH_from": "Often bought together",
-      "FREQUENTLY_BOUGHT_WITH_to": "Often bought together"
+      "FREQUENTLY_BOUGHT_WITH_to": "Often bought together",
+      "COMPONENT_OF_from": "A part of",
+      "COMPONENT_OF_to": "Its parts",
+      "EQUIVALENT_TO_from": "Equivalent to",
+      "EQUIVALENT_TO_to": "Equivalent parts"
     },
     "related": "More in {category}",
     "askInstead": "Can't find what you need? Ask us for it",
@@ -233,7 +237,9 @@
       "submit": "Ask",
       "signIn": "Sign in to ask a question about this product."
     },
-    "quoteBody": "No price is confirmed for this product yet. Tell us how many you need and where they should go: we'll confirm a price and a delivery date."
+    "quoteBody": "No price is confirmed for this product yet. Tell us how many you need and where they should go: we'll confirm a price and a delivery date.",
+    "compatibilityVerified": "Verified: a manufacturer document, an OEM reference or a test by Tracecart.",
+    "compatibilityUnverified": "May fit: not verified yet. Check the details, or ask us."
   },
   "brands": {
     "title": "Brands",
@@ -287,5 +293,78 @@
     "gone": "no longer sold",
     "remove": "Remove",
     "removeLabel": "Remove {title}"
+  },
+  "fit": {
+    "title": {
+      "VEHICLE": "Will it fit your vehicle?",
+      "DEVICE": "Will it fit your device?",
+      "APPLIANCE": "Will it fit your appliance?"
+    },
+    "listedLead": "Listed to fit:",
+    "noneListed": "Nothing is listed for this part yet. Check it below, or ask us.",
+    "verified": "Verified",
+    "mayFit": "May fit",
+    "evidence": {
+      "MANUFACTURER_DOCUMENT": "manufacturer document",
+      "OEM_CROSS_REFERENCE": "OEM reference",
+      "STAFF_TESTED": "tested by Tracecart",
+      "SELLER_DECLARED": "seller's word only",
+      "UNVERIFIED": "no evidence yet"
+    },
+    "formLabel": "Check it fits",
+    "make": {
+      "VEHICLE": "Make",
+      "DEVICE": "Brand",
+      "APPLIANCE": "Brand"
+    },
+    "model": {
+      "VEHICLE": "Model",
+      "DEVICE": "Model",
+      "APPLIANCE": "Model number"
+    },
+    "year": "Year",
+    "detail": {
+      "VEHICLE": "Engine (optional)",
+      "DEVICE": "Version (optional)",
+      "APPLIANCE": "Suffix (optional)"
+    },
+    "check": "Check",
+    "result": {
+      "verified": "Fits your {target}.",
+      "potential": "May fit your {target}.",
+      "insufficient": "We can't confirm it fits your {target}."
+    },
+    "missing": "To be sure, add: {fields}.",
+    "fields": {
+      "make": "the make",
+      "model": "the model",
+      "year": "the year",
+      "detail": "the engine or version"
+    },
+    "notSure": "\"May fit\" or not listed isn't the same as \"doesn't fit\": we only say it fits when a manufacturer document, an OEM reference or our own test shows it.",
+    "otherParts": "Other parts listed for your {target}",
+    "askUs": "Ask us to check"
+  },
+  "parts": {
+    "title": "Find parts for what you own",
+    "lead": "Your vehicle, your laptop or phone, your appliance: see the parts listed to fit it. Those verified come first.",
+    "kindLegend": "It's for my",
+    "kinds": {
+      "VEHICLE": "Vehicle",
+      "DEVICE": "Laptop or phone",
+      "APPLIANCE": "Appliance"
+    },
+    "modelLabel": "Model (or model number)",
+    "yearLabel": "Year (vehicles)",
+    "detailLabel": "Engine or version (optional)",
+    "search": "Find parts",
+    "verifiedTitle": "Verified to fit {target}",
+    "verifiedLead": "Each rests on a manufacturer document, an OEM reference or a test by Tracecart.",
+    "noneVerified": "No part is verified for it yet.",
+    "potentialTitle": "May fit",
+    "potentialLead": "Listed by the seller, or something is missing to be sure. Check before you buy, or ask us.",
+    "notListed": "Not what you need?",
+    "findForMe": "We'll find it for you",
+    "findNeed": "A part for my {target}"
   }
 }

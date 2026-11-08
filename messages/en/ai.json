@@ -28,7 +28,9 @@
     "category": "{category}",
     "attribute": "{label}: {value}",
     "words": "Your words",
-    "looksLike": "Looks like it"
+    "looksLike": "Looks like it",
+    "fits": "Verified to fit your {target}",
+    "mayFit": "May fit your {target} (not verified)"
   },
   "toNarrow": "To narrow it down"
 }

@@ -22,7 +22,8 @@
     "language": "Language",
     "currency": "Show prices in",
     "currencyHint": "Other currencies are approximate: you pay in {currency}.",
-    "menu": "Menu"
+    "menu": "Menu",
+    "parts": "Parts for my…"
   },
   "hero": {
     "eyebrow": "Find what you need. Get it delivered.",

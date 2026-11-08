@@ -448,6 +448,11 @@ export interface paths {
                         defaultWeightGrams?: number | null;
                         position?: number;
                         active?: boolean;
+                        /**
+                         * @description What its products can fit (ADR-080); inherited by subcategories. null: nothing.
+                         * @enum {string|null}
+                         */
+                        fitmentKind?: "VEHICLE" | "DEVICE" | "APPLIANCE" | null;
                     };
                 };
             };
@@ -543,6 +548,11 @@ export interface paths {
                         defaultWeightGrams?: number | null;
                         position?: number;
                         active?: boolean;
+                        /**
+                         * @description What its products can fit (ADR-080); inherited by subcategories. null: nothing.
+                         * @enum {string|null}
+                         */
+                        fitmentKind?: "VEHICLE" | "DEVICE" | "APPLIANCE" | null;
                     };
                 };
             };
@@ -714,11 +724,19 @@ export interface paths {
                         fromSku: string;
                         toSku: string;
                         /** @enum {string} */
-                        kind: "FITS" | "CHARGES" | "REPLACES" | "ACCESSORY_FOR" | "CONSUMABLE_FOR" | "FREQUENTLY_BOUGHT_WITH";
+                        kind: "FITS" | "CHARGES" | "REPLACES" | "ACCESSORY_FOR" | "CONSUMABLE_FOR" | "FREQUENTLY_BOUGHT_WITH" | "COMPONENT_OF" | "EQUIVALENT_TO";
                         note?: {
                             fr?: string;
                             en?: string;
                         } | null;
+                        /**
+                         * @description What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef.
+                         * @default UNVERIFIED
+                         * @enum {string}
+                         */
+                        evidence?: "MANUFACTURER_DOCUMENT" | "OEM_CROSS_REFERENCE" | "STAFF_TESTED" | "SELLER_DECLARED" | "UNVERIFIED";
+                        /** @description The document, the OEM reference, or how it was tested. Shown to customers. */
+                        evidenceRef?: string | null;
                     };
                 };
             };
@@ -843,7 +861,75 @@ export interface paths {
         };
         options?: never;
         head?: never;
-        patch?: never;
+        /** Set what a link rests on (ADR-080): verified only with a manufacturer document, an OEM cross-reference or a staff test */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /**
+                         * @description What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef.
+                         * @enum {string}
+                         */
+                        evidence: "MANUFACTURER_DOCUMENT" | "OEM_CROSS_REFERENCE" | "STAFF_TESTED" | "SELLER_DECLARED" | "UNVERIFIED";
+                        /** @description The document, the OEM reference, or how it was tested. Shown to customers. */
+                        evidenceRef?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/admin/catalog/export": {
@@ -905,6 +991,237 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/fitments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Say what a variant fits outside the catalogue: a vehicle (make, model, years, engine), a device or an appliance, and what that rests on (ADR-080) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        sku: string;
+                        /** @enum {string} */
+                        kind: "VEHICLE" | "DEVICE" | "APPLIANCE";
+                        make: string;
+                        model: string;
+                        yearFrom?: number | null;
+                        yearTo?: number | null;
+                        /** @description Engine, trim, generation, model-number suffix: when the fit depends on it. */
+                        detail?: string | null;
+                        /**
+                         * @description What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef.
+                         * @enum {string}
+                         */
+                        evidence: "MANUFACTURER_DOCUMENT" | "OEM_CROSS_REFERENCE" | "STAFF_TESTED" | "SELLER_DECLARED" | "UNVERIFIED";
+                        /** @description The document, the OEM reference, or how it was tested. Shown to customers. */
+                        evidenceRef?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/catalog/fitments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a fitment */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Set what a fitment rests on */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /**
+                         * @description What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef.
+                         * @enum {string}
+                         */
+                        evidence: "MANUFACTURER_DOCUMENT" | "OEM_CROSS_REFERENCE" | "STAFF_TESTED" | "SELLER_DECLARED" | "UNVERIFIED";
+                        /** @description The document, the OEM reference, or how it was tested. Shown to customers. */
+                        evidenceRef?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/admin/catalog/import": {
@@ -4348,6 +4665,72 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/catalog/parts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find parts for my vehicle, device or appliance: products listed to fit it, verified first, then possible (ADR-080) */
+        get: {
+            parameters: {
+                query: {
+                    make?: string;
+                    model?: string;
+                    year?: number;
+                    /** @description Engine, trim or model-number suffix. */
+                    detail?: string;
+                    kind: "VEHICLE" | "DEVICE" | "APPLIANCE";
+                    category?: string;
+                    /** @description The shopper's country (two letters): what counts as in stock locally, and which offer comes first. */
+                    country?: string;
+                    /** @description Prices in this currency only; offers in another aren't converted (no implicit conversion). */
+                    currency?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PartsForTarget"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/catalog/products": {
         parameters: {
             query?: never;
@@ -4460,6 +4843,70 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["ProductDetail"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/catalog/products/{slug}/fit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Will it fit? A product checked against the customer's vehicle, device or appliance (ADR-080): verified only on evidence, otherwise potential or insufficient, with what to add */
+        get: {
+            parameters: {
+                query?: {
+                    make?: string;
+                    model?: string;
+                    year?: number;
+                    /** @description Engine, trim or model-number suffix. */
+                    detail?: string;
+                    kind?: "VEHICLE" | "DEVICE" | "APPLIANCE";
+                    variant?: string;
+                };
+                header?: never;
+                path: {
+                    slug: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FitResult"];
                     };
                 };
                 /** @description Invalid request */
@@ -32436,6 +32883,37 @@ export interface components {
                 details?: unknown;
             };
         };
+        PublicFitment: {
+            /** @enum {string} */
+            kind: "VEHICLE" | "DEVICE" | "APPLIANCE";
+            make: string;
+            model: string;
+            yearFrom: number | null;
+            yearTo: number | null;
+            detail: string | null;
+            /** @enum {string} */
+            evidence: "MANUFACTURER_DOCUMENT" | "OEM_CROSS_REFERENCE" | "STAFF_TESTED" | "SELLER_DECLARED" | "UNVERIFIED";
+            evidenceRef: string | null;
+            verified: boolean;
+        };
+        FitResult: {
+            /**
+             * @description null: this product has nothing to fit.
+             * @enum {string|null}
+             */
+            kind: "VEHICLE" | "DEVICE" | "APPLIANCE" | null;
+            target: string | null;
+            /**
+             * @description verified: a listed fitment matches and rests on evidence; potential: one matches, but only the seller says so, or the customer left something out; insufficient: nothing listed matches (which isn't "doesn't fit").
+             * @enum {string}
+             */
+            status: "verified" | "potential" | "insufficient";
+            /** @description What to add to know more, in the order to ask. */
+            missing: ("make" | "model" | "year" | "detail")[];
+            /** @description The variant the answer is for. */
+            sku: string | null;
+            matches: components["schemas"]["PublicFitment"][];
+        };
         Availability: {
             /** @enum {string} */
             kind: "IN_STOCK" | "SELLER" | "ABROAD" | "OUT_OF_STOCK";
@@ -32485,6 +32963,14 @@ export interface components {
             } | null;
             offerCount: number;
             variantCount: number;
+        };
+        PartsForTarget: {
+            /** @enum {string} */
+            kind: "VEHICLE" | "DEVICE" | "APPLIANCE";
+            target: string;
+            missing: ("make" | "model" | "year" | "detail")[];
+            verified: components["schemas"]["ProductCard"][];
+            potential: components["schemas"]["ProductCard"][];
         };
         ProductListing: {
             items: components["schemas"]["ProductCard"][];
@@ -32680,18 +33166,27 @@ export interface components {
                 weightGrams: number | null;
                 buyBox: components["schemas"]["PublicOffer"] & unknown;
                 otherOffers: components["schemas"]["PublicOffer"][];
+                /** @description What this variant is listed to fit, each with what it rests on (ADR-080). */
+                fitments: components["schemas"]["PublicFitment"][];
             }[];
             selectedSku: string;
+            /**
+             * @description What it can fit, for "will it fit?" (ADR-080); null: nothing to check.
+             * @enum {string|null}
+             */
+            fitmentKind: "VEHICLE" | "DEVICE" | "APPLIANCE" | null;
             /** @description No variant has a price in this currency: the product shows without one, and the store offers to quote it (ADR-078). */
             quoteOnly: boolean;
             compatibility: {
                 /** @enum {string} */
-                kind: "FITS" | "CHARGES" | "REPLACES" | "ACCESSORY_FOR" | "CONSUMABLE_FOR" | "FREQUENTLY_BOUGHT_WITH";
+                kind: "FITS" | "CHARGES" | "REPLACES" | "ACCESSORY_FOR" | "CONSUMABLE_FOR" | "FREQUENTLY_BOUGHT_WITH" | "COMPONENT_OF" | "EQUIVALENT_TO";
                 /**
                  * @description from: this product FITS/CHARGES… the ones listed; to: the ones listed FIT/CHARGE… this product.
                  * @enum {string}
                  */
                 direction: "from" | "to";
+                /** @description true: each link rests on a manufacturer document, an OEM cross-reference or a staff test; false: only "may fit" (ADR-080). */
+                verified: boolean;
                 products: components["schemas"]["ProductCard"][];
             }[];
             related: components["schemas"]["ProductCard"][];

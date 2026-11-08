@@ -99,10 +99,37 @@
       "REPLACES": "remplace",
       "ACCESSORY_FOR": "est un accessoire de",
       "CONSUMABLE_FOR": "est un consommable de",
-      "FREQUENTLY_BOUGHT_WITH": "est souvent acheté avec"
+      "FREQUENTLY_BOUGHT_WITH": "est souvent acheté avec",
+      "COMPONENT_OF": "est une pièce de",
+      "EQUIVALENT_TO": "est équivalent à"
     },
     "saved": "Enregistré.",
-    "leadDays": "{min} à {max} jours"
+    "leadDays": "{min} à {max} jours",
+    "evidence": {
+      "MANUFACTURER_DOCUMENT": "Document du fabricant",
+      "OEM_CROSS_REFERENCE": "Référence d'origine (OEM)",
+      "STAFF_TESTED": "Testé par Tracecart",
+      "SELLER_DECLARED": "Selon le vendeur seulement",
+      "UNVERIFIED": "Pas encore de preuve"
+    },
+    "evidenceLabel": "Repose sur",
+    "evidenceRef": "Référence",
+    "evidenceRefNeeded": "Quel document, ou quelle référence d'origine : montré aux clients.",
+    "fitments": "Compatibilités (véhicules, appareils, électroménager)",
+    "fitmentsHint": "Ce à quoi chaque variante convient hors du catalogue. Seuls un document du fabricant, une référence d'origine ou un test par l'équipe la rendent vérifiée ; sinon elle s'affiche « pourrait convenir ».",
+    "noFitments": "Rien d'indiqué pour l'instant.",
+    "fitmentKind": "Type",
+    "fitmentKinds": {
+      "VEHICLE": "Véhicule",
+      "DEVICE": "Appareil",
+      "APPLIANCE": "Électroménager"
+    },
+    "make": "Marque",
+    "model": "Modèle",
+    "yearFrom": "De l'année",
+    "yearTo": "À l'année",
+    "detail": "Moteur / version",
+    "addFitment": "Ajouter"
   },
   "categories": {
     "title": "Catégories et attributs",
@@ -139,8 +166,16 @@
     "descriptionFr": "Description (français)",
     "descriptionEn": "Description (anglais)",
     "descriptionHint": "Affichée en haut de la page de la catégorie dans la boutique. Laissez vide pour aucune.",
-    "saveText": "Enregistrer le nom et la description",
-    "textSaved": "Enregistré."
+    "saveText": "Enregistrer",
+    "textSaved": "Enregistré.",
+    "fitmentKind": "Ses produits conviennent à",
+    "fitmentKindHint": "Affiche « Convient-il ? » sur ses produits et ceux de ses sous-catégories (sauf si l'une fixe le sien).",
+    "fitmentNone": "Rien (ou hérité)",
+    "fitmentKinds": {
+      "VEHICLE": "Un véhicule",
+      "DEVICE": "Un appareil (ordinateur, téléphone…)",
+      "APPLIANCE": "Un électroménager"
+    }
   },
   "brands": {
     "title": "Marques",

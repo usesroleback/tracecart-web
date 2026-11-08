@@ -56,6 +56,126 @@
           "error"
         ]
       },
+      "PublicFitment": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "VEHICLE",
+              "DEVICE",
+              "APPLIANCE"
+            ]
+          },
+          "make": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "yearFrom": {
+            "type": "integer",
+            "nullable": true
+          },
+          "yearTo": {
+            "type": "integer",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "evidence": {
+            "type": "string",
+            "enum": [
+              "MANUFACTURER_DOCUMENT",
+              "OEM_CROSS_REFERENCE",
+              "STAFF_TESTED",
+              "SELLER_DECLARED",
+              "UNVERIFIED"
+            ]
+          },
+          "evidenceRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "kind",
+          "make",
+          "model",
+          "yearFrom",
+          "yearTo",
+          "detail",
+          "evidence",
+          "evidenceRef",
+          "verified"
+        ]
+      },
+      "FitResult": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "VEHICLE",
+              "DEVICE",
+              "APPLIANCE",
+              null
+            ],
+            "description": "null: this product has nothing to fit."
+          },
+          "target": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "potential",
+              "insufficient"
+            ],
+            "description": "verified: a listed fitment matches and rests on evidence; potential: one matches, but only the seller says so, or the customer left something out; insufficient: nothing listed matches (which isn't \"doesn't fit\")."
+          },
+          "missing": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "make",
+                "model",
+                "year",
+                "detail"
+              ]
+            },
+            "description": "What to add to know more, in the order to ask."
+          },
+          "sku": {
+            "type": "string",
+            "nullable": true,
+            "description": "The variant the answer is for."
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicFitment"
+            }
+          }
+        },
+        "required": [
+          "kind",
+          "target",
+          "status",
+          "missing",
+          "sku",
+          "matches"
+        ]
+      },
       "Availability": {
         "type": "object",
         "properties": {
@@ -247,6 +367,53 @@
           "rating",
           "offerCount",
           "variantCount"
+        ]
+      },
+      "PartsForTarget": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "VEHICLE",
+              "DEVICE",
+              "APPLIANCE"
+            ]
+          },
+          "target": {
+            "type": "string"
+          },
+          "missing": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "make",
+                "model",
+                "year",
+                "detail"
+              ]
+            }
+          },
+          "verified": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductCard"
+            }
+          },
+          "potential": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductCard"
+            }
+          }
+        },
+        "required": [
+          "kind",
+          "target",
+          "missing",
+          "verified",
+          "potential"
         ]
       },
       "ProductListing": {
@@ -1074,6 +1241,13 @@
                   "items": {
                     "$ref": "#/components/schemas/PublicOffer"
                   }
+                },
+                "fitments": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicFitment"
+                  },
+                  "description": "What this variant is listed to fit, each with what it rests on (ADR-080)."
                 }
               },
               "required": [
@@ -1083,12 +1257,24 @@
                 "mpn",
                 "weightGrams",
                 "buyBox",
-                "otherOffers"
+                "otherOffers",
+                "fitments"
               ]
             }
           },
           "selectedSku": {
             "type": "string"
+          },
+          "fitmentKind": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "VEHICLE",
+              "DEVICE",
+              "APPLIANCE",
+              null
+            ],
+            "description": "What it can fit, for \"will it fit?\" (ADR-080); null: nothing to check."
           },
           "quoteOnly": {
             "type": "boolean",
@@ -1107,7 +1293,9 @@
                     "REPLACES",
                     "ACCESSORY_FOR",
                     "CONSUMABLE_FOR",
-                    "FREQUENTLY_BOUGHT_WITH"
+                    "FREQUENTLY_BOUGHT_WITH",
+                    "COMPONENT_OF",
+                    "EQUIVALENT_TO"
                   ]
                 },
                 "direction": {
@@ -1117,6 +1305,10 @@
                     "to"
                   ],
                   "description": "from: this product FITS/CHARGES… the ones listed; to: the ones listed FIT/CHARGE… this product."
+                },
+                "verified": {
+                  "type": "boolean",
+                  "description": "true: each link rests on a manufacturer document, an OEM cross-reference or a staff test; false: only \"may fit\" (ADR-080)."
                 },
                 "products": {
                   "type": "array",
@@ -1128,6 +1320,7 @@
               "required": [
                 "kind",
                 "direction",
+                "verified",
                 "products"
               ]
             }
@@ -1160,6 +1353,7 @@
           "optionAxes",
           "variants",
           "selectedSku",
+          "fitmentKind",
           "quoteOnly",
           "compatibility",
           "related",
@@ -2365,6 +2559,17 @@
                   },
                   "active": {
                     "type": "boolean"
+                  },
+                  "fitmentKind": {
+                    "type": "string",
+                    "nullable": true,
+                    "enum": [
+                      "VEHICLE",
+                      "DEVICE",
+                      "APPLIANCE",
+                      null
+                    ],
+                    "description": "What its products can fit (ADR-080); inherited by subcategories. null: nothing."
                   }
                 },
                 "required": [
@@ -2503,6 +2708,17 @@
                   },
                   "active": {
                     "type": "boolean"
+                  },
+                  "fitmentKind": {
+                    "type": "string",
+                    "nullable": true,
+                    "enum": [
+                      "VEHICLE",
+                      "DEVICE",
+                      "APPLIANCE",
+                      null
+                    ],
+                    "description": "What its products can fit (ADR-080); inherited by subcategories. null: nothing."
                   }
                 }
               }
@@ -2761,7 +2977,9 @@
                       "REPLACES",
                       "ACCESSORY_FOR",
                       "CONSUMABLE_FOR",
-                      "FREQUENTLY_BOUGHT_WITH"
+                      "FREQUENTLY_BOUGHT_WITH",
+                      "COMPONENT_OF",
+                      "EQUIVALENT_TO"
                     ]
                   },
                   "note": {
@@ -2777,6 +2995,25 @@
                         "maxLength": 300
                       }
                     }
+                  },
+                  "evidence": {
+                    "type": "string",
+                    "enum": [
+                      "MANUFACTURER_DOCUMENT",
+                      "OEM_CROSS_REFERENCE",
+                      "STAFF_TESTED",
+                      "SELLER_DECLARED",
+                      "UNVERIFIED"
+                    ],
+                    "default": "UNVERIFIED",
+                    "description": "What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef."
+                  },
+                  "evidenceRef": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "maxLength": 300,
+                    "description": "The document, the OEM reference, or how it was tested. Shown to customers."
                   }
                 },
                 "required": [
@@ -2836,6 +3073,106 @@
       }
     },
     "/admin/catalog/compatibility/{id}": {
+      "patch": {
+        "tags": [
+          "Catalogue admin"
+        ],
+        "summary": "Set what a link rests on (ADR-080): verified only with a manufacturer document, an OEM cross-reference or a staff test",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "catalog.product.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "evidence": {
+                    "type": "string",
+                    "enum": [
+                      "MANUFACTURER_DOCUMENT",
+                      "OEM_CROSS_REFERENCE",
+                      "STAFF_TESTED",
+                      "SELLER_DECLARED",
+                      "UNVERIFIED"
+                    ],
+                    "description": "What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef."
+                  },
+                  "evidenceRef": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "maxLength": 300,
+                    "description": "The document, the OEM reference, or how it was tested. Shown to customers."
+                  }
+                },
+                "required": [
+                  "evidence"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Catalogue admin"
@@ -2920,6 +3257,313 @@
         "responses": {
           "200": {
             "description": "text/csv"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/catalog/fitments": {
+      "post": {
+        "tags": [
+          "Catalogue admin"
+        ],
+        "summary": "Say what a variant fits outside the catalogue: a vehicle (make, model, years, engine), a device or an appliance, and what that rests on (ADR-080)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "catalog.product.write",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sku": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "VEHICLE",
+                      "DEVICE",
+                      "APPLIANCE"
+                    ]
+                  },
+                  "make": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "model": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "yearFrom": {
+                    "type": "integer",
+                    "nullable": true,
+                    "minimum": 1900,
+                    "maximum": 2100
+                  },
+                  "yearTo": {
+                    "type": "integer",
+                    "nullable": true,
+                    "minimum": 1900,
+                    "maximum": 2100
+                  },
+                  "detail": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "description": "Engine, trim, generation, model-number suffix: when the fit depends on it."
+                  },
+                  "evidence": {
+                    "type": "string",
+                    "enum": [
+                      "MANUFACTURER_DOCUMENT",
+                      "OEM_CROSS_REFERENCE",
+                      "STAFF_TESTED",
+                      "SELLER_DECLARED",
+                      "UNVERIFIED"
+                    ],
+                    "description": "What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef."
+                  },
+                  "evidenceRef": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "maxLength": 300,
+                    "description": "The document, the OEM reference, or how it was tested. Shown to customers."
+                  }
+                },
+                "required": [
+                  "sku",
+                  "kind",
+                  "make",
+                  "model",
+                  "evidence"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/catalog/fitments/{id}": {
+      "patch": {
+        "tags": [
+          "Catalogue admin"
+        ],
+        "summary": "Set what a fitment rests on",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "catalog.product.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "evidence": {
+                    "type": "string",
+                    "enum": [
+                      "MANUFACTURER_DOCUMENT",
+                      "OEM_CROSS_REFERENCE",
+                      "STAFF_TESTED",
+                      "SELLER_DECLARED",
+                      "UNVERIFIED"
+                    ],
+                    "description": "What the claim rests on (ADR-080). MANUFACTURER_DOCUMENT, OEM_CROSS_REFERENCE and STAFF_TESTED make it verified; the first two need evidenceRef."
+                  },
+                  "evidenceRef": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "maxLength": 300,
+                    "description": "The document, the OEM reference, or how it was tested. Shown to customers."
+                  }
+                },
+                "required": [
+                  "evidence"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Catalogue admin"
+        ],
+        "summary": "Remove a fitment",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "catalog.product.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "401": {
             "description": "Not signed in",
@@ -7853,6 +8497,139 @@
         }
       }
     },
+    "/catalog/parts": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Find parts for my vehicle, device or appliance: products listed to fit it, verified first, then possible (ADR-080)",
+        "security": [],
+        "x-tracecart-access": "public",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "required": false,
+            "name": "make",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "required": false,
+            "name": "model",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1900,
+              "maximum": 2100
+            },
+            "required": false,
+            "name": "year",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "description": "Engine, trim or model-number suffix."
+            },
+            "required": false,
+            "description": "Engine, trim or model-number suffix.",
+            "name": "detail",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "VEHICLE",
+                "DEVICE",
+                "APPLIANCE"
+              ]
+            },
+            "required": true,
+            "name": "kind",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "required": false,
+            "name": "category",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{2}$",
+              "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first."
+            },
+            "required": false,
+            "description": "The shopper's country (two letters): what counts as in stock locally, and which offer comes first.",
+            "name": "country",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{3}$",
+              "default": "XOF",
+              "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion)."
+            },
+            "required": false,
+            "description": "Prices in this currency only; offers in another aren't converted (no implicit conversion).",
+            "name": "currency",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartsForTarget"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/catalog/products": {
       "get": {
         "tags": [
@@ -8129,6 +8906,125 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/products/{slug}/fit": {
+      "get": {
+        "tags": [
+          "Catalogue"
+        ],
+        "summary": "Will it fit? A product checked against the customer's vehicle, device or appliance (ADR-080): verified only on evidence, otherwise potential or insufficient, with what to add",
+        "security": [],
+        "x-tracecart-access": "public",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "required": true,
+            "name": "slug",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "required": false,
+            "name": "make",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "required": false,
+            "name": "model",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1900,
+              "maximum": 2100
+            },
+            "required": false,
+            "name": "year",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "description": "Engine, trim or model-number suffix."
+            },
+            "required": false,
+            "description": "Engine, trim or model-number suffix.",
+            "name": "detail",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "VEHICLE",
+                "DEVICE",
+                "APPLIANCE"
+              ]
+            },
+            "required": false,
+            "name": "kind",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "required": false,
+            "name": "variant",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FitResult"
                 }
               }
             }

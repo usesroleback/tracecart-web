@@ -17,7 +17,12 @@ import {
   definitionsFor,
   FULFILLMENT_TYPES,
   FulfillmentType,
+  FIT_EVIDENCE,
+  FITMENT_KINDS,
   LINK_KINDS,
+  VERIFYING,
+  type AdminFitment,
+  type FitEvidence,
   OFFER_STATUSES,
   parsePairs,
   pick,
@@ -122,6 +127,7 @@ export function ProductEditor({ productId, canWrite, canWriteOffers }: { product
           </Panel>
           <MediaPanel product={product} canWrite={canWrite} onChange={reload} />
           <CompatibilityPanel product={product} canWrite={canWrite} onChange={reload} />
+          <FitmentPanel product={product} canWrite={canWrite} onChange={reload} />
         </>
       ) : null}
     </div>
@@ -684,6 +690,8 @@ function CompatibilityPanel({ product, canWrite, onChange }: { product: AdminPro
   const [fromSku, setFromSku] = useState(product.variants[0]?.sku ?? "");
   const [kind, setKind] = useState<(typeof LINK_KINDS)[number]>("FITS");
   const [toSku, setToSku] = useState("");
+  const [evidence, setEvidence] = useState<FitEvidence>("UNVERIFIED");
+  const [evidenceRef, setEvidenceRef] = useState("");
   const [error, setError] = useState<string | null>(null);
   const links = product.variants.flatMap((v) => v.compatibleTo.map((c) => ({ ...c, fromSku: v.sku })));
 
@@ -691,8 +699,9 @@ function CompatibilityPanel({ product, canWrite, onChange }: { product: AdminPro
     e.preventDefault();
     setError(null);
     try {
-      await api.post("/admin/catalog/compatibility", { fromSku, toSku, kind });
+      await api.post("/admin/catalog/compatibility", { fromSku, toSku, kind, evidence, evidenceRef: evidenceRef.trim() || null });
       setToSku("");
+      setEvidenceRef("");
       onChange();
     } catch (err) {
       setError((err as Error).message);
@@ -716,7 +725,8 @@ function CompatibilityPanel({ product, canWrite, onChange }: { product: AdminPro
             <li key={l.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
               <span>
                 <span className="rb-mono">{l.fromSku}</span> {t(`editor.links.${l.kind as "FITS"}`)} <span className="rb-mono">{l.to.sku}</span>{" "}
-                <span className="text-ink-muted">({pick(l.to.product.title, locale)})</span>
+                <span className="text-ink-muted">({pick(l.to.product.title, locale)})</span>{" "}
+                <EvidenceBadge evidence={l.evidence} evidenceRef={l.evidenceRef} />
               </span>
               {canWrite ? (
                 <Button variant="ghost" size="s" onClick={() => remove(l.id)}>
@@ -750,8 +760,159 @@ function CompatibilityPanel({ product, canWrite, onChange }: { product: AdminPro
           <Field label={t("editor.toSku")} className="w-48">
             <input className={input} value={toSku} onChange={(e) => setToSku(e.target.value)} required />
           </Field>
+          <EvidenceFields evidence={evidence} evidenceRef={evidenceRef} onEvidence={setEvidence} onRef={setEvidenceRef} />
           <Button type="submit" variant="secondary" size="m">
             {t("editor.addMedia")}
+          </Button>
+        </form>
+      ) : null}
+      {error ? (
+        <p role="alert" className="mt-2 text-sm text-critical">
+          {error}
+        </p>
+      ) : null}
+    </Panel>
+  );
+}
+
+/** What a claim rests on, as staff read it: verified (green) or only possible. */
+function EvidenceBadge({ evidence, evidenceRef }: { evidence: FitEvidence; evidenceRef: string | null }) {
+  const t = useTranslations("catalogAdmin.editor");
+  return (
+    <Badge variant={VERIFYING.includes(evidence) ? "positive" : "outline"}>
+      {t(`evidence.${evidence}`)}
+      {evidenceRef ? ` · ${evidenceRef}` : ""}
+    </Badge>
+  );
+}
+
+function EvidenceFields({ evidence, evidenceRef, onEvidence, onRef }: { evidence: FitEvidence; evidenceRef: string; onEvidence: (e: FitEvidence) => void; onRef: (r: string) => void }) {
+  const t = useTranslations("catalogAdmin.editor");
+  const needsRef = evidence === "MANUFACTURER_DOCUMENT" || evidence === "OEM_CROSS_REFERENCE";
+  return (
+    <>
+      <Field label={t("evidenceLabel")} className="w-56">
+        <select className={input} value={evidence} onChange={(e) => onEvidence(e.target.value as FitEvidence)}>
+          {FIT_EVIDENCE.map((k) => (
+            <option key={k} value={k}>
+              {t(`evidence.${k}`)}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label={t("evidenceRef")} hint={needsRef ? t("evidenceRefNeeded") : undefined} className="w-64">
+        <input className={input} value={evidenceRef} onChange={(e) => onRef(e.target.value)} required={needsRef} maxLength={300} />
+      </Field>
+    </>
+  );
+}
+
+/**
+ * What each variant fits outside the catalogue (ADR-080): a vehicle, a device
+ * or an appliance, with what each fitment rests on. Only a manufacturer
+ * document, an OEM cross-reference or a staff test makes it verified.
+ */
+function FitmentPanel({ product, canWrite, onChange }: { product: AdminProduct; canWrite: boolean; onChange: () => void }) {
+  const t = useTranslations("catalogAdmin.editor");
+  const [f, setF] = useState({ sku: product.variants[0]?.sku ?? "", kind: "VEHICLE" as AdminFitment["kind"], make: "", model: "", yearFrom: "", yearTo: "", detail: "" });
+  const [evidence, setEvidence] = useState<FitEvidence>("SELLER_DECLARED");
+  const [evidenceRef, setEvidenceRef] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const set = (k: keyof typeof f) => (e: { target: { value: string } }) => setF((x) => ({ ...x, [k]: e.target.value }));
+  const rows = product.variants.flatMap((v) => (v.fitments ?? []).map((fit) => ({ ...fit, sku: v.sku })));
+  const years = (a: number | null, b: number | null) => (a && b ? `${a}–${b}` : a ? `${a}+` : b ? `–${b}` : "");
+
+  async function add(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    try {
+      await api.post("/admin/catalog/fitments", {
+        sku: f.sku,
+        kind: f.kind,
+        make: f.make,
+        model: f.model,
+        yearFrom: f.yearFrom ? Number(f.yearFrom) : null,
+        yearTo: f.yearTo ? Number(f.yearTo) : null,
+        detail: f.detail.trim() || null,
+        evidence,
+        evidenceRef: evidenceRef.trim() || null,
+      });
+      setF((x) => ({ ...x, model: "", yearFrom: "", yearTo: "", detail: "" }));
+      setEvidenceRef("");
+      onChange();
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
+  async function remove(id: string) {
+    try {
+      await api.delete(`/admin/catalog/fitments/${id}`);
+      onChange();
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
+  return (
+    <Panel title={t("fitments")} hint={t("fitmentsHint")}>
+      {rows.length ? (
+        <ul className="mb-4 divide-y divide-line text-sm">
+          {rows.map((r) => (
+            <li key={r.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
+              <span>
+                <span className="rb-mono">{r.sku}</span> · {t(`fitmentKinds.${r.kind}`)} · <span className="font-medium">{[r.make, r.model, years(r.yearFrom, r.yearTo)].filter(Boolean).join(" ")}</span>
+                {r.detail ? ` (${r.detail})` : ""} <EvidenceBadge evidence={r.evidence} evidenceRef={r.evidenceRef} />
+              </span>
+              {canWrite ? (
+                <Button variant="ghost" size="s" onClick={() => remove(r.id)}>
+                  {t("remove")}
+                </Button>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mb-4 text-sm text-ink-muted">{t("noFitments")}</p>
+      )}
+      {canWrite ? (
+        <form onSubmit={add} className="flex flex-wrap items-end gap-2">
+          <Field label={t("fromSku")} className="w-44">
+            <select className={input} value={f.sku} onChange={set("sku")}>
+              {product.variants.map((v) => (
+                <option key={v.id} value={v.sku}>
+                  {v.sku}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field label={t("fitmentKind")} className="w-40">
+            <select className={input} value={f.kind} onChange={set("kind")}>
+              {FITMENT_KINDS.map((k) => (
+                <option key={k} value={k}>
+                  {t(`fitmentKinds.${k}`)}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field label={t("make")} className="w-40">
+            <input className={input} value={f.make} onChange={set("make")} required maxLength={80} />
+          </Field>
+          <Field label={t("model")} className="w-44">
+            <input className={input} value={f.model} onChange={set("model")} required maxLength={80} />
+          </Field>
+          <Field label={t("yearFrom")} className="w-28">
+            <input className={input} value={f.yearFrom} onChange={set("yearFrom")} inputMode="numeric" pattern="\d{4}" />
+          </Field>
+          <Field label={t("yearTo")} className="w-28">
+            <input className={input} value={f.yearTo} onChange={set("yearTo")} inputMode="numeric" pattern="\d{4}" />
+          </Field>
+          <Field label={t("detail")} className="w-40">
+            <input className={input} value={f.detail} onChange={set("detail")} maxLength={80} />
+          </Field>
+          <EvidenceFields evidence={evidence} evidenceRef={evidenceRef} onEvidence={setEvidence} onRef={setEvidenceRef} />
+          <Button type="submit" variant="secondary" size="m">
+            {t("addFitment")}
           </Button>
         </form>
       ) : null}

@@ -22,7 +22,8 @@
     "language": "Langue",
     "currency": "Afficher les prix en",
     "currencyHint": "Les autres devises sont indicatives : vous payez en {currency}.",
-    "menu": "Menu"
+    "menu": "Menu",
+    "parts": "Pièces pour mon…"
   },
   "hero": {
     "eyebrow": "Trouvez ce qu'il vous faut. Faites-le livrer.",

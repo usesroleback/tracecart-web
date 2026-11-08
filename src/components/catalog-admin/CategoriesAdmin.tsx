@@ -135,6 +135,7 @@ function CategoryText({ category, onSave }: { category: AdminCategory; onSave: (
     en: category.name?.en ?? "",
     descFr: category.description?.fr ?? "",
     descEn: category.description?.en ?? "",
+    fitmentKind: category.fitmentKind ?? "",
   });
   const [saved, setSaved] = useState(false);
   const set = (k: keyof typeof f) => (e: { target: { value: string } }) => (setSaved(false), setF((x) => ({ ...x, [k]: e.target.value })));
@@ -142,7 +143,7 @@ function CategoryText({ category, onSave }: { category: AdminCategory; onSave: (
   async function submit(e: FormEvent) {
     e.preventDefault();
     const description = both(f.descFr, f.descEn);
-    await onSave({ name: both(f.fr, f.en), description: Object.keys(description).length ? description : null });
+    await onSave({ name: both(f.fr, f.en), description: Object.keys(description).length ? description : null, fitmentKind: f.fitmentKind || null });
     setSaved(true);
   }
   return (
@@ -158,6 +159,16 @@ function CategoryText({ category, onSave }: { category: AdminCategory; onSave: (
       </Field>
       <Field label={t("descriptionEn")}>
         <textarea className={input} rows={3} value={f.descEn} onChange={set("descEn")} maxLength={2000} />
+      </Field>
+      <Field label={t("fitmentKind")} hint={t("fitmentKindHint")}>
+        <select className={input} value={f.fitmentKind} onChange={set("fitmentKind")}>
+          <option value="">{t("fitmentNone")}</option>
+          {(["VEHICLE", "DEVICE", "APPLIANCE"] as const).map((k) => (
+            <option key={k} value={k}>
+              {t(`fitmentKinds.${k}`)}
+            </option>
+          ))}
+        </select>
       </Field>
       <div className="flex items-center gap-3 sm:col-span-2">
         <Button type="submit" variant="primary" size="s">

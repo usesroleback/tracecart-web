@@ -11,7 +11,23 @@ export type FulfillmentType = "TRACECART_STOCK" | "SELLER_FULFILLED" | "FULFILLE
 export const PRODUCT_STATUSES: ProductStatus[] = ["DRAFT", "IN_REVIEW", "ACTIVE", "ARCHIVED"];
 export const OFFER_STATUSES: OfferStatus[] = ["DRAFT", "IN_REVIEW", "ACTIVE", "PAUSED", "DELISTED"];
 export const FULFILLMENT_TYPES: FulfillmentType[] = ["TRACECART_STOCK", "SELLER_FULFILLED", "FULFILLED_BY_TRACECART", "CROSS_BORDER"];
-export const LINK_KINDS = ["FITS", "CHARGES", "REPLACES", "ACCESSORY_FOR", "CONSUMABLE_FOR", "FREQUENTLY_BOUGHT_WITH"] as const;
+export const LINK_KINDS = ["FITS", "CHARGES", "REPLACES", "ACCESSORY_FOR", "CONSUMABLE_FOR", "FREQUENTLY_BOUGHT_WITH", "COMPONENT_OF", "EQUIVALENT_TO"] as const;
+/** What a fit rests on (ADR-080): the first three make it verified; the first two need a reference. */
+export const FIT_EVIDENCE = ["MANUFACTURER_DOCUMENT", "OEM_CROSS_REFERENCE", "STAFF_TESTED", "SELLER_DECLARED", "UNVERIFIED"] as const;
+export type FitEvidence = (typeof FIT_EVIDENCE)[number];
+export const VERIFYING: FitEvidence[] = ["MANUFACTURER_DOCUMENT", "OEM_CROSS_REFERENCE", "STAFF_TESTED"];
+export const FITMENT_KINDS = ["VEHICLE", "DEVICE", "APPLIANCE"] as const;
+export interface AdminFitment {
+  id: string;
+  kind: (typeof FITMENT_KINDS)[number];
+  make: string;
+  model: string;
+  yearFrom: number | null;
+  yearTo: number | null;
+  detail: string | null;
+  evidence: FitEvidence;
+  evidenceRef: string | null;
+}
 
 export interface AttributeDefinition {
   id: string;
@@ -33,6 +49,7 @@ export interface AdminCategory {
   parentId: string | null;
   name: L;
   description: L | null;
+  fitmentKind: "VEHICLE" | "DEVICE" | "APPLIANCE" | null;
   active: boolean;
   position: number;
   productCount: number;
@@ -76,7 +93,8 @@ export interface AdminVariant {
   active: boolean;
   offers: AdminOffer[];
   stock: { onHand: number; reserved: number; warehouse: { code: string; name: string } }[];
-  compatibleTo: { id: string; kind: string; to: { sku: string; product: { slug: string; title: L } } }[];
+  compatibleTo: { id: string; kind: string; evidence: FitEvidence; evidenceRef: string | null; to: { sku: string; product: { slug: string; title: L } } }[];
+  fitments: AdminFitment[];
 }
 
 export interface AdminProduct {

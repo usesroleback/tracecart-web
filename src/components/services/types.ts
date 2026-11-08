@@ -8,7 +8,9 @@ export type Reason =
   | { key: "category"; category: string }
   | { key: "attribute"; label: string; value: string; unit: string | null }
   | { key: "words" }
-  | { key: "looksLike" };
+  | { key: "looksLike" }
+  | { key: "fits"; target: string }
+  | { key: "mayFit"; target: string };
 
 export type Chip =
   | { kind: "category"; slug: string; label: string; count: number }

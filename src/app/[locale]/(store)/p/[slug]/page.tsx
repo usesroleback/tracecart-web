@@ -15,10 +15,14 @@ import { ProductReviews } from "@/components/store/ProductReviews";
 import { ProductQuestions } from "@/components/store/ProductQuestions";
 import { RememberSeen, SaveCompare } from "@/components/store/SaveCompare";
 import { findHref } from "@/components/site/header/links";
+import { FitCheck } from "@/components/store/FitCheck";
 import { categoryHref, STORE_CURRENCY, storeApi, storeCountry, toMajor, type ProductDetail, type PublicOffer } from "@/lib/store";
 import { alternates, siteUrl } from "@/lib/siteUrl";
 
-type Props = { params: Promise<{ locale: string; slug: string }>; searchParams: Promise<{ variant?: string }> };
+type Props = {
+  params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<{ variant?: string; fitMake?: string; fitModel?: string; fitYear?: string; fitDetail?: string }>;
+};
 
 async function load(locale: string, slug: string, variant?: string): Promise<ProductDetail> {
   if (!/^[a-z0-9-]+$/.test(slug)) notFound();
@@ -122,7 +126,10 @@ async function OfferLine({ offer, primary = false }: { offer: PublicOffer; prima
 
 export default async function ProductPage({ params, searchParams }: Props) {
   const { locale, slug } = await params;
-  const p = await load(locale, slug, (await searchParams).variant);
+  const query = await searchParams;
+  const p = await load(locale, slug, query.variant);
+  const one = (v: unknown) => (typeof v === "string" ? v.trim().slice(0, 80) : undefined);
+  const fitQuery = { make: one(query.fitMake), model: one(query.fitModel), year: one(query.fitYear), detail: one(query.fitDetail) };
   const t = await getTranslations("store");
   const format = await getFormatter();
   const base = await siteUrl();
@@ -264,6 +271,8 @@ export default async function ProductPage({ params, searchParams }: Props) {
             </details>
           ) : null}
 
+          {p.fitmentKind ? <FitCheck product={p} sku={variant.sku} query={fitQuery} locale={locale} /> : null}
+
           {p.warrantyMonths || p.certifications.length ? (
             <p className="text-sm text-ink-muted">
               {p.warrantyMonths ? t("product.warranty", { months: p.warrantyMonths }) : null}
@@ -347,10 +356,12 @@ export default async function ProductPage({ params, searchParams }: Props) {
       </div>
 
       {p.compatibility.map((g) => (
-        <section key={`${g.kind}-${g.direction}`} aria-labelledby={`compat-${g.kind}-${g.direction}`} className="mt-12">
-          <h2 id={`compat-${g.kind}-${g.direction}`} className="rb-title-l mb-4">
+        <section key={`${g.kind}-${g.direction}-${g.verified}`} aria-labelledby={`compat-${g.kind}-${g.direction}-${g.verified}`} className="mt-12">
+          <h2 id={`compat-${g.kind}-${g.direction}-${g.verified}`} className="rb-title-l">
             {t(`product.compatibility.${g.kind}_${g.direction}`)}
           </h2>
+          {/* A link without evidence is only "may fit" (ADR-080). */}
+          <p className="mb-4 mt-1 text-sm text-ink-muted">{g.verified ? t("product.compatibilityVerified") : t("product.compatibilityUnverified")}</p>
           <ProductList products={g.products.slice(0, 8)} />
         </section>
       ))}
