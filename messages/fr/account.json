@@ -76,5 +76,14 @@
     },
     "quoteWaiting": "Un devis vous attend",
     "see": "Voir"
+  },
+  "notifications": {
+    "title": "E-mails",
+    "always": "Nous envoyons toujours ce dont vous avez besoin pour acheter et recevoir : votre commande, le paiement, les codes de retrait, les livraisons manquées, les retours et les remboursements.",
+    "orderProgress": "Suivi de commande",
+    "orderProgressHint": "Expédiée, livrée, un retard ou une nouvelle date de livraison.",
+    "marketing": "Promotions et nouveautés",
+    "marketingHint": "De temps en temps, jamais partagé. Seulement si vous cochez.",
+    "saved": "Enregistré."
   }
 }

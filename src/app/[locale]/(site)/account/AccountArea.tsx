@@ -247,6 +247,76 @@ export function AccountArea() {
           </div>
         </form>
       </Card>
+
+      <NotificationPreferences />
     </div>
+  );
+}
+
+interface Preferences {
+  orderProgress: boolean;
+  marketing: boolean;
+}
+
+/** Which emails the customer gets (ADR-073); what they need to buy and receive always goes. */
+function NotificationPreferences() {
+  const t = useTranslations("account.notifications");
+  const [prefs, setPrefs] = useState<Preferences | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    call<Preferences>("GET", "/me/notification-preferences")
+      .then(setPrefs)
+      .catch((e) => setError((e as Error).message));
+  }, []);
+
+  async function change(next: Preferences) {
+    setPrefs(next);
+    setSaved(false);
+    setError(null);
+    try {
+      setPrefs(await call<Preferences>("PUT", "/me/notification-preferences", next));
+      setSaved(true);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+
+  return (
+    <Card padding={24}>
+      <h2 id="notifications" className="rb-title scroll-mt-28">
+        {t("title")}
+      </h2>
+      <p className="mt-1 text-sm text-ink-muted">{t("always")}</p>
+      {prefs ? (
+        <div className="mt-4 grid gap-3 text-sm">
+          <label className="flex items-start gap-3">
+            <input type="checkbox" className="mt-1" checked={prefs.orderProgress} onChange={(e) => change({ ...prefs, orderProgress: e.target.checked })} />
+            <span>
+              <span className="font-medium">{t("orderProgress")}</span>
+              <br />
+              <span className="text-ink-muted">{t("orderProgressHint")}</span>
+            </span>
+          </label>
+          <label className="flex items-start gap-3">
+            <input type="checkbox" className="mt-1" checked={prefs.marketing} onChange={(e) => change({ ...prefs, marketing: e.target.checked })} />
+            <span>
+              <span className="font-medium">{t("marketing")}</span>
+              <br />
+              <span className="text-ink-muted">{t("marketingHint")}</span>
+            </span>
+          </label>
+        </div>
+      ) : null}
+      <p className="mt-3 text-sm text-ink-muted" aria-live="polite">
+        {saved ? t("saved") : ""}
+      </p>
+      {error ? (
+        <p role="alert" className="text-sm text-critical">
+          {error}
+        </p>
+      ) : null}
+    </Card>
   );
 }

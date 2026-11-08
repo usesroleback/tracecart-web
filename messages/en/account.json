@@ -76,5 +76,14 @@
     },
     "quoteWaiting": "A quote is waiting",
     "see": "See"
+  },
+  "notifications": {
+    "title": "Emails",
+    "always": "We always email what you need to buy and receive: your order, payment, collection codes, failed deliveries, returns and refunds.",
+    "orderProgress": "Order progress",
+    "orderProgressHint": "Shipped, delivered, a delay or a new delivery window.",
+    "marketing": "Deals and news",
+    "marketingHint": "Now and then, never shared. Only if you tick this.",
+    "saved": "Saved."
   }
 }
