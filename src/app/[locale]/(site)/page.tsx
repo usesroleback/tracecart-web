@@ -155,12 +155,13 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
         <h2 id="home-services" className="rb-title-l mb-4">
           {t("servicesTitle")}
         </h2>
-        <ul className="grid gap-3 md:grid-cols-3">
+        <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           {(
             [
               { key: "ship", href: "/freight" },
               { key: "sell", href: "/sell" },
               { key: "business", href: "/business" },
+              { key: "carry", href: "/carry" },
             ] as const
           ).map((s) => (
             <li key={s.key}>

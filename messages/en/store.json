@@ -68,6 +68,11 @@
         "title": "Buy for a company",
         "body": "Company accounts, colleagues who order, approvals, bulk orders, requests for quotes and Net 30.",
         "cta": "Open a company account"
+      },
+      "carry": {
+        "title": "Carry with Tracecart",
+        "body": "Run trucks, vans or freight? Carry for Tracecart's customers on your routes, at your rates.",
+        "cta": "Become a carrier"
       }
     }
   },

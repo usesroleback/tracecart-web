@@ -78,7 +78,9 @@
     "notificationTemplates": "Notification templates",
     "deals": "Deals",
     "giftCards": "Gift cards",
-    "sellerReviews": "Reviews"
+    "sellerReviews": "Reviews",
+    "partnerQuotes": "Quote requests",
+    "carrierApplications": "Carrier applications"
   },
   "notifications": {
     "title": "Notifications",

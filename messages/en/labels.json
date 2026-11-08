@@ -203,11 +203,15 @@
     "otherCountry": "another destination country",
     "tooHeavy": "too heavy",
     "tooLong": "package too long",
-    "refusedGoods": "refuses these goods"
+    "refusedGoods": "refuses these goods",
+    "otherOrigin": "leaves from another country",
+    "tooBulky": "load too bulky",
+    "notAccepting": "carrier has paused requests"
   },
   "routeUnchecked": {
     "weight": "weight not checked yet",
-    "size": "size not checked yet"
+    "size": "size not checked yet",
+    "volume": "volume not checked yet"
   },
   "systemRole": {
     "super_admin": "Super Administrator",

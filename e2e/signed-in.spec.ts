@@ -33,13 +33,13 @@ const pathsIn = async (page: Page, selector: string) =>
 // Who each role is on screen, what its sidebar must show, and a few things it mustn't reach.
 const CONSOLE: { role: string; name: string; shows: string[]; refused: string[] }[] = [
   { role: "super_admin", name: "Super Administrator", shows: ["/orders", "/store-orders", "/shipments", "/pricing", "/catalog"], refused: ["/deliveries", "/routes", "/seller", "/partner"] },
-  { role: "admin", name: "Administrator", shows: ["/orders", "/store-orders", "/shipments", "/pricing", "/catalog", "/sellers", "/sellers/settings"], refused: ["/deliveries", "/seller"] },
+  { role: "admin", name: "Administrator", shows: ["/orders", "/store-orders", "/shipments", "/pricing", "/catalog", "/sellers", "/sellers/settings", "/carrier-applications"], refused: ["/deliveries", "/seller"] },
   { role: "catalog_manager", name: "Catalogue Manager", shows: ["/catalog", "/catalog/search", "/listings"], refused: ["/shipments", "/refunds", "/inventory", "/pricing", "/orders"] },
   { role: "sourcing_agent", name: "Sourcing Agent", shows: ["/sourcing", "/products", "/reservations", "/stores", "/purchasing", "/catalog"], refused: ["/shipments", "/refunds", "/pricing", "/orders"] },
   { role: "pricing_analyst", name: "Pricing Analyst", shows: ["/pricing", "/catalog"], refused: ["/shipments", "/refunds", "/orders", "/sourcing"] },
   { role: "warehouse_manager", name: "Warehouse Manager", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/refunds", "/catalog", "/partners", "/cod", "/orders"] },
   { role: "warehouse_operator", name: "Warehouse Operator", shows: ["/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/store-orders", "/refunds", "/catalog", "/partners", "/orders"] },
-  { role: "logistics_coordinator", name: "Logistics Coordinator", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing", "/partners", "/freight-requests", "/orders", "/consolidations"], refused: ["/refunds", "/catalog"] },
+  { role: "logistics_coordinator", name: "Logistics Coordinator", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing", "/partners", "/freight-requests", "/orders", "/consolidations", "/carrier-applications"], refused: ["/refunds", "/catalog"] },
   { role: "customs_officer", name: "Customs Officer", shows: ["/store-orders", "/purchasing"], refused: ["/shipments", "/refunds", "/inventory", "/pricing"] },
   { role: "support_agent", name: "Support Agent", shows: ["/store-orders", "/shipments", "/returns", "/refunds", "/freight-requests"], refused: ["/inventory", "/purchasing", "/catalog"] },
   { role: "support_lead", name: "Support Lead", shows: ["/store-orders", "/shipments", "/returns", "/refunds"], refused: ["/inventory", "/purchasing", "/catalog"] },
@@ -48,8 +48,8 @@ const CONSOLE: { role: string; name: string; shows: string[]; refused: string[] 
   { role: "content_moderator", name: "Content Moderator", shows: ["/catalog", "/listings"], refused: ["/store-orders", "/shipments", "/refunds", "/pricing"] },
   { role: "seller_owner", name: "Seller", shows: ["/seller", "/seller/listings", "/seller/inbounds"], refused: ["/store-orders", "/shipments", "/catalog", "/refunds", "/orders", "/sellers", "/sellers/settings", "/partner"] },
   { role: "seller_staff", name: "Seller Staff", shows: ["/seller/listings", "/seller/inbounds"], refused: ["/store-orders", "/shipments", "/catalog", "/refunds", "/orders", "/sellers", "/seller"] },
-  { role: "carrier", name: "Carrier", shows: ["/deliveries", "/consolidations", "/routes", "/shipments", "/cod", "/partners", "/partner", "/partner/pickups", "/partner/deliveries", "/partner/cash", "/partner/notices"], refused: ["/store-orders", "/refunds", "/inventory", "/catalog", "/pricing"] },
-  { role: "pickup_point_operator", name: "Pickup Point", shows: ["/shipments", "/cod", "/partners", "/partner", "/partner/pickups", "/partner/deliveries", "/partner/cash", "/partner/notices"], refused: ["/deliveries", "/routes", "/consolidations", "/store-orders", "/refunds", "/inventory", "/pricing"] },
+  { role: "carrier", name: "Carrier", shows: ["/deliveries", "/consolidations", "/routes", "/shipments", "/cod", "/partners", "/partner", "/partner/pickups", "/partner/deliveries", "/partner/cash", "/partner/notices", "/partner/quotes"], refused: ["/store-orders", "/refunds", "/inventory", "/catalog", "/pricing", "/carrier-applications"] },
+  { role: "pickup_point_operator", name: "Pickup Point", shows: ["/shipments", "/cod", "/partners", "/partner", "/partner/pickups", "/partner/deliveries", "/partner/cash", "/partner/notices"], refused: ["/deliveries", "/routes", "/consolidations", "/store-orders", "/refunds", "/inventory", "/pricing", "/partner/quotes"] },
 ];
 
 for (const { role, name, shows, refused: forbidden } of CONSOLE) {

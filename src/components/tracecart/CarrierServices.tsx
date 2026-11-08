@@ -53,13 +53,14 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
   }
 
   const limits = (s: CarrierService) => {
-    const parts = [s.maxWeightKg && `≤ ${f.number(Number(s.maxWeightKg))} kg`, s.maxLengthCm && `≤ ${f.number(Number(s.maxLengthCm))} cm`].filter(Boolean);
+    const parts = [s.maxWeightKg && `≤ ${f.number(Number(s.maxWeightKg))} kg`, s.maxLengthCm && `≤ ${f.number(Number(s.maxLengthCm))} cm`, s.maxVolumeM3 && `≤ ${f.number(Number(s.maxVolumeM3))} m³`].filter(Boolean);
     return (
       <>
         {parts.length ? parts.join(" · ") : t("carriersPage.noLimit")}
         {s.refusedFlags.length > 0 && (
           <span className="block text-xs text-ink-muted">{t("carriersPage.refuses", { flags: s.refusedFlags.map((fl) => tl(`handlingFlag.${fl}`)).join(", ") })}</span>
         )}
+        {s.departureDays?.length ? <span className="block text-xs text-ink-muted">{t("carriersPage.leaves", { days: s.departureDays.map((d) => t(`carriersPage.weekday.${d}` as "carriersPage.weekday.0")).join(", ") })}</span> : null}
       </>
     );
   };
@@ -217,6 +218,7 @@ function ServiceForm({
     mode: service?.mode ?? ("ROAD" as TransportMode),
     maxWeightKg: str(service?.maxWeightKg),
     maxLengthCm: str(service?.maxLengthCm),
+    maxVolumeM3: str(service?.maxVolumeM3),
     transitDaysMin: str(service?.transitDaysMin),
     transitDaysMax: str(service?.transitDaysMax),
     handlingDays: str(service?.handlingDays ?? 0),
@@ -229,6 +231,7 @@ function ServiceForm({
     volumetricDivisor: str(service?.volumetricDivisor),
   });
   const [refused, setRefused] = useState<HandlingFlag[]>(service?.refusedFlags ?? []);
+  const [departureDays, setDepartureDays] = useState<number[]>(service?.departureDays ?? []);
   const [bands, setBands] = useState<BandRow[]>(
     service?.weightBands?.length
       ? service.weightBands.map((b) => ({ upToKg: str(b.upToKg), kind: b.flat != null ? "flat" : "perKg", amount: str(b.flat ?? b.perKg) }))
@@ -258,7 +261,9 @@ function ServiceForm({
       // Empty or 0: no limit (a 0 limit would refuse every order).
       maxWeightKg: numOrNull(v.maxWeightKg) || null,
       maxLengthCm: numOrNull(v.maxLengthCm) || null,
+      maxVolumeM3: numOrNull(v.maxVolumeM3) || null,
       refusedFlags: refused,
+      departureDays,
       transitDaysMin: Number(v.transitDaysMin),
       transitDaysMax: Number(v.transitDaysMax),
       handlingDays: Number(v.handlingDays) || 0,
@@ -376,6 +381,18 @@ function ServiceForm({
         <Field label={t("carriersPage.field.handlingDays")}>
           <UnitInput unit={days} step="1" value={v.handlingDays} onChange={set("handlingDays")} />
         </Field>
+        <fieldset className="min-w-0 sm:col-span-2 lg:col-span-3">
+          <legend className="rb-label mb-1 text-sm text-ink">{t("carriersPage.field.departureDays")}</legend>
+          <p className="mb-2 text-xs text-ink-muted">{t("carriersPage.form.departureHint")}</p>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+              <label key={d} className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={departureDays.includes(d)} onChange={(e) => setDepartureDays(e.target.checked ? [...departureDays, d].sort() : departureDays.filter((x) => x !== d))} />
+                {t(`carriersPage.weekday.${d}` as "carriersPage.weekday.0")}
+              </label>
+            ))}
+          </div>
+        </fieldset>
         {admin && (
           <Field label={t("carriersPage.field.priority")} hint={t("carriersPage.form.priorityHint")}>
             <input type="number" step="1" className={input} value={v.priority} onChange={set("priority")} />
@@ -389,6 +406,9 @@ function ServiceForm({
         </Field>
         <Field label={t("carriersPage.field.maxLengthCm")} hint={t("carriersPage.form.noLimitHint")}>
           <UnitInput unit="cm" value={v.maxLengthCm} onChange={set("maxLengthCm")} />
+        </Field>
+        <Field label={t("carriersPage.field.maxVolumeM3")} hint={t("carriersPage.form.noLimitHint")}>
+          <UnitInput unit="m³" value={v.maxVolumeM3} onChange={set("maxVolumeM3")} />
         </Field>
         <fieldset className="min-w-0 sm:col-span-2 lg:col-span-3">
           <legend className="rb-label mb-2 text-sm text-ink">{t("carriersPage.field.refused")}</legend>

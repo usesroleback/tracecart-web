@@ -6873,6 +6873,387 @@
         }
       }
     },
+    "/carrier-quotes": {
+      "get": {
+        "tags": [
+          "Carrier quote requests"
+        ],
+        "summary": "Quote requests sent to one's carrier company, newest first. The cargo and the cities, never the customer or Tracecart's prices.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "orders.carrier_quote.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "QUOTED",
+                "DECLINED",
+                "WITHDRAWN",
+                "EXPIRED",
+                "CHOSEN"
+              ]
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carrier-quotes/{id}": {
+      "get": {
+        "tags": [
+          "Carrier quote requests"
+        ],
+        "summary": "One quote request",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "orders.carrier_quote.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carrier-quotes/{id}/answer": {
+      "post": {
+        "tags": [
+          "Carrier quote requests"
+        ],
+        "summary": "Give (or change) one's price: what one charges Tracecart for this move",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "orders.carrier_quote.submit",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amountMinor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "maximum": 1000000000000,
+                    "description": "What you charge Tracecart for this move, in minor units of `currency`"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 3
+                  },
+                  "transitDaysMin": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 365
+                  },
+                  "transitDaysMax": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 365
+                  },
+                  "collectOn": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time",
+                    "description": "The day you can collect"
+                  },
+                  "validUntil": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time",
+                    "description": "How long the price holds. Default: 7 days; at most 60."
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "amountMinor",
+                  "currency",
+                  "transitDaysMin",
+                  "transitDaysMax"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carrier-quotes/{id}/decline": {
+      "post": {
+        "tags": [
+          "Carrier quote requests"
+        ],
+        "summary": "Decline a quote request, saying why",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "orders.carrier_quote.submit",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/carrier-services": {
       "get": {
         "tags": [
@@ -6986,6 +7367,12 @@
                     "minimum": 0,
                     "exclusiveMinimum": true
                   },
+                  "maxVolumeM3": {
+                    "type": "number",
+                    "nullable": true,
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                  },
                   "refusedFlags": {
                     "type": "array",
                     "items": {
@@ -7011,6 +7398,15 @@
                   "handlingDays": {
                     "type": "integer",
                     "minimum": 0
+                  },
+                  "departureDays": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 6
+                    },
+                    "maxItems": 7
                   },
                   "priority": {
                     "type": "integer"
@@ -7451,6 +7847,12 @@
                     "minimum": 0,
                     "exclusiveMinimum": true
                   },
+                  "maxVolumeM3": {
+                    "type": "number",
+                    "nullable": true,
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                  },
                   "refusedFlags": {
                     "type": "array",
                     "items": {
@@ -7476,6 +7878,15 @@
                   "handlingDays": {
                     "type": "integer",
                     "minimum": 0
+                  },
+                  "departureDays": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 6
+                    },
+                    "maxItems": 7
                   },
                   "priority": {
                     "type": "integer"
@@ -7672,6 +8083,785 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/applications": {
+      "get": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "Carrier applications, latest submitted first",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "carriers.review",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DRAFT",
+                "SUBMITTED",
+                "NEEDS_CHANGES",
+                "APPROVED",
+                "REJECTED",
+                "SUSPENDED"
+              ]
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "The carrier's name or email"
+            },
+            "required": false,
+            "description": "The carrier's name or email",
+            "name": "q",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/applications/{id}": {
+      "get": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "A carrier: details, documents and decision",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "carriers.review",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/applications/{id}/decision": {
+      "post": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "Approve, ask for changes, or refuse. Nobody decides their own application.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "carriers.review",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "decision": {
+                    "type": "string",
+                    "enum": [
+                      "APPROVE",
+                      "NEEDS_CHANGES",
+                      "REJECT"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "decision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/applications/{id}/documents/{documentId}/file": {
+      "get": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "See a document: a signed link valid for 5 minutes. Audited.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "carriers.review",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "documentId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "To the file"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/applications/{id}/documents/{documentId}/review": {
+      "post": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "Accept or refuse a document",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "carriers.review",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "documentId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "decision": {
+                    "type": "string",
+                    "enum": [
+                      "APPROVE",
+                      "REJECT"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "decision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/applications/{id}/reinstate": {
+      "post": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "Let a suspended carrier carry again: the routes suspension switched off come back",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "carriers.review",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/applications/{id}/suspend": {
+      "post": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "Stop a carrier: its active routes are switched off",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "carriers.review",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/settings": {
+      "get": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "The documents a carrier must provide",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": [
+          "carriers.review",
+          "settings.read"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "Change the documents a carrier must provide. Audited.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "settings.write",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "requiredDocuments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "BUSINESS_REGISTRATION",
+                        "OWNER_ID",
+                        "TRANSPORT_LICENCE",
+                        "INSURANCE",
+                        "VEHICLE_REGISTRATION",
+                        "OTHER"
+                      ]
+                    },
+                    "minItems": 1,
+                    "description": "What a carrier must provide to be approved"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carriers/terms": {
+      "get": {
+        "tags": [
+          "Carriers"
+        ],
+        "summary": "What a carrier must provide to carry for Tracecart",
+        "security": [],
+        "x-tracecart-access": "public",
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "404": {
             "description": "Not found",
@@ -12426,6 +13616,383 @@
         }
       }
     },
+    "/freight-requests/{reference}/carrier-requests": {
+      "post": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Ask chosen carrier routes for their price. Each carrier sees the cargo and the cities only, and is told in-app and by email.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.quote.send",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "carrierServiceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "minItems": 1,
+                    "maxItems": 10
+                  },
+                  "respondBy": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "date-time",
+                    "description": "When the carrier must answer by. Default: in 48 hours; at most 14 days."
+                  },
+                  "cargo": {
+                    "type": "object",
+                    "properties": {
+                      "packageCount": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "exclusiveMinimum": true,
+                        "maximum": 100000
+                      },
+                      "weightKg": {
+                        "type": "number",
+                        "minimum": 0,
+                        "exclusiveMinimum": true,
+                        "maximum": 1000000
+                      },
+                      "volumeM3": {
+                        "type": "number",
+                        "nullable": true,
+                        "minimum": 0,
+                        "exclusiveMinimum": true,
+                        "maximum": 100000
+                      },
+                      "largestPackageCm": {
+                        "type": "object",
+                        "nullable": true,
+                        "properties": {
+                          "length": {
+                            "type": "number",
+                            "minimum": 0,
+                            "exclusiveMinimum": true,
+                            "maximum": 10000
+                          },
+                          "width": {
+                            "type": "number",
+                            "minimum": 0,
+                            "exclusiveMinimum": true,
+                            "maximum": 10000
+                          },
+                          "height": {
+                            "type": "number",
+                            "minimum": 0,
+                            "exclusiveMinimum": true,
+                            "maximum": 10000
+                          }
+                        },
+                        "required": [
+                          "length",
+                          "width",
+                          "height"
+                        ]
+                      },
+                      "handlingFlags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "BATTERY",
+                            "LIQUID",
+                            "TEMPERATURE_SENSITIVE",
+                            "FRAGILE",
+                            "MEDICAL_DEVICE",
+                            "DANGEROUS_GOODS"
+                          ]
+                        },
+                        "maxItems": 6,
+                        "default": []
+                      },
+                      "description": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 1000,
+                        "description": "What the goods are, as the carrier reads it. Never the customer's name, phone or address."
+                      }
+                    },
+                    "required": [
+                      "packageCount",
+                      "weightKg",
+                      "description"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "description": "A word to the carrier"
+                  }
+                },
+                "required": [
+                  "carrierServiceIds",
+                  "cargo"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight-requests/{reference}/carrier-requests/{id}/withdraw": {
+      "post": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Withdraw a request a carrier hasn't closed",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.quote.send",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/freight-requests/{reference}/carriers": {
+      "get": {
+        "tags": [
+          "Freight"
+        ],
+        "summary": "Carrier routes that can move this request, eligible first, with each route's rate-card price (the carrier's cost). Query figures replace the estimate's.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "freight.request.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^FR-[0-9]{6}-[0-9A-Z]{5}$"
+            },
+            "required": true,
+            "name": "reference",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "maximum": 100000
+            },
+            "required": false,
+            "name": "packageCount",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "maximum": 1000000
+            },
+            "required": false,
+            "name": "weightKg",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "exclusiveMinimum": true,
+              "maximum": 100000
+            },
+            "required": false,
+            "name": "volumeM3",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "description": "Comma-separated handling flags, replacing the estimate's"
+            },
+            "required": false,
+            "description": "Comma-separated handling flags, replacing the estimate's",
+            "name": "handlingFlags",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/freight-requests/{reference}/close": {
       "post": {
         "tags": [
@@ -12660,6 +14227,11 @@
                   "note": {
                     "type": "string",
                     "maxLength": 1000
+                  },
+                  "carrierQuoteRequestId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The carrier's price this quote rests on: when the customer accepts, that carrier gets the shipment at that price."
                   }
                 },
                 "required": [
@@ -15946,6 +17518,586 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/carrier": {
+      "get": {
+        "tags": [
+          "My carrier account"
+        ],
+        "summary": "One's application to carry for Tracecart, or null",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "My carrier account"
+        ],
+        "summary": "Apply to carry for Tracecart. Approval makes the account a carrier account.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 120
+                  },
+                  "countryCode": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2
+                  },
+                  "city": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 120
+                  },
+                  "addressLine": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 300
+                  },
+                  "phone": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 30
+                  },
+                  "taxId": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 60
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "modes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ROAD",
+                        "AIR",
+                        "SEA",
+                        "RAIL",
+                        "MULTIMODAL"
+                      ]
+                    },
+                    "minItems": 1,
+                    "maxItems": 5,
+                    "description": "The transport modes the company runs"
+                  },
+                  "countries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 2
+                    },
+                    "minItems": 1,
+                    "maxItems": 60,
+                    "description": "Countries it collects from or delivers to (ISO 3166-1 alpha-2)"
+                  },
+                  "fleet": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "description": "What it drives or flies, in its own words"
+                  }
+                },
+                "required": [
+                  "name",
+                  "countryCode",
+                  "city",
+                  "addressLine",
+                  "phone",
+                  "modes",
+                  "countries"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "My carrier account"
+        ],
+        "summary": "Change one's details. Once approved, the name, country and tax number stay as reviewed.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 120
+                  },
+                  "countryCode": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 2
+                  },
+                  "city": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 120
+                  },
+                  "addressLine": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 300
+                  },
+                  "phone": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 30
+                  },
+                  "taxId": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 60
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "modes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ROAD",
+                        "AIR",
+                        "SEA",
+                        "RAIL",
+                        "MULTIMODAL"
+                      ]
+                    },
+                    "minItems": 1,
+                    "maxItems": 5,
+                    "description": "The transport modes the company runs"
+                  },
+                  "countries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 2
+                    },
+                    "minItems": 1,
+                    "maxItems": 60,
+                    "description": "Countries it collects from or delivers to (ISO 3166-1 alpha-2)"
+                  },
+                  "fleet": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "description": "What it drives or flies, in its own words"
+                  }
+                },
+                "required": [
+                  "name",
+                  "countryCode",
+                  "city",
+                  "addressLine",
+                  "phone",
+                  "modes",
+                  "countries"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/carrier/accepting": {
+      "put": {
+        "tags": [
+          "My carrier account"
+        ],
+        "summary": "Pause or resume new quote requests (an approved carrier). Routes still run.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accepting": {
+                    "type": "boolean",
+                    "description": "Off: staff can't send new quote requests. Routes still run."
+                  }
+                },
+                "required": [
+                  "accepting"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/carrier/documents": {
+      "post": {
+        "tags": [
+          "My carrier account"
+        ],
+        "summary": "Add a document: multipart, as `file`, with its `kind`. PDF or image, up to 10 MB.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/carrier/documents/{documentId}/file": {
+      "get": {
+        "tags": [
+          "My carrier account"
+        ],
+        "summary": "See one's document: redirects to a signed link valid for 5 minutes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "documentId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "To the file"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/carrier/submit": {
+      "post": {
+        "tags": [
+          "My carrier account"
+        ],
+        "summary": "Send the application for review",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Not signed in",
@@ -24767,13 +26919,17 @@
                       "BORDER_CLOSURE",
                       "CAPACITY",
                       "PRICE_CHANGE",
+                      "ACCIDENT",
+                      "THEFT",
+                      "BREAKDOWN",
+                      "CUSTOMS_HOLD",
                       "OTHER"
                     ]
                   },
                   "shipmentId": {
                     "type": "string",
                     "format": "uuid",
-                    "description": "Required for picked up, delayed, damaged, refused and arrived. It must be one of yours."
+                    "description": "Required for picked up, delayed, damaged, refused and arrived; optional for an incident (accident, theft, breakdown, customs hold). It must be one of yours."
                   },
                   "message": {
                     "type": "string",
@@ -25296,13 +27452,17 @@
                       "BORDER_CLOSURE",
                       "CAPACITY",
                       "PRICE_CHANGE",
+                      "ACCIDENT",
+                      "THEFT",
+                      "BREAKDOWN",
+                      "CUSTOMS_HOLD",
                       "OTHER"
                     ]
                   },
                   "shipmentId": {
                     "type": "string",
                     "format": "uuid",
-                    "description": "Required for picked up, delayed, damaged, refused and arrived. It must be one of yours."
+                    "description": "Required for picked up, delayed, damaged, refused and arrived; optional for an incident (accident, theft, breakdown, customs hold). It must be one of yours."
                   },
                   "message": {
                     "type": "string",

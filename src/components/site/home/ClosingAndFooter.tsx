@@ -31,6 +31,7 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
     { label: f("ship"), href: "/freight" },
     { label: f("sell"), href: "/sell" },
     { label: f("business"), href: "/business" },
+    { label: f("carry"), href: "/carry" },
   ];
 
   return (

@@ -68,7 +68,11 @@
     "BORDER_CLOSURE": "Frontière fermée",
     "CAPACITY": "Capacité",
     "PRICE_CHANGE": "Changement de prix",
-    "OTHER": "Autre"
+    "OTHER": "Autre",
+    "ACCIDENT": "Accident",
+    "THEFT": "Vol",
+    "BREAKDOWN": "Panne",
+    "CUSTOMS_HOLD": "Retenue en douane"
   },
   "scopeHints": {
     "shipments_read": "Voir leurs expéditions et les expéditions entrantes, sans les prix.",

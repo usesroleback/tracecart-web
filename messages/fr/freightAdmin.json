@@ -52,6 +52,55 @@
     "to": "Livré au plus tard le",
     "note": "Un mot au client",
     "total": "Total : {total}",
-    "send": "Envoyer le devis"
+    "send": "Envoyer le devis",
+    "restsOn": "S'appuie sur le prix de {carrier} : {price}.",
+    "restsOnHint": "Quand le client accepte, ce transporteur reçoit l'expédition à ce prix. Le transport facturé au client reste à vous de le fixer.",
+    "restsOnClear": "Ne pas l'utiliser",
+    "noCarrier": "Aucun prix transporteur choisi : l'équipe assignera un transporteur à l'emballage."
+  },
+  "carriers": {
+    "title": "Transporteurs",
+    "lead": "Les itinéraires qui peuvent transporter ce chargement, et les transporteurs à qui vous avez demandé un prix. Ces prix sont ce que les transporteurs facturent à Tracecart : jamais montrés au client.",
+    "asked": "Demandés",
+    "status": {
+      "OPEN": "En attente",
+      "QUOTED": "Prix reçu",
+      "DECLINED": "Déclinée",
+      "WITHDRAWN": "Retirée",
+      "EXPIRED": "Expirée",
+      "CHOSEN": "Retenu"
+    },
+    "inQuote": "Dans le devis",
+    "transit": "{min} à {max} jours",
+    "collectOn": "enlève le {date}",
+    "validUntil": "valable jusqu'au {date}",
+    "answerBy": "Réponse attendue le {when}",
+    "declined": "Décliné : {reason}",
+    "use": "Utiliser dans le devis",
+    "withdraw": "Retirer",
+    "routes": "Itinéraires",
+    "noRoutes": "Aucun itinéraire actif ne dessert cette demande.",
+    "pick": "Demander à {route}",
+    "canTake": "Peut le prendre",
+    "cannotTake": "Ne peut pas le prendre",
+    "window": "départ le {departs}, arrivée du {from} au {to}",
+    "rateCard": "grille tarifaire {price}",
+    "noRateCard": "pas de grille tarifaire",
+    "whatTheySee": "Ce que voient les transporteurs",
+    "whatTheySeeHint": "Les marchandises telles que vous les décrivez, les deux villes et la date. Jamais le nom, le téléphone ou l'adresse du client, la valeur déclarée ni nos prix.",
+    "packages": "Colis",
+    "weight": "Poids (kg)",
+    "volume": "Volume (m³)",
+    "description": "Les marchandises",
+    "descriptionHint": "Vérifiez-la avec les photos. Aucun nom ni numéro de téléphone.",
+    "note": "Un mot pour les transporteurs",
+    "replyWithin": "Réponse sous",
+    "hours": {
+      "24": "24 heures",
+      "48": "48 heures",
+      "72": "3 jours",
+      "168": "7 jours"
+    },
+    "ask": "{count, plural, =0 {Choisissez des itinéraires} one {Demander à # transporteur} other {Demander à # transporteurs}}"
   }
 }

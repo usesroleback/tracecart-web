@@ -68,7 +68,11 @@
     "BORDER_CLOSURE": "Border closed",
     "CAPACITY": "Capacity",
     "PRICE_CHANGE": "Price change",
-    "OTHER": "Other"
+    "OTHER": "Other",
+    "ACCIDENT": "Accident",
+    "THEFT": "Theft",
+    "BREAKDOWN": "Breakdown",
+    "CUSTOMS_HOLD": "Held at customs"
   },
   "scopeHints": {
     "shipments_read": "See their shipments and inbound shipments, with no prices.",

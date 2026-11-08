@@ -203,11 +203,15 @@
     "otherCountry": "autre pays de destination",
     "tooHeavy": "trop lourd",
     "tooLong": "colis trop long",
-    "refusedGoods": "refuse ces marchandises"
+    "refusedGoods": "refuse ces marchandises",
+    "otherOrigin": "part d'un autre pays",
+    "tooBulky": "chargement trop volumineux",
+    "notAccepting": "le transporteur a mis les demandes en pause"
   },
   "routeUnchecked": {
     "weight": "poids pas encore vérifié",
-    "size": "taille pas encore vérifiée"
+    "size": "taille pas encore vérifiée",
+    "volume": "volume pas encore vérifié"
   },
   "systemRole": {
     "super_admin": "Super administrateur",

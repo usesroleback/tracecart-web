@@ -441,7 +441,9 @@
       "handlingDays": "Préparation (jours)",
       "priority": "Priorité",
       "notes": "Notes",
-      "destinationHub": "Hub de destination"
+      "destinationHub": "Hub de destination",
+      "departureDays": "Jours de départ",
+      "maxVolumeM3": "Volume maximum du chargement (m³)"
     },
     "myHub": "Mon hub ({city})",
     "ownTitle": "Mes routes et tarifs",
@@ -506,7 +508,8 @@
       "noLimitHint": "Vide : pas de limite connue.",
       "pickHub": "Choisir un hub",
       "destinationHubHint": "Le transporteur livre à ce hub ; le pays de destination est le sien.",
-      "chooseDestinationHub": "Cette route allait au « {country} » sans hub précis : choisissez le hub qu'elle livre."
+      "chooseDestinationHub": "Cette route allait au « {country} » sans hub précis : choisissez le hub qu'elle livre.",
+      "departureHint": "Les jours où cet itinéraire part. Aucun coché : tous les jours."
     },
     "noDestinationHub": "Sans hub de destination : à choisir",
     "newHub": {
@@ -521,6 +524,16 @@
       "cancel": "Annuler",
       "incomplete": "Indiquez le nom, la ville, le pays et la devise (3 lettres) du hub.",
       "failed": "Le hub n'a pas pu être ajouté."
+    },
+    "leaves": "Part le {days}",
+    "weekday": {
+      "0": "dimanche",
+      "1": "lundi",
+      "2": "mardi",
+      "3": "mercredi",
+      "4": "jeudi",
+      "5": "vendredi",
+      "6": "samedi"
     }
   }
 }

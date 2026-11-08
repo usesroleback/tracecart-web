@@ -441,7 +441,9 @@
       "handlingDays": "Handling (days)",
       "priority": "Priority",
       "notes": "Notes",
-      "destinationHub": "Destination hub"
+      "destinationHub": "Destination hub",
+      "departureDays": "Departure days",
+      "maxVolumeM3": "Max load volume (m³)"
     },
     "myHub": "My hub ({city})",
     "ownTitle": "My routes and rates",
@@ -506,7 +508,8 @@
       "noLimitHint": "Empty: no known limit.",
       "pickHub": "Choose a hub",
       "destinationHubHint": "The carrier delivers to this hub; the destination country is the hub's.",
-      "chooseDestinationHub": "This route went to \"{country}\" without a specific hub: choose the hub it delivers to."
+      "chooseDestinationHub": "This route went to \"{country}\" without a specific hub: choose the hub it delivers to.",
+      "departureHint": "The days this route leaves. None ticked: any day."
     },
     "noDestinationHub": "No destination hub: choose one",
     "newHub": {
@@ -521,6 +524,16 @@
       "cancel": "Cancel",
       "incomplete": "Give the hub's name, city, country and currency (3 letters).",
       "failed": "The hub couldn't be added."
+    },
+    "leaves": "Leaves {days}",
+    "weekday": {
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
     }
   }
 }

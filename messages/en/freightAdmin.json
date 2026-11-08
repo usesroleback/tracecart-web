@@ -52,6 +52,55 @@
     "to": "Delivered by",
     "note": "A word to the customer",
     "total": "Total: {total}",
-    "send": "Send the quote"
+    "send": "Send the quote",
+    "restsOn": "Rests on {carrier}'s price: {price}.",
+    "restsOnHint": "When the customer accepts, that carrier gets the shipment at that price. The shipping you charge is yours to set.",
+    "restsOnClear": "Don't use it",
+    "noCarrier": "No carrier price chosen: staff assign a carrier when the shipment is packed."
+  },
+  "carriers": {
+    "title": "Carriers",
+    "lead": "Routes that can move this cargo, and carriers asked for their price. Prices here are what carriers charge Tracecart: never shown to the customer.",
+    "asked": "Asked",
+    "status": {
+      "OPEN": "Waiting",
+      "QUOTED": "Price received",
+      "DECLINED": "Declined",
+      "WITHDRAWN": "Withdrawn",
+      "EXPIRED": "Expired",
+      "CHOSEN": "Chosen"
+    },
+    "inQuote": "In the quote",
+    "transit": "{min}–{max} days",
+    "collectOn": "collects {date}",
+    "validUntil": "holds until {date}",
+    "answerBy": "Answer due {when}",
+    "declined": "Declined: {reason}",
+    "use": "Use in the quote",
+    "withdraw": "Withdraw",
+    "routes": "Routes",
+    "noRoutes": "No active carrier route serves this request.",
+    "pick": "Ask {route}",
+    "canTake": "Can take it",
+    "cannotTake": "Can't take it",
+    "window": "leaves {departs}, arrives {from} – {to}",
+    "rateCard": "rate card {price}",
+    "noRateCard": "no rate card",
+    "whatTheySee": "What the carriers see",
+    "whatTheySeeHint": "The goods as you describe them, the two cities and the ready date. Never the customer's name, phone, address, declared value or our prices.",
+    "packages": "Packages",
+    "weight": "Weight (kg)",
+    "volume": "Volume (m³)",
+    "description": "The goods",
+    "descriptionHint": "Check it against the photos. No names or phone numbers.",
+    "note": "A word to the carriers",
+    "replyWithin": "Answer within",
+    "hours": {
+      "24": "24 hours",
+      "48": "48 hours",
+      "72": "3 days",
+      "168": "7 days"
+    },
+    "ask": "{count, plural, =0 {Choose routes to ask} one {Ask # carrier} other {Ask # carriers}}"
   }
 }

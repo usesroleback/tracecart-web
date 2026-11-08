@@ -68,6 +68,11 @@
         "title": "Acheter pour une entreprise",
         "body": "Comptes entreprise, collègues qui commandent, validations, commandes en volume, demandes de devis et paiement à 30 jours.",
         "cta": "Ouvrir un compte entreprise"
+      },
+      "carry": {
+        "title": "Transporter avec Tracecart",
+        "body": "Camions, fourgonnettes ou fret ? Transportez pour les clients de Tracecart sur vos itinéraires, à vos tarifs.",
+        "cta": "Devenir transporteur"
       }
     }
   },

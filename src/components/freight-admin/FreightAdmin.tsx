@@ -12,6 +12,7 @@ import { Field, input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
 import { FreightEstimateView } from "@/components/services/FreightEstimate";
 import type { CargoEstimate, FreightPlace, Indicative } from "@/components/services/types";
+import { CarrierRequest, FreightCarriers } from "./FreightCarriers";
 
 // Freight requests in the console (ADR-036): logistics staff check the AI's
 // estimate against the photos and send the firm quote.
@@ -133,6 +134,7 @@ interface Detail {
   estimate: CargoEstimate | null;
   indicative: (Indicative & { serviceId: string | null }) | null;
   quotes: StaffQuote[];
+  carrierRequests: CarrierRequest[];
 }
 
 export function FreightDetail({ reference, canQuote }: { reference: string; canQuote: boolean }) {
@@ -141,6 +143,8 @@ export function FreightDetail({ reference, canQuote }: { reference: string; canQ
   const format = useFormat();
   const [r, setR] = useState<Detail | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // The carrier price the next quote rests on (ADR-081).
+  const [chosen, setChosen] = useState<CarrierRequest | null>(null);
   const load = useCallback(() => call<Detail>("GET", `/freight-requests/${reference}`).then(setR, (e) => setError((e as Error).message)), [reference]);
   useEffect(() => {
     load();
@@ -230,6 +234,7 @@ export function FreightDetail({ reference, canQuote }: { reference: string; canQ
             {r.estimateModel ? <p className="mt-2 text-xs text-ink-muted">{t("readBy", { model: r.estimateModel })}</p> : null}
             {r.estimateError ? <p className="mt-2 text-xs text-critical">{r.estimateError}</p> : null}
           </section>
+          <FreightCarriers reference={r.reference} requests={r.carrierRequests} canAsk={canQuote} open={open} chosenId={chosen?.id ?? null} onChoose={setChosen} onChanged={load} />
         </div>
         <aside className="flex flex-col gap-4">
           {r.quotes.length ? (
@@ -249,7 +254,7 @@ export function FreightDetail({ reference, canQuote }: { reference: string; canQ
               </ul>
             </div>
           ) : null}
-          {canQuote && open ? <QuoteForm detail={r} onSent={load} /> : null}
+          {canQuote && open ? <QuoteForm detail={r} carrierQuote={chosen} onClearCarrier={() => setChosen(null)} onSent={load} /> : null}
           {canQuote && open ? (
             <button type="button" onClick={close} className="self-start text-sm text-ink-muted underline">
               {t("close")}
@@ -261,8 +266,9 @@ export function FreightDetail({ reference, canQuote }: { reference: string; canQ
   );
 }
 
-function QuoteForm({ detail, onSent }: { detail: Detail; onSent: () => void }) {
+function QuoteForm({ detail, carrierQuote, onClearCarrier, onSent }: { detail: Detail; carrierQuote: CarrierRequest | null; onClearCarrier: () => void; onSent: () => void }) {
   const t = useTranslations("freightAdmin.quote");
+  const format = useFormat();
   const ind = detail.indicative?.available ? detail.indicative : null;
   const est = detail.estimate;
   // Starting figures: the high end of the AI's range, which the agent checks.
@@ -298,7 +304,9 @@ function QuoteForm({ detail, onSent }: { detail: Detail; onSent: () => void }) {
         promiseFrom: f.promiseFrom,
         promiseTo: f.promiseTo,
         ...(f.note.trim() ? { note: f.note.trim() } : {}),
+        ...(carrierQuote ? { carrierQuoteRequestId: carrierQuote.id } : {}),
       });
+      onClearCarrier();
       onSent();
     } catch (err) {
       setError((err as Error).message);
@@ -311,12 +319,23 @@ function QuoteForm({ detail, onSent }: { detail: Detail; onSent: () => void }) {
     <form onSubmit={send} className="grid gap-3 rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm">
       <h2 className="rb-label">{t("title")}</h2>
       <p className="text-xs text-ink-muted">{t("hint")}</p>
+      {carrierQuote && carrierQuote.amountMinor != null && carrierQuote.currency ? (
+        <div className="rounded-[var(--radius-s)] border border-line bg-surface-sunken p-3">
+          <p>{t("restsOn", { carrier: carrierQuote.carrier.name, price: `${format.number(toMajor(carrierQuote.amountMinor, carrierQuote.currency))} ${carrierQuote.currency}` })}</p>
+          <p className="text-xs text-ink-muted">{t("restsOnHint")}</p>
+          <button type="button" className="mt-1 text-xs underline" onClick={onClearCarrier}>
+            {t("restsOnClear")}
+          </button>
+        </div>
+      ) : (
+        <p className="text-xs text-ink-muted">{t("noCarrier")}</p>
+      )}
       <div className="grid grid-cols-2 gap-3">
         <Field label={t("packages")} required>
           <input className={input} type="number" min={1} required value={f.packageCount} onChange={set("packageCount")} />
         </Field>
         <Field label={t("weight")} required>
-          <input className={input} type="number" min={0.1} step={0.1} required value={f.weightKg} onChange={set("weightKg")} />
+          <input className={input} type="number" min={0.1} step="any" required value={f.weightKg} onChange={set("weightKg")} />
         </Field>
         <Field label={t("shipping", { currency: detail.currency })} required>
           <input className={input} type="number" min={0} required value={f.shipping} onChange={set("shipping")} />

@@ -78,7 +78,9 @@
     "notificationTemplates": "Modèles de notification",
     "deals": "Promotions",
     "giftCards": "Cartes cadeaux",
-    "sellerReviews": "Avis"
+    "sellerReviews": "Avis",
+    "partnerQuotes": "Demandes de prix",
+    "carrierApplications": "Demandes transporteurs"
   },
   "notifications": {
     "title": "Notifications",

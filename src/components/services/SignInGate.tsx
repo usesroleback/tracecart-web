@@ -12,7 +12,18 @@ export const box = "rounded-[var(--radius-m)] border border-line bg-surface-rais
  * page), then the customer account (made on first visit) is handed to the
  * page. Staff accounts are turned away: they don't buy or ship as customers.
  */
-export function SignInGate({ title, lead, children }: { title: string; lead: string; children: (profile: CustomerProfile, refresh: (p: CustomerProfile) => void) => ReactNode }) {
+export function SignInGate({
+  title,
+  lead,
+  children,
+  otherAccount,
+}: {
+  title: string;
+  lead: string;
+  children: (profile: CustomerProfile, refresh: (p: CustomerProfile) => void) => ReactNode;
+  /** Shown instead of turning away a signed-in account that isn't a customer's (a carrier after approval). */
+  otherAccount?: ReactNode;
+}) {
   const t = useTranslations("services.gate");
   const locale = useLocale();
   const clerk = useClerk();
@@ -49,7 +60,7 @@ export function SignInGate({ title, lead, children }: { title: string; lead: str
     );
   }
   if (state === "loading") return <p className="text-ink-muted">{t("loading")}</p>;
-  if (state === "staff") return <p className={box}>{t("staff")}</p>;
+  if (state === "staff") return otherAccount ? <>{otherAccount}</> : <p className={box}>{t("staff")}</p>;
   if (state === "failed" || !profile) return <p className="text-critical">{t("failed")}</p>;
   return <>{children(profile, setProfile)}</>;
 }

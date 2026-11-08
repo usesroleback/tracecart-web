@@ -12,7 +12,8 @@ import { call } from "@/components/checkout/http";
 // webhooks their systems use. The API checks every call.
 
 const box = "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
-const KINDS = ["BORDER_CLOSURE", "CAPACITY", "PRICE_CHANGE", "OTHER", "PICKED_UP", "DELAYED", "DAMAGED", "REFUSED", "ARRIVED"] as const;
+// Incident reports (ADR-081) can name a shipment, or not.
+const KINDS = ["BORDER_CLOSURE", "CAPACITY", "PRICE_CHANGE", "OTHER", "PICKED_UP", "DELAYED", "DAMAGED", "REFUSED", "ARRIVED", "ACCIDENT", "THEFT", "BREAKDOWN", "CUSTOMS_HOLD"] as const;
 const ABOUT_A_SHIPMENT = ["PICKED_UP", "DELAYED", "DAMAGED", "REFUSED", "ARRIVED"];
 const SCOPES = ["shipments.read", "shipments.write", "shipments.proof", "shipments.cod", "notices.write"] as const;
 const EVENTS = ["shipment.assigned", "shipment.status_changed", "notice.acknowledged"] as const;

@@ -236,10 +236,14 @@ export interface CarrierService {
   active: boolean;
   maxWeightKg: string | null;
   maxLengthCm: string | null;
+  /** The whole load (ADR-081). */
+  maxVolumeM3?: string | null;
   refusedFlags: HandlingFlag[];
   transitDaysMin: number;
   transitDaysMax: number;
   handlingDays: number;
+  /** Weekdays it leaves, 0 (Sunday) to 6; empty: any day. */
+  departureDays?: number[];
   priority: number;
   notes: string | null;
   /** Rate card (docs/design/catalogue-pricing-and-revenue.md §2); no currency or bands: quoted by hand. */
