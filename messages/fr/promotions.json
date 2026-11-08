@@ -17,5 +17,26 @@
   "active": "Actif",
   "inactive": "Inactif",
   "activate": "Activer",
-  "deactivate": "Désactiver"
+  "deactivate": "Désactiver",
+  "deals": {
+    "title": "Promotions",
+    "lead": "Un prix plus bas sur une offre de Tracecart pendant une durée fixée. Il s'applique à l'offre au début, l'ancien prix barré, et s'arrête à la fin. Les paniers voient le changement avant de payer.",
+    "sku": "Référence (SKU)",
+    "price": "Prix promotionnel ({currency})",
+    "startsAt": "Début",
+    "startsAtHint": "Maintenant si vide.",
+    "endsAt": "Fin",
+    "add": "Programmer",
+    "badPrice": "Saisissez le prix promotionnel.",
+    "empty": "Aucune promotion pour l'instant.",
+    "window": "Du {from} au {to}",
+    "cancel": "Annuler",
+    "endNow": "Arrêter maintenant",
+    "statuses": {
+      "SCHEDULED": "Programmée",
+      "LIVE": "En cours",
+      "ENDED": "Terminée",
+      "CANCELLED": "Annulée"
+    }
+  }
 }

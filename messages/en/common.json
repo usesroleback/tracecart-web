@@ -75,7 +75,8 @@
     "payouts": "Seller payouts",
     "listings": "Listings",
     "reviews": "Reviews",
-    "notificationTemplates": "Notification templates"
+    "notificationTemplates": "Notification templates",
+    "deals": "Deals"
   },
   "notifications": {
     "title": "Notifications",

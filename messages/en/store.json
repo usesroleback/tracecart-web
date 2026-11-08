@@ -10,7 +10,9 @@
     "brandDescription": "{brand} on Tracecart: {count, plural, one {# product} other {# products}}.",
     "searchTitle": "{query}: search",
     "searchEmptyTitle": "Search",
-    "aboutTitle": "How Tracecart works"
+    "aboutTitle": "How Tracecart works",
+    "dealsTitle": "Deals",
+    "dealsDescription": "Tools, parts and consumables at a lower price for a limited time on Tracecart."
   },
   "nav": {
     "categories": "All categories",
@@ -24,7 +26,8 @@
     "suggestedBrands": "Brands",
     "seeAll": "All results for “{query}”",
     "didYouMean": "Did you mean “{query}”?",
-    "aiSearch": "Search with a photo"
+    "aiSearch": "Search with a photo",
+    "deals": "Deals"
   },
   "home": {
     "title": "The tools you need, delivered where others don't.",
@@ -190,5 +193,11 @@
   },
   "catalogue": {
     "title": "All categories"
+  },
+  "deals": {
+    "title": "Deals",
+    "lead": "Lower prices for a limited time. The delivered price is worked out at checkout, before you pay.",
+    "empty": "No deals right now.",
+    "ends": "Deal · ends {date}"
   }
 }

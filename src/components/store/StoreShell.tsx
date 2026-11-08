@@ -21,6 +21,9 @@ export async function StoreShell({ children, query, search = true }: { children:
             <Link href="/brands" className="hover:text-ink">
               {t("brands")}
             </Link>
+            <Link href="/deals" className="hover:text-ink">
+              {t("deals")}
+            </Link>
           </nav>
         </div>
       ) : null}

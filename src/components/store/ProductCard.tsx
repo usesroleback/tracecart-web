@@ -4,6 +4,7 @@ import type { ProductCard as Card } from "@/lib/store";
 import { StoreImage } from "./StoreImage";
 import { Price } from "./Price";
 import { AvailabilityNote } from "./AvailabilityNote";
+import { DealNote } from "./DealNote";
 
 export async function ProductCard({ product, priority = false }: { product: Card; priority?: boolean }) {
   const t = await getTranslations("store");
@@ -20,6 +21,7 @@ export async function ProductCard({ product, priority = false }: { product: Card
         </h3>
         <div className="mt-auto flex flex-col gap-2 pt-1">
           <Price amountMinor={product.price.amountMinor} currency={product.price.currency} compareAtMinor={product.compareAtMinor} size="s" />
+          <DealNote endsAt={product.dealEndsAt} />
           <AvailabilityNote availability={product.availability} />
           {product.variantCount > 1 ? <p className="text-xs text-ink-muted">{t("card.versions", { count: product.variantCount })}</p> : null}
         </div>

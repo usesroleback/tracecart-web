@@ -10,6 +10,7 @@ import { AvailabilityNote } from "@/components/store/AvailabilityNote";
 import { ProductList } from "@/components/store/ProductCard";
 import { JsonLd } from "@/components/store/JsonLd";
 import { AddToCart } from "@/components/store/AddToCart";
+import { DealNote } from "@/components/store/DealNote";
 import { ProductReviews } from "@/components/store/ProductReviews";
 import { ProductQuestions } from "@/components/store/ProductQuestions";
 import { categoryHref, STORE_CURRENCY, storeApi, storeCountry, toMajor, type ProductDetail, type PublicOffer } from "@/lib/store";
@@ -104,6 +105,7 @@ async function OfferLine({ offer, primary = false }: { offer: PublicOffer; prima
   return (
     <div className="flex flex-col gap-2">
       <Price amountMinor={offer.price.amountMinor} currency={offer.price.currency} compareAtMinor={offer.compareAtMinor} size={primary ? "l" : "m"} wasLabel={(price) => t("was", { price })} />
+      <DealNote endsAt={offer.dealEndsAt} />
       <AvailabilityNote availability={offer.availability} detailed />
       <p className="text-sm text-ink-muted">
         {seller}

@@ -10,7 +10,9 @@
     "brandDescription": "{brand} sur Tracecart : {count, plural, one {# produit} other {# produits}}.",
     "searchTitle": "{query} : recherche",
     "searchEmptyTitle": "Recherche",
-    "aboutTitle": "Comment fonctionne Tracecart"
+    "aboutTitle": "Comment fonctionne Tracecart",
+    "dealsTitle": "Promotions",
+    "dealsDescription": "Outils, pièces et consommables à prix réduit pour une durée limitée sur Tracecart."
   },
   "nav": {
     "categories": "Toutes les catégories",
@@ -24,7 +26,8 @@
     "suggestedBrands": "Marques",
     "seeAll": "Tous les résultats pour « {query} »",
     "didYouMean": "Vouliez-vous dire « {query} » ?",
-    "aiSearch": "Chercher avec une photo"
+    "aiSearch": "Chercher avec une photo",
+    "deals": "Promotions"
   },
   "home": {
     "title": "Les outils qu'il vous faut, livrés là où les autres ne vont pas.",
@@ -190,5 +193,11 @@
   },
   "catalogue": {
     "title": "Toutes les catégories"
+  },
+  "deals": {
+    "title": "Promotions",
+    "lead": "Des prix plus bas pour une durée limitée. Le prix livré est calculé à la commande, avant de payer.",
+    "empty": "Aucune promotion en ce moment.",
+    "ends": "Promotion · jusqu'au {date}"
   }
 }

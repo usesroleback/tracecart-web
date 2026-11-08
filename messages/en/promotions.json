@@ -17,5 +17,26 @@
   "active": "On",
   "inactive": "Off",
   "activate": "Turn on",
-  "deactivate": "Turn off"
+  "deactivate": "Turn off",
+  "deals": {
+    "title": "Deals",
+    "lead": "A lower price on one of Tracecart's own offers for a set time. It goes on the offer when it starts, with the old price struck through, and comes off when it ends. Carts see the change before paying.",
+    "sku": "SKU",
+    "price": "Deal price ({currency})",
+    "startsAt": "Starts",
+    "startsAtHint": "Now when left empty.",
+    "endsAt": "Ends",
+    "add": "Schedule",
+    "badPrice": "Enter the deal price.",
+    "empty": "No deals yet.",
+    "window": "{from} to {to}",
+    "cancel": "Cancel",
+    "endNow": "End now",
+    "statuses": {
+      "SCHEDULED": "Scheduled",
+      "LIVE": "Live",
+      "ENDED": "Ended",
+      "CANCELLED": "Cancelled"
+    }
+  }
 }

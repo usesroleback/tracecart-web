@@ -75,7 +75,8 @@
     "payouts": "Paiements vendeurs",
     "listings": "Annonces",
     "reviews": "Avis",
-    "notificationTemplates": "Modèles de notification"
+    "notificationTemplates": "Modèles de notification",
+    "deals": "Promotions"
   },
   "notifications": {
     "title": "Notifications",
