@@ -9,7 +9,7 @@ It talks to [tracecart-api](https://github.com/tracecartops/tracecart-api) only 
 Needs Node 24, [pnpm](https://pnpm.io) (`corepack enable` gives the pinned version), and a running tracecart-api.
 
 ```bash
-cp .env.example .env.local   # the API URL and the Clerk keys
+# create .env.local first: the three lines in docs/developers/environment.md
 pnpm install
 pnpm dev                     # http://localhost:3000 (pnpm dev --port 3001 if 3000 is taken)
 ```
@@ -105,4 +105,4 @@ The design tokens in `src/app/globals.css` and the components in `src/components
 
 ## Configuration
 
-Every variable is listed in [`.env.example`](./.env.example).
+Every variable is listed in [docs/developers/environment.md](docs/developers/environment.md).

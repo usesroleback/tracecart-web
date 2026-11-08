@@ -2,7 +2,7 @@
 
 # tracecart-web
 
-The website of Tracecart, a product of Roleback Platforms: a tools store with AI search, a marketplace, and cross-border sourcing and logistics. The brand guidelines and design system are in [docs/brand/](docs/brand/README.md). The plan and the decision log (for both apps) are in tracecart-api's `docs/` (`PLAN.md`, `DECISIONS.md`).
+The website of Tracecart, a product of Roleback Platforms: a general marketplace for discovering, buying, sourcing and shipping physical products (ADR-074). The brand guidelines and design system are in [docs/brand/](docs/brand/README.md). The plan and the decision log (for both apps) are in tracecart-api's `docs/` (`PLAN.md`, `DECISIONS.md`).
 
 - Package manager: pnpm. Node 24.
 - Deployed by CI to Dokploy on Hetzner (README "CI/CD", "Deploying"): image to GHCR, a Dokploy application pulls it.
