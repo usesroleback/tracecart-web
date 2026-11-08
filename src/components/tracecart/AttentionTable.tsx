@@ -24,7 +24,7 @@ export function AttentionTable({ orders, loading, emptyLabel }: { orders: Order[
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div tabIndex={0} className="overflow-x-auto">
       <table className="w-full text-left text-sm">
         <thead>
           <tr className="rb-overline">

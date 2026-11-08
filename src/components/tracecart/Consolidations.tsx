@@ -284,7 +284,7 @@ function GroupCard({ group: g, view, onChanged }: { group: Consolidation; view: 
       </div>
       {g.notes && <p className="mt-3 whitespace-pre-line text-sm">{g.notes}</p>}
 
-      <div className="mt-4 overflow-x-auto rounded-[var(--radius-m)] border border-line">
+      <div tabIndex={0} className="mt-4 overflow-x-auto rounded-[var(--radius-m)] border border-line">
         <table className="w-full min-w-[640px] border-separate border-spacing-0 text-sm">
           <caption className="sr-only">{t("members.caption", { reference: g.reference })}</caption>
           <thead>

@@ -66,7 +66,9 @@ export function AccountArea() {
     }
   }
 
-  const here = typeof window === "undefined" ? `/${locale}/account` : window.location.href;
+  // Back to where sign-in was asked for (the home page's finder), when it's a page of this site.
+  const back = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("return");
+  const here = typeof window === "undefined" ? `/${locale}/account` : back && /^\/[^/\\]/.test(back) ? new URL(back, window.location.origin).href : window.location.href;
 
   if (!isLoaded) return <p className="text-sm text-ink-muted">{t("loading")}</p>;
 

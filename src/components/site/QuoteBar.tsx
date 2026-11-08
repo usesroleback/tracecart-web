@@ -1,14 +1,17 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { useAuth, useClerk } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import Button from "@/components/ui/button/Button";
 import { useCountry } from "@/context/CountryContext";
 import { CustomerProfile, ensureCustomerAccount, StaffAccountError, updateProfile } from "@/lib/customer";
 import { PriceBlock, ShopPrice } from "./PriceBlock";
 import { RequiredMark, RequiredNote } from "@/components/ui/form/Form";
+
+// Signed in, as far as the page can tell without loading Clerk (ADR-083): Clerk's
+// own cookie. The API decides for real; a wrong guess sends the visitor to sign in.
+const maybeSignedIn = () => typeof document !== "undefined" && /(?:^|; )__client_uat(?:_[A-Za-z0-9-]+)?=[1-9]/.test(document.cookie);
 
 const inputClasses =
   "h-11 w-full rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 text-sm text-ink placeholder:text-ink-muted focus:outline-2 focus:outline-offset-2 focus:outline-focus-ring";
@@ -115,12 +118,11 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
   const [contact, setContact] = useState({ name: "", phone: "" });
   const [account, setAccount] = useState<CustomerProfile | null>(null);
   const [pending, setPending] = useState(false);
-  const { isLoaded, isSignedIn } = useAuth();
-  const clerk = useClerk();
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [dragging, setDragging] = useState(false);
   const { country } = useCountry();
+  const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -141,7 +143,7 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
   }, []);
 
   useEffect(() => {
-    if (pending && isLoaded && isSignedIn) {
+    if (pending && maybeSignedIn()) {
       // Clerk has just finished signing the customer in: run the search they asked for, once.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setPending(false);
@@ -149,7 +151,15 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
     }
     // search reads the restored draft from state; only the sign-in should trigger it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pending, isLoaded, isSignedIn]);
+  }, [pending]);
+
+  /** Results are for account holders: keep the draft, sign in on the account page, and come back to search. */
+  async function signInFirst() {
+    setProblem(t("signUpNeeded"));
+    saveDraft(what, photo && !isVideo(photo) ? await readDataUrl(photo).catch(() => null) : null, photo && !isVideo(photo) ? photo.name : null);
+    const here = window.location.pathname + window.location.search + "#quote";
+    router.push(`/account?return=${encodeURIComponent(here)}`);
+  }
 
   function pickPhoto(file: File | undefined) {
     if (!file) return;
@@ -175,15 +185,7 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
   async function search(e?: FormEvent) {
     e?.preventDefault();
     if (!what.trim() && !photo) return setProblem(t("needWhat"));
-    if (!isSignedIn) {
-      // Results are for account holders: keep the draft, sign up over the page, then search.
-      setProblem(t("signUpNeeded"));
-      saveDraft(what, photo && !isVideo(photo) ? await readDataUrl(photo).catch(() => null) : null, photo && !isVideo(photo) ? photo.name : null);
-      setPending(true);
-      const here = window.location.pathname + window.location.search;
-      clerk.openSignUp({ forceRedirectUrl: here, signInForceRedirectUrl: here });
-      return;
-    }
+    if (!maybeSignedIn()) return signInFirst();
     setProblem(null);
     setSearching(true);
     setChoice(null);
@@ -321,6 +323,7 @@ export function QuoteBar({ initialWhat = "" }: { initialWhat?: string } = {}) {
               accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm"
               className="sr-only"
               tabIndex={-1}
+              aria-label={t("attach")}
               onChange={(e) => pickPhoto(e.target.files?.[0])}
             />
             <Button type="submit" loading={searching} className="ml-auto flex-none whitespace-nowrap">

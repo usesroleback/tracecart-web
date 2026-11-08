@@ -74,7 +74,7 @@ export default async function ComparePage({ params, searchParams }: Props) {
       ) : null}
 
       {columns.length ? (
-        <div className="mt-8 overflow-x-auto rounded-[var(--radius-m)] border border-line">
+        <div tabIndex={0} className="mt-8 overflow-x-auto rounded-[var(--radius-m)] border border-line">
           <div role="table" aria-label={t("title")} className="min-w-max">
             <div role="row" className={row} style={cols}>
               <span role="columnheader" className={head}>

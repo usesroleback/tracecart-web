@@ -108,7 +108,7 @@ export function ReturnsList() {
         </Button>
       </form>
       {error ? <p className="mb-4 text-sm text-critical">{error}</p> : null}
-      <div className="overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
+      <div tabIndex={0} className="overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-line text-ink-muted">
             <tr>

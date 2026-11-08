@@ -120,7 +120,7 @@ export function CarrierServices({ view, initialServices, carriers = [], hubs }: 
       {services.length === 0 ? (
         <p className="mt-6 text-sm text-ink-muted">{t(own ? "carriersPage.ownEmpty" : "carriersPage.empty")}</p>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
+        <div tabIndex={0} className="mt-6 overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
           <table className="w-full min-w-[900px] border-separate border-spacing-0 text-sm">
             <caption className="sr-only">{t("carriersPage.caption")}</caption>
             <thead>

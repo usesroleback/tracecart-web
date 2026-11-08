@@ -160,7 +160,7 @@ export function StoresDashboard({ initialStores }: { initialStores: Provider[] }
             <p className="text-sm text-ink-muted">{t("empty")}</p>
           ) : (
             <>
-              <div className="hidden w-full overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised sm:block">
+              <div tabIndex={0} className="hidden w-full overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised sm:block">
                 <table className="w-full min-w-[680px] border-separate border-spacing-0 text-sm leading-5">
                   <caption className="sr-only">{t("caption")}</caption>
                   <thead>

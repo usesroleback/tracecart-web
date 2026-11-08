@@ -114,7 +114,7 @@ export function PricingRulesDashboard({ initialRules }: { initialRules: PricingR
       {rules.length === 0 ? (
         <p className="mt-4 text-sm text-ink-muted">{t("empty")}</p>
       ) : (
-        <div className="mt-3 overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
+        <div tabIndex={0} className="mt-3 overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
           <table className="w-full min-w-[760px] border-separate border-spacing-0 text-sm">
             <caption className="sr-only">{t("caption")}</caption>
             <thead>

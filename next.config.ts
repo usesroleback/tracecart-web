@@ -32,6 +32,21 @@ const nextConfig: NextConfig = {
   },
   // This folder is the whole project (no workspace above it).
   outputFileTracingRoot: __dirname,
+  // Response headers that close common browser attacks (ADR-083). The policy
+  // forbids framing, plugins and changing the base URL; scripts aren't
+  // restricted yet (Clerk and Next's inline scripts need nonces first).
+  poweredByHeader: false,
+  async headers() {
+    const security = [
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      { key: "Permissions-Policy", value: "geolocation=(self), microphone=(), payment=()" },
+      { key: "Content-Security-Policy", value: "frame-ancestors 'none'; object-src 'none'; base-uri 'self'" },
+      ...(process.env.NODE_ENV === "production" ? [{ key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" }] : []),
+    ];
+    return [{ source: "/:path*", headers: security }];
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

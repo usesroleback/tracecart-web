@@ -8,7 +8,27 @@ const LOCALE_HEADER = "x-tracecart-locale";
 // needn't look the IP up.
 const COUNTRY_HEADERS = ["x-vercel-ip-country", "cf-ipcountry", "cloudfront-viewer-country"];
 
+/**
+ * A change sent from another site (cross-site request forgery): the proxy turns
+ * the visitor's cookie into a bearer token, so it refuses any request that
+ * isn't a read and doesn't come from this site's own pages (ADR-083). Clerk's
+ * SameSite cookie already blocks most of these; this doesn't rely on it.
+ */
+function crossSite(req: NextRequest): boolean {
+  if (req.method === "GET" || req.method === "HEAD") return false;
+  const site = req.headers.get("sec-fetch-site");
+  if (site) return site !== "same-origin" && site !== "none";
+  const origin = req.headers.get("origin");
+  if (!origin) return false;
+  try {
+    return new URL(origin).host !== req.headers.get("host");
+  } catch {
+    return true;
+  }
+}
+
 async function forward(req: NextRequest, pathParts: string[]) {
+  if (crossSite(req)) return NextResponse.json({ error: { code: "CROSS_SITE", message: "Requests from other sites aren't accepted" } }, { status: 403 });
   // Signed out, the call goes without a session: public routes (the shop,
   // the visitor's country) answer, and the API refuses the rest.
   const token = await getServerToken();

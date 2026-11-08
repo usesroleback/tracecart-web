@@ -60,7 +60,7 @@ export function FreightList() {
         ))}
       </nav>
       {error ? <p className="mt-3 text-sm text-critical">{error}</p> : null}
-      <div className="mt-4 overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
+      <div tabIndex={0} className="mt-4 overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
         <table className="w-full text-left text-sm">
           <thead className="text-ink-muted">
             <tr>
