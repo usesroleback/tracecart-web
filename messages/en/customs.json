@@ -1,0 +1,173 @@
+{
+  "title": "Customs",
+  "lead": "What each country's customs rules say, with their sources, and whether someone has checked them. Rules start unverified: verify each against its source.",
+  "kinds": {
+    "PROHIBITED": "Prohibited",
+    "RESTRICTED": "Restricted",
+    "DUTY": "Duty",
+    "LEVY": "Levy",
+    "VAT": "VAT",
+    "THRESHOLD": "Threshold",
+    "DOCUMENT": "Document",
+    "NOTE": "Note"
+  },
+  "confidence": {
+    "OFFICIAL": "read in the official text",
+    "SECONDARY": "from a secondary source",
+    "ESTIMATE": "estimate"
+  },
+  "base": {
+    "CUSTOMS_VALUE": "of the customs value",
+    "CUSTOMS_VALUE_PLUS_DUTIES": "of the customs value plus duties"
+  },
+  "verified": "Verified",
+  "unverified": "To verify",
+  "dependsOnOrigin": "Depends on origin",
+  "from": "from {date}",
+  "until": "until {date}",
+  "source": "Source",
+  "verifiedBy": "Verified by {who} on {date}: {note}",
+  "open": "Open the rule",
+  "scope": {
+    "hs": "HS {code}…",
+    "category": "category {slug}",
+    "originOnly": "goods originating in {where}",
+    "originExcept": "goods not originating in {where}"
+  },
+  "corridor": {
+    "title": "Corridor",
+    "from": "Goods originating in",
+    "to": "Entering",
+    "anyOrigin": "Origin not known",
+    "show": "Show",
+    "summary": "{rules, plural, =0 {No rules} one {# rule} other {# rules}}, {verified} verified.",
+    "unions": "{country} is in: {unions}.",
+    "none": "No rules for this corridor yet.",
+    "pricing": "What checkout prices duties with",
+    "pricingHint": "The customs rates under Prices and margins. They are estimates, kept apart from the rules: compare them.",
+    "allCategories": "All categories",
+    "rate": "duty {duty} %, tax {tax} %"
+  },
+  "rules": {
+    "title": "Rules",
+    "add": "Add a rule",
+    "jurisdiction": "Country or union",
+    "verification": "Verification",
+    "all": "All",
+    "empty": "No rules match.",
+    "versionLink": "Version {version}",
+    "version": "Rule, version {version}",
+    "replaced": "A newer version replaced this one.",
+    "versions": "Versions",
+    "currentVersion": "Current",
+    "enteredBy": "entered by {who} on {date}",
+    "loaded": "loaded with Tracecart"
+  },
+  "verify": {
+    "title": "Verify",
+    "hint": "Read the source and check the figure, the dates and what it covers. You can't verify a rule you entered.",
+    "note": "What you checked",
+    "cta": "Verify this version"
+  },
+  "form": {
+    "jurisdiction": "Country or union",
+    "jurisdictionHint": "A country code (ML), or UEMOA or ECOWAS",
+    "kind": "Kind",
+    "titleFr": "Title (French)",
+    "titleEn": "Title (English)",
+    "detailsFr": "Details (French)",
+    "detailsEn": "Details (English)",
+    "hsPrefix": "HS code prefix",
+    "category": "Category (slug)",
+    "allGoodsHint": "Empty: all goods",
+    "origin": "Whose goods",
+    "originAny": "Any origin",
+    "originOnly": "Only goods originating in…",
+    "originExcept": "All goods except those originating in…",
+    "originWhere": "Country or union",
+    "rate": "Rate (%)",
+    "base": "Charged on",
+    "effectiveFrom": "In force from",
+    "effectiveTo": "Until (not included)",
+    "sourceTitle": "Source",
+    "sourceHint": "The regulation, law or guide it comes from",
+    "sourcePublisher": "Published by",
+    "sourceReference": "Article, page or section",
+    "sourceUrl": "Link",
+    "confidence": "Confidence",
+    "save": "Add the rule",
+    "saveVersion": "Save as a new version",
+    "cancel": "Cancel",
+    "newVersion": "Change (new version)",
+    "versionHint": "Saving makes a new version, which needs verifying again. This one stays on record."
+  },
+  "headings": {
+    "title": "Headings by category",
+    "hint": "The customs heading (4 to 6 digits) a category's products usually fall under. It's the first suggestion for its products and those below it, never their confirmed code.",
+    "search": "Find a category",
+    "for": "Heading for {name}",
+    "save": "Save"
+  },
+  "reviews": {
+    "title": "Customs cases",
+    "lead": "Cases opened when a product without a confirmed customs code sells across a border, when a freight estimate lists restricted goods, when a rule restricts what an order carries, or by hand. Each goes to the customs officer with the fewest open cases.",
+    "whose": "Whose",
+    "mine": "Mine",
+    "unassigned": "Nobody's",
+    "everyone": "Everyone's",
+    "statusLabel": "Status",
+    "working": "Open and in progress",
+    "status": {
+      "OPEN": "Open",
+      "IN_PROGRESS": "In progress",
+      "RESOLVED": "Resolved",
+      "DISMISSED": "Dismissed"
+    },
+    "reasons": {
+      "HS_CODE_NEEDED": "Customs code needed",
+      "RESTRICTED_GOODS": "Restricted goods",
+      "DOCUMENTS_NEEDED": "Documents needed",
+      "OTHER": "Other"
+    },
+    "empty": "No cases here.",
+    "nobody": "Nobody",
+    "jurisdiction": "Destination",
+    "product": "Product",
+    "order": "Order",
+    "freight": "Freight request",
+    "opened": "Opened",
+    "decided": "Decided: {what}",
+    "assignedTo": "With {who}",
+    "take": "Take this case",
+    "giveTo": "Give to",
+    "resolution": "What was decided",
+    "resolutionHint": "Kept on record.",
+    "resolve": "Resolve",
+    "dismiss": "Dismiss"
+  },
+  "hs": {
+    "title": "Customs code",
+    "confirmed": "Confirmed",
+    "confirmedBy": "Confirmed by {who} on {date}",
+    "noCode": "No confirmed customs code yet.",
+    "notBinding": "Suggestions, from the category, similar products or AI, are not binding: only a code a customs officer confirms is the product's.",
+    "suggestion": "Suggestion, not binding",
+    "sources": {
+      "CATEGORY": "From the category",
+      "SIMILAR": "From similar products",
+      "AI": "From AI"
+    },
+    "statuses": {
+      "ACCEPTED": "Confirmed",
+      "REJECTED": "Rejected"
+    },
+    "confidence": "confidence: {level}",
+    "confirm": "Confirm",
+    "confirmOne": "Confirm {code}",
+    "reject": "Reject",
+    "suggest": "Suggest codes",
+    "askAi": "Ask AI too",
+    "enter": "Or type the code",
+    "confirmTyped": "Confirm this code"
+  }
+}

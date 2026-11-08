@@ -93,6 +93,8 @@ const NAV: NavGroup[] = [
     items: [
       { icon: <DsHubIcon />, name: "hub", path: "/hub-setup", permission: ["sourcing.request.read", "pricing.settings.write"] },
       { icon: <DsCoinIcon />, name: "pricing", path: "/pricing", permission: "pricing.settings.write" },
+      { icon: <DsLayersIcon />, name: "customs", path: "/customs", permission: ["customs.rate.write", "customs.file.write", "compliance.review"] },
+      { icon: <DsAlertIcon />, name: "customsReviews", path: "/customs/reviews", permission: "customs.file.write" },
       { icon: <DsCoinIcon />, name: "customsRates", path: "/customs-rates", permission: "customs.rate.write" },
       { icon: <DsTruckIcon />, name: "carriers", path: "/carriers", permission: "logistics.carrier.read", accountTypes: ["SUPER_ADMIN"], hubPermission: "logistics.carrier.read" },
     ],

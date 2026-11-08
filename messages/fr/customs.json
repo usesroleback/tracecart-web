@@ -1,0 +1,173 @@
+{
+  "title": "Douane",
+  "lead": "Ce que disent les règles douanières de chaque pays, avec leurs sources, et si quelqu'un les a vérifiées. Les règles commencent « à vérifier » : vérifiez chacune avec sa source.",
+  "kinds": {
+    "PROHIBITED": "Interdit",
+    "RESTRICTED": "Restreint",
+    "DUTY": "Droit",
+    "LEVY": "Prélèvement",
+    "VAT": "TVA",
+    "THRESHOLD": "Seuil",
+    "DOCUMENT": "Document",
+    "NOTE": "Note"
+  },
+  "confidence": {
+    "OFFICIAL": "lu dans le texte officiel",
+    "SECONDARY": "d'une source secondaire",
+    "ESTIMATE": "estimation"
+  },
+  "base": {
+    "CUSTOMS_VALUE": "de la valeur en douane",
+    "CUSTOMS_VALUE_PLUS_DUTIES": "de la valeur en douane plus les droits"
+  },
+  "verified": "Vérifiée",
+  "unverified": "À vérifier",
+  "dependsOnOrigin": "Selon l'origine",
+  "from": "depuis le {date}",
+  "until": "jusqu'au {date}",
+  "source": "Source",
+  "verifiedBy": "Vérifiée par {who} le {date} : {note}",
+  "open": "Ouvrir la règle",
+  "scope": {
+    "hs": "SH {code}…",
+    "category": "catégorie {slug}",
+    "originOnly": "marchandises originaires de {where}",
+    "originExcept": "marchandises non originaires de {where}"
+  },
+  "corridor": {
+    "title": "Corridor",
+    "from": "Marchandises originaires de",
+    "to": "Entrant en",
+    "anyOrigin": "Origine inconnue",
+    "show": "Afficher",
+    "summary": "{rules, plural, =0 {Aucune règle} one {# règle} other {# règles}}, {verified} vérifiée(s).",
+    "unions": "{country} fait partie de : {unions}.",
+    "none": "Aucune règle pour ce corridor pour l'instant.",
+    "pricing": "Ce que le paiement utilise pour chiffrer les droits",
+    "pricingHint": "Les taux de douane de Prix et marges. Ce sont des estimations, distinctes des règles : comparez-les.",
+    "allCategories": "Toutes catégories",
+    "rate": "droit {duty} %, taxe {tax} %"
+  },
+  "rules": {
+    "title": "Règles",
+    "add": "Ajouter une règle",
+    "jurisdiction": "Pays ou union",
+    "verification": "Vérification",
+    "all": "Toutes",
+    "empty": "Aucune règle ne correspond.",
+    "versionLink": "Version {version}",
+    "version": "Règle, version {version}",
+    "replaced": "Une version plus récente a remplacé celle-ci.",
+    "versions": "Versions",
+    "currentVersion": "En vigueur",
+    "enteredBy": "saisie par {who} le {date}",
+    "loaded": "chargée avec Tracecart"
+  },
+  "verify": {
+    "title": "Vérifier",
+    "hint": "Lisez la source et contrôlez le chiffre, les dates et ce qu'elle couvre. Vous ne pouvez pas vérifier une règle que vous avez saisie.",
+    "note": "Ce que vous avez contrôlé",
+    "cta": "Vérifier cette version"
+  },
+  "form": {
+    "jurisdiction": "Pays ou union",
+    "jurisdictionHint": "Un code pays (ML), ou UEMOA ou ECOWAS",
+    "kind": "Nature",
+    "titleFr": "Intitulé (français)",
+    "titleEn": "Intitulé (anglais)",
+    "detailsFr": "Détails (français)",
+    "detailsEn": "Détails (anglais)",
+    "hsPrefix": "Début du code SH",
+    "category": "Catégorie (identifiant)",
+    "allGoodsHint": "Vide : toutes les marchandises",
+    "origin": "Quelles marchandises",
+    "originAny": "Toute origine",
+    "originOnly": "Seulement celles originaires de…",
+    "originExcept": "Toutes sauf celles originaires de…",
+    "originWhere": "Pays ou union",
+    "rate": "Taux (%)",
+    "base": "Assiette",
+    "effectiveFrom": "En vigueur à partir du",
+    "effectiveTo": "Jusqu'au (exclu)",
+    "sourceTitle": "Source",
+    "sourceHint": "Le règlement, la loi ou le guide d'où elle vient",
+    "sourcePublisher": "Publiée par",
+    "sourceReference": "Article, page ou section",
+    "sourceUrl": "Lien",
+    "confidence": "Fiabilité",
+    "save": "Ajouter la règle",
+    "saveVersion": "Enregistrer une nouvelle version",
+    "cancel": "Annuler",
+    "newVersion": "Modifier (nouvelle version)",
+    "versionHint": "Enregistrer crée une nouvelle version, à vérifier à nouveau. Celle-ci reste en archive."
+  },
+  "headings": {
+    "title": "Positions par catégorie",
+    "hint": "La position douanière (4 à 6 chiffres) dont relèvent habituellement les produits d'une catégorie. C'est la première suggestion pour ses produits et ceux en dessous, jamais leur code confirmé.",
+    "search": "Chercher une catégorie",
+    "for": "Position pour {name}",
+    "save": "Enregistrer"
+  },
+  "reviews": {
+    "title": "Dossiers douane",
+    "lead": "Dossiers ouverts quand un produit sans code douanier confirmé est vendu hors frontière, quand une estimation de fret liste des marchandises restreintes, quand une règle restreint ce qu'une commande transporte, ou à la main. Chacun va à l'agent des douanes qui en a le moins en cours.",
+    "whose": "À qui",
+    "mine": "Les miens",
+    "unassigned": "À personne",
+    "everyone": "Tous",
+    "statusLabel": "Statut",
+    "working": "Ouverts et en cours",
+    "status": {
+      "OPEN": "Ouvert",
+      "IN_PROGRESS": "En cours",
+      "RESOLVED": "Clos",
+      "DISMISSED": "Classé sans suite"
+    },
+    "reasons": {
+      "HS_CODE_NEEDED": "Code douanier à confirmer",
+      "RESTRICTED_GOODS": "Marchandises restreintes",
+      "DOCUMENTS_NEEDED": "Documents manquants",
+      "OTHER": "Autre"
+    },
+    "empty": "Aucun dossier ici.",
+    "nobody": "Personne",
+    "jurisdiction": "Destination",
+    "product": "Produit",
+    "order": "Commande",
+    "freight": "Demande de fret",
+    "opened": "Ouvert le",
+    "decided": "Décidé : {what}",
+    "assignedTo": "Chez {who}",
+    "take": "Prendre",
+    "giveTo": "Attribuer à",
+    "resolution": "Ce qui a été décidé",
+    "resolutionHint": "Gardé en archive.",
+    "resolve": "Clore",
+    "dismiss": "Classer sans suite"
+  },
+  "hs": {
+    "title": "Code douanier",
+    "confirmed": "Confirmé",
+    "confirmedBy": "Confirmé par {who} le {date}",
+    "noCode": "Pas encore de code douanier confirmé.",
+    "notBinding": "Les suggestions (catégorie, produits semblables ou IA) sont non contraignantes : seul un code confirmé par un agent des douanes est celui du produit.",
+    "suggestion": "Suggestion non contraignante",
+    "sources": {
+      "CATEGORY": "De la catégorie",
+      "SIMILAR": "De produits semblables",
+      "AI": "De l'IA"
+    },
+    "statuses": {
+      "ACCEPTED": "Confirmé",
+      "REJECTED": "Rejeté"
+    },
+    "confidence": "fiabilité : {level}",
+    "confirm": "Confirmer",
+    "confirmOne": "Confirmer {code}",
+    "reject": "Rejeter",
+    "suggest": "Suggérer des codes",
+    "askAi": "Demander aussi à l'IA",
+    "enter": "Ou saisissez le code",
+    "confirmTyped": "Confirmer ce code"
+  }
+}

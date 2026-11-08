@@ -80,7 +80,9 @@
     "giftCards": "Cartes cadeaux",
     "sellerReviews": "Avis",
     "partnerQuotes": "Demandes de prix",
-    "carrierApplications": "Demandes transporteurs"
+    "carrierApplications": "Demandes transporteurs",
+    "customs": "Douane",
+    "customsReviews": "Dossiers douane"
   },
   "notifications": {
     "title": "Notifications",

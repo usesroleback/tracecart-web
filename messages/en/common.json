@@ -80,7 +80,9 @@
     "giftCards": "Gift cards",
     "sellerReviews": "Reviews",
     "partnerQuotes": "Quote requests",
-    "carrierApplications": "Carrier applications"
+    "carrierApplications": "Carrier applications",
+    "customs": "Customs",
+    "customsReviews": "Customs cases"
   },
   "notifications": {
     "title": "Notifications",

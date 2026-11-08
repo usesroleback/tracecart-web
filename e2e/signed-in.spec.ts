@@ -40,7 +40,7 @@ const CONSOLE: { role: string; name: string; shows: string[]; refused: string[] 
   { role: "warehouse_manager", name: "Warehouse Manager", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/refunds", "/catalog", "/partners", "/cod", "/orders"] },
   { role: "warehouse_operator", name: "Warehouse Operator", shows: ["/shipments", "/returns", "/inventory", "/purchasing"], refused: ["/store-orders", "/refunds", "/catalog", "/partners", "/orders"] },
   { role: "logistics_coordinator", name: "Logistics Coordinator", shows: ["/store-orders", "/shipments", "/returns", "/inventory", "/purchasing", "/partners", "/freight-requests", "/orders", "/consolidations", "/carrier-applications"], refused: ["/refunds", "/catalog"] },
-  { role: "customs_officer", name: "Customs Officer", shows: ["/store-orders", "/purchasing"], refused: ["/shipments", "/refunds", "/inventory", "/pricing"] },
+  { role: "customs_officer", name: "Customs Officer", shows: ["/store-orders", "/purchasing", "/customs", "/customs/reviews"], refused: ["/shipments", "/refunds", "/inventory", "/pricing"] },
   { role: "support_agent", name: "Support Agent", shows: ["/store-orders", "/shipments", "/returns", "/refunds", "/freight-requests"], refused: ["/inventory", "/purchasing", "/catalog"] },
   { role: "support_lead", name: "Support Lead", shows: ["/store-orders", "/shipments", "/returns", "/refunds"], refused: ["/inventory", "/purchasing", "/catalog"] },
   { role: "finance", name: "Finance", shows: ["/store-orders", "/cod", "/refunds", "/purchasing", "/sellers/settings"], refused: ["/shipments", "/inventory", "/catalog", "/pricing", "/sellers"] },
@@ -48,7 +48,7 @@ const CONSOLE: { role: string; name: string; shows: string[]; refused: string[] 
   { role: "content_moderator", name: "Content Moderator", shows: ["/catalog", "/listings"], refused: ["/store-orders", "/shipments", "/refunds", "/pricing"] },
   { role: "seller_owner", name: "Seller", shows: ["/seller", "/seller/listings", "/seller/inbounds"], refused: ["/store-orders", "/shipments", "/catalog", "/refunds", "/orders", "/sellers", "/sellers/settings", "/partner"] },
   { role: "seller_staff", name: "Seller Staff", shows: ["/seller/listings", "/seller/inbounds"], refused: ["/store-orders", "/shipments", "/catalog", "/refunds", "/orders", "/sellers", "/seller"] },
-  { role: "carrier", name: "Carrier", shows: ["/deliveries", "/consolidations", "/routes", "/shipments", "/cod", "/partners", "/partner", "/partner/pickups", "/partner/deliveries", "/partner/cash", "/partner/notices", "/partner/quotes"], refused: ["/store-orders", "/refunds", "/inventory", "/catalog", "/pricing", "/carrier-applications"] },
+  { role: "carrier", name: "Carrier", shows: ["/deliveries", "/consolidations", "/routes", "/shipments", "/cod", "/partners", "/partner", "/partner/pickups", "/partner/deliveries", "/partner/cash", "/partner/notices", "/partner/quotes"], refused: ["/store-orders", "/refunds", "/inventory", "/catalog", "/pricing", "/carrier-applications", "/customs"] },
   { role: "pickup_point_operator", name: "Pickup Point", shows: ["/shipments", "/cod", "/partners", "/partner", "/partner/pickups", "/partner/deliveries", "/partner/cash", "/partner/notices"], refused: ["/deliveries", "/routes", "/consolidations", "/store-orders", "/refunds", "/inventory", "/pricing", "/partner/quotes"] },
 ];
 

@@ -5,6 +5,7 @@ const NAMESPACES = [
   'common',
   'sellers',
   'carriers',
+  'customs',
   'b2b',
   'listings',
   'payouts',
