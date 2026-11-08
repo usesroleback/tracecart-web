@@ -119,6 +119,7 @@ const NAV: NavGroup[] = [
       { icon: <DsSearchIcon />, name: "searchTuning", path: "/catalog/search", permission: "search.tune" },
       { icon: <DsCoinIcon />, name: "coupons", path: "/coupons", permission: "promotions.write" },
       { icon: <DsCoinIcon />, name: "deals", path: "/deals", permission: "promotions.write" },
+      { icon: <DsCoinIcon />, name: "giftCards", path: "/gift-cards", permission: "promotions.write" },
       { icon: <DsChatIcon />, name: "reviews", path: "/reviews", permission: "content.moderate" },
       { icon: <DsAlertIcon />, name: "notificationTemplates", path: "/notification-templates", permission: "settings.notification_template.write" },
     ],

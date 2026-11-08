@@ -38,5 +38,30 @@
       "ENDED": "Terminée",
       "CANCELLED": "Annulée"
     }
+  },
+  "giftCards": {
+    "title": "Cartes cadeaux",
+    "lead": "De l'argent que le client dépense au paiement, pour tout ou partie d'une commande. Le code s'affiche une seule fois ici, et part par e-mail au destinataire s'il y en a un.",
+    "amount": "Montant ({currency})",
+    "recipientEmail": "E-mail du destinataire",
+    "recipientEmailHint": "Facultatif : le code lui est envoyé.",
+    "recipientName": "Nom du destinataire",
+    "message": "Message (facultatif)",
+    "expiresAt": "Valable jusqu'au",
+    "expiresAtHint": "Facultatif.",
+    "issue": "Émettre la carte",
+    "badAmount": "Saisissez un montant.",
+    "issued": "Carte cadeau de {amount} émise. Son code :",
+    "issuedOnce": "Copiez-le maintenant : il ne sera plus affiché.",
+    "issuedEmailed": "Le destinataire l'a reçu par e-mail. Il ne sera plus affiché ici.",
+    "empty": "Aucune carte cadeau pour l'instant.",
+    "balance": "{left} sur {of}",
+    "until": "Jusqu'au {date}",
+    "disable": "Désactiver",
+    "enable": "Réactiver",
+    "statuses": {
+      "ACTIVE": "Active",
+      "DISABLED": "Désactivée"
+    }
   }
 }

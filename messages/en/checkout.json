@@ -65,14 +65,16 @@
       "CASH_ON_DELIVERY": "Cash on delivery",
       "BANK_TRANSFER": "Bank transfer",
       "FAKE": "Test payment",
-      "NET_30": "Net 30"
+      "NET_30": "Net 30",
+      "GIFT_CARD": "Gift card"
     },
     "paymentHints": {
       "CINETPAY": "Orange Money, Moov, Wave, MTN, Visa or Mastercard, on CinetPay's secure page.",
       "CASH_ON_DELIVERY": "Pay the exact total when it's delivered. Nothing more.",
       "BANK_TRANSFER": "We confirm the order when the transfer arrives; the items are held for you meanwhile.",
       "FAKE": "For tests: no money moves.",
-      "NET_30": "The order is confirmed now. Pay the frozen total within 30 days."
+      "NET_30": "The order is confirmed now. Pay the frozen total within 30 days.",
+      "GIFT_CARD": "Paid from your gift card's balance."
     },
     "blockers": {
       "NOT_CONFIGURED": "Not available yet.",
@@ -82,7 +84,8 @@
       "COD_OVER_LIMIT": "Over the limit for cash on delivery.",
       "COD_NEEDS_PHONE": "Needs a phone number.",
       "NO_BANK_DETAILS": "Not available yet.",
-      "NOT_ENABLED": "Not available."
+      "NOT_ENABLED": "Not available.",
+      "GIFT_CARD_PARTIAL": "Not with a gift card paying part of the order."
     },
     "note": "A note for the delivery (optional)",
     "coupon": "Coupon code",
@@ -109,7 +112,9 @@
       "taxes": "Import taxes",
       "fees": "Customs clearance",
       "discount": "Discount",
-      "total": "Total"
+      "total": "Total",
+      "giftCard": "Gift card ····{last4}",
+      "due": "To pay now"
     },
     "allIncluded": "Everything included: nothing more to pay on delivery.",
     "arrives": "Delivered between {from} and {to}.",
@@ -130,7 +135,19 @@
     "outOfStock": "An item ran out meanwhile: the cart has been updated.",
     "place": "Place the order · {total}",
     "placeNoTotal": "Place the order",
-    "placing": "Placing the order…"
+    "placing": "Placing the order…",
+    "giftCard": "Gift card",
+    "applyGiftCard": "Use",
+    "paidByGiftCard": "Your gift card pays the whole order.",
+    "giftCardLeft": "Gift card ····{last4}: {left} left after this order.",
+    "giftCardErrors": {
+      "INVALID": "That isn't a gift card code.",
+      "NOT_FOUND": "This gift card isn't valid.",
+      "DISABLED": "This gift card can't be used.",
+      "EXPIRED": "This gift card has expired.",
+      "EMPTY": "This gift card has nothing left on it.",
+      "CURRENCY": "This gift card is in another currency."
+    }
   },
   "address": {
     "recipientName": "Name",
@@ -197,7 +214,8 @@
       "CASH_ON_DELIVERY": "Cash on delivery",
       "BANK_TRANSFER": "Bank transfer",
       "FAKE": "Test payment",
-      "NET_30": "Net 30"
+      "NET_30": "Net 30",
+      "GIFT_CARD": "Gift card"
     },
     "invoice": "Invoice {number} (PDF)",
     "cancel": "Cancel this order",
@@ -208,7 +226,8 @@
       "SOURCING": "Found for you",
       "FREIGHT": "Freight"
     },
-    "progress": "Progress"
+    "progress": "Progress",
+    "giftCardPart": "{amount} paid by gift card."
   },
   "orders": {
     "title": "My orders",

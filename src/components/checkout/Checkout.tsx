@@ -109,6 +109,8 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
   const [note, setNote] = useState("");
   const [couponDraft, setCouponDraft] = useState("");
   const [couponApplied, setCouponApplied] = useState<string | undefined>();
+  const [giftDraft, setGiftDraft] = useState("");
+  const [giftApplied, setGiftApplied] = useState<string | undefined>();
   const [placing, setPlacing] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const attempt = useRef<string | null>(null);
@@ -131,11 +133,11 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
       .catch(() => setPoints([]));
   }, [method, pickupCountry]);
 
-  const requote = useCallback(async (d: Delivery, code?: string) => {
+  const requote = useCallback(async (d: Delivery, code?: string, gift?: string) => {
     setQuoting(true);
     setMessage(null);
     try {
-      const q = await call<Quote>("POST", "/checkout/quote", { delivery: d, ...(code ? { couponCode: code } : {}) });
+      const q = await call<Quote>("POST", "/checkout/quote", { delivery: d, ...(code ? { couponCode: code } : {}), ...(gift ? { giftCardCode: gift } : {}) });
       setQuote(q);
       setPayment((current) => (q.paymentMethods.some((m) => m.method === current && m.available) ? current : (q.paymentMethods.find((m) => m.available)?.method ?? null)));
     } catch (e) {
@@ -151,12 +153,16 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
     attempt.current = null;
     // requote() sets the quote when the API answers (and clears it without a destination).
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (delivery) requote(delivery, couponApplied);
+    if (delivery) requote(delivery, couponApplied, giftApplied);
     else setQuote(null);
-  }, [delivery, couponApplied, requote]);
+  }, [delivery, couponApplied, giftApplied, requote]);
+
+  // The gift card pays everything: no other method to choose (ADR-071).
+  const paidByCard = !!quote?.giftCard?.appliedMinor && quote.amountDueMinor === 0;
+  const payWith: PaymentMethod | null = paidByCard ? "GIFT_CARD" : payment;
 
   async function place() {
-    if (!delivery || !quote || !payment) return;
+    if (!delivery || !quote || !payWith) return;
     setPlacing(true);
     setMessage(null);
     attempt.current ??= crypto.randomUUID();
@@ -164,7 +170,14 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
       const order = await call<{ reference: string; payment: { checkoutUrl: string | null } | null }>(
         "POST",
         "/checkout/orders",
-        { delivery, paymentMethod: payment, expectedTotalMinor: quote.totals.totalMinor, ...(note.trim() ? { note: note.trim() } : {}), ...(couponApplied ? { couponCode: couponApplied } : {}) },
+        {
+          delivery,
+          paymentMethod: payWith,
+          expectedTotalMinor: quote.totals.totalMinor,
+          ...(note.trim() ? { note: note.trim() } : {}),
+          ...(couponApplied ? { couponCode: couponApplied } : {}),
+          ...(giftApplied ? { giftCardCode: giftApplied } : {}),
+        },
         { "Idempotency-Key": attempt.current }
       );
       window.dispatchEvent(new CustomEvent("tc:cart", { detail: 0 }));
@@ -177,7 +190,7 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
         setMessage(t("priceChanged"));
       } else if (e instanceof ApiError && e.code === "OUT_OF_STOCK") {
         setMessage(t("outOfStock"));
-        await requote(delivery);
+        await requote(delivery, couponApplied, giftApplied);
       } else setMessage((e as Error).message);
       setPlacing(false);
     }
@@ -281,7 +294,8 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
             <h2 id="payment-title" className="rb-title mb-3">
               {t("payment")}
             </h2>
-            <div className="flex flex-col gap-2" role="radiogroup" aria-label={t("payment")}>
+            {paidByCard ? <p className="text-sm">{t("paidByGiftCard")}</p> : null}
+            <div className={`flex flex-col gap-2 ${paidByCard ? "hidden" : ""}`} role="radiogroup" aria-label={t("payment")}>
               {quote.paymentMethods.map((m) => (
                 <label key={m.method} className={`flex gap-3 rounded-[var(--radius-s)] border p-3 text-sm ${m.available ? "cursor-pointer" : "opacity-60"} ${payment === m.method ? "border-ink" : "border-line"}`}>
                   <input type="radio" name="payment" disabled={!m.available} checked={payment === m.method} onChange={() => setPayment(m.method)} />
@@ -314,6 +328,27 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
               <p role="alert" className="mt-2 text-sm text-critical">
                 {t(`couponErrors.${quote.coupon.error}` as "couponErrors.NOT_FOUND")}
               </p>
+            ) : null}
+            <form
+              className="mt-4 flex flex-wrap items-end gap-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setGiftApplied(giftDraft.trim() ? giftDraft.trim() : undefined);
+              }}
+            >
+              <Field label={t("giftCard")} className="min-w-[12rem] flex-1">
+                <input className={`${input} font-mono uppercase`} value={giftDraft} onChange={(e) => setGiftDraft(e.target.value)} maxLength={32} autoComplete="off" placeholder="XXXX-XXXX-XXXX-XXXX" />
+              </Field>
+              <button type="submit" className="h-10 rounded-[var(--radius-s)] border border-ink px-4 text-sm font-medium">
+                {t("applyGiftCard")}
+              </button>
+            </form>
+            {quote.giftCard?.error ? (
+              <p role="alert" className="mt-2 text-sm text-critical">
+                {t(`giftCardErrors.${quote.giftCard.error}` as "giftCardErrors.NOT_FOUND")}
+              </p>
+            ) : quote.giftCard?.appliedMinor ? (
+              <p className="mt-2 text-sm text-ink-muted">{t("giftCardLeft", { last4: quote.giftCard.last4 ?? "", left: money(quote.giftCard.balanceMinor - quote.giftCard.appliedMinor) })}</p>
             ) : null}
           </section>
         ) : null}
@@ -367,6 +402,18 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
                 <dt>{t("totals.total")}</dt>
                 <dd className="rb-numeral">{money(quote.totals.totalMinor)}</dd>
               </div>
+              {quote.giftCard?.appliedMinor ? (
+                <>
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-ink-muted">{t("totals.giftCard", { last4: quote.giftCard.last4 ?? "" })}</dt>
+                    <dd className="rb-numeral">{money(-quote.giftCard.appliedMinor)}</dd>
+                  </div>
+                  <div className="flex justify-between gap-3 font-semibold">
+                    <dt>{t("totals.due")}</dt>
+                    <dd className="rb-numeral">{money(quote.amountDueMinor)}</dd>
+                  </div>
+                </>
+              ) : null}
             </dl>
             <p className="mt-2 text-xs text-ink-muted">{t("allIncluded")}</p>
             {quote.promise ? <p className="mt-3 text-sm">{t("arrives", { from: day(quote.promise.from), to: day(quote.promise.to) })}</p> : null}
@@ -386,11 +433,11 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
         ) : null}
         <button
           type="button"
-          disabled={!quote?.available || !payment || placing || quoting}
+          disabled={!quote?.available || !payWith || placing || quoting}
           onClick={place}
           className="mt-5 flex h-12 w-full items-center justify-center rounded-[var(--radius-s)] bg-ink font-medium text-ink-inverse hover:opacity-90 disabled:opacity-50"
         >
-          {placing ? t("placing") : quote ? t("place", { total: money(quote.totals.totalMinor) }) : t("placeNoTotal")}
+          {placing ? t("placing") : quote ? t("place", { total: money(quote.amountDueMinor ?? quote.totals.totalMinor) }) : t("placeNoTotal")}
         </button>
       </aside>
     </div>

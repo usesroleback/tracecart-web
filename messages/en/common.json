@@ -76,7 +76,8 @@
     "listings": "Listings",
     "reviews": "Reviews",
     "notificationTemplates": "Notification templates",
-    "deals": "Deals"
+    "deals": "Deals",
+    "giftCards": "Gift cards"
   },
   "notifications": {
     "title": "Notifications",

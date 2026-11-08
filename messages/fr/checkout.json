@@ -65,14 +65,16 @@
       "CASH_ON_DELIVERY": "Paiement à la livraison",
       "BANK_TRANSFER": "Virement bancaire",
       "FAKE": "Paiement de test",
-      "NET_30": "Net 30"
+      "NET_30": "Net 30",
+      "GIFT_CARD": "Carte cadeau"
     },
     "paymentHints": {
       "CINETPAY": "Orange Money, Moov, Wave, MTN, Visa ou Mastercard, sur la page sécurisée de CinetPay.",
       "CASH_ON_DELIVERY": "Payez le total exact à la livraison. Rien de plus.",
       "BANK_TRANSFER": "Nous confirmons la commande à réception du virement ; les articles vous sont réservés d'ici là.",
       "FAKE": "Pour les tests : aucun argent ne circule.",
-      "NET_30": "La commande est confirmée maintenant. Réglez le total figé sous 30 jours."
+      "NET_30": "La commande est confirmée maintenant. Réglez le total figé sous 30 jours.",
+      "GIFT_CARD": "Payé avec le solde de votre carte cadeau."
     },
     "blockers": {
       "NOT_CONFIGURED": "Pas encore disponible.",
@@ -82,7 +84,8 @@
       "COD_OVER_LIMIT": "Au-delà du plafond du paiement à la livraison.",
       "COD_NEEDS_PHONE": "Il faut un numéro de téléphone.",
       "NO_BANK_DETAILS": "Pas encore disponible.",
-      "NOT_ENABLED": "Indisponible."
+      "NOT_ENABLED": "Indisponible.",
+      "GIFT_CARD_PARTIAL": "Pas avec une carte cadeau qui paie une partie de la commande."
     },
     "note": "Un mot pour la livraison (facultatif)",
     "coupon": "Code promo",
@@ -109,7 +112,9 @@
       "taxes": "Taxes à l'importation",
       "fees": "Frais de dédouanement",
       "discount": "Remise",
-      "total": "Total"
+      "total": "Total",
+      "giftCard": "Carte cadeau ····{last4}",
+      "due": "À payer maintenant"
     },
     "allIncluded": "Tout compris : rien de plus à payer à la livraison.",
     "arrives": "Livré entre le {from} et le {to}.",
@@ -130,7 +135,19 @@
     "outOfStock": "Un article s'est épuisé entre-temps : le panier a été mis à jour.",
     "place": "Passer la commande · {total}",
     "placeNoTotal": "Passer la commande",
-    "placing": "Commande en cours…"
+    "placing": "Commande en cours…",
+    "giftCard": "Carte cadeau",
+    "applyGiftCard": "Utiliser",
+    "paidByGiftCard": "Votre carte cadeau paie toute la commande.",
+    "giftCardLeft": "Carte cadeau ····{last4} : il restera {left} après cette commande.",
+    "giftCardErrors": {
+      "INVALID": "Ce n'est pas un code de carte cadeau.",
+      "NOT_FOUND": "Cette carte cadeau n'est pas valable.",
+      "DISABLED": "Cette carte cadeau ne peut pas être utilisée.",
+      "EXPIRED": "Cette carte cadeau a expiré.",
+      "EMPTY": "Il ne reste rien sur cette carte cadeau.",
+      "CURRENCY": "Cette carte cadeau est dans une autre devise."
+    }
   },
   "address": {
     "recipientName": "Nom",
@@ -197,7 +214,8 @@
       "CASH_ON_DELIVERY": "Paiement à la livraison",
       "BANK_TRANSFER": "Virement bancaire",
       "FAKE": "Paiement de test",
-      "NET_30": "Net 30"
+      "NET_30": "Net 30",
+      "GIFT_CARD": "Carte cadeau"
     },
     "invoice": "Facture {number} (PDF)",
     "cancel": "Annuler cette commande",
@@ -208,7 +226,8 @@
       "SOURCING": "Trouvé pour vous",
       "FREIGHT": "Fret"
     },
-    "progress": "Suivi"
+    "progress": "Suivi",
+    "giftCardPart": "{amount} payés par carte cadeau."
   },
   "orders": {
     "title": "Mes commandes",

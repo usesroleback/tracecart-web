@@ -76,7 +76,8 @@
     "listings": "Annonces",
     "reviews": "Avis",
     "notificationTemplates": "Modèles de notification",
-    "deals": "Promotions"
+    "deals": "Promotions",
+    "giftCards": "Cartes cadeaux"
   },
   "notifications": {
     "title": "Notifications",

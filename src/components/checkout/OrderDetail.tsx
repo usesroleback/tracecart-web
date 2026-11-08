@@ -61,7 +61,9 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
 
   const money = (minor: number) => `${format.number(toMajor(minor, order.currency))} ${order.currency}`;
   const day = (iso: string) => new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString(locale === "en" ? "en-GB" : "fr-FR", { weekday: "long", day: "numeric", month: "long" });
-  const payment: PaymentView | undefined = order.payments[order.payments.length - 1];
+  // The latest payment other than a gift card's part, which is captured with the order (ADR-071).
+  const payment: PaymentView | undefined = order.payments.filter((p) => p.method !== "GIFT_CARD" || order.paymentMethod === "GIFT_CARD").at(-1);
+  const byGiftCard = order.payments.filter((p) => p.method === "GIFT_CARD" && p.status === "CAPTURED").reduce((sum, p) => sum + p.amountMinor, 0);
 
   async function pay() {
     setBusy(true);
@@ -127,7 +129,7 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
               <p className="text-sm">{payment.status === "FAILED" ? t("payment.failed") : t("payment.waiting")}</p>
               {order.canPay ? (
                 <button type="button" disabled={busy} onClick={pay} className="mt-3 rounded-[var(--radius-s)] bg-ink px-5 py-3 font-medium text-ink-inverse disabled:opacity-60">
-                  {t("payment.pay", { total: money(order.totals.totalMinor) })}
+                  {t("payment.pay", { total: money(order.totals.totalMinor - byGiftCard) })}
                 </button>
               ) : null}
             </>
@@ -216,6 +218,7 @@ export function OrderDetail({ reference, confirmation = false }: { reference: st
           <div className={box}>
             <h2 className="rb-label mb-2">{t("paymentTitle")}</h2>
             <p className="text-sm">{t(`methods.${order.paymentMethod}`)}</p>
+            {byGiftCard && order.paymentMethod !== "GIFT_CARD" ? <p className="mt-1 text-sm text-ink-muted">{t("giftCardPart", { amount: money(byGiftCard) })}</p> : null}
             {order.paymentMethod === "NET_30" && payment?.status === "PENDING" && payment.expiresAt ? (
               <p className="mt-2 text-sm text-ink-muted">{t("net30Due", { when: format.shortDate(payment.expiresAt) })}</p>
             ) : null}

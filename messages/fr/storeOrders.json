@@ -28,7 +28,8 @@
     "CASH_ON_DELIVERY": "Paiement à la livraison",
     "BANK_TRANSFER": "Virement bancaire",
     "FAKE": "Paiement de test",
-    "NET_30": "Net 30"
+    "NET_30": "Net 30",
+    "GIFT_CARD": "Carte cadeau"
   },
   "paymentStatus": {
     "PENDING": "En attente",

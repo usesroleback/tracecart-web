@@ -28,7 +28,8 @@
     "CASH_ON_DELIVERY": "Cash on delivery",
     "BANK_TRANSFER": "Bank transfer",
     "FAKE": "Test payment",
-    "NET_30": "Net 30"
+    "NET_30": "Net 30",
+    "GIFT_CARD": "Gift card"
   },
   "paymentStatus": {
     "PENDING": "Pending",

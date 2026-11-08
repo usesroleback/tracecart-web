@@ -11,7 +11,7 @@ export type Breakdown = {
   totalMinor: number;
 };
 
-export type PaymentMethod = "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE" | "NET_30";
+export type PaymentMethod = "CINETPAY" | "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "FAKE" | "NET_30" | "GIFT_CARD";
 
 export interface Address {
   id: string;
@@ -57,6 +57,9 @@ export interface Quote {
   promise: { from: string; to: string } | null;
   paymentMethods: { method: PaymentMethod; available: boolean; blockers: string[]; instructions: string | null }[];
   coupon: { code: string; discountMinor: number; error: string | null } | null;
+  /** A gift card pays part or all of the total (ADR-071); amountDueMinor is the rest. */
+  giftCard: { last4: string | null; balanceMinor: number; appliedMinor: number; error: string | null } | null;
+  amountDueMinor: number;
 }
 
 export interface PaymentView {

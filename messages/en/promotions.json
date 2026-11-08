@@ -38,5 +38,30 @@
       "ENDED": "Ended",
       "CANCELLED": "Cancelled"
     }
+  },
+  "giftCards": {
+    "title": "Gift cards",
+    "lead": "Money a customer spends at checkout, for part or all of an order. The code is shown once here, and emailed to the recipient when there is one.",
+    "amount": "Amount ({currency})",
+    "recipientEmail": "Recipient's email",
+    "recipientEmailHint": "Optional: they're emailed the code.",
+    "recipientName": "Recipient's name",
+    "message": "Message (optional)",
+    "expiresAt": "Valid until",
+    "expiresAtHint": "Optional.",
+    "issue": "Issue the card",
+    "badAmount": "Enter an amount.",
+    "issued": "Gift card for {amount} issued. Its code:",
+    "issuedOnce": "Copy it now: it won't be shown again.",
+    "issuedEmailed": "The recipient has been emailed it. It won't be shown here again.",
+    "empty": "No gift cards yet.",
+    "balance": "{left} of {of}",
+    "until": "Until {date}",
+    "disable": "Disable",
+    "enable": "Turn back on",
+    "statuses": {
+      "ACTIVE": "Active",
+      "DISABLED": "Disabled"
+    }
   }
 }
