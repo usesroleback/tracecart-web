@@ -112,7 +112,7 @@ test("a company order over its limit waits for a colleague", async ({ browser, r
     await expect(approver.getByText("Nothing is waiting.")).toBeVisible();
     await done(approver);
     await owner.reload();
-    await expect(owner.getByText("Thank you: your order is confirmed")).toBeVisible();
+    await expect(owner.getByRole("heading", { level: 1, name: "Confirmed" })).toBeVisible();
     await done(owner);
   } finally {
     await deleteClerkUser(ownerEmail);
@@ -181,7 +181,7 @@ test("a deal, a coupon and a gift card at checkout", async ({ browser, request }
     await shopper.waitForURL(/\/checkout\/done\//);
     const reference = shopper.url().split("/").pop()!;
     await shopper.goto(`/en/account/orders/${reference}`);
-    await expect(shopper.getByText("Thank you: your order is confirmed")).toBeVisible();
+    await expect(shopper.getByRole("heading", { level: 1, name: "Confirmed" })).toBeVisible();
     await expect(shopper.getByText("Gift card", { exact: true })).toBeVisible();
     await done(shopper);
   } finally {
