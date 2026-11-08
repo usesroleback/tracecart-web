@@ -18,13 +18,13 @@ function stripLocale(pathname: string): string {
 
 /**
  * Pages that never involve sign-in: the store (home, categories, products,
- * brands, search), /about, the customer quote page (/q/*) and the legal
+ * brands, deals, search), /about, the customer quote page (/q/*) and the legal
  * pages. They skip Clerk entirely — with a development Clerk key, Clerk
  * otherwise redirects a browser's first visit through Clerk's servers, even
  * on pages that don't use it. /freight is here too: anyone gets an estimate,
  * and asking for the firm quote signs in over the page (client side).
  */
-const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/s", "/s/ai", "/freight", "/cart", "/shop"]);
+const ANONYMOUS_EXACT = new Set(["/", "/about", "/c", "/brands", "/deals", "/s", "/s/ai", "/freight", "/cart", "/shop"]);
 const ANONYMOUS_PREFIXES = ["/q/", "/legal/", "/c/", "/p/", "/b/"];
 
 function isAnonymousPage(bare: string): boolean {

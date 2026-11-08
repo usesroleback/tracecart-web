@@ -132,7 +132,7 @@ test("a deal, a coupon and a gift card at checkout", async ({ browser, request }
       return own.length === 1 && own[0].availability.kind === "IN_STOCK" && own[0].availability.city === "Ouagadougou" ? own[0] : undefined;
     });
     const marketing = await person(browser, "marketing");
-    await marketing.goto("/en/deals");
+    await marketing.goto("/en/store-deals");
     await marketing.getByLabel("SKU").fill(sku);
     await marketing.getByLabel(/^Deal price/).fill("1000");
     await marketing.getByLabel("Ends").fill(new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 16));
