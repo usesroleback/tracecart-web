@@ -29,5 +29,6 @@
     "attribute": "{label}: {value}",
     "words": "Your words",
     "looksLike": "Looks like it"
-  }
+  },
+  "toNarrow": "To narrow it down"
 }

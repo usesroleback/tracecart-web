@@ -29,5 +29,6 @@
     "attribute": "{label} : {value}",
     "words": "Vos mots",
     "looksLike": "Lui ressemble"
-  }
+  },
+  "toNarrow": "Pour affiner"
 }

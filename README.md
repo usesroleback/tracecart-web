@@ -4,15 +4,31 @@ The Tracecart website: the store (catalogue, search, product pages), customer ac
 
 It talks to [tracecart-api](https://github.com/tracecartops/tracecart-api) only through the API's contract: a copy of its `openapi.json` in [`openapi/`](./openapi), from which the typed client in `src/lib/api/` is generated.
 
-## Run it
+## Quick start
 
-Needs Node 24, [pnpm](https://pnpm.io) (`corepack enable` gives the pinned version), and a running tracecart-api.
+You need Node 24 with pnpm (`corepack enable`) and [tracecart-api](https://github.com/tracecartops/tracecart-api) running on `localhost:4000`; its README's "Quick start" takes about ten minutes. Clone both side by side:
+
+```
+tracecart/
+  tracecart-api/
+  tracecart-web/
+```
 
 ```bash
-# create .env.local first: the three lines in docs/developers/environment.md
-pnpm install
-pnpm dev                     # http://localhost:3000 (pnpm dev --port 3001 if 3000 is taken)
+git clone https://github.com/tracecartops/tracecart-web.git && cd tracecart-web
+corepack enable && pnpm install
+cat > .env.local <<'EOF'
+NEXT_PUBLIC_API_URL=http://localhost:4000
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_replace_me
+CLERK_SECRET_KEY=sk_test_replace_me
+EOF
+pnpm dev --port 3001                  # http://localhost:3001/fr or /en
 ```
+
+- **Clerk:** use the same Clerk development instance as the API (Clerk dashboard → API keys). The store browses without signing in. Checkout, the account and the console need real keys. With `pnpm seed:demo` in the API, sign in as `demo.<role>+clerk_test@example.com` with the code `424242`.
+- **Low memory?** If `next dev` runs out of memory, `pnpm dev --port 3001 --webpack` uses less. For a production build, `pnpm build --webpack`.
+- **After an API change:** `pnpm api:sync` copies `../tracecart-api/openapi.json` and regenerates the typed client.
+- **Every variable:** [docs/developers/environment.md](docs/developers/environment.md).
 
 ## Scripts
 
@@ -42,7 +58,7 @@ When the API changes: `pnpm api:sync`, fix what no longer type-checks, and commi
 
 ## The store
 
-Server-rendered from the API's public catalogue (`src/lib/store.ts`, cached for a minute): the home page (`/`), all categories (`/c`), category pages (`/c/power-tools/drills-drivers`, filters and facet counts), product pages (`/p/<slug>`), brands (`/brands`, `/b/<slug>`) and search (`/s?q=…`). Every filter, sort and page is a link or a GET form, so it works before JavaScript arrives and can be shared; the search box adds suggestions as one types. These pages carry no Clerk script (route group `(store)`), and give search engines canonical and language links, schema.org `Product` and `BreadcrumbList` data, `sitemap.xml` and `robots.txt`. "How Tracecart works" is `/about`. Ordering from a product page goes through the finder until the cart exists (PLAN phase 5).
+Server-rendered from the API's public catalogue (`src/lib/store.ts`, cached for a minute): the home page (`/`), all categories (`/c`), department and category pages (`/c/tools-hardware/power-tools`, filters and facet counts; an empty department says so), product pages (`/p/<slug>`), brands (`/brands`, `/b/<slug>`) and search (`/s?q=…`, and with words or a photo at `/s/ai`), deals (`/deals`) and the comparison (`/compare`). Every filter, sort and page is a link or a GET form, so it works before JavaScript arrives and can be shared; the search box adds suggestions as one types. These pages carry no Clerk script (route group `(store)`), and give search engines canonical and language links, schema.org `Product` and `BreadcrumbList` data, `sitemap.xml` and `robots.txt`. "How Tracecart works" is `/about`. Cards show only real signals (price or "price on request", seller verification, approved reviews; ADR-078). Save uses the account's wish list (`/account/saved`); Compare and Recently viewed are cookies on the device (`tc_compare`, `tc_seen`).
 
 **Cart, checkout and orders.** "Add to cart" works signed in or not: a guest's cart is kept by a token in a cookie (`tc_cart`) and merged into the account's at sign-in (`src/lib/cart.ts`). `/cart` lists lines with what stops them (gone, out of stock, repriced), saves for later, and leads to `/checkout`. Checkout asks for sign-in on the page (Clerk's modal), then where it goes (a saved address with its landmark, a new one, or a pickup point), shows each parcel and the delivered total (items, delivery, duties, taxes, fees) and the delivery window, and the payment methods that can take the order. The order goes in with the total shown; an online payment continues on the provider's page (`/checkout/pay/<id>` is the fake provider's, for tests and demos) and comes back to `/checkout/done/<reference>`. Customers find their orders, invoices (PDF) and earlier requests at `/account/orders`. Staff see store orders at `/store-orders` (cancel, record a bank transfer).
 

@@ -45,6 +45,10 @@ export interface AiSearchResult {
   needsDescription: boolean;
   items: AiResult[];
   chips: Chip[];
+  /** Which did the reading and the ranking: the API, or Tracey (ADR-079). */
+  engine?: { extraction: "api" | "tracey"; ranking: "api" | "tracey" };
+  /** At most two questions that would narrow it down, in the shopper's language (Tracey only, for now). */
+  clarifications?: { key: string; question: string; options: { value: string; label: string }[] }[];
 }
 
 export interface CargoEstimate {

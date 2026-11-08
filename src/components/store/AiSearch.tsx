@@ -125,6 +125,28 @@ function Results({ result, findHref }: { result: AiSearchResult; findHref: strin
           </p>
         </div>
       ) : null}
+      {result.clarifications?.length ? (
+        <div className="rounded-[var(--radius-m)] border border-line bg-surface-sunken p-4">
+          <p className="rb-overline text-ink-muted">{t("toNarrow")}</p>
+          <ul className="mt-2 grid gap-3 text-sm text-ink">
+            {result.clarifications.map((q) => (
+              <li key={q.key}>
+                {q.question}
+                {q.options.length ? (
+                  <span className="mt-2 flex flex-wrap gap-2">
+                    {/* Options are categories ("which kind?"): each opens its own. */}
+                    {q.options.map((o) => (
+                      <Link key={o.value} href={`/c/${o.value}`} className="rounded-full border border-line-strong bg-surface-raised px-3 py-1.5 hover:border-ink">
+                        {o.label}
+                      </Link>
+                    ))}
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       {result.chips.length ? (
         <nav aria-label={t("refine")} className="flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ink-muted">{t("refine")}:</span>
