@@ -14,11 +14,34 @@
     "questions": "Questions"
   },
   "queues": {
-    "toReview": "Waiting to publish"
+    "toReview": "Waiting to publish",
+    "repliesToReview": "Sellers' answers waiting"
   },
   "statuses": {
     "PENDING": "Waiting",
     "APPROVED": "Published",
     "REJECTED": "Rejected"
+  },
+  "photos": "Photos",
+  "photoAlt": "Photo {index}",
+  "sellerReply": "Answer from {seller}",
+  "approveReply": "Publish the answer",
+  "sellerReviews": {
+    "title": "Reviews",
+    "lead": "Published reviews of what your shop sold. You may answer each once; a person checks the answer before it is on the product page.",
+    "unanswered": "Only those without an answer",
+    "empty": "No reviews yet.",
+    "stars": "{rating, plural, one {# star} other {# stars}}",
+    "photoAlt": "Customer's photo {index}",
+    "yourReply": "Your answer",
+    "reply": "Your answer",
+    "replyAgain": "Write your answer again",
+    "replyHint": "Public, under the review, with your shop's name. Thank the customer, explain, offer help; no personal details.",
+    "send": "Send for review",
+    "statuses": {
+      "PENDING": "Waiting",
+      "APPROVED": "Published",
+      "REJECTED": "Not published"
+    }
   }
 }

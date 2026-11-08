@@ -77,7 +77,8 @@
     "reviews": "Avis",
     "notificationTemplates": "Modèles de notification",
     "deals": "Promotions",
-    "giftCards": "Cartes cadeaux"
+    "giftCards": "Cartes cadeaux",
+    "sellerReviews": "Avis"
   },
   "notifications": {
     "title": "Notifications",

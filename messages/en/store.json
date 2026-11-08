@@ -174,7 +174,13 @@
         "PENDING": "Your review is waiting to be published.",
         "APPROVED": "Your review is on this page.",
         "REJECTED": "Your review wasn't published."
-      }
+      },
+      "photos": "Photos",
+      "photoAlt": "Photo {index} from {author}",
+      "myPhotoAlt": "Your photo {index}",
+      "sellerReply": "Answer from {seller}",
+      "addPhoto": "Add a photo (JPEG, PNG or WebP)",
+      "removePhoto": "Remove"
     },
     "questions": {
       "title": "Questions",

@@ -174,7 +174,13 @@
         "PENDING": "Votre avis est en attente de publication.",
         "APPROVED": "Votre avis est sur cette page.",
         "REJECTED": "Votre avis n'a pas été publié."
-      }
+      },
+      "photos": "Photos",
+      "photoAlt": "Photo {index} de {author}",
+      "myPhotoAlt": "Votre photo {index}",
+      "sellerReply": "Réponse de {seller}",
+      "addPhoto": "Ajouter une photo (JPEG, PNG ou WebP)",
+      "removePhoto": "Retirer"
     },
     "questions": {
       "title": "Questions",

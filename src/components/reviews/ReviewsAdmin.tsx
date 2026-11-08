@@ -20,10 +20,15 @@ interface Row {
   createdAt: string;
   author: { name: string; email: string };
   product: { slug: string; title: string };
+  photos?: string[];
+  seller?: { id: string; name: string } | null;
+  sellerReply?: { body: string; status: Status; at: string } | null;
 }
 
 const TONE: Record<Status, "info" | "positive" | "critical"> = { PENDING: "info", APPROVED: "positive", REJECTED: "critical" };
 const LIST_FILTERS = ["tab", "queue"] as const;
+/** Still on a moderator's plate: the review, or the seller's answer to it (ADR-072). */
+const waiting = (r: Row) => r.status === "PENDING" || r.sellerReply?.status === "PENDING";
 
 export function ReviewsList() {
   const t = useTranslations("reviews");
@@ -56,7 +61,17 @@ export function ReviewsList() {
     setError(null);
     try {
       const next = await call<Row>("POST", `${questions ? "/questions" : "/reviews"}/${id}/decide`, { decision });
-      setRows((prev) => prev.map((r) => (r.id === id ? next : r)).filter((r) => (applied.queue === "toReview" ? r.status === "PENDING" : true)));
+      setRows((prev) => prev.map((r) => (r.id === id ? next : r)).filter((r) => (applied.queue ? waiting(r) : true)));
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+
+  async function decideReply(id: string, decision: "APPROVE" | "REJECT") {
+    setError(null);
+    try {
+      const next = await call<Row>("POST", `/reviews/${id}/reply/decide`, { decision });
+      setRows((prev) => prev.map((r) => (r.id === id ? next : r)).filter((r) => (applied.queue ? waiting(r) : true)));
     } catch (e) {
       setError((e as Error).message);
     }
@@ -87,7 +102,7 @@ export function ReviewsList() {
           {t("tabs.questions")}
         </button>
       </div>
-      {applied.queue ? <QueueChip label={t("queues.toReview")} onClear={() => apply({ ...applied, queue: "" })} /> : null}
+      {applied.queue ? <QueueChip label={t(`queues.${applied.queue}` as "queues.toReview")} onClear={() => apply({ ...applied, queue: "" })} /> : null}
       {error ? <p className="mb-4 text-sm text-critical">{error}</p> : null}
       {rows.length === 0 ? <p className="text-sm text-ink-muted">{t("empty")}</p> : null}
       <ul className="grid gap-3">
@@ -103,6 +118,37 @@ export function ReviewsList() {
             </div>
             {r.title ? <p className="font-medium">{r.title}</p> : null}
             <p className="mt-1 text-ink">{r.body}</p>
+            {r.photos?.length ? (
+              <ul className="mt-3 flex flex-wrap gap-2" aria-label={t("photos")}>
+                {r.photos.map((p, i) => (
+                  <li key={p}>
+                    <a href={`/api/tracecart/reviews/${r.id}/photos/${p}/file`} target="_blank" rel="noreferrer">
+                      {/* eslint-disable-next-line @next/next/no-img-element -- a signed link, served through the API */}
+                      <img src={`/api/tracecart/reviews/${r.id}/photos/${p}/file`} alt={t("photoAlt", { index: i + 1 })} className="h-20 w-20 rounded-[var(--radius-s)] border border-line object-cover" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            {r.sellerReply ? (
+              <div className="mt-3 border-l-2 border-line pl-3">
+                <p className="flex flex-wrap items-center gap-2 text-xs font-medium text-ink-muted">
+                  {t("sellerReply", { seller: r.seller?.name ?? "" })}
+                  <Badge variant={TONE[r.sellerReply.status]}>{t(`statuses.${r.sellerReply.status}`)}</Badge>
+                </p>
+                <p className="mt-1 text-ink">{r.sellerReply.body}</p>
+                {r.sellerReply.status === "PENDING" ? (
+                  <div className="mt-3 flex gap-2">
+                    <Button type="button" variant="primary" onClick={() => decideReply(r.id, "APPROVE")}>
+                      {t("approveReply")}
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={() => decideReply(r.id, "REJECT")}>
+                      {t("reject")}
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
             {r.answer ? <p className="mt-2 text-ink-muted">{t("answerLabel")}: {r.answer}</p> : null}
             {r.status === "PENDING" ? (
               <div className="mt-4 flex gap-2">

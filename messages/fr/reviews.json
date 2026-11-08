@@ -14,11 +14,34 @@
     "questions": "Questions"
   },
   "queues": {
-    "toReview": "En attente de publication"
+    "toReview": "En attente de publication",
+    "repliesToReview": "Réponses de vendeurs en attente"
   },
   "statuses": {
     "PENDING": "En attente",
     "APPROVED": "Publié",
     "REJECTED": "Refusé"
+  },
+  "photos": "Photos",
+  "photoAlt": "Photo {index}",
+  "sellerReply": "Réponse de {seller}",
+  "approveReply": "Publier la réponse",
+  "sellerReviews": {
+    "title": "Avis",
+    "lead": "Les avis publiés sur ce que votre boutique a vendu. Vous pouvez répondre une fois à chacun ; une personne vérifie la réponse avant qu'elle paraisse sur la fiche produit.",
+    "unanswered": "Seulement ceux sans réponse",
+    "empty": "Aucun avis pour l'instant.",
+    "stars": "{rating, plural, one {# étoile} other {# étoiles}}",
+    "photoAlt": "Photo du client {index}",
+    "yourReply": "Votre réponse",
+    "reply": "Votre réponse",
+    "replyAgain": "Réécrire votre réponse",
+    "replyHint": "Publique, sous l'avis, avec le nom de votre boutique. Remerciez, expliquez, proposez votre aide ; pas de données personnelles.",
+    "send": "Envoyer pour vérification",
+    "statuses": {
+      "PENDING": "En attente",
+      "APPROVED": "Publiée",
+      "REJECTED": "Non publiée"
+    }
   }
 }
