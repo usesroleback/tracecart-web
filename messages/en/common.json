@@ -29,7 +29,8 @@
       "partners": "Sellers and carriers",
       "settings": "Settings",
       "seller": "Selling",
-      "partner": "Partner"
+      "partner": "Partner",
+      "finance": "Finance"
     },
     "overview": "Overview",
     "requests": "Requests",
@@ -86,7 +87,13 @@
     "customs": "Customs",
     "customsReviews": "Customs cases",
     "loads": "Grouped loads",
-    "sellerOrders": "Orders to ship"
+    "sellerOrders": "Orders to ship",
+    "financeOverview": "Finance overview",
+    "ledger": "Ledger",
+    "settlementEligibility": "Seller payout eligibility",
+    "carrierPayables": "Carrier payables",
+    "sellerFinance": "My finances",
+    "partnerFinance": "My finances"
   },
   "notifications": {
     "title": "Notifications",

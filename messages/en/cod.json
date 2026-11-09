@@ -24,6 +24,27 @@
   "statuses": {
     "DECLARED": "Waiting for finance",
     "CONFIRMED": "Received",
-    "REJECTED": "Refused"
+    "REJECTED": "Refused",
+    "VARIANCE": "Variance",
+    "DISPUTED": "Disputed"
+  },
+  "variances": "Collection variances",
+  "varianceLine": "{collected} collected, {expected} due",
+  "resolveNote": "Note",
+  "resolveCollection": "Close this variance",
+  "receivedShown": "Received: {amount}",
+  "varianceNote": "Why it differs",
+  "flagVariance": "Flag a variance",
+  "madeGood": "Difference made good",
+  "writeOff": "Write off",
+  "dispute": "Dispute",
+  "states": {
+    "COLLECTED": "Collected",
+    "PARTIALLY_COLLECTED": "Partly collected",
+    "REMITTED": "Remitted",
+    "PARTIALLY_REMITTED": "Partly remitted",
+    "RECONCILIATION_REQUIRED": "To reconcile",
+    "DISPUTED": "Disputed",
+    "RECONCILED": "Reconciled"
   }
 }

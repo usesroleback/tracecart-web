@@ -292,6 +292,8 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
           )}
         </section>
 
+        {quote && quote.totals.dutiesMinor + quote.totals.taxesMinor > 0 ? <p className="text-sm text-ink-muted">{t("customsEstimateNote")}</p> : null}
+
         {quote?.speedOptions.length ? (
           <section className={box} aria-labelledby="speed-title">
             <h2 id="speed-title" className="rb-title mb-3">

@@ -207,6 +207,10 @@
       "RETURNED": "Retourné",
       "LOST": "Perdu",
       "CANCELLED": "Annulé"
-    }
+    },
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "refuseReason": "Motif du refus",
+    "refused": "Refusée : {reason}"
   }
 }

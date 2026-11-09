@@ -108,8 +108,8 @@
     "totals": {
       "items": "Items",
       "shipping": "Delivery",
-      "duties": "Customs duties",
-      "taxes": "Import taxes",
+      "duties": "Customs duties (estimate)",
+      "taxes": "Import taxes (estimate)",
       "fees": "Customs clearance",
       "discount": "Discount",
       "total": "Total",
@@ -154,7 +154,8 @@
       "EXPRESS": "Express",
       "EXPRESSHint": "Leaves on its own, on the fastest route.",
       "STANDARDHint": "Travels with other parcels, for less."
-    }
+    },
+    "customsEstimateNote": "Duties and taxes shown are an estimate, included in your total. Customs sets the final amount on arrival, and we'll tell you if it differs."
   },
   "address": {
     "recipientName": "Name",
@@ -206,8 +207,8 @@
     "items": "Items",
     "totals": {
       "shipping": "Delivery",
-      "duties": "Customs duties",
-      "taxes": "Import taxes",
+      "duties": "Customs duties (estimate)",
+      "taxes": "Import taxes (estimate)",
       "fees": "Customs clearance",
       "discount": "Discount",
       "total": "Total"
@@ -234,7 +235,8 @@
       "FREIGHT": "Freight"
     },
     "progress": "Progress",
-    "giftCardPart": "{amount} paid by gift card."
+    "giftCardPart": "{amount} paid by gift card.",
+    "customsEstimateNote": "Duties and taxes shown are an estimate, included in your total. Customs sets the final amount on arrival, and we'll tell you if it differs."
   },
   "orders": {
     "title": "My orders",

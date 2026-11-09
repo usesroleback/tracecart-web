@@ -20,9 +20,12 @@ interface Collection {
   currency: string;
   holder: { id: string; name: string } | null;
   collectedAt: string;
+  expectedMinor: number | null;
+  varianceReason: string | null;
+  state: string;
 }
 
-type RemittanceStatus = "DECLARED" | "CONFIRMED" | "REJECTED";
+type RemittanceStatus = "DECLARED" | "CONFIRMED" | "REJECTED" | "VARIANCE" | "DISPUTED";
 
 interface Remittance {
   id: string;
@@ -30,6 +33,7 @@ interface Remittance {
   status: RemittanceStatus;
   holder: { id: string; name: string } | null;
   amountMinor: number;
+  receivedMinor: number | null;
   currency: string;
   transferRef: string | null;
   note: string | null;
@@ -38,7 +42,7 @@ interface Remittance {
   collections: { id: string; shipmentReference: string; amountMinor: number }[];
 }
 
-const TONE: Record<RemittanceStatus, "attn" | "positive" | "critical"> = { DECLARED: "attn", CONFIRMED: "positive", REJECTED: "critical" };
+const TONE: Record<RemittanceStatus, "attn" | "positive" | "critical"> = { DECLARED: "attn", CONFIRMED: "positive", REJECTED: "critical", VARIANCE: "critical", DISPUTED: "critical" };
 const box = "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
 
 export function CodCash({ canDeclare, canDecide }: { canDeclare: boolean; canDecide: boolean }) {
@@ -46,6 +50,8 @@ export function CodCash({ canDeclare, canDecide }: { canDeclare: boolean; canDec
   const format = useFormat();
   const [held, setHeld] = useState<Collection[]>([]);
   const [remittances, setRemittances] = useState<Remittance[]>([]);
+  const [variances, setVariances] = useState<Collection[]>([]);
+  const [notes, setNotes] = useState<Record<string, string>>({});
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const [transferRef, setTransferRef] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -53,8 +59,9 @@ export function CodCash({ canDeclare, canDecide }: { canDeclare: boolean; canDec
   const money = (minor: number, currency: string) => `${format.number(toMajor(minor, currency))} ${currency}`;
 
   const load = useCallback(async () => {
-    const [c, r] = await Promise.all([call<{ items: Collection[] }>("GET", "/cod/collections?limit=200"), call<{ items: Remittance[] }>("GET", "/cod/remittances")]);
+    const [c, r, v] = await Promise.all([call<{ items: Collection[] }>("GET", "/cod/collections?limit=200"), call<{ items: Remittance[] }>("GET", "/cod/remittances"), call<{ items: Collection[] }>("GET", "/cod/collections?state=variance&limit=200")]);
     setHeld(c.items);
+    setVariances(v.items);
     setRemittances(r.items);
   }, []);
 
@@ -130,7 +137,10 @@ export function CodCash({ canDeclare, canDecide }: { canDeclare: boolean; canDec
                   <td className="rb-mono-s py-2">{c.shipmentReference}</td>
                   <td className="py-2">{c.holder?.name ?? t("tracecart")}</td>
                   <td className="py-2 text-ink-muted">{format.shortDate(c.collectedAt)}</td>
-                  <td className="rb-numeral py-2 text-right">{money(c.amountMinor, c.currency)}</td>
+                  <td className="rb-numeral py-2 text-right">
+                    {money(c.amountMinor, c.currency)}
+                    <span className="block text-ink-muted">{t(`states.${c.state}`)}</span>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -157,6 +167,31 @@ export function CodCash({ canDeclare, canDecide }: { canDeclare: boolean; canDec
         ) : null}
       </section>
 
+      {variances.length ? (
+        <section className={box}>
+          <h2 className="rb-title mb-3">{t("variances")}</h2>
+          <ul className="divide-y divide-line">
+            {variances.map((c) => (
+              <li key={c.id} className="py-3">
+                <p className="rb-mono-s font-medium">{c.shipmentReference}</p>
+                <p>{t("varianceLine", { collected: money(c.amountMinor, c.currency), expected: money(c.expectedMinor ?? 0, c.currency) })}</p>
+                {c.varianceReason ? <p className="text-ink-muted">{c.varianceReason}</p> : null}
+                {canDecide ? (
+                  <div className="mt-2 grid max-w-md gap-2">
+                    <Field label={t("resolveNote")}>
+                      <input className={input} maxLength={500} value={notes[c.id] ?? ""} onChange={(e) => setNotes({ ...notes, [c.id]: e.target.value })} />
+                    </Field>
+                    <Button variant="secondary" loading={busy} disabled={(notes[c.id] ?? "").trim().length < 3} onClick={() => act(() => call("POST", `/cod/collections/${c.id}/resolve`, { note: notes[c.id].trim() }))}>
+                      {t("resolveCollection")}
+                    </Button>
+                  </div>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       <section className={box}>
         <h2 className="rb-title mb-3">{t("remittances")}</h2>
         {remittances.length ? (
@@ -171,9 +206,11 @@ export function CodCash({ canDeclare, canDecide }: { canDeclare: boolean; canDec
                   <Badge variant={TONE[r.status]}>{t(`statuses.${r.status}`)}</Badge>
                 </div>
                 <p className="rb-numeral mt-1">{money(r.amountMinor, r.currency)}</p>
+                {r.receivedMinor != null ? <p className="text-critical">{t("receivedShown", { amount: money(r.receivedMinor, r.currency) })}</p> : null}
                 {r.transferRef ? <p className="text-ink-muted">{t("transferRefShown", { ref: r.transferRef })}</p> : null}
                 {r.decisionNote ? <p className="text-ink-muted">{r.decisionNote}</p> : null}
                 {canDecide && r.status === "DECLARED" ? <Decide remittance={r} busy={busy} act={act} /> : null}
+                {canDecide && (r.status === "VARIANCE" || r.status === "DISPUTED") ? <Resolve remittance={r} busy={busy} act={act} /> : null}
               </li>
             ))}
           </ul>
@@ -190,6 +227,7 @@ function Decide({ remittance: r, busy, act }: { remittance: Remittance; busy: bo
   const t = useTranslations("cod");
   const [received, setReceived] = useState("");
   const [reason, setReason] = useState("");
+  const [note, setNote] = useState("");
   const receivedMinor = toMinor(received, r.currency);
   return (
     <div className="mt-3 grid max-w-md gap-3">
@@ -199,12 +237,44 @@ function Decide({ remittance: r, busy, act }: { remittance: Remittance; busy: bo
       <Button variant="primary" loading={busy} disabled={receivedMinor == null} onClick={() => act(() => call("POST", `/cod/remittances/${r.id}/confirm`, { receivedMinor }))}>
         {t("confirm")}
       </Button>
+      <Field label={t("varianceNote")}>
+        <input className={input} maxLength={500} value={note} onChange={(e) => setNote(e.target.value)} />
+      </Field>
+      <Button variant="secondary" loading={busy} disabled={receivedMinor == null || receivedMinor === r.amountMinor || note.trim().length < 3} onClick={() => act(() => call("POST", `/cod/remittances/${r.id}/variance`, { receivedMinor, note: note.trim() }))}>
+        {t("flagVariance")}
+      </Button>
       <Field label={t("rejectReason")}>
         <input className={input} maxLength={500} value={reason} onChange={(e) => setReason(e.target.value)} />
       </Field>
       <Button variant="secondary" loading={busy} disabled={!reason.trim()} onClick={() => act(() => call("POST", `/cod/remittances/${r.id}/reject`, { reason: reason.trim() }))}>
         {t("reject")}
       </Button>
+    </div>
+  );
+}
+
+/** Closing a variance. Writing it off takes someone other than whoever flagged it: the API checks. */
+function Resolve({ remittance: r, busy, act }: { remittance: Remittance; busy: boolean; act: (fn: () => Promise<unknown>) => void }) {
+  const t = useTranslations("cod");
+  const [note, setNote] = useState("");
+  const send = (outcome: "MADE_GOOD" | "WRITE_OFF" | "DISPUTE") => act(() => call("POST", `/cod/remittances/${r.id}/resolve`, { outcome, note: note.trim() }));
+  const blocked = note.trim().length < 3;
+  return (
+    <div className="mt-3 grid max-w-md gap-2">
+      <Field label={t("resolveNote")}>
+        <input className={input} maxLength={500} value={note} onChange={(e) => setNote(e.target.value)} />
+      </Field>
+      <Button variant="primary" loading={busy} disabled={blocked} onClick={() => send("MADE_GOOD")}>
+        {t("madeGood")}
+      </Button>
+      <Button variant="secondary" loading={busy} disabled={blocked} onClick={() => send("WRITE_OFF")}>
+        {t("writeOff")}
+      </Button>
+      {r.status === "VARIANCE" ? (
+        <Button variant="secondary" loading={busy} disabled={blocked} onClick={() => send("DISPUTE")}>
+          {t("dispute")}
+        </Button>
+      ) : null}
     </div>
   );
 }

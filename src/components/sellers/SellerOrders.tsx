@@ -16,6 +16,9 @@ interface Row {
   orderReference: string;
   status: string;
   shipsItself: boolean;
+  acceptedAt: string | null;
+  rejectedAt: string | null;
+  rejectReason: string | null;
   shipBy: string | null;
   late: boolean;
   destination: { city: string; countryCode: string };
@@ -36,6 +39,7 @@ export function SellerOrders() {
   const [view, setView] = useState<View>("toShip");
   const [data, setData] = useState<Data | null>(null);
   const [weights, setWeights] = useState<Record<string, string>>({});
+  const [reasons, setReasons] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const day = (d: string) => new Date(d).toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "long" });
@@ -120,7 +124,19 @@ export function SellerOrders() {
             {!r.shipsItself ? <p className="mt-2 text-ink-muted">{t("heldByTracecart")}</p> : null}
             {r.leavesWithLoad ? <p className="mt-2 text-ink-muted">{t("waitingLoad", { date: day(r.leavesWithLoad) })}</p> : null}
 
-            {r.shipsItself && unpacked(r) ? (
+            {r.rejectedAt ? <p className="mt-2 text-critical">{t("refused", { reason: r.rejectReason ?? "" })}</p> : null}
+            {r.shipsItself && r.status === "PLANNED" && !r.acceptedAt && !r.rejectedAt ? (
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <Button size="s" variant="secondary" disabled={busy} onClick={() => act(() => call("POST", `/seller/orders/${r.id}/accept`))}>
+                  {t("accept")}
+                </Button>
+                <input className={`${input} w-56`} aria-label={t("refuseReason")} placeholder={t("refuseReason")} maxLength={300} value={reasons[r.id] ?? ""} onChange={(e) => setReasons({ ...reasons, [r.id]: e.target.value })} />
+                <Button size="s" variant="secondary" disabled={busy || (reasons[r.id] ?? "").trim().length < 3} onClick={() => act(() => call("POST", `/seller/orders/${r.id}/reject`, { reason: reasons[r.id].trim() }))}>
+                  {t("refuse")}
+                </Button>
+              </div>
+            ) : null}
+            {r.shipsItself && unpacked(r) && !r.rejectedAt ? (
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <label className="flex items-center gap-2">
                   {t("weight")}

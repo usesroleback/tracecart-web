@@ -31,6 +31,7 @@ const NAMESPACES = [
   'freightAdmin',
   'shipments',
   'cod',
+  'finance',
   'returns',
   'inventory',
   'purchasing',

@@ -95,6 +95,15 @@ const NAV: NavGroup[] = [
     ],
   },
   {
+    title: "finance",
+    items: [
+      { icon: <DsCoinIcon />, name: "financeOverview", path: "/finance", permission: "finance.report.read" },
+      { icon: <DsLayersIcon />, name: "ledger", path: "/finance/ledger", permission: "finance.report.read" },
+      { icon: <DsCoinIcon />, name: "settlementEligibility", path: "/finance/eligibility", permission: "finance.payout.read" },
+      { icon: <DsTruckIcon />, name: "carrierPayables", path: "/finance/carriers", permission: "finance.payout.read" },
+    ],
+  },
+  {
     title: "settings",
     items: [
       { icon: <DsHubIcon />, name: "hub", path: "/hub-setup", permission: ["sourcing.request.read", "pricing.settings.write"] },
@@ -113,6 +122,7 @@ const NAV: NavGroup[] = [
       { icon: <DsPackageIcon />, name: "sellerListings", path: "/seller/listings", permission: "seller.listing.write", role: ["seller_owner", "seller_staff"] },
       { icon: <DsLayersIcon />, name: "sellerInbound", path: "/seller/inbounds", permission: "seller.listing.write", role: ["seller_owner", "seller_staff"] },
       { icon: <DsChatIcon />, name: "sellerReviews", path: "/seller/reviews", permission: "seller.listing.write", role: ["seller_owner", "seller_staff"] },
+      { icon: <DsCoinIcon />, name: "sellerFinance", path: "/seller/finance", permission: "seller.payout.read", role: "seller_owner" },
       { icon: <DsCoinIcon />, name: "sellerPayouts", path: "/seller/payouts", permission: "seller.payout.read", role: "seller_owner" },
       { icon: <DsBuildingIcon />, name: "sellerStaff", path: "/seller/staff", permission: "seller.settings.write", role: "seller_owner" },
     ],
@@ -126,6 +136,7 @@ const NAV: NavGroup[] = [
       { icon: <DsTruckIcon />, name: "partnerDeliveries", path: "/partner/deliveries", permission: "shipments.event.record", role: ["carrier", "pickup_point_operator"] },
       { icon: <DsCoinIcon />, name: "partnerQuotes", path: "/partner/quotes", permission: "orders.carrier_quote.read", role: "carrier" },
       { icon: <DsCoinIcon />, name: "partnerCash", path: "/partner/cash", permission: "shipments.cod.collect", role: ["carrier", "pickup_point_operator"] },
+      { icon: <DsCoinIcon />, name: "partnerFinance", path: "/partner/finance", permission: "orders.carrier_quote.read", role: "carrier" },
       { icon: <DsChatIcon />, name: "partnerNotices", path: "/partner/notices", permission: "partners.notice.send", role: ["carrier", "pickup_point_operator"] },
     ],
   },

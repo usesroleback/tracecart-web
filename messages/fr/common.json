@@ -29,7 +29,8 @@
       "partners": "Vendeurs et transporteurs",
       "settings": "Réglages",
       "seller": "Vente",
-      "partner": "Partenaire"
+      "partner": "Partenaire",
+      "finance": "Finance"
     },
     "overview": "Vue d'ensemble",
     "requests": "Demandes",
@@ -86,7 +87,13 @@
     "customs": "Douane",
     "customsReviews": "Dossiers douane",
     "loads": "Chargements",
-    "sellerOrders": "Commandes à expédier"
+    "sellerOrders": "Commandes à expédier",
+    "financeOverview": "Vue financière",
+    "ledger": "Grand livre",
+    "settlementEligibility": "Paiements vendeurs : éligibilité",
+    "carrierPayables": "Dû aux transporteurs",
+    "sellerFinance": "Mes finances",
+    "partnerFinance": "Mes finances"
   },
   "notifications": {
     "title": "Notifications",

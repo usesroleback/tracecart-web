@@ -146,7 +146,6 @@
   "codeHintPoint": "Six digits, from the customer. Nothing else releases the parcel.",
   "codeHintHome": "Six digits, from the customer. If they can't give it, add a photo or signature first.",
   "amountCollected": "Cash taken ({currency})",
-  "amountMustMatch": "It must be exactly the amount to collect. If the customer can't pay, record a failed attempt.",
   "recipient": "Handed to",
   "deliverCta": "Confirm delivery",
   "addProof": "Add a photo or signature",
@@ -187,5 +186,11 @@
     "ready": "Ready to hand over",
     "saved": "Saved {amount}",
     "sendNow": "Send now"
-  }
+  },
+  "amountDiffers": "That isn't the amount due: say why.",
+  "varianceReason": "Why this amount?",
+  "answerTitle": "This parcel is assigned to you",
+  "answerAccept": "Accept",
+  "answerRefuse": "Refuse",
+  "answerReason": "Why you're refusing"
 }

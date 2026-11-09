@@ -11,6 +11,7 @@ import { input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
 import type { OrderView } from "@/components/checkout/types";
 import { OrderRefunds } from "@/components/returns/Returns";
+import { CustomsAssessmentPanel } from "@/components/finance/Finance";
 import { ExportButton, QueueChip, SavedViews, useListFilters } from "@/components/console/ListTools";
 import { useSession } from "@/context/SessionContext";
 
@@ -185,7 +186,7 @@ interface OrderShipment {
 }
 
 /** One store order in the console: lines, payments, holds, history; cancel and confirm a transfer. */
-export function StoreOrderDetail({ id, canCancel, canConfirm, canRefund }: { id: string; canCancel: boolean; canConfirm: boolean; canRefund: boolean }) {
+export function StoreOrderDetail({ id, canCancel, canConfirm, canRefund, canRecordCustoms }: { id: string; canCancel: boolean; canConfirm: boolean; canRefund: boolean; canRecordCustoms: boolean }) {
   const t = useTranslations("storeOrders");
   const tShip = useTranslations("shipments");
   const ts = useTranslations("checkout.order.status");
@@ -348,6 +349,7 @@ export function StoreOrderDetail({ id, canCancel, canConfirm, canRefund }: { id:
               </a>
             ) : null}
           </div>
+          <CustomsAssessmentPanel orderId={order.id} canRecord={canRecordCustoms} />
           <OrderRefunds key={order.status} orderId={order.id} currency={order.currency} canRefund={canRefund} />
           {canCancel && !["CANCELLED", "SHIPPED", "DELIVERED", "COMPLETED", "PARTIALLY_SHIPPED", "PARTIALLY_DELIVERED"].includes(order.status) ? (
             <form

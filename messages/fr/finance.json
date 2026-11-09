@@ -1,0 +1,182 @@
+{
+  "loading": "Chargement…",
+  "more": "Afficher plus",
+  "overview": {
+    "title": "Vue financière",
+    "lead": "Le volume d'affaires, les revenus, la trésorerie et les dettes sont des montants distincts, tous issus du grand livre.",
+    "empty": "Aucune écriture pour l'instant.",
+    "queuesTitle": "À traiter",
+    "groups": {
+      "activity": "Activité",
+      "revenue": "Revenus et marge",
+      "cash": "Trésorerie",
+      "liabilities": "Dettes"
+    },
+    "figures": {
+      "gmvMinor": "Volume d'affaires",
+      "commissionRevenueMinor": "Commissions",
+      "salesRevenueMinor": "Ventes Tracecart",
+      "logisticsRevenueMinor": "Revenus de livraison",
+      "carrierCostsMinor": "Coûts transporteurs",
+      "refundsMinor": "Remboursements",
+      "codWriteOffsMinor": "Écarts d'espèces",
+      "contributionMarginMinor": "Marge sur coûts",
+      "providerClearingMinor": "Chez le prestataire",
+      "cashMinor": "Trésorerie",
+      "codOutstandingMinor": "Espèces à recevoir",
+      "sellerPayableMinor": "Dû aux vendeurs",
+      "carrierPayableMinor": "Dû aux transporteurs",
+      "dutiesTaxesPayableMinor": "Droits et taxes à reverser"
+    },
+    "queues": {
+      "codAwaitingCollection": "Colis contre remboursement en route",
+      "codAwaitingReconciliation": "Versements à confirmer",
+      "codRemittanceVariances": "Écarts de versement",
+      "codCollectionVariances": "Écarts d'encaissement",
+      "carrierPayablesOpen": "Dettes transporteurs ouvertes",
+      "carrierPayablesDisputed": "Dettes transporteurs contestées"
+    }
+  },
+  "ledger": {
+    "title": "Grand livre",
+    "lead": "Chaque écriture est équilibrée et ne peut être ni modifiée ni supprimée : une correction est une nouvelle écriture.",
+    "account": "Compte",
+    "allAccounts": "Tous les comptes",
+    "debit": "Débit",
+    "credit": "Crédit",
+    "empty": "Aucune écriture."
+  },
+  "eligibility": {
+    "title": "Éligibilité des paiements vendeurs",
+    "lead": "Pour chaque vente, ce qui permet ou empêche de payer le vendeur.",
+    "allStates": "Tous les états",
+    "empty": "Aucune vente."
+  },
+  "lines": {
+    "order": "Commande",
+    "seller": "Vendeur",
+    "sale": "Vente",
+    "commission": "Commission",
+    "due": "Dû",
+    "state": "État"
+  },
+  "carriers": {
+    "title": "Dû aux transporteurs",
+    "lead": "Séparé de ce qui est dû aux vendeurs. Un règlement préparé doit être approuvé par une autre personne.",
+    "payables": "Montants dus",
+    "settlements": "Règlements",
+    "noPayables": "Rien à régler.",
+    "noSettlements": "Aucun règlement.",
+    "pick": "Choisir",
+    "pickOne": "Choisir {reference}",
+    "shipment": "Expédition",
+    "carrier": "Transporteur",
+    "delivered": "Livré le",
+    "amount": "Montant",
+    "invoice": "Facture du transporteur",
+    "prepare": "Préparer le règlement ({count})",
+    "needsSecond": "Une autre personne doit l'approuver.",
+    "approve": "Approuver",
+    "paymentRef": "Référence du paiement, ou motif de l'échec",
+    "markPaid": "Marquer payé",
+    "markFailed": "Marquer échoué",
+    "dispute": "Contester",
+    "disputeNote": "Motif de la contestation",
+    "reopen": "Rouvrir"
+  },
+  "payable": {
+    "OPEN": "À régler",
+    "DISPUTED": "Contesté",
+    "BATCHED": "Dans un règlement",
+    "PAID": "Payé"
+  },
+  "settlement": {
+    "PENDING_APPROVAL": "À approuver",
+    "APPROVED": "Approuvé",
+    "PAID": "Payé",
+    "FAILED": "Échoué"
+  },
+  "seller": {
+    "title": "Mes finances",
+    "lead": "Vous êtes payé après la livraison, une fois l'argent reçu par Tracecart et la période de retenue écoulée.",
+    "statement": "Télécharger mon relevé",
+    "empty": "Aucune vente pour l'instant.",
+    "buckets": {
+      "pending": "En attente",
+      "held": "Retenu",
+      "eligible": "Payable",
+      "inSettlement": "Dans un paiement",
+      "paid": "Payé",
+      "reversed": "Annulé",
+      "failed": "Échoué"
+    }
+  },
+  "partner": {
+    "title": "Mes finances",
+    "lead": "Ce que Tracecart vous doit, à part des espèces que vous détenez pour Tracecart.",
+    "owed": "Tracecart vous doit",
+    "cash": "Espèces à reverser"
+  },
+  "customs": {
+    "title": "Douane",
+    "estimated": "Estimation au paiement",
+    "assessed": "Montant réel",
+    "notYet": "Pas encore connu",
+    "variance": "Écart",
+    "amount": "Montant facturé par la douane ({currency})",
+    "reference": "Numéro de déclaration ou de quittance",
+    "record": "Enregistrer"
+  },
+  "states": {
+    "NOT_ELIGIBLE": "Pas encore livré",
+    "PENDING_RECONCILIATION": "Rapprochement en attente",
+    "ON_HOLD": "Retenu",
+    "ELIGIBLE": "Payable",
+    "BATCHED": "Dans un paiement",
+    "PAYOUT_PENDING": "Paiement en cours",
+    "PAID": "Payé",
+    "FAILED": "Paiement échoué",
+    "REVERSED": "Annulé ou retourné"
+  },
+  "reasons": {
+    "NOT_DELIVERED": "Le colis n'est pas encore livré.",
+    "PAYMENT_NOT_CONFIRMED": "Le paiement n'est pas confirmé.",
+    "COD_NOT_COLLECTED": "L'encaissement n'est pas enregistré.",
+    "COD_VARIANCE": "Le montant encaissé diffère du montant dû.",
+    "COD_NOT_REMITTED": "Le transporteur n'a pas encore reversé les espèces, ou elles ne sont pas confirmées.",
+    "RETURN_OPEN": "Un retour est en cours.",
+    "HOLD_PERIOD": "Période de retenue jusqu'au",
+    "CANCELLED_OR_RETURNED": "Vente annulée ou retournée."
+  },
+  "accounts": {
+    "PROVIDER_CLEARING": "Prestataire de paiement",
+    "CASH": "Trésorerie",
+    "COD_RECEIVABLE": "Espèces à recevoir",
+    "ORDER_CLEARING": "Commandes en cours",
+    "GIFT_CARD_LIABILITY": "Cartes cadeaux",
+    "SELLER_PAYABLE": "Dû aux vendeurs",
+    "CARRIER_PAYABLE": "Dû aux transporteurs",
+    "DUTIES_TAXES_PAYABLE": "Droits et taxes à reverser",
+    "COMMISSION_REVENUE": "Commissions",
+    "SALES_REVENUE": "Ventes Tracecart",
+    "LOGISTICS_REVENUE": "Revenus de livraison",
+    "CARRIER_COST": "Coûts transporteurs",
+    "REFUNDS": "Remboursements",
+    "COD_WRITE_OFF": "Écarts d'espèces passés en perte"
+  },
+  "kinds": {
+    "payment.captured": "Paiement reçu",
+    "cod.collected": "Espèces encaissées",
+    "cod.remitted": "Espèces reversées",
+    "cod.variance.made_good": "Écart régularisé",
+    "cod.variance.write_off": "Écart passé en perte",
+    "cod.collection.variance": "Écart d'encaissement clos",
+    "delivery.recognised": "Livraison comptabilisée",
+    "carrier.delivered": "Dû au transporteur",
+    "carrier.settled": "Transporteur payé",
+    "seller.paid": "Vendeur payé",
+    "refund.paid": "Remboursement versé",
+    "refund.seller_reversal": "Part vendeur reprise",
+    "gift_card.released": "Carte cadeau recréditée"
+  }
+}

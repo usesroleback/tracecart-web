@@ -108,8 +108,8 @@
     "totals": {
       "items": "Articles",
       "shipping": "Livraison",
-      "duties": "Droits de douane",
-      "taxes": "Taxes à l'importation",
+      "duties": "Droits de douane (estimation)",
+      "taxes": "Taxes à l'importation (estimation)",
       "fees": "Frais de dédouanement",
       "discount": "Remise",
       "total": "Total",
@@ -154,7 +154,8 @@
       "EXPRESS": "Express",
       "EXPRESSHint": "Part seul, par la route la plus rapide.",
       "STANDARDHint": "Voyage avec d'autres colis, pour moins cher."
-    }
+    },
+    "customsEstimateNote": "Les droits et taxes indiqués sont une estimation, incluse dans votre total. Le montant définitif est fixé par la douane à l'arrivée ; s'il diffère, nous vous en informerons."
   },
   "address": {
     "recipientName": "Nom",
@@ -206,8 +207,8 @@
     "items": "Articles",
     "totals": {
       "shipping": "Livraison",
-      "duties": "Droits de douane",
-      "taxes": "Taxes à l'importation",
+      "duties": "Droits de douane (estimation)",
+      "taxes": "Taxes à l'importation (estimation)",
       "fees": "Frais de dédouanement",
       "discount": "Remise",
       "total": "Total"
@@ -234,7 +235,8 @@
       "FREIGHT": "Fret"
     },
     "progress": "Suivi",
-    "giftCardPart": "{amount} payés par carte cadeau."
+    "giftCardPart": "{amount} payés par carte cadeau.",
+    "customsEstimateNote": "Les droits et taxes indiqués sont une estimation, incluse dans votre total. Le montant définitif est fixé par la douane à l'arrivée ; s'il diffère, nous vous en informerons."
   },
   "orders": {
     "title": "Mes commandes",

@@ -24,6 +24,27 @@
   "statuses": {
     "DECLARED": "En attente de la finance",
     "CONFIRMED": "Reçu",
-    "REJECTED": "Refusé"
+    "REJECTED": "Refusé",
+    "VARIANCE": "Écart",
+    "DISPUTED": "Contesté"
+  },
+  "variances": "Écarts d'encaissement",
+  "varianceLine": "{collected} encaissés pour {expected} dus",
+  "resolveNote": "Note",
+  "resolveCollection": "Clore cet écart",
+  "receivedShown": "Reçu : {amount}",
+  "varianceNote": "Motif de l'écart",
+  "flagVariance": "Signaler un écart",
+  "madeGood": "Différence régularisée",
+  "writeOff": "Passer en perte",
+  "dispute": "Contester",
+  "states": {
+    "COLLECTED": "Encaissé",
+    "PARTIALLY_COLLECTED": "Encaissé en partie",
+    "REMITTED": "Reversé",
+    "PARTIALLY_REMITTED": "Reversé en partie",
+    "RECONCILIATION_REQUIRED": "À rapprocher",
+    "DISPUTED": "Contesté",
+    "RECONCILED": "Rapproché"
   }
 }

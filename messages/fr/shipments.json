@@ -146,7 +146,6 @@
   "codeHintPoint": "Six chiffres, donnés par le client. Rien d'autre ne libère le colis.",
   "codeHintHome": "Six chiffres, donnés par le client. S'il ne peut pas le donner, ajoutez d'abord une photo ou une signature.",
   "amountCollected": "Espèces reçues ({currency})",
-  "amountMustMatch": "Le montant doit être exactement celui à encaisser. Si le client ne peut pas payer, enregistrez une livraison non aboutie.",
   "recipient": "Remis à",
   "deliverCta": "Confirmer la livraison",
   "addProof": "Ajouter une photo ou une signature",
@@ -187,5 +186,11 @@
     "ready": "Prêt à remettre",
     "saved": "{amount} économisés",
     "sendNow": "Envoyer maintenant"
-  }
+  },
+  "amountDiffers": "Ce n'est pas le montant dû : indiquez pourquoi.",
+  "varianceReason": "Pourquoi ce montant ?",
+  "answerTitle": "Ce colis vous est confié",
+  "answerAccept": "Accepter",
+  "answerRefuse": "Refuser",
+  "answerReason": "Motif du refus"
 }

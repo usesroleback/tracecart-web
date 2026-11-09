@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "@/i18n/navigation";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -313,6 +314,7 @@ interface Detail {
   deliveryMethod: string;
   destination: { recipientName: string | null; phone: string | null; countryCode: string; city: string; address: string | null; landmark: string | null; pickupPoint: string | null };
   collectFrom: { countryCode: string; city: string; addressLine?: string; landmark?: string; contactName?: string; phone?: string } | null;
+  canAnswerAssignment?: boolean;
   collectAt: { name: string; addressLine: string | null; city: string; countryCode: string; phone: string | null } | null;
   promise: { from: string; to: string };
   eta: { from: string | null; to: string | null } | null;
@@ -578,6 +580,7 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
             </div>
           ) : null}
           {canPack && s.status === "LABELLED" ? <HandOverForm busy={busy} onHandOver={(body) => post("handover", body)} /> : null}
+          {s.canAnswerAssignment ? <AnswerAssignment id={s.id} busy={busy} onAccept={() => post("assignment", { decision: "ACCEPT" })} /> : null}
           {canRecord && CAN_DELIVER.includes(s.status) ? <DeliverForm key={`deliver-${s.status}`} atPoint={s.status === "AT_PICKUP_POINT"} collect={s.collect} hasFile={s.proofs.some((p) => p.hasFile)} busy={busy} onDeliver={(body) => post("deliver", body)} /> : null}
           {canProve && CAN_DELIVER.includes(s.status) ? <ProofForm busy={busy} onUpload={(body) => post("proof", body)} /> : null}
           {canReissue && TAKES_NEW_CODE.includes(s.status) ? (
@@ -802,13 +805,14 @@ function DeliverForm({ atPoint, collect, hasFile, busy, onDeliver }: { atPoint: 
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
   const collectedMinor = collect ? toMinor(amount, collect.currency) : null;
+  const [varianceReason, setVarianceReason] = useState("");
   const wrongAmount = !!collect && amount !== "" && collectedMinor !== collect.amountMinor;
   return (
     <form
       className={`${box} grid gap-3`}
       onSubmit={(e) => {
         e.preventDefault();
-        onDeliver({ ...(code.trim() ? { code: code.trim() } : {}), ...(collect && collectedMinor != null ? { collectedMinor } : {}), ...(recipient.trim() ? { recipientName: recipient.trim() } : {}) });
+        onDeliver({ ...(code.trim() ? { code: code.trim() } : {}), ...(collect && collectedMinor != null ? { collectedMinor } : {}), ...(wrongAmount ? { varianceReason: varianceReason.trim() } : {}), ...(recipient.trim() ? { recipientName: recipient.trim() } : {}) });
       }}
     >
       <h2 className="rb-label">{t("deliver")}</h2>
@@ -816,17 +820,53 @@ function DeliverForm({ atPoint, collect, hasFile, busy, onDeliver }: { atPoint: 
         <input className={`${input} rb-mono`} inputMode="numeric" autoComplete="off" pattern="[0-9]{6}" maxLength={6} required={atPoint || !hasFile} value={code} onChange={(e) => setCode(e.target.value)} />
       </Field>
       {collect ? (
-        <Field label={t("amountCollected", { currency: collect.currency })} required hint={wrongAmount ? t("amountMustMatch") : undefined}>
+        <Field label={t("amountCollected", { currency: collect.currency })} required hint={wrongAmount ? t("amountDiffers") : undefined}>
           <input className={input} inputMode="decimal" required value={amount} onChange={(e) => setAmount(e.target.value)} />
+        </Field>
+      ) : null}
+      {wrongAmount ? (
+        <Field label={t("varianceReason")} required>
+          <input className={input} maxLength={300} required value={varianceReason} onChange={(e) => setVarianceReason(e.target.value)} />
         </Field>
       ) : null}
       <Field label={t("recipient")}>
         <input className={input} maxLength={120} value={recipient} onChange={(e) => setRecipient(e.target.value)} />
       </Field>
-      <Button type="submit" variant="primary" loading={busy} disabled={wrongAmount}>
+      <Button type="submit" variant="primary" loading={busy} disabled={wrongAmount && varianceReason.trim().length < 3}>
         {t("deliverCta")}
       </Button>
     </form>
+  );
+}
+
+/** The assigned carrier's yes or no. After a no the parcel is no longer theirs to see. */
+function AnswerAssignment({ id, busy, onAccept }: { id: string; busy: boolean; onAccept: () => void }) {
+  const t = useTranslations("shipments");
+  const router = useRouter();
+  const [reason, setReason] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  async function refuse() {
+    try {
+      await call("POST", `/shipments/${id}/assignment`, { decision: "REJECT", reason: reason.trim() });
+      router.push("/partner/deliveries");
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+  return (
+    <div className={`${box} grid gap-3`}>
+      <h2 className="rb-label">{t("answerTitle")}</h2>
+      <Button variant="primary" loading={busy} onClick={onAccept}>
+        {t("answerAccept")}
+      </Button>
+      <Field label={t("answerReason")}>
+        <input className={input} maxLength={300} value={reason} onChange={(e) => setReason(e.target.value)} />
+      </Field>
+      <Button variant="secondary" disabled={reason.trim().length < 3} onClick={() => void refuse()}>
+        {t("answerRefuse")}
+      </Button>
+      {error ? <p role="alert" className="text-critical">{error}</p> : null}
+    </div>
   );
 }
 

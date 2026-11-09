@@ -1,0 +1,182 @@
+{
+  "loading": "Loading…",
+  "more": "Show more",
+  "overview": {
+    "title": "Finance overview",
+    "lead": "Sales volume, revenue, cash and liabilities are different figures, all taken from the ledger.",
+    "empty": "No entries yet.",
+    "queuesTitle": "To deal with",
+    "groups": {
+      "activity": "Activity",
+      "revenue": "Revenue and margin",
+      "cash": "Cash",
+      "liabilities": "Liabilities"
+    },
+    "figures": {
+      "gmvMinor": "GMV",
+      "commissionRevenueMinor": "Commission",
+      "salesRevenueMinor": "Tracecart sales",
+      "logisticsRevenueMinor": "Delivery revenue",
+      "carrierCostsMinor": "Carrier costs",
+      "refundsMinor": "Refunds",
+      "codWriteOffsMinor": "Cash variances",
+      "contributionMarginMinor": "Contribution margin",
+      "providerClearingMinor": "With the provider",
+      "cashMinor": "Cash at bank",
+      "codOutstandingMinor": "Cash to receive",
+      "sellerPayableMinor": "Owed to sellers",
+      "carrierPayableMinor": "Owed to carriers",
+      "dutiesTaxesPayableMinor": "Duties and taxes to pass on"
+    },
+    "queues": {
+      "codAwaitingCollection": "Cash parcels on the road",
+      "codAwaitingReconciliation": "Remittances to confirm",
+      "codRemittanceVariances": "Remittance variances",
+      "codCollectionVariances": "Collection variances",
+      "carrierPayablesOpen": "Open carrier payables",
+      "carrierPayablesDisputed": "Disputed carrier payables"
+    }
+  },
+  "ledger": {
+    "title": "Ledger",
+    "lead": "Every transaction balances and can't be changed or deleted: a correction is a new transaction.",
+    "account": "Account",
+    "allAccounts": "All accounts",
+    "debit": "Debit",
+    "credit": "Credit",
+    "empty": "No entries."
+  },
+  "eligibility": {
+    "title": "Seller payout eligibility",
+    "lead": "For each sale, what allows or prevents paying the seller.",
+    "allStates": "All states",
+    "empty": "No sales."
+  },
+  "lines": {
+    "order": "Order",
+    "seller": "Seller",
+    "sale": "Sale",
+    "commission": "Commission",
+    "due": "Due",
+    "state": "State"
+  },
+  "carriers": {
+    "title": "Carrier payables",
+    "lead": "Kept apart from what sellers are owed. A settlement has to be approved by a second person.",
+    "payables": "Amounts owed",
+    "settlements": "Settlements",
+    "noPayables": "Nothing to settle.",
+    "noSettlements": "No settlements.",
+    "pick": "Choose",
+    "pickOne": "Choose {reference}",
+    "shipment": "Shipment",
+    "carrier": "Carrier",
+    "delivered": "Delivered",
+    "amount": "Amount",
+    "invoice": "Carrier's invoice",
+    "prepare": "Prepare settlement ({count})",
+    "needsSecond": "Someone else has to approve it.",
+    "approve": "Approve",
+    "paymentRef": "Payment reference, or why it failed",
+    "markPaid": "Mark paid",
+    "markFailed": "Mark failed",
+    "dispute": "Dispute",
+    "disputeNote": "Reason for the dispute",
+    "reopen": "Reopen"
+  },
+  "payable": {
+    "OPEN": "To settle",
+    "DISPUTED": "Disputed",
+    "BATCHED": "In a settlement",
+    "PAID": "Paid"
+  },
+  "settlement": {
+    "PENDING_APPROVAL": "To approve",
+    "APPROVED": "Approved",
+    "PAID": "Paid",
+    "FAILED": "Failed"
+  },
+  "seller": {
+    "title": "My finances",
+    "lead": "You're paid after delivery, once Tracecart has received the money and the hold period has passed.",
+    "statement": "Download my statement",
+    "empty": "No sales yet.",
+    "buckets": {
+      "pending": "Pending",
+      "held": "On hold",
+      "eligible": "Payable",
+      "inSettlement": "In a payout",
+      "paid": "Paid",
+      "reversed": "Reversed",
+      "failed": "Failed"
+    }
+  },
+  "partner": {
+    "title": "My finances",
+    "lead": "What Tracecart owes you, apart from the cash you hold for Tracecart.",
+    "owed": "Tracecart owes you",
+    "cash": "Cash to remit"
+  },
+  "customs": {
+    "title": "Customs",
+    "estimated": "Estimate at checkout",
+    "assessed": "Actual amount",
+    "notYet": "Not known yet",
+    "variance": "Difference",
+    "amount": "Amount customs charged ({currency})",
+    "reference": "Declaration or receipt number",
+    "record": "Record"
+  },
+  "states": {
+    "NOT_ELIGIBLE": "Not delivered yet",
+    "PENDING_RECONCILIATION": "Awaiting reconciliation",
+    "ON_HOLD": "On hold",
+    "ELIGIBLE": "Payable",
+    "BATCHED": "In a payout",
+    "PAYOUT_PENDING": "Payout under way",
+    "PAID": "Paid",
+    "FAILED": "Payout failed",
+    "REVERSED": "Cancelled or returned"
+  },
+  "reasons": {
+    "NOT_DELIVERED": "The parcel isn't delivered yet.",
+    "PAYMENT_NOT_CONFIRMED": "The payment isn't confirmed.",
+    "COD_NOT_COLLECTED": "No cash collection is recorded.",
+    "COD_VARIANCE": "The cash collected differs from what was due.",
+    "COD_NOT_REMITTED": "The carrier hasn't remitted the cash, or it isn't confirmed.",
+    "RETURN_OPEN": "A return is open.",
+    "HOLD_PERIOD": "On hold until",
+    "CANCELLED_OR_RETURNED": "Sale cancelled or returned."
+  },
+  "accounts": {
+    "PROVIDER_CLEARING": "Payment provider",
+    "CASH": "Cash at bank",
+    "COD_RECEIVABLE": "Cash to receive",
+    "ORDER_CLEARING": "Orders in progress",
+    "GIFT_CARD_LIABILITY": "Gift cards",
+    "SELLER_PAYABLE": "Owed to sellers",
+    "CARRIER_PAYABLE": "Owed to carriers",
+    "DUTIES_TAXES_PAYABLE": "Duties and taxes to pass on",
+    "COMMISSION_REVENUE": "Commission",
+    "SALES_REVENUE": "Tracecart sales",
+    "LOGISTICS_REVENUE": "Delivery revenue",
+    "CARRIER_COST": "Carrier costs",
+    "REFUNDS": "Refunds",
+    "COD_WRITE_OFF": "Cash variances written off"
+  },
+  "kinds": {
+    "payment.captured": "Payment received",
+    "cod.collected": "Cash collected",
+    "cod.remitted": "Cash remitted",
+    "cod.variance.made_good": "Variance made good",
+    "cod.variance.write_off": "Variance written off",
+    "cod.collection.variance": "Collection variance closed",
+    "delivery.recognised": "Delivery recognised",
+    "carrier.delivered": "Owed to carrier",
+    "carrier.settled": "Carrier paid",
+    "seller.paid": "Seller paid",
+    "refund.paid": "Refund paid",
+    "refund.seller_reversal": "Seller share reversed",
+    "gift_card.released": "Gift card credited back"
+  }
+}
