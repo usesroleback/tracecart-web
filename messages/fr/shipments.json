@@ -192,5 +192,26 @@
   "answerTitle": "Ce colis vous est confié",
   "answerAccept": "Accepter",
   "answerRefuse": "Refuser",
-  "answerReason": "Motif du refus"
+  "answerReason": "Motif du refus",
+  "pickupTitle": "Enlèvement",
+  "pickupHint": "Indiquez quand vous passez prendre ce colis : le vendeur est prévenu. Une fenêtre de 12 heures au plus, dans les 14 jours.",
+  "pickupFrom": "À partir de",
+  "pickupTo": "Jusqu'à",
+  "pickupSave": "Fixer l'enlèvement",
+  "pickupAt": "Enlèvement prévu : {from} – {to}",
+  "discrepancyTitle": "Colis non conforme",
+  "discrepancyHint": "Ce que vous avez trouvé ne correspond pas à ce qui était déclaré : Tracecart vérifie avec le vendeur.",
+  "discrepancyKind": "Ce qui ne va pas",
+  "discrepancyNote": "Ce que vous avez constaté",
+  "measuredWeight": "Poids trouvé (kg)",
+  "measuredCount": "Nombre de colis trouvés",
+  "discrepancySave": "Signaler",
+  "discrepancyKinds": {
+    "WEIGHT": "Poids différent",
+    "PACKAGE_COUNT": "Nombre de colis différent",
+    "DIMENSIONS": "Dimensions différentes",
+    "DAMAGED": "Colis abîmé",
+    "MISSING": "Colis manquant",
+    "OTHER": "Autre"
+  }
 }

@@ -192,5 +192,26 @@
   "answerTitle": "This parcel is assigned to you",
   "answerAccept": "Accept",
   "answerRefuse": "Refuse",
-  "answerReason": "Why you're refusing"
+  "answerReason": "Why you're refusing",
+  "pickupTitle": "Pickup",
+  "pickupHint": "Say when you'll collect this parcel: the seller is told. A window of 12 hours at most, within 14 days.",
+  "pickupFrom": "From",
+  "pickupTo": "Until",
+  "pickupSave": "Set the pickup",
+  "pickupAt": "Pickup planned: {from} – {to}",
+  "discrepancyTitle": "Parcel not as declared",
+  "discrepancyHint": "What you found doesn't match what was declared: Tracecart checks with the seller.",
+  "discrepancyKind": "What's wrong",
+  "discrepancyNote": "What you found",
+  "measuredWeight": "Weight found (kg)",
+  "measuredCount": "Number of parcels found",
+  "discrepancySave": "Report it",
+  "discrepancyKinds": {
+    "WEIGHT": "Different weight",
+    "PACKAGE_COUNT": "Different number of parcels",
+    "DIMENSIONS": "Different size",
+    "DAMAGED": "Damaged parcel",
+    "MISSING": "Missing parcel",
+    "OTHER": "Something else"
+  }
 }

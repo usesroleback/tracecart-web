@@ -10,15 +10,38 @@ import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Field, input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
-import { ExportButton, QueueChip, SavedViews, useListFilters } from "@/components/console/ListTools";
+import {
+  ExportButton,
+  QueueChip,
+  SavedViews,
+  useListFilters,
+} from "@/components/console/ListTools";
 import { useSession } from "@/context/SessionContext";
 
 const LIST_FILTERS = ["q", "status", "problems", "queue"] as const;
 
-const STATUSES = ["PLANNED", "PICKING", "PACKED", "LABELLED", "HANDED_OVER", "IN_TRANSIT", "AT_PICKUP_POINT", "OUT_FOR_DELIVERY", "DELIVERY_FAILED", "DELIVERED", "RETURNING", "RETURNED", "LOST", "CANCELLED"] as const;
+const STATUSES = [
+  "PLANNED",
+  "PICKING",
+  "PACKED",
+  "LABELLED",
+  "HANDED_OVER",
+  "IN_TRANSIT",
+  "AT_PICKUP_POINT",
+  "OUT_FOR_DELIVERY",
+  "DELIVERY_FAILED",
+  "DELIVERED",
+  "RETURNING",
+  "RETURNED",
+  "LOST",
+  "CANCELLED",
+] as const;
 type Status = (typeof STATUSES)[number];
 
-const TONE: Record<Status, "positive" | "attn" | "default" | "critical" | "info"> = {
+const TONE: Record<
+  Status,
+  "positive" | "attn" | "default" | "critical" | "info"
+> = {
   PLANNED: "default",
   PICKING: "attn",
   PACKED: "attn",
@@ -37,7 +60,14 @@ const TONE: Record<Status, "positive" | "attn" | "default" | "critical" | "info"
 
 // What can happen next on the road, as the API's machine allows it (ADR-040).
 // Being delivered isn't here: it takes proof, and any cash (ADR-041).
-type RoadAction = "transit" | "out_for_delivery" | "at_pickup_point" | "delivery_failed" | "return_start" | "returned" | "lost";
+type RoadAction =
+  | "transit"
+  | "out_for_delivery"
+  | "at_pickup_point"
+  | "delivery_failed"
+  | "return_start"
+  | "returned"
+  | "lost";
 const ROAD: Partial<Record<Status, RoadAction[]>> = {
   HANDED_OVER: ["transit", "out_for_delivery", "at_pickup_point", "lost"],
   IN_TRANSIT: ["out_for_delivery", "at_pickup_point", "lost"],
@@ -48,9 +78,28 @@ const ROAD: Partial<Record<Status, RoadAction[]>> = {
 };
 const NEEDS_REASON: RoadAction[] = ["delivery_failed", "lost"];
 const CAN_DELIVER: Status[] = ["AT_PICKUP_POINT", "OUT_FOR_DELIVERY"];
-const TAKES_NEW_CODE: Status[] = ["AT_PICKUP_POINT", "OUT_FOR_DELIVERY", "DELIVERY_FAILED"];
-const ON_THE_ROAD: Status[] = ["HANDED_OVER", "IN_TRANSIT", "AT_PICKUP_POINT", "OUT_FOR_DELIVERY", "DELIVERY_FAILED", "RETURNING"];
-const NEWS = ["POSITION_REPORTED", "BORDER_PROCESSING", "CUSTOMS_DOCUMENTS_REQUIRED", "CUSTOMS_CLEARANCE_STARTED", "CUSTOMS_CLEARED", "DESTINATION_HUB_RECEIVED", "DELAY_REPORTED"] as const;
+const TAKES_NEW_CODE: Status[] = [
+  "AT_PICKUP_POINT",
+  "OUT_FOR_DELIVERY",
+  "DELIVERY_FAILED",
+];
+const ON_THE_ROAD: Status[] = [
+  "HANDED_OVER",
+  "IN_TRANSIT",
+  "AT_PICKUP_POINT",
+  "OUT_FOR_DELIVERY",
+  "DELIVERY_FAILED",
+  "RETURNING",
+];
+const NEWS = [
+  "POSITION_REPORTED",
+  "BORDER_PROCESSING",
+  "CUSTOMS_DOCUMENTS_REQUIRED",
+  "CUSTOMS_CLEARANCE_STARTED",
+  "CUSTOMS_CLEARED",
+  "DESTINATION_HUB_RECEIVED",
+  "DELAY_REPORTED",
+] as const;
 
 interface Row {
   id: string;
@@ -68,7 +117,10 @@ interface Row {
 }
 
 /** Shipments in the console: what the API lets this person work on, newest first. */
-export function ShipmentsList({ heading, intro }: { heading?: string; intro?: string } = {}) {
+export function ShipmentsList({
+  heading,
+  intro,
+}: { heading?: string; intro?: string } = {}) {
   const t = useTranslations("shipments");
   const format = useFormat();
   const user = useSession();
@@ -89,7 +141,10 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
     p.set("limit", "50");
     if (after) p.set("cursor", after);
     try {
-      const res = await call<{ items: Row[]; nextCursor: string | null }>("GET", `/shipments?${p}`);
+      const res = await call<{ items: Row[]; nextCursor: string | null }>(
+        "GET",
+        `/shipments?${p}`,
+      );
       setRows((prev) => (after ? [...prev, ...res.items] : res.items));
       setCursor(res.nextCursor);
       setError(null);
@@ -108,12 +163,17 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
   return (
     <div>
       <h1 className="rb-headline mb-1 text-[28px]">{heading ?? t("title")}</h1>
-      <p className="mb-6 text-sm text-ink-muted">{intro ?? t("lead")}</p>
+      <p className="text-ink-muted mb-6 text-sm">{intro ?? t("lead")}</p>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <SavedViews list="shipments" query={query} onApply={apply} />
         <ExportButton path="/shipments/export.csv" query={query} />
       </div>
-      {applied.queue ? <QueueChip label={t(`queues.${applied.queue}` as "queues.toPrepare")} onClear={() => apply({ ...applied, queue: "" })} /> : null}
+      {applied.queue ? (
+        <QueueChip
+          label={t(`queues.${applied.queue}` as "queues.toPrepare")}
+          onClear={() => apply({ ...applied, queue: "" })}
+        />
+      ) : null}
       <form
         role="search"
         className="mb-4 flex flex-wrap gap-2"
@@ -122,7 +182,13 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
           apply({ ...applied, q });
         }}
       >
-        <input className={`${input} max-w-sm`} value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} aria-label={t("search")} />
+        <input
+          className={`${input} max-w-sm`}
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder={t("search")}
+          aria-label={t("search")}
+        />
         <select
           className={`${input} max-w-[14rem]`}
           value={status}
@@ -140,7 +206,9 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
           <input
             type="checkbox"
             checked={problems}
-            onChange={(e) => apply({ ...applied, q, problems: e.target.checked ? "open" : "" })}
+            onChange={(e) =>
+              apply({ ...applied, q, problems: e.target.checked ? "open" : "" })
+            }
           />
           {t("onlyProblems")}
         </label>
@@ -148,9 +216,12 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
           {t("find")}
         </Button>
       </form>
-      {error ? <p className="mb-4 text-sm text-critical">{error}</p> : null}
+      {error ? <p className="text-critical mb-4 text-sm">{error}</p> : null}
       {outcome ? (
-        <div role="status" className="mb-4 rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 text-sm">
+        <div
+          role="status"
+          className="border-line bg-surface-raised mb-4 rounded-[var(--radius-m)] border p-3 text-sm"
+        >
           <p>{t("bulk.done", { count: outcome.done })}</p>
           {outcome.failed.map((f) => (
             <p key={f.reference} className="text-critical">
@@ -173,11 +244,16 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
           onClear={() => setPicked(new Set())}
         />
       ) : null}
-      <div tabIndex={0} className="overflow-x-auto rounded-[var(--radius-m)] border border-line bg-surface-raised">
+      <div
+        tabIndex={0}
+        className="border-line bg-surface-raised overflow-x-auto rounded-[var(--radius-m)] border"
+      >
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-line text-ink-muted">
+          <thead className="border-line text-ink-muted border-b">
             <tr>
-              {canPick || canAssign ? <th className="w-8 px-4 py-3" aria-label={t("bulk.pick")} /> : null}
+              {canPick || canAssign ? (
+                <th className="w-8 px-4 py-3" aria-label={t("bulk.pick")} />
+              ) : null}
               <th className="px-4 py-3 font-medium">{t("columns.shipment")}</th>
               <th className="px-4 py-3 font-medium">{t("columns.status")}</th>
               <th className="px-4 py-3 font-medium">{t("columns.from")}</th>
@@ -186,7 +262,7 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
               <th className="px-4 py-3 font-medium">{t("columns.promise")}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-line">
+          <tbody className="divide-line divide-y">
             {rows.map((r) => (
               <tr key={r.id} className="hover:bg-surface-sunken">
                 {canPick || canAssign ? (
@@ -205,27 +281,51 @@ export function ShipmentsList({ heading, intro }: { heading?: string; intro?: st
                   </td>
                 ) : null}
                 <td className="px-4 py-3">
-                  <Link href={`/shipments/${r.id}`} className="rb-mono font-medium text-ink hover:underline">
+                  <Link
+                    href={`/shipments/${r.id}`}
+                    className="rb-mono text-ink font-medium hover:underline"
+                  >
                     {r.reference}
                   </Link>
-                  <p className="text-xs text-ink-muted">{t("orderItems", { reference: r.orderReference, count: r.lineCount })}</p>
+                  <p className="text-ink-muted text-xs">
+                    {t("orderItems", {
+                      reference: r.orderReference,
+                      count: r.lineCount,
+                    })}
+                  </p>
                 </td>
                 <td className="px-4 py-3">
-                  <Badge variant={TONE[r.status]}>{t(`statuses.${r.status}`)}</Badge>
-                  {r.openExceptions ? <p className="mt-1 text-xs text-critical">{t("problems", { count: r.openExceptions })}</p> : null}
+                  <Badge variant={TONE[r.status]}>
+                    {t(`statuses.${r.status}`)}
+                  </Badge>
+                  {r.openExceptions ? (
+                    <p className="text-critical mt-1 text-xs">
+                      {t("problems", { count: r.openExceptions })}
+                    </p>
+                  ) : null}
                 </td>
                 <td className="px-4 py-3">{r.warehouse.city}</td>
                 <td className="px-4 py-3">{r.destinationCity}</td>
-                <td className="px-4 py-3 text-ink-muted">{r.carrier ?? t("noCarrier")}</td>
-                <td className="px-4 py-3 text-ink-muted">{format.shortDate(r.promiseTo)}</td>
+                <td className="text-ink-muted px-4 py-3">
+                  {r.carrier ?? t("noCarrier")}
+                </td>
+                <td className="text-ink-muted px-4 py-3">
+                  {format.shortDate(r.promiseTo)}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {rows.length === 0 && !error ? <p className="px-4 py-8 text-center text-ink-muted">{t("empty")}</p> : null}
+        {rows.length === 0 && !error ? (
+          <p className="text-ink-muted px-4 py-8 text-center">{t("empty")}</p>
+        ) : null}
       </div>
       {cursor ? (
-        <Button variant="secondary" className="mt-4" onClick={() => load(cursor, query)}>
+        <Button
+          variant="secondary"
+          className="mt-4"
+          onClick={() => load(cursor, query)}
+        >
           {t("more")}
         </Button>
       ) : null}
@@ -239,7 +339,21 @@ interface BulkOutcome {
 }
 
 /** Several shipments at once. Each succeeds or fails on its own, and those that fail say why. */
-function BulkBar({ rows, picked, canPick, canAssign, onDone, onClear }: { rows: Row[]; picked: Set<string>; canPick: boolean; canAssign: boolean; onDone: (outcome: BulkOutcome) => void; onClear: () => void }) {
+function BulkBar({
+  rows,
+  picked,
+  canPick,
+  canAssign,
+  onDone,
+  onClear,
+}: {
+  rows: Row[];
+  picked: Set<string>;
+  canPick: boolean;
+  canAssign: boolean;
+  onDone: (outcome: BulkOutcome) => void;
+  onClear: () => void;
+}) {
   const t = useTranslations("shipments");
   const [carriers, setCarriers] = useState<{ id: string; name: string }[]>([]);
   const [carrierId, setCarrierId] = useState("");
@@ -248,19 +362,32 @@ function BulkBar({ rows, picked, canPick, canAssign, onDone, onClear }: { rows: 
 
   useEffect(() => {
     if (!canAssign) return;
-    call<{ items: { id: string; name: string }[] }>("GET", "/shipments/carriers")
+    call<{ items: { id: string; name: string }[] }>(
+      "GET",
+      "/shipments/carriers",
+    )
       .then((list) => setCarriers(list.items))
       .catch((e) => setError((e as Error).message));
   }, [canAssign]);
 
-  async function run(body: { action: "pick" } | { action: "assign"; carrierOrganizationId: string }) {
+  async function run(
+    body:
+      { action: "pick" } | { action: "assign"; carrierOrganizationId: string },
+  ) {
     setBusy(true);
     setError(null);
     try {
-      const { results } = await call<{ results: { id: string; ok: boolean; message?: string }[] }>("POST", "/shipments/bulk", { ...body, ids: [...picked] });
+      const { results } = await call<{
+        results: { id: string; ok: boolean; message?: string }[];
+      }>("POST", "/shipments/bulk", { ...body, ids: [...picked] });
       onDone({
         done: results.filter((r) => r.ok).length,
-        failed: results.filter((r) => !r.ok).map((r) => ({ reference: rows.find((x) => x.id === r.id)?.reference ?? r.id, message: r.message ?? "" })),
+        failed: results
+          .filter((r) => !r.ok)
+          .map((r) => ({
+            reference: rows.find((x) => x.id === r.id)?.reference ?? r.id,
+            message: r.message ?? "",
+          })),
       });
     } catch (e) {
       setError((e as Error).message);
@@ -270,16 +397,27 @@ function BulkBar({ rows, picked, canPick, canAssign, onDone, onClear }: { rows: 
   }
 
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-3 rounded-[var(--radius-m)] border border-line bg-surface-raised p-3 text-sm">
-      <span className="font-medium">{t("bulk.selected", { count: picked.size })}</span>
+    <div className="border-line bg-surface-raised mb-4 flex flex-wrap items-center gap-3 rounded-[var(--radius-m)] border p-3 text-sm">
+      <span className="font-medium">
+        {t("bulk.selected", { count: picked.size })}
+      </span>
       {canPick ? (
-        <Button variant="secondary" loading={busy} onClick={() => run({ action: "pick" })}>
+        <Button
+          variant="secondary"
+          loading={busy}
+          onClick={() => run({ action: "pick" })}
+        >
           {t("startPicking")}
         </Button>
       ) : null}
       {canAssign ? (
         <span className="flex flex-wrap items-center gap-2">
-          <select className={`${input} max-w-[14rem]`} aria-label={t("bulk.carrier")} value={carrierId} onChange={(e) => setCarrierId(e.target.value)}>
+          <select
+            className={`${input} max-w-[14rem]`}
+            aria-label={t("bulk.carrier")}
+            value={carrierId}
+            onChange={(e) => setCarrierId(e.target.value)}
+          >
             <option value="">{t("pickCarrier")}</option>
             {carriers.map((c) => (
               <option key={c.id} value={c.id}>
@@ -287,7 +425,14 @@ function BulkBar({ rows, picked, canPick, canAssign, onDone, onClear }: { rows: 
               </option>
             ))}
           </select>
-          <Button variant="secondary" loading={busy} disabled={!carrierId} onClick={() => run({ action: "assign", carrierOrganizationId: carrierId })}>
+          <Button
+            variant="secondary"
+            loading={busy}
+            disabled={!carrierId}
+            onClick={() =>
+              run({ action: "assign", carrierOrganizationId: carrierId })
+            }
+          >
             {t("bulk.assign")}
           </Button>
         </span>
@@ -296,7 +441,7 @@ function BulkBar({ rows, picked, canPick, canAssign, onDone, onClear }: { rows: 
         {t("bulk.clear")}
       </button>
       {error ? (
-        <p role="alert" className="w-full text-critical">
+        <p role="alert" className="text-critical w-full">
           {error}
         </p>
       ) : null}
@@ -312,10 +457,34 @@ interface Detail {
   orderReference: string;
   orderStatus: string;
   deliveryMethod: string;
-  destination: { recipientName: string | null; phone: string | null; countryCode: string; city: string; address: string | null; landmark: string | null; pickupPoint: string | null };
-  collectFrom: { countryCode: string; city: string; addressLine?: string; landmark?: string; contactName?: string; phone?: string } | null;
+  destination: {
+    recipientName: string | null;
+    phone: string | null;
+    countryCode: string;
+    city: string;
+    address: string | null;
+    landmark: string | null;
+    pickupPoint: string | null;
+  };
+  collectFrom: {
+    countryCode: string;
+    city: string;
+    addressLine?: string;
+    landmark?: string;
+    contactName?: string;
+    phone?: string;
+  } | null;
   canAnswerAssignment?: boolean;
-  collectAt: { name: string; addressLine: string | null; city: string; countryCode: string; phone: string | null } | null;
+  canSchedulePickup?: boolean;
+  canReportDiscrepancy?: boolean;
+  pickup: { from: string; to: string } | null;
+  collectAt: {
+    name: string;
+    addressLine: string | null;
+    city: string;
+    countryCode: string;
+    phone: string | null;
+  } | null;
   promise: { from: string; to: string };
   eta: { from: string | null; to: string | null } | null;
   warehouse: { name: string; city: string; countryCode: string };
@@ -323,12 +492,36 @@ interface Detail {
   carrierService: { id: string; name: string; mode: string } | null;
   externalRef: string | null;
   packed: { weightGrams: number | null; packageCount: number | null };
-  lines: { orderLineId: string; sku: string; title: string; quantity: number; bin: string | null }[];
-  events: { id: string; milestone: string; occurredAt: string; city: string | null; customerNote: string | null; internalNote: string | null; reason: string | null }[];
+  lines: {
+    orderLineId: string;
+    sku: string;
+    title: string;
+    quantity: number;
+    bin: string | null;
+  }[];
+  events: {
+    id: string;
+    milestone: string;
+    occurredAt: string;
+    city: string | null;
+    customerNote: string | null;
+    internalNote: string | null;
+    reason: string | null;
+  }[];
   openExceptions: { id: string; type: string; summary: string }[];
   carrierCost?: { amountMinor: number; currency: string } | null;
-  proofs: { id: string; kind: "CODE" | "PHOTO" | "SIGNATURE"; recipientName: string | null; hasFile: boolean; createdAt: string }[];
-  collect?: { amountMinor: number; currency: string; collectedAt: string | null };
+  proofs: {
+    id: string;
+    kind: "CODE" | "PHOTO" | "SIGNATURE";
+    recipientName: string | null;
+    hasFile: boolean;
+    createdAt: string;
+  }[];
+  collect?: {
+    amountMinor: number;
+    currency: string;
+    collectedAt: string | null;
+  };
 }
 
 interface RateOption {
@@ -342,10 +535,29 @@ interface RateOption {
   cost: { amount: number; currency: string } | null;
 }
 
-const box = "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
+const box =
+  "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
 
 /** One shipment: the pick list and, for those who may, the next step of its way. */
-export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, canReissue, canResolve, canSeeOrder }: { id: string; canPack: boolean; canRoute: boolean; canRecord: boolean; canProve: boolean; canReissue: boolean; canResolve: boolean; canSeeOrder: boolean }) {
+export function ShipmentDetail({
+  id,
+  canPack,
+  canRoute,
+  canRecord,
+  canProve,
+  canReissue,
+  canResolve,
+  canSeeOrder,
+}: {
+  id: string;
+  canPack: boolean;
+  canRoute: boolean;
+  canRecord: boolean;
+  canProve: boolean;
+  canReissue: boolean;
+  canResolve: boolean;
+  canSeeOrder: boolean;
+}) {
   const t = useTranslations("shipments");
   const format = useFormat();
   const [s, setS] = useState<Detail | null>(null);
@@ -372,23 +584,34 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
 
   if (error && !s) return <p className="text-critical">{error}</p>;
   if (!s) return <p className="text-ink-muted">…</p>;
-  const post = (path: string, body?: unknown) => act(() => call<Detail>("POST", `/shipments/${s.id}/${path}`, body));
+  const post = (path: string, body?: unknown) =>
+    act(() => call<Detail>("POST", `/shipments/${s.id}/${path}`, body));
   const d = s.destination;
-  const hasLabel = !["PLANNED", "PICKING", "PACKED", "CANCELLED"].includes(s.status);
-  const road = (ROAD[s.status] ?? []).filter((a) => !(s.deliveryMethod === "PICKUP" && a === "out_for_delivery") && !(s.deliveryMethod === "HOME" && a === "at_pickup_point"));
-  const money = (minor: number, currency: string) => `${format.number(toMajor(minor, currency))} ${currency}`;
+  const hasLabel = !["PLANNED", "PICKING", "PACKED", "CANCELLED"].includes(
+    s.status,
+  );
+  const road = (ROAD[s.status] ?? []).filter(
+    (a) =>
+      !(s.deliveryMethod === "PICKUP" && a === "out_for_delivery") &&
+      !(s.deliveryMethod === "HOME" && a === "at_pickup_point"),
+  );
+  const money = (minor: number, currency: string) =>
+    `${format.number(toMajor(minor, currency))} ${currency}`;
 
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href="/shipments" className="text-sm text-ink-muted hover:text-ink">
+        <Link
+          href="/shipments"
+          className="text-ink-muted hover:text-ink text-sm"
+        >
           ← {t("title")}
         </Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="rb-headline rb-mono text-[26px]">{s.reference}</h1>
           <Badge variant={TONE[s.status]}>{t(`statuses.${s.status}`)}</Badge>
         </div>
-        <p className="mt-1 text-sm text-ink-muted">
+        <p className="text-ink-muted mt-1 text-sm">
           {canSeeOrder ? (
             <Link href={`/store-orders/${s.orderId}`} className="underline">
               {t("order", { reference: s.orderReference })}
@@ -397,15 +620,20 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
             t("order", { reference: s.orderReference })
           )}
           {" · "}
-          {t("promise", { from: format.shortDate(s.promise.from), to: format.shortDate(s.promise.to) })}
+          {t("promise", {
+            from: format.shortDate(s.promise.from),
+            to: format.shortDate(s.promise.to),
+          })}
         </p>
       </div>
       {error ? (
-        <p role="alert" className="text-sm text-critical">
+        <p role="alert" className="text-critical text-sm">
           {error}
         </p>
       ) : null}
-      {s.orderStatus === "ON_HOLD" ? <p className={`${box} text-critical`}>{t("onHold")}</p> : null}
+      {s.orderStatus === "ON_HOLD" ? (
+        <p className={`${box} text-critical`}>{t("onHold")}</p>
+      ) : null}
       {s.openExceptions.length ? (
         <ul className={`${box} border-critical`}>
           {s.openExceptions.map((x) => (
@@ -413,7 +641,14 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
               <span className="text-critical">
                 {t(`exceptions.${x.type}` as "exceptions.OTHER")} · {x.summary}
               </span>
-              {canResolve ? <ResolveProblem busy={busy} onResolve={(resolution) => post(`exceptions/${x.id}/resolve`, { resolution })} /> : null}
+              {canResolve ? (
+                <ResolveProblem
+                  busy={busy}
+                  onResolve={(resolution) =>
+                    post(`exceptions/${x.id}/resolve`, { resolution })
+                  }
+                />
+              ) : null}
             </li>
           ))}
         </ul>
@@ -428,10 +663,12 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
                 <tr>
                   <th className="py-2 font-medium">{t("columns.item")}</th>
                   <th className="py-2 font-medium">{t("columns.bin")}</th>
-                  <th className="py-2 text-right font-medium">{t("columns.quantity")}</th>
+                  <th className="py-2 text-right font-medium">
+                    {t("columns.quantity")}
+                  </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="divide-line divide-y">
                 {s.lines.map((l) => (
                   <tr key={l.orderLineId}>
                     <td className="py-2">
@@ -451,14 +688,21 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
               <ol className="space-y-2">
                 {[...s.events].reverse().map((e) => (
                   <li key={e.id}>
-                    <span className="font-medium">{t(`milestones.${e.milestone}` as "milestones.PACKED")}</span>
+                    <span className="font-medium">
+                      {t(`milestones.${e.milestone}` as "milestones.PACKED")}
+                    </span>
                     {e.city ? ` · ${e.city}` : ""}
-                    <span className="text-ink-muted"> · {format.dayTime(e.occurredAt)}</span>
-                    {[e.reason, e.customerNote, e.internalNote].filter(Boolean).map((n, i) => (
-                      <p key={i} className="text-ink-muted">
-                        {n}
-                      </p>
-                    ))}
+                    <span className="text-ink-muted">
+                      {" "}
+                      · {format.dayTime(e.occurredAt)}
+                    </span>
+                    {[e.reason, e.customerNote, e.internalNote]
+                      .filter(Boolean)
+                      .map((n, i) => (
+                        <p key={i} className="text-ink-muted">
+                          {n}
+                        </p>
+                      ))}
                   </li>
                 ))}
               </ol>
@@ -474,17 +718,27 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
               <>
                 <h2 className="rb-label mb-2">{t("collectFrom")}</h2>
                 <p>
-                  {[s.collectFrom.contactName, s.collectFrom.phone].filter(Boolean).join(" · ")}
+                  {[s.collectFrom.contactName, s.collectFrom.phone]
+                    .filter(Boolean)
+                    .join(" · ")}
                   <br />
-                  {[s.collectFrom.addressLine, s.collectFrom.city, s.collectFrom.countryCode].filter(Boolean).join(", ")}
+                  {[
+                    s.collectFrom.addressLine,
+                    s.collectFrom.city,
+                    s.collectFrom.countryCode,
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
                   {s.collectFrom.landmark ? (
                     <>
                       <br />
-                      <span className="text-ink-muted">{s.collectFrom.landmark}</span>
+                      <span className="text-ink-muted">
+                        {s.collectFrom.landmark}
+                      </span>
                     </>
                   ) : null}
                 </p>
-                <h2 className="rb-label mb-2 mt-4">{t("handledBy")}</h2>
+                <h2 className="rb-label mt-4 mb-2">{t("handledBy")}</h2>
               </>
             ) : (
               <h2 className="rb-label mb-2">{t("from")}</h2>
@@ -504,7 +758,9 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
                 </>
               ) : null}
             </p>
-            <h2 className="rb-label mb-2 mt-4">{d.pickupPoint ? t("pickupPoint") : t("to")}</h2>
+            <h2 className="rb-label mt-4 mb-2">
+              {d.pickupPoint ? t("pickupPoint") : t("to")}
+            </h2>
             <p>
               {d.pickupPoint ? (
                 <>
@@ -522,14 +778,36 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
                 </>
               ) : null}
             </p>
-            <h2 className="rb-label mb-2 mt-4">{t("carrier")}</h2>
+            <h2 className="rb-label mt-4 mb-2">{t("carrier")}</h2>
             <p>
               {s.carrierService?.name ?? s.carrier?.name ?? t("noCarrier")}
-              {s.externalRef ? <span className="rb-mono-s text-ink-muted"> · {s.externalRef}</span> : null}
+              {s.externalRef ? (
+                <span className="rb-mono-s text-ink-muted">
+                  {" "}
+                  · {s.externalRef}
+                </span>
+              ) : null}
             </p>
-            {s.carrierCost ? <p className="text-ink-muted">{t("carrierCost", { amount: `${format.number(toMajor(s.carrierCost.amountMinor, s.carrierCost.currency))} ${s.carrierCost.currency}` })}</p> : null}
+            {s.carrierCost ? (
+              <p className="text-ink-muted">
+                {t("carrierCost", {
+                  amount: `${format.number(toMajor(s.carrierCost.amountMinor, s.carrierCost.currency))} ${s.carrierCost.currency}`,
+                })}
+              </p>
+            ) : null}
+            {s.pickup ? (
+              <p className="mt-2">
+                {t("pickupAt", {
+                  from: format.dayTime(s.pickup.from),
+                  to: format.time(s.pickup.to),
+                })}
+              </p>
+            ) : null}
             {hasLabel ? (
-              <a href={`/api/tracecart/shipments/${s.id}/label.pdf`} className="mt-3 block font-medium text-ink underline">
+              <a
+                href={`/api/tracecart/shipments/${s.id}/label.pdf`}
+                className="text-ink mt-3 block font-medium underline"
+              >
                 {t("labelPdf")}
               </a>
             ) : null}
@@ -537,9 +815,19 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
 
           {s.collect ? (
             <div className={box}>
-              <h2 className="rb-label mb-2">{s.collect.collectedAt ? t("cashCollected") : t("cashToCollect")}</h2>
-              <p className="rb-numeral text-[22px]">{money(s.collect.amountMinor, s.collect.currency)}</p>
-              {s.collect.collectedAt ? <p className="text-ink-muted">{format.dayTime(s.collect.collectedAt)}</p> : null}
+              <h2 className="rb-label mb-2">
+                {s.collect.collectedAt
+                  ? t("cashCollected")
+                  : t("cashToCollect")}
+              </h2>
+              <p className="rb-numeral text-[22px]">
+                {money(s.collect.amountMinor, s.collect.currency)}
+              </p>
+              {s.collect.collectedAt ? (
+                <p className="text-ink-muted">
+                  {format.dayTime(s.collect.collectedAt)}
+                </p>
+              ) : null}
             </div>
           ) : null}
           {s.proofs.length ? (
@@ -549,7 +837,12 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
                 {s.proofs.map((p) => (
                   <li key={p.id}>
                     {p.hasFile ? (
-                      <a href={`/api/tracecart/shipments/${s.id}/proof/${p.id}/file`} target="_blank" rel="noreferrer" className="underline">
+                      <a
+                        href={`/api/tracecart/shipments/${s.id}/proof/${p.id}/file`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="underline"
+                      >
                         {t(`proofKinds.${p.kind}`)}
                       </a>
                     ) : (
@@ -564,41 +857,112 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
 
           {canPack && s.status === "PLANNED" ? (
             <div className={box}>
-              <Button variant="primary" loading={busy} onClick={() => post("pick")}>
+              <Button
+                variant="primary"
+                loading={busy}
+                onClick={() => post("pick")}
+              >
                 {t("startPicking")}
               </Button>
             </div>
           ) : null}
-          {canPack && s.status === "PICKING" ? <PackForm busy={busy} onPack={(body) => post("pack", body)} /> : null}
-          {canRoute && ["PLANNED", "PICKING", "PACKED"].includes(s.status) ? <CarrierChoice id={s.id} busy={busy} onAssign={(body) => post("assign", body)} /> : null}
+          {canPack && s.status === "PICKING" ? (
+            <PackForm busy={busy} onPack={(body) => post("pack", body)} />
+          ) : null}
+          {canRoute && ["PLANNED", "PICKING", "PACKED"].includes(s.status) ? (
+            <CarrierChoice
+              id={s.id}
+              busy={busy}
+              onAssign={(body) => post("assign", body)}
+            />
+          ) : null}
           {canPack && s.status === "PACKED" ? (
             <div className={box}>
-              {!s.carrier && !s.carrierService ? <p className="mb-3 text-ink-muted">{t("needCarrier")}</p> : null}
-              <Button variant="primary" loading={busy} disabled={!s.carrier && !s.carrierService} onClick={() => post("label")}>
+              {!s.carrier && !s.carrierService ? (
+                <p className="text-ink-muted mb-3">{t("needCarrier")}</p>
+              ) : null}
+              <Button
+                variant="primary"
+                loading={busy}
+                disabled={!s.carrier && !s.carrierService}
+                onClick={() => post("label")}
+              >
                 {t("makeLabel")}
               </Button>
             </div>
           ) : null}
-          {canPack && s.status === "LABELLED" ? <HandOverForm busy={busy} onHandOver={(body) => post("handover", body)} /> : null}
-          {s.canAnswerAssignment ? <AnswerAssignment id={s.id} busy={busy} onAccept={() => post("assignment", { decision: "ACCEPT" })} /> : null}
-          {canRecord && CAN_DELIVER.includes(s.status) ? <DeliverForm key={`deliver-${s.status}`} atPoint={s.status === "AT_PICKUP_POINT"} collect={s.collect} hasFile={s.proofs.some((p) => p.hasFile)} busy={busy} onDeliver={(body) => post("deliver", body)} /> : null}
-          {canProve && CAN_DELIVER.includes(s.status) ? <ProofForm busy={busy} onUpload={(body) => post("proof", body)} /> : null}
+          {canPack && s.status === "LABELLED" ? (
+            <HandOverForm
+              busy={busy}
+              onHandOver={(body) => post("handover", body)}
+            />
+          ) : null}
+          {s.canAnswerAssignment ? (
+            <AnswerAssignment
+              id={s.id}
+              busy={busy}
+              onAccept={() => post("assignment", { decision: "ACCEPT" })}
+            />
+          ) : null}
+          {s.canSchedulePickup ? (
+            <PickupForm
+              key={s.pickup?.from ?? "none"}
+              pickup={s.pickup}
+              busy={busy}
+              onSave={(body) => post("pickup", body)}
+            />
+          ) : null}
+          {s.canReportDiscrepancy ? (
+            <DiscrepancyForm
+              key={s.openExceptions.length}
+              busy={busy}
+              onReport={(body) => post("discrepancy", body)}
+            />
+          ) : null}
+          {canRecord && CAN_DELIVER.includes(s.status) ? (
+            <DeliverForm
+              key={`deliver-${s.status}`}
+              atPoint={s.status === "AT_PICKUP_POINT"}
+              collect={s.collect}
+              hasFile={s.proofs.some((p) => p.hasFile)}
+              busy={busy}
+              onDeliver={(body) => post("deliver", body)}
+            />
+          ) : null}
+          {canProve && CAN_DELIVER.includes(s.status) ? (
+            <ProofForm busy={busy} onUpload={(body) => post("proof", body)} />
+          ) : null}
           {canReissue && TAKES_NEW_CODE.includes(s.status) ? (
             <div className={box}>
               <h2 className="rb-label mb-2">{t("newCode")}</h2>
-              <p className="mb-3 text-ink-muted">{t("newCodeHint")}</p>
-              <Button variant="secondary" loading={busy} onClick={() => post("collection-code")}>
+              <p className="text-ink-muted mb-3">{t("newCodeHint")}</p>
+              <Button
+                variant="secondary"
+                loading={busy}
+                onClick={() => post("collection-code")}
+              >
                 {t("newCodeCta")}
               </Button>
             </div>
           ) : null}
-          {canRecord && road.length ? <RoadForm key={s.status} actions={road} busy={busy} onAdvance={(body) => post("advance", body)} /> : null}
+          {canRecord && road.length ? (
+            <RoadForm
+              key={s.status}
+              actions={road}
+              busy={busy}
+              onAdvance={(body) => post("advance", body)}
+            />
+          ) : null}
           {canRecord && ON_THE_ROAD.includes(s.status) ? (
             <NewsForm
               busy={busy}
               onRecord={(body) =>
                 act(async () => {
-                  const res = await call<{ shipment: Detail }>("POST", `/shipments/${s.id}/events`, body);
+                  const res = await call<{ shipment: Detail }>(
+                    "POST",
+                    `/shipments/${s.id}/events`,
+                    body,
+                  );
                   return res.shipment;
                 })
               }
@@ -610,13 +974,23 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
   );
 }
 
-function ResolveProblem({ busy, onResolve }: { busy: boolean; onResolve: (resolution: string) => void }) {
+function ResolveProblem({
+  busy,
+  onResolve,
+}: {
+  busy: boolean;
+  onResolve: (resolution: string) => void;
+}) {
   const t = useTranslations("shipments");
   const [open, setOpen] = useState(false);
   const [resolution, setResolution] = useState("");
   if (!open) {
     return (
-      <button type="button" className="ml-2 underline" onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        className="ml-2 underline"
+        onClick={() => setOpen(true)}
+      >
         {t("resolve")}
       </button>
     );
@@ -630,16 +1004,34 @@ function ResolveProblem({ busy, onResolve }: { busy: boolean; onResolve: (resolu
       }}
     >
       <Field label={t("resolution")} required>
-        <input className={input} required minLength={3} maxLength={500} value={resolution} onChange={(e) => setResolution(e.target.value)} />
+        <input
+          className={input}
+          required
+          minLength={3}
+          maxLength={500}
+          value={resolution}
+          onChange={(e) => setResolution(e.target.value)}
+        />
       </Field>
-      <Button type="submit" variant="secondary" loading={busy} disabled={resolution.trim().length < 3}>
+      <Button
+        type="submit"
+        variant="secondary"
+        loading={busy}
+        disabled={resolution.trim().length < 3}
+      >
         {t("resolveCta")}
       </Button>
     </form>
   );
 }
 
-function PackForm({ busy, onPack }: { busy: boolean; onPack: (body: unknown) => void }) {
+function PackForm({
+  busy,
+  onPack,
+}: {
+  busy: boolean;
+  onPack: (body: unknown) => void;
+}) {
   const t = useTranslations("shipments");
   const [kg, setKg] = useState("");
   const [packages, setPackages] = useState("1");
@@ -648,15 +1040,36 @@ function PackForm({ busy, onPack }: { busy: boolean; onPack: (body: unknown) => 
       className={`${box} grid gap-3`}
       onSubmit={(e) => {
         e.preventDefault();
-        onPack({ weightGrams: Math.round(Number(kg) * 1000), packageCount: Number(packages) });
+        onPack({
+          weightGrams: Math.round(Number(kg) * 1000),
+          packageCount: Number(packages),
+        });
       }}
     >
       <h2 className="rb-label">{t("pack")}</h2>
       <Field label={t("weightKg")} required>
-        <input className={input} type="number" inputMode="decimal" min="0.001" step="0.001" required value={kg} onChange={(e) => setKg(e.target.value)} />
+        <input
+          className={input}
+          type="number"
+          inputMode="decimal"
+          min="0.001"
+          step="0.001"
+          required
+          value={kg}
+          onChange={(e) => setKg(e.target.value)}
+        />
       </Field>
       <Field label={t("packages")} required>
-        <input className={input} type="number" inputMode="numeric" min="1" step="1" required value={packages} onChange={(e) => setPackages(e.target.value)} />
+        <input
+          className={input}
+          type="number"
+          inputMode="numeric"
+          min="1"
+          step="1"
+          required
+          value={packages}
+          onChange={(e) => setPackages(e.target.value)}
+        />
       </Field>
       <Button type="submit" variant="primary" loading={busy}>
         {t("packed")}
@@ -665,7 +1078,15 @@ function PackForm({ busy, onPack }: { busy: boolean; onPack: (body: unknown) => 
   );
 }
 
-function CarrierChoice({ id, busy, onAssign }: { id: string; busy: boolean; onAssign: (body: unknown) => void }) {
+function CarrierChoice({
+  id,
+  busy,
+  onAssign,
+}: {
+  id: string;
+  busy: boolean;
+  onAssign: (body: unknown) => void;
+}) {
   const t = useTranslations("shipments");
   const format = useFormat();
   const [options, setOptions] = useState<RateOption[] | null>(null);
@@ -674,7 +1095,13 @@ function CarrierChoice({ id, busy, onAssign }: { id: string; busy: boolean; onAs
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([call<{ options: RateOption[] }>("GET", `/shipments/${id}/rates`), call<{ items: { id: string; name: string }[] }>("GET", "/shipments/carriers")])
+    Promise.all([
+      call<{ options: RateOption[] }>("GET", `/shipments/${id}/rates`),
+      call<{ items: { id: string; name: string }[] }>(
+        "GET",
+        "/shipments/carriers",
+      ),
+    ])
       .then(([rates, list]) => {
         setOptions(rates.options.filter((o) => o.eligible));
         setCarriers(list.items);
@@ -687,23 +1114,35 @@ function CarrierChoice({ id, busy, onAssign }: { id: string; busy: boolean; onAs
       <h2 className="rb-label mb-2">{t("chooseCarrier")}</h2>
       {error ? <p className="text-critical">{error}</p> : null}
       {options?.length ? (
-        <ul className="mb-3 divide-y divide-line">
+        <ul className="divide-line mb-3 divide-y">
           {options.map((o) => (
             <li key={o.serviceId} className="py-2">
               <p className="font-medium">{o.name}</p>
               <p className="text-ink-muted">
-                {t("arrives", { from: format.shortDate(o.eta.from), to: format.shortDate(o.eta.to) })}
-                {o.cost ? ` · ${format.number(o.cost.amount)} ${o.cost.currency}` : ` · ${t("noRate")}`}
+                {t("arrives", {
+                  from: format.shortDate(o.eta.from),
+                  to: format.shortDate(o.eta.to),
+                })}
+                {o.cost
+                  ? ` · ${format.number(o.cost.amount)} ${o.cost.currency}`
+                  : ` · ${t("noRate")}`}
               </p>
-              {o.meetsPromise === false ? <p className="text-critical">{t("latePromise")}</p> : null}
-              <Button variant="secondary" className="mt-1" loading={busy} onClick={() => onAssign({ carrierServiceId: o.serviceId })}>
+              {o.meetsPromise === false ? (
+                <p className="text-critical">{t("latePromise")}</p>
+              ) : null}
+              <Button
+                variant="secondary"
+                className="mt-1"
+                loading={busy}
+                onClick={() => onAssign({ carrierServiceId: o.serviceId })}
+              >
                 {t("choose")}
               </Button>
             </li>
           ))}
         </ul>
       ) : options ? (
-        <p className="mb-3 text-ink-muted">{t("noServices")}</p>
+        <p className="text-ink-muted mb-3">{t("noServices")}</p>
       ) : null}
       {carriers.length ? (
         <form
@@ -714,7 +1153,12 @@ function CarrierChoice({ id, busy, onAssign }: { id: string; busy: boolean; onAs
           }}
         >
           <Field label={t("otherCarrier")}>
-            <select className={input} required value={carrierId} onChange={(e) => setCarrierId(e.target.value)}>
+            <select
+              className={input}
+              required
+              value={carrierId}
+              onChange={(e) => setCarrierId(e.target.value)}
+            >
               <option value="">{t("pickCarrier")}</option>
               {carriers.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -732,7 +1176,13 @@ function CarrierChoice({ id, busy, onAssign }: { id: string; busy: boolean; onAs
   );
 }
 
-function HandOverForm({ busy, onHandOver }: { busy: boolean; onHandOver: (body: unknown) => void }) {
+function HandOverForm({
+  busy,
+  onHandOver,
+}: {
+  busy: boolean;
+  onHandOver: (body: unknown) => void;
+}) {
   const t = useTranslations("shipments");
   const [ref, setRef] = useState("");
   return (
@@ -746,7 +1196,12 @@ function HandOverForm({ busy, onHandOver }: { busy: boolean; onHandOver: (body: 
       <h2 className="rb-label">{t("handOver")}</h2>
       <p className="text-ink-muted">{t("handOverHint")}</p>
       <Field label={t("externalRef")}>
-        <input className={input} value={ref} maxLength={120} onChange={(e) => setRef(e.target.value)} />
+        <input
+          className={input}
+          value={ref}
+          maxLength={120}
+          onChange={(e) => setRef(e.target.value)}
+        />
       </Field>
       <Button type="submit" variant="primary" loading={busy}>
         {t("handOverCta")}
@@ -755,7 +1210,15 @@ function HandOverForm({ busy, onHandOver }: { busy: boolean; onHandOver: (body: 
   );
 }
 
-function RoadForm({ actions, busy, onAdvance }: { actions: RoadAction[]; busy: boolean; onAdvance: (body: unknown) => void }) {
+function RoadForm({
+  actions,
+  busy,
+  onAdvance,
+}: {
+  actions: RoadAction[];
+  busy: boolean;
+  onAdvance: (body: unknown) => void;
+}) {
   const t = useTranslations("shipments");
   const [action, setAction] = useState<RoadAction>(actions[0]);
   const [city, setCity] = useState("");
@@ -767,12 +1230,22 @@ function RoadForm({ actions, busy, onAdvance }: { actions: RoadAction[]; busy: b
       className={`${box} grid gap-3`}
       onSubmit={(e) => {
         e.preventDefault();
-        onAdvance({ action, ...(city.trim() ? { city: city.trim() } : {}), ...(reason.trim() ? { reason: reason.trim() } : {}), ...(note.trim() ? { customerNote: note.trim() } : {}) });
+        onAdvance({
+          action,
+          ...(city.trim() ? { city: city.trim() } : {}),
+          ...(reason.trim() ? { reason: reason.trim() } : {}),
+          ...(note.trim() ? { customerNote: note.trim() } : {}),
+        });
       }}
     >
       <h2 className="rb-label">{t("nextStep")}</h2>
       <Field label={t("whatHappened")} required>
-        <select className={input} required value={action} onChange={(e) => setAction(e.target.value as RoadAction)}>
+        <select
+          className={input}
+          required
+          value={action}
+          onChange={(e) => setAction(e.target.value as RoadAction)}
+        >
           {actions.map((a) => (
             <option key={a} value={a}>
               {t(`actions.${a}`)}
@@ -781,15 +1254,31 @@ function RoadForm({ actions, busy, onAdvance }: { actions: RoadAction[]; busy: b
         </select>
       </Field>
       <Field label={t("city")}>
-        <input className={input} value={city} maxLength={120} onChange={(e) => setCity(e.target.value)} />
+        <input
+          className={input}
+          value={city}
+          maxLength={120}
+          onChange={(e) => setCity(e.target.value)}
+        />
       </Field>
       {needsReason ? (
         <Field label={t("reason")} required>
-          <input className={input} required value={reason} maxLength={300} onChange={(e) => setReason(e.target.value)} />
+          <input
+            className={input}
+            required
+            value={reason}
+            maxLength={300}
+            onChange={(e) => setReason(e.target.value)}
+          />
         </Field>
       ) : null}
       <Field label={t("customerNote")} hint={t("customerNoteHint")}>
-        <input className={input} value={note} maxLength={500} onChange={(e) => setNote(e.target.value)} />
+        <input
+          className={input}
+          value={note}
+          maxLength={500}
+          onChange={(e) => setNote(e.target.value)}
+        />
       </Field>
       <Button type="submit" variant="primary" loading={busy}>
         {t("record")}
@@ -799,40 +1288,97 @@ function RoadForm({ actions, busy, onAdvance }: { actions: RoadAction[]; busy: b
 }
 
 /** Delivered, with the customer's code and any cash. The API checks both, and refuses a wrong amount. */
-function DeliverForm({ atPoint, collect, hasFile, busy, onDeliver }: { atPoint: boolean; collect?: Detail["collect"]; hasFile: boolean; busy: boolean; onDeliver: (body: unknown) => void }) {
+function DeliverForm({
+  atPoint,
+  collect,
+  hasFile,
+  busy,
+  onDeliver,
+}: {
+  atPoint: boolean;
+  collect?: Detail["collect"];
+  hasFile: boolean;
+  busy: boolean;
+  onDeliver: (body: unknown) => void;
+}) {
   const t = useTranslations("shipments");
   const [code, setCode] = useState("");
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
   const collectedMinor = collect ? toMinor(amount, collect.currency) : null;
   const [varianceReason, setVarianceReason] = useState("");
-  const wrongAmount = !!collect && amount !== "" && collectedMinor !== collect.amountMinor;
+  const wrongAmount =
+    !!collect && amount !== "" && collectedMinor !== collect.amountMinor;
   return (
     <form
       className={`${box} grid gap-3`}
       onSubmit={(e) => {
         e.preventDefault();
-        onDeliver({ ...(code.trim() ? { code: code.trim() } : {}), ...(collect && collectedMinor != null ? { collectedMinor } : {}), ...(wrongAmount ? { varianceReason: varianceReason.trim() } : {}), ...(recipient.trim() ? { recipientName: recipient.trim() } : {}) });
+        onDeliver({
+          ...(code.trim() ? { code: code.trim() } : {}),
+          ...(collect && collectedMinor != null ? { collectedMinor } : {}),
+          ...(wrongAmount ? { varianceReason: varianceReason.trim() } : {}),
+          ...(recipient.trim() ? { recipientName: recipient.trim() } : {}),
+        });
       }}
     >
       <h2 className="rb-label">{t("deliver")}</h2>
-      <Field label={t("code")} required={atPoint || !hasFile} hint={atPoint ? t("codeHintPoint") : t("codeHintHome")}>
-        <input className={`${input} rb-mono`} inputMode="numeric" autoComplete="off" pattern="[0-9]{6}" maxLength={6} required={atPoint || !hasFile} value={code} onChange={(e) => setCode(e.target.value)} />
+      <Field
+        label={t("code")}
+        required={atPoint || !hasFile}
+        hint={atPoint ? t("codeHintPoint") : t("codeHintHome")}
+      >
+        <input
+          className={`${input} rb-mono`}
+          inputMode="numeric"
+          autoComplete="off"
+          pattern="[0-9]{6}"
+          maxLength={6}
+          required={atPoint || !hasFile}
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
       </Field>
       {collect ? (
-        <Field label={t("amountCollected", { currency: collect.currency })} required hint={wrongAmount ? t("amountDiffers") : undefined}>
-          <input className={input} inputMode="decimal" required value={amount} onChange={(e) => setAmount(e.target.value)} />
+        <Field
+          label={t("amountCollected", { currency: collect.currency })}
+          required
+          hint={wrongAmount ? t("amountDiffers") : undefined}
+        >
+          <input
+            className={input}
+            inputMode="decimal"
+            required
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
         </Field>
       ) : null}
       {wrongAmount ? (
         <Field label={t("varianceReason")} required>
-          <input className={input} maxLength={300} required value={varianceReason} onChange={(e) => setVarianceReason(e.target.value)} />
+          <input
+            className={input}
+            maxLength={300}
+            required
+            value={varianceReason}
+            onChange={(e) => setVarianceReason(e.target.value)}
+          />
         </Field>
       ) : null}
       <Field label={t("recipient")}>
-        <input className={input} maxLength={120} value={recipient} onChange={(e) => setRecipient(e.target.value)} />
+        <input
+          className={input}
+          maxLength={120}
+          value={recipient}
+          onChange={(e) => setRecipient(e.target.value)}
+        />
       </Field>
-      <Button type="submit" variant="primary" loading={busy} disabled={wrongAmount && varianceReason.trim().length < 3}>
+      <Button
+        type="submit"
+        variant="primary"
+        loading={busy}
+        disabled={wrongAmount && varianceReason.trim().length < 3}
+      >
         {t("deliverCta")}
       </Button>
     </form>
@@ -840,14 +1386,25 @@ function DeliverForm({ atPoint, collect, hasFile, busy, onDeliver }: { atPoint: 
 }
 
 /** The assigned carrier's yes or no. After a no the parcel is no longer theirs to see. */
-function AnswerAssignment({ id, busy, onAccept }: { id: string; busy: boolean; onAccept: () => void }) {
+function AnswerAssignment({
+  id,
+  busy,
+  onAccept,
+}: {
+  id: string;
+  busy: boolean;
+  onAccept: () => void;
+}) {
   const t = useTranslations("shipments");
   const router = useRouter();
   const [reason, setReason] = useState("");
   const [error, setError] = useState<string | null>(null);
   async function refuse() {
     try {
-      await call("POST", `/shipments/${id}/assignment`, { decision: "REJECT", reason: reason.trim() });
+      await call("POST", `/shipments/${id}/assignment`, {
+        decision: "REJECT",
+        reason: reason.trim(),
+      });
       router.push("/partner/deliveries");
     } catch (e) {
       setError((e as Error).message);
@@ -860,17 +1417,203 @@ function AnswerAssignment({ id, busy, onAccept }: { id: string; busy: boolean; o
         {t("answerAccept")}
       </Button>
       <Field label={t("answerReason")}>
-        <input className={input} maxLength={300} value={reason} onChange={(e) => setReason(e.target.value)} />
+        <input
+          className={input}
+          maxLength={300}
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        />
       </Field>
-      <Button variant="secondary" disabled={reason.trim().length < 3} onClick={() => void refuse()}>
+      <Button
+        variant="secondary"
+        disabled={reason.trim().length < 3}
+        onClick={() => void refuse()}
+      >
         {t("answerRefuse")}
       </Button>
-      {error ? <p role="alert" className="text-critical">{error}</p> : null}
+      {error ? (
+        <p role="alert" className="text-critical">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }
 
-function ProofForm({ busy, onUpload }: { busy: boolean; onUpload: (body: FormData) => void }) {
+/** A datetime-local value, in the browser's time, for an instant. */
+const localInput = (iso: string) => {
+  const d = new Date(iso);
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60_000)
+    .toISOString()
+    .slice(0, 16);
+};
+
+function PickupForm({
+  pickup,
+  busy,
+  onSave,
+}: {
+  pickup: { from: string; to: string } | null;
+  busy: boolean;
+  onSave: (body: { from: string; to: string }) => void;
+}) {
+  const t = useTranslations("shipments");
+  const [from, setFrom] = useState(pickup ? localInput(pickup.from) : "");
+  const [to, setTo] = useState(pickup ? localInput(pickup.to) : "");
+  return (
+    <form
+      className={`${box} grid gap-3`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSave({
+          from: new Date(from).toISOString(),
+          to: new Date(to).toISOString(),
+        });
+      }}
+    >
+      <h2 className="rb-label">{t("pickupTitle")}</h2>
+      <p className="text-ink-muted">{t("pickupHint")}</p>
+      <Field label={t("pickupFrom")} required>
+        <input
+          className={input}
+          type="datetime-local"
+          required
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+        />
+      </Field>
+      <Field label={t("pickupTo")} required>
+        <input
+          className={input}
+          type="datetime-local"
+          required
+          min={from || undefined}
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+        />
+      </Field>
+      <Button
+        type="submit"
+        variant="primary"
+        loading={busy}
+        disabled={!from || !to}
+      >
+        {t("pickupSave")}
+      </Button>
+    </form>
+  );
+}
+
+const DISCREPANCY_KINDS = [
+  "WEIGHT",
+  "PACKAGE_COUNT",
+  "DIMENSIONS",
+  "DAMAGED",
+  "MISSING",
+  "OTHER",
+] as const;
+
+function DiscrepancyForm({
+  busy,
+  onReport,
+}: {
+  busy: boolean;
+  onReport: (body: unknown) => void;
+}) {
+  const t = useTranslations("shipments");
+  const [kind, setKind] =
+    useState<(typeof DISCREPANCY_KINDS)[number]>("WEIGHT");
+  const [note, setNote] = useState("");
+  const [kg, setKg] = useState("");
+  const [count, setCount] = useState("");
+  return (
+    <form
+      className={`${box} grid gap-3`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        onReport({
+          kind,
+          note: note.trim(),
+          ...(kind === "WEIGHT"
+            ? { measuredWeightGrams: Math.round(Number(kg) * 1000) }
+            : {}),
+          ...(kind === "PACKAGE_COUNT"
+            ? { measuredPackageCount: Number(count) }
+            : {}),
+        });
+      }}
+    >
+      <h2 className="rb-label">{t("discrepancyTitle")}</h2>
+      <p className="text-ink-muted">{t("discrepancyHint")}</p>
+      <Field label={t("discrepancyKind")} required>
+        <select
+          className={input}
+          value={kind}
+          onChange={(e) => setKind(e.target.value as typeof kind)}
+        >
+          {DISCREPANCY_KINDS.map((k) => (
+            <option key={k} value={k}>
+              {t(`discrepancyKinds.${k}`)}
+            </option>
+          ))}
+        </select>
+      </Field>
+      {kind === "WEIGHT" ? (
+        <Field label={t("measuredWeight")} required>
+          <input
+            className={input}
+            type="number"
+            inputMode="decimal"
+            min={0.001}
+            step={0.001}
+            required
+            value={kg}
+            onChange={(e) => setKg(e.target.value)}
+          />
+        </Field>
+      ) : null}
+      {kind === "PACKAGE_COUNT" ? (
+        <Field label={t("measuredCount")} required>
+          <input
+            className={input}
+            type="number"
+            min={0}
+            step={1}
+            required
+            value={count}
+            onChange={(e) => setCount(e.target.value)}
+          />
+        </Field>
+      ) : null}
+      <Field label={t("discrepancyNote")} required>
+        <input
+          className={input}
+          required
+          minLength={3}
+          maxLength={500}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
+      </Field>
+      <Button
+        type="submit"
+        variant="secondary"
+        loading={busy}
+        disabled={note.trim().length < 3}
+      >
+        {t("discrepancySave")}
+      </Button>
+    </form>
+  );
+}
+
+function ProofForm({
+  busy,
+  onUpload,
+}: {
+  busy: boolean;
+  onUpload: (body: FormData) => void;
+}) {
   const t = useTranslations("shipments");
   const [kind, setKind] = useState<"PHOTO" | "SIGNATURE">("PHOTO");
   const [file, setFile] = useState<File | null>(null);
@@ -890,13 +1633,23 @@ function ProofForm({ busy, onUpload }: { busy: boolean; onUpload: (body: FormDat
     >
       <h2 className="rb-label">{t("addProof")}</h2>
       <Field label={t("proofKind")} required>
-        <select className={input} value={kind} onChange={(e) => setKind(e.target.value as "PHOTO" | "SIGNATURE")}>
+        <select
+          className={input}
+          value={kind}
+          onChange={(e) => setKind(e.target.value as "PHOTO" | "SIGNATURE")}
+        >
           <option value="PHOTO">{t("proofKinds.PHOTO")}</option>
           <option value="SIGNATURE">{t("proofKinds.SIGNATURE")}</option>
         </select>
       </Field>
       <Field label={t("proofFile")} required>
-        <input className={input} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" required onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+        <input
+          className={input}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+          required
+          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+        />
       </Field>
       <Button type="submit" variant="secondary" loading={busy}>
         {t("addProofCta")}
@@ -905,9 +1658,16 @@ function ProofForm({ busy, onUpload }: { busy: boolean; onUpload: (body: FormDat
   );
 }
 
-function NewsForm({ busy, onRecord }: { busy: boolean; onRecord: (body: unknown) => void }) {
+function NewsForm({
+  busy,
+  onRecord,
+}: {
+  busy: boolean;
+  onRecord: (body: unknown) => void;
+}) {
   const t = useTranslations("shipments");
-  const [milestone, setMilestone] = useState<(typeof NEWS)[number]>("POSITION_REPORTED");
+  const [milestone, setMilestone] =
+    useState<(typeof NEWS)[number]>("POSITION_REPORTED");
   const [city, setCity] = useState("");
   const [reason, setReason] = useState("");
   const needsReason = milestone === "DELAY_REPORTED";
@@ -916,12 +1676,23 @@ function NewsForm({ busy, onRecord }: { busy: boolean; onRecord: (body: unknown)
       className={`${box} grid gap-3`}
       onSubmit={(e) => {
         e.preventDefault();
-        onRecord({ milestone, ...(city.trim() ? { city: city.trim() } : {}), ...(reason.trim() ? { reason: reason.trim() } : {}) });
+        onRecord({
+          milestone,
+          ...(city.trim() ? { city: city.trim() } : {}),
+          ...(reason.trim() ? { reason: reason.trim() } : {}),
+        });
       }}
     >
       <h2 className="rb-label">{t("news")}</h2>
       <Field label={t("whatHappened")} required>
-        <select className={input} required value={milestone} onChange={(e) => setMilestone(e.target.value as (typeof NEWS)[number])}>
+        <select
+          className={input}
+          required
+          value={milestone}
+          onChange={(e) =>
+            setMilestone(e.target.value as (typeof NEWS)[number])
+          }
+        >
           {NEWS.map((m) => (
             <option key={m} value={m}>
               {t(`milestones.${m}`)}
@@ -930,11 +1701,22 @@ function NewsForm({ busy, onRecord }: { busy: boolean; onRecord: (body: unknown)
         </select>
       </Field>
       <Field label={t("city")}>
-        <input className={input} value={city} maxLength={120} onChange={(e) => setCity(e.target.value)} />
+        <input
+          className={input}
+          value={city}
+          maxLength={120}
+          onChange={(e) => setCity(e.target.value)}
+        />
       </Field>
       {needsReason ? (
         <Field label={t("reason")} required>
-          <input className={input} required value={reason} maxLength={300} onChange={(e) => setReason(e.target.value)} />
+          <input
+            className={input}
+            required
+            value={reason}
+            maxLength={300}
+            onChange={(e) => setReason(e.target.value)}
+          />
         </Field>
       ) : null}
       <Button type="submit" variant="secondary" loading={busy}>
@@ -951,11 +1733,23 @@ export interface CustomerShipment {
   eta: { from: string | null; to: string | null } | null;
   collectionCode: string | null;
   lines: { sku: string; title: string; quantity: number }[];
-  events: { milestone: string; occurredAt: string; city: string | null; note: string | null; reason: string | null }[];
+  events: {
+    milestone: string;
+    occurredAt: string;
+    city: string | null;
+    note: string | null;
+    reason: string | null;
+  }[];
 }
 
 /** A customer's parcels on their order page: where each one is, latest news first. */
-export function OrderShipments({ shipments, boxClass }: { shipments: CustomerShipment[]; boxClass: string }) {
+export function OrderShipments({
+  shipments,
+  boxClass,
+}: {
+  shipments: CustomerShipment[];
+  boxClass: string;
+}) {
   const t = useTranslations("shipments");
   const format = useFormat();
   if (!shipments.length) return null;
@@ -971,21 +1765,43 @@ export function OrderShipments({ shipments, boxClass }: { shipments: CustomerShi
             {s.reference}
             {s.carrier ? ` · ${s.carrier}` : ""}
           </p>
-          {shipments.length > 1 ? <p className="mt-1 text-sm text-ink-muted">{s.lines.map((l) => `${l.title} × ${l.quantity}`).join(", ")}</p> : null}
-          {s.eta?.from && s.eta.to ? <p className="mt-2 text-sm">{t("arrives", { from: format.shortDate(s.eta.from), to: format.shortDate(s.eta.to) })}</p> : null}
+          {shipments.length > 1 ? (
+            <p className="text-ink-muted mt-1 text-sm">
+              {s.lines.map((l) => `${l.title} × ${l.quantity}`).join(", ")}
+            </p>
+          ) : null}
+          {s.eta?.from && s.eta.to ? (
+            <p className="mt-2 text-sm">
+              {t("arrives", {
+                from: format.shortDate(s.eta.from),
+                to: format.shortDate(s.eta.to),
+              })}
+            </p>
+          ) : null}
           {s.collectionCode ? (
             <div className="mt-3">
-              <p className="text-sm text-ink-muted">{s.status === "AT_PICKUP_POINT" ? t("yourCodePoint") : t("yourCodeHome")}</p>
-              <p className="rb-mono text-[24px] font-medium tracking-[0.2em]">{s.collectionCode}</p>
+              <p className="text-ink-muted text-sm">
+                {s.status === "AT_PICKUP_POINT"
+                  ? t("yourCodePoint")
+                  : t("yourCodeHome")}
+              </p>
+              <p className="rb-mono text-[24px] font-medium tracking-[0.2em]">
+                {s.collectionCode}
+              </p>
             </div>
           ) : null}
           {s.events.length ? (
             <ol className="mt-3 grid gap-1.5 text-sm">
               {s.events.map((e, i) => (
                 <li key={i}>
-                  <span>{t(`milestones.${e.milestone}` as "milestones.PACKED")}</span>
+                  <span>
+                    {t(`milestones.${e.milestone}` as "milestones.PACKED")}
+                  </span>
                   {e.city ? ` · ${e.city}` : ""}
-                  <span className="text-ink-muted"> · {format.dateTime(e.occurredAt)}</span>
+                  <span className="text-ink-muted">
+                    {" "}
+                    · {format.dateTime(e.occurredAt)}
+                  </span>
                   {[e.reason, e.note].filter(Boolean).map((n, j) => (
                     <p key={j} className="text-ink-muted">
                       {n}

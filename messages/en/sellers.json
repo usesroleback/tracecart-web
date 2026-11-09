@@ -212,7 +212,9 @@
     "accept": "Accept",
     "refuse": "Refuse",
     "refuseReason": "Why you're refusing",
-    "refused": "Refused: {reason}"
+    "refused": "Refused: {reason}",
+    "pickupAt": "The carrier comes on {date}, between {from} and {to}",
+    "discrepancy": "Reported by the carrier: {summary}"
   },
   "agreementCheck": "I have read and accept the {link}",
   "agreementLink": "seller agreement",

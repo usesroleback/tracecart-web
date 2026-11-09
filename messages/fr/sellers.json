@@ -212,7 +212,9 @@
     "accept": "Accepter",
     "refuse": "Refuser",
     "refuseReason": "Motif du refus",
-    "refused": "Refusée : {reason}"
+    "refused": "Refusée : {reason}",
+    "pickupAt": "Le transporteur passe le {date}, entre {from} et {to}",
+    "discrepancy": "Signalé par le transporteur : {summary}"
   },
   "agreementCheck": "J'ai lu et j'accepte le {link}",
   "agreementLink": "contrat vendeur",
