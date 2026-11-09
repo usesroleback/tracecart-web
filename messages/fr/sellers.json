@@ -214,7 +214,17 @@
     "refuseReason": "Motif du refus",
     "refused": "Refusée : {reason}",
     "pickupAt": "Le transporteur passe le {date}, entre {from} et {to}",
-    "discrepancy": "Signalé par le transporteur : {summary}"
+    "discrepancy": "Signalé par le transporteur : {summary}",
+    "parcels": "Colis",
+    "sizeCm": "Dimensions (cm)",
+    "lengthCm": "Longueur",
+    "widthCm": "Largeur",
+    "heightCm": "Hauteur",
+    "declared": "Déclaré : {weight} g, {count} colis",
+    "declaredSize": "{l} × {w} × {h} cm",
+    "photos": "Photos du colis",
+    "photosHint": "Jusqu'à 6 photos du colis emballé, avant qu'il parte : elles servent si le transporteur signale une différence.",
+    "photo": "Photo {n}"
   },
   "agreementCheck": "J'ai lu et j'accepte le {link}",
   "agreementLink": "contrat vendeur",

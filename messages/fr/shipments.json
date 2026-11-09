@@ -213,5 +213,9 @@
     "DAMAGED": "Colis abîmé",
     "MISSING": "Colis manquant",
     "OTHER": "Autre"
-  }
+  },
+  "parcelTitle": "Colis déclaré",
+  "parcelDeclared": "{weight} g, {count} colis",
+  "parcelPhotos": "Photos du vendeur",
+  "photoN": "Photo {n}"
 }

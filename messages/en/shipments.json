@@ -213,5 +213,9 @@
     "DAMAGED": "Damaged parcel",
     "MISSING": "Missing parcel",
     "OTHER": "Something else"
-  }
+  },
+  "parcelTitle": "Declared parcel",
+  "parcelDeclared": "{weight} g, {count} parcel(s)",
+  "parcelPhotos": "Seller's photos",
+  "photoN": "Photo {n}"
 }

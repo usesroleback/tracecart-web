@@ -214,7 +214,17 @@
     "refuseReason": "Why you're refusing",
     "refused": "Refused: {reason}",
     "pickupAt": "The carrier comes on {date}, between {from} and {to}",
-    "discrepancy": "Reported by the carrier: {summary}"
+    "discrepancy": "Reported by the carrier: {summary}",
+    "parcels": "Parcels",
+    "sizeCm": "Size (cm)",
+    "lengthCm": "Length",
+    "widthCm": "Width",
+    "heightCm": "Height",
+    "declared": "Declared: {weight} g, {count} parcel(s)",
+    "declaredSize": "{l} × {w} × {h} cm",
+    "photos": "Parcel photos",
+    "photosHint": "Up to 6 photos of the packed parcel, before it leaves: they count if the carrier reports a difference.",
+    "photo": "Photo {n}"
   },
   "agreementCheck": "I have read and accept the {link}",
   "agreementLink": "seller agreement",

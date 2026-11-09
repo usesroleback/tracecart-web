@@ -27,6 +27,14 @@ interface Row {
   leavesWithLoad: string | null;
   pickup: { from: string; to: string } | null;
   discrepancies: { id: string; type: string; summary: string }[];
+  packed: {
+    weightGrams: number | null;
+    packageCount: number | null;
+    lengthCm: number | null;
+    widthCm: number | null;
+    heightCm: number | null;
+  } | null;
+  photos: { id: string; createdAt: string }[];
   lines: { sku: string; title: string; quantity: number }[];
 }
 
@@ -41,7 +49,19 @@ export function SellerOrders() {
   const locale = useLocale();
   const [view, setView] = useState<View>("toShip");
   const [data, setData] = useState<Data | null>(null);
-  const [weights, setWeights] = useState<Record<string, string>>({});
+  const [forms, setForms] = useState<Record<string, Record<string, string>>>(
+    {},
+  );
+  const field = (id: string, key: string) =>
+    forms[id]?.[key] ?? (key === "count" ? "1" : "");
+  const setField = (id: string, key: string, value: string) =>
+    setForms({ ...forms, [id]: { ...forms[id], [key]: value } });
+  const size = (id: string) =>
+    Object.fromEntries(
+      (["lengthCm", "widthCm", "heightCm"] as const).flatMap((k) =>
+        Number(field(id, k)) > 0 ? [[k, Number(field(id, k))]] : [],
+      ),
+    );
   const [reasons, setReasons] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -236,20 +256,48 @@ export function SellerOrders() {
                     className={`${input} w-28`}
                     type="number"
                     min={1}
-                    value={weights[r.id] ?? ""}
-                    onChange={(e) =>
-                      setWeights({ ...weights, [r.id]: e.target.value })
-                    }
+                    value={field(r.id, "weight")}
+                    onChange={(e) => setField(r.id, "weight", e.target.value)}
                   />
                 </label>
+                <label className="flex items-center gap-2">
+                  {t("parcels")}
+                  <input
+                    className={`${input} w-20`}
+                    type="number"
+                    min={1}
+                    value={field(r.id, "count")}
+                    onChange={(e) => setField(r.id, "count", e.target.value)}
+                  />
+                </label>
+                <span className="flex items-center gap-1">
+                  <span>{t("sizeCm")}</span>
+                  {(["lengthCm", "widthCm", "heightCm"] as const).map((k) => (
+                    <input
+                      key={k}
+                      className={`${input} w-20`}
+                      type="number"
+                      min={1}
+                      aria-label={t(k)}
+                      placeholder={t(k)}
+                      value={field(r.id, k)}
+                      onChange={(e) => setField(r.id, k, e.target.value)}
+                    />
+                  ))}
+                </span>
                 <Button
                   size="s"
-                  disabled={busy || !(Number(weights[r.id]) > 0)}
+                  disabled={
+                    busy ||
+                    !(Number(field(r.id, "weight")) > 0) ||
+                    !(Number(field(r.id, "count")) > 0)
+                  }
                   onClick={() =>
                     act(() =>
                       call("POST", `/seller/orders/${r.id}/ready`, {
-                        weightGrams: Number(weights[r.id]),
-                        packageCount: 1,
+                        weightGrams: Number(field(r.id, "weight")),
+                        packageCount: Number(field(r.id, "count")),
+                        ...size(r.id),
                       }),
                     )
                   }
@@ -259,6 +307,64 @@ export function SellerOrders() {
               </div>
             ) : null}
 
+            {r.shipsItself && r.packed && r.packed.weightGrams ? (
+              <p className="text-ink-muted mt-2">
+                {t("declared", {
+                  weight: r.packed.weightGrams,
+                  count: r.packed.packageCount ?? 1,
+                })}
+                {r.packed.lengthCm && r.packed.widthCm && r.packed.heightCm
+                  ? ` · ${t("declaredSize", { l: r.packed.lengthCm, w: r.packed.widthCm, h: r.packed.heightCm })}`
+                  : ""}
+              </p>
+            ) : null}
+            {r.shipsItself && (packed(r) || r.photos.length) ? (
+              <div className="mt-3">
+                <p className="font-medium">{t("photos")}</p>
+                {r.photos.length ? (
+                  <ul className="flex flex-wrap gap-x-3">
+                    {r.photos.map((p, i) => (
+                      <li key={p.id}>
+                        <a
+                          href={`/api/tracecart/seller/orders/${r.id}/photos/${p.id}/file`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="underline"
+                        >
+                          {t("photo", { n: i + 1 })}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {packed(r) && r.photos.length < 6 ? (
+                  <label className="text-ink-muted mt-1 block">
+                    <span className="text-xs">{t("photosHint")}</span>
+                    <input
+                      className={`${input} mt-1`}
+                      type="file"
+                      multiple
+                      accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                      disabled={busy}
+                      aria-label={t("photos")}
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files ?? []).slice(
+                          0,
+                          6 - r.photos.length,
+                        );
+                        e.target.value = "";
+                        if (!files.length) return;
+                        const form = new FormData();
+                        for (const f of files) form.append("photos", f, f.name);
+                        void act(() =>
+                          call("POST", `/seller/orders/${r.id}/photos`, form),
+                        );
+                      }}
+                    />
+                  </label>
+                ) : null}
+              </div>
+            ) : null}
             {r.shipsItself && packed(r) && !r.carrier ? (
               <p className="text-ink-muted mt-3">{t("findingCarrier")}</p>
             ) : null}

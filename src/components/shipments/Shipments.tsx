@@ -514,7 +514,14 @@ interface Detail {
   carrier: { id: string; name: string } | null;
   carrierService: { id: string; name: string; mode: string } | null;
   externalRef: string | null;
-  packed: { weightGrams: number | null; packageCount: number | null };
+  packed: {
+    weightGrams: number | null;
+    packageCount: number | null;
+    lengthCm?: number | null;
+    widthCm?: number | null;
+    heightCm?: number | null;
+  };
+  packagePhotos: { id: string; createdAt: string }[];
   lines: {
     orderLineId: string;
     sku: string;
@@ -875,6 +882,42 @@ export function ShipmentDetail({
                   </li>
                 ))}
               </ul>
+            </div>
+          ) : null}
+
+          {s.packed.weightGrams || s.packagePhotos.length ? (
+            <div className={box}>
+              <h2 className="rb-label mb-2">{t("parcelTitle")}</h2>
+              {s.packed.weightGrams ? (
+                <p>
+                  {t("parcelDeclared", {
+                    weight: s.packed.weightGrams,
+                    count: s.packed.packageCount ?? 1,
+                  })}
+                  {s.packed.lengthCm && s.packed.widthCm && s.packed.heightCm
+                    ? ` · ${s.packed.lengthCm} × ${s.packed.widthCm} × ${s.packed.heightCm} cm`
+                    : ""}
+                </p>
+              ) : null}
+              {s.packagePhotos.length ? (
+                <>
+                  <p className="text-ink-muted mt-2">{t("parcelPhotos")}</p>
+                  <ul className="flex flex-wrap gap-x-3">
+                    {s.packagePhotos.map((p, i) => (
+                      <li key={p.id}>
+                        <a
+                          href={`/api/tracecart/shipments/${s.id}/photos/${p.id}/file`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="underline"
+                        >
+                          {t("photoN", { n: i + 1 })}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
             </div>
           ) : null}
 
