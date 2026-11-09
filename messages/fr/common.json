@@ -93,7 +93,19 @@
     "settlementEligibility": "Paiements vendeurs : éligibilité",
     "carrierPayables": "Dû aux transporteurs",
     "sellerFinance": "Mes finances",
-    "partnerFinance": "Mes finances"
+    "partnerFinance": "Mes finances",
+    "team": "Équipe",
+    "customersAdmin": "Clients",
+    "auditLog": "Journal d'audit",
+    "sectionTabs": "Pages de cette rubrique",
+    "sections": {
+      "promotions": "Promotions",
+      "customsArea": "Douane",
+      "catalogueArea": "Catalogue",
+      "sellersArea": "Vendeurs",
+      "carriersArea": "Transporteurs",
+      "financeArea": "Finance"
+    }
   },
   "notifications": {
     "title": "Notifications",

@@ -1,7 +1,7 @@
 # tracecart-web docs
 
 - **[Brand guidelines and design system](./brand/README.md)**.
-- **Developers**: [environment variables](./developers/environment.md).
+- **Developers**: [environment variables](../.env.example).
 - **[Customer guide](./users/customer-guide.md)**: browsing, searching (with words or a photo), saving and comparing, prices and currencies, checkout, orders, returns, reviews, "Find it for me", shipping, emails.
 - **[Catalogue team guide](./users/catalogue-guide.md)**: categories, what a part fits, and what each claim rests on.
 - **[Carrier guide](./users/carrier-guide.md)**: applying to carry, routes and rates, answering quote requests, reporting incidents; and for staff, reviewing carriers and asking them for prices.

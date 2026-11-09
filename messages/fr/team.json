@@ -1,0 +1,43 @@
+{
+  "title": "Équipe",
+  "lead": "Ajoutez un collègue par e-mail : il se connecte avec cette adresse. Personne ne modifie ses propres accès, ni ne donne un accès qu'il n'a pas.",
+  "loading": "Chargement…",
+  "add": "Ajouter quelqu'un",
+  "name": "Nom",
+  "email": "E-mail",
+  "role": "Rôle",
+  "chooseRole": "Choisir un rôle",
+  "warehouse": "Entrepôt",
+  "chooseWarehouse": "Choisir un entrepôt",
+  "addCta": "Ajouter et prévenir par e-mail",
+  "you": "Vous",
+  "joined": "Connecté",
+  "notYet": "Pas encore connecté",
+  "noRole": "Aucun accès",
+  "remove": "Retirer",
+  "removeRole": "Retirer {role} à {name}",
+  "confirmRemove": "Retirer le rôle {role} à {name} ?",
+  "giveRole": "Donner ce rôle",
+  "customers": {
+    "title": "Clients",
+    "lead": "Pour le service client. Chaque consultation d'une fiche est enregistrée.",
+    "search": "Nom, e-mail ou téléphone",
+    "find": "Chercher",
+    "empty": "Aucun client.",
+    "orders": "{count, plural, =0 {Aucune commande} one {# commande} other {# commandes}}",
+    "noOrders": "Aucune commande.",
+    "more": "Afficher plus"
+  },
+  "audit": {
+    "title": "Journal d'audit",
+    "lead": "Les actions sensibles : qui, quoi et quand. Ce journal ne se modifie pas.",
+    "filter": "Action, par ex. team ou payouts",
+    "find": "Filtrer",
+    "empty": "Aucune action.",
+    "when": "Quand",
+    "action": "Action",
+    "about": "Sur",
+    "who": "Qui",
+    "more": "Afficher plus"
+  }
+}

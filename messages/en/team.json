@@ -1,0 +1,43 @@
+{
+  "title": "Team",
+  "lead": "Add a colleague by email: they sign in with that address. Nobody changes their own access, or gives access they don't hold.",
+  "loading": "Loading…",
+  "add": "Add someone",
+  "name": "Name",
+  "email": "Email",
+  "role": "Role",
+  "chooseRole": "Choose a role",
+  "warehouse": "Warehouse",
+  "chooseWarehouse": "Choose a warehouse",
+  "addCta": "Add and notify by email",
+  "you": "You",
+  "joined": "Signed in",
+  "notYet": "Not signed in yet",
+  "noRole": "No access",
+  "remove": "Remove",
+  "removeRole": "Remove {role} from {name}",
+  "confirmRemove": "Remove the {role} role from {name}?",
+  "giveRole": "Give this role",
+  "customers": {
+    "title": "Customers",
+    "lead": "For customer service. Opening a customer's details is recorded.",
+    "search": "Name, email or phone",
+    "find": "Find",
+    "empty": "No customers.",
+    "orders": "{count, plural, =0 {No orders} one {# order} other {# orders}}",
+    "noOrders": "No orders.",
+    "more": "Show more"
+  },
+  "audit": {
+    "title": "Audit log",
+    "lead": "Sensitive actions: who, what and when. This log can't be changed.",
+    "filter": "Action, e.g. team or payouts",
+    "find": "Filter",
+    "empty": "No actions.",
+    "when": "When",
+    "action": "Action",
+    "about": "On",
+    "who": "Who",
+    "more": "Show more"
+  }
+}

@@ -6,7 +6,7 @@ type Section = { title: string; body: string[] };
 
 /** Terms, privacy and contact: one layout, with the words in messages/{fr,en}/legal.json. */
 export async function LegalPage({ page }: { page: "terms" | "privacy" | "contact" }) {
-  // Who to reach is set on the server and read per request (docs/developers/environment.md).
+  // Who to reach is set on the server and read per request (.env.example).
   await connection();
   const email = process.env.CONTACT_EMAIL?.trim() || null;
   const address = process.env.LEGAL_ADDRESS?.trim() || null;

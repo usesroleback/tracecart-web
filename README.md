@@ -28,7 +28,7 @@ pnpm dev --port 3001                  # http://localhost:3001/fr or /en
 - **Clerk:** use the same Clerk development instance as the API (Clerk dashboard → API keys). The store browses without signing in. Checkout, the account and the console need real keys. With `pnpm seed:demo` in the API, sign in as `demo.<role>+clerk_test@example.com` with the code `424242`.
 - **Low memory?** If `next dev` runs out of memory, `pnpm dev --port 3001 --webpack` uses less. For a production build, `pnpm build --webpack`.
 - **After an API change:** `pnpm api:sync` copies `../tracecart-api/openapi.json` and regenerates the typed client.
-- **Every variable:** [docs/developers/environment.md](docs/developers/environment.md).
+- **Every variable:** [.env.example](.env.example).
 
 ## Scripts
 
@@ -121,4 +121,4 @@ The design tokens in `src/app/globals.css` and the components in `src/components
 
 ## Configuration
 
-Every variable is listed in [docs/developers/environment.md](docs/developers/environment.md).
+Every variable is listed in [.env.example](.env.example).

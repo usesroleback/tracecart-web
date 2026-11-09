@@ -93,7 +93,19 @@
     "settlementEligibility": "Seller payout eligibility",
     "carrierPayables": "Carrier payables",
     "sellerFinance": "My finances",
-    "partnerFinance": "My finances"
+    "partnerFinance": "My finances",
+    "team": "Team",
+    "customersAdmin": "Customers",
+    "auditLog": "Audit log",
+    "sectionTabs": "Pages in this section",
+    "sections": {
+      "promotions": "Promotions",
+      "customsArea": "Customs",
+      "catalogueArea": "Catalogue",
+      "sellersArea": "Sellers",
+      "carriersArea": "Carriers",
+      "financeArea": "Finance"
+    }
   },
   "notifications": {
     "title": "Notifications",

@@ -32,6 +32,7 @@ const NAMESPACES = [
   'shipments',
   'cod',
   'finance',
+  'team',
   'returns',
   'inventory',
   'purchasing',

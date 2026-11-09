@@ -30,6 +30,10 @@ export type NavItem = {
   hubPermission?: string;
   /** Only to holders of this role (or any of these): staff hold every staff permission, but a shop isn't theirs. */
   role?: string | string[];
+  /** Pages sharing a section are one menu entry, with tabs (ADR-093). */
+  section?: string;
+  /** On a menu entry standing for a section: the pages it covers. */
+  sectionPaths?: string[];
 };
 
 export type NavGroup = { /** Key under common.nav.groups. */ title?: string; items: NavItem[] };
@@ -66,10 +70,10 @@ const NAV: NavGroup[] = [
   {
     title: "catalogue",
     items: [
-      { icon: <DsLayersIcon />, name: "catalog", path: "/catalog", permission: "catalog.read" },
-      { icon: <DsBookmarkIcon />, name: "categories", path: "/catalog/categories", permission: "catalog.read" },
-      { icon: <DsBuildingIcon />, name: "brands", path: "/catalog/brands", permission: "catalog.read" },
-      { icon: <DsPackageIcon />, name: "catalogImport", path: "/catalog/import", permission: "catalog.read" },
+      { icon: <DsLayersIcon />, name: "catalog", section: "catalogueArea", path: "/catalog", permission: "catalog.read" },
+      { icon: <DsBookmarkIcon />, name: "categories", section: "catalogueArea", path: "/catalog/categories", permission: "catalog.read" },
+      { icon: <DsBuildingIcon />, name: "brands", section: "catalogueArea", path: "/catalog/brands", permission: "catalog.read" },
+      { icon: <DsPackageIcon />, name: "catalogImport", section: "catalogueArea", path: "/catalog/import", permission: "catalog.read" },
       { icon: <DsPackageIcon />, name: "listings", path: "/listings", permission: "catalog.listing.review" },
       { icon: <DsSearchIcon />, name: "searchTuning", path: "/catalog/search", permission: "search.tune" },
       { icon: <DsChatIcon />, name: "reviews", path: "/reviews", permission: "content.moderate" },
@@ -78,18 +82,18 @@ const NAV: NavGroup[] = [
   {
     title: "marketing",
     items: [
-      { icon: <DsCoinIcon />, name: "coupons", path: "/coupons", permission: "promotions.write" },
-      { icon: <DsCoinIcon />, name: "deals", path: "/store-deals", permission: "promotions.write" },
-      { icon: <DsCoinIcon />, name: "giftCards", path: "/gift-cards", permission: "promotions.write" },
+      { icon: <DsCoinIcon />, name: "coupons", section: "promotions", path: "/coupons", permission: "promotions.write" },
+      { icon: <DsCoinIcon />, name: "deals", section: "promotions", path: "/store-deals", permission: "promotions.write" },
+      { icon: <DsCoinIcon />, name: "giftCards", section: "promotions", path: "/gift-cards", permission: "promotions.write" },
     ],
   },
   {
     title: "partners",
     items: [
-      { icon: <DsBuildingIcon />, name: "sellers", path: "/sellers", permission: "sellers.review" },
-      { icon: <DsCoinIcon />, name: "sellerTerms", path: "/sellers/settings", permission: ["sellers.review", "finance.payout.read", "settings.read"] },
-      { icon: <DsTruckIcon />, name: "carrierApplications", path: "/carrier-applications", permission: "carriers.review" },
-      { icon: <DsTruckIcon />, name: "carriers", path: "/carriers", permission: "logistics.carrier.read", accountTypes: ["SUPER_ADMIN"], hubPermission: "logistics.carrier.read" },
+      { icon: <DsBuildingIcon />, name: "sellers", section: "sellersArea", path: "/sellers", permission: "sellers.review" },
+      { icon: <DsCoinIcon />, name: "sellerTerms", section: "sellersArea", path: "/sellers/settings", permission: ["sellers.review", "finance.payout.read", "settings.read"] },
+      { icon: <DsTruckIcon />, name: "carrierApplications", section: "carriersArea", path: "/carrier-applications", permission: "carriers.review" },
+      { icon: <DsTruckIcon />, name: "carriers", section: "carriersArea", path: "/carriers", permission: "logistics.carrier.read", accountTypes: ["SUPER_ADMIN"], hubPermission: "logistics.carrier.read" },
       { icon: <DsBuildingIcon />, name: "partners", path: "/partners", permission: ["partners.notice.handle", "partners.notice.send", "partners.manage"] },
       { icon: <DsCoinIcon />, name: "payouts", path: "/payouts", permission: "finance.payout.read" },
     ],
@@ -97,10 +101,10 @@ const NAV: NavGroup[] = [
   {
     title: "finance",
     items: [
-      { icon: <DsCoinIcon />, name: "financeOverview", path: "/finance", permission: "finance.report.read" },
-      { icon: <DsLayersIcon />, name: "ledger", path: "/finance/ledger", permission: "finance.report.read" },
-      { icon: <DsCoinIcon />, name: "settlementEligibility", path: "/finance/eligibility", permission: "finance.payout.read" },
-      { icon: <DsTruckIcon />, name: "carrierPayables", path: "/finance/carriers", permission: "finance.payout.read" },
+      { icon: <DsCoinIcon />, name: "financeOverview", section: "financeArea", path: "/finance", permission: "finance.report.read" },
+      { icon: <DsLayersIcon />, name: "ledger", section: "financeArea", path: "/finance/ledger", permission: "finance.report.read" },
+      { icon: <DsCoinIcon />, name: "settlementEligibility", section: "financeArea", path: "/finance/eligibility", permission: "finance.payout.read" },
+      { icon: <DsTruckIcon />, name: "carrierPayables", section: "financeArea", path: "/finance/carriers", permission: "finance.payout.read" },
     ],
   },
   {
@@ -108,9 +112,12 @@ const NAV: NavGroup[] = [
     items: [
       { icon: <DsHubIcon />, name: "hub", path: "/hub-setup", permission: ["sourcing.request.read", "pricing.settings.write"] },
       { icon: <DsCoinIcon />, name: "pricing", path: "/pricing", permission: "pricing.settings.write" },
-      { icon: <DsLayersIcon />, name: "customs", path: "/customs", permission: ["customs.rate.write", "customs.file.write", "compliance.review"] },
-      { icon: <DsAlertIcon />, name: "customsReviews", path: "/customs/reviews", permission: "customs.file.write" },
-      { icon: <DsCoinIcon />, name: "customsRates", path: "/customs-rates", permission: "customs.rate.write" },
+      { icon: <DsLayersIcon />, name: "customs", section: "customsArea", path: "/customs", permission: ["customs.rate.write", "customs.file.write", "compliance.review"] },
+      { icon: <DsAlertIcon />, name: "customsReviews", section: "customsArea", path: "/customs/reviews", permission: "customs.file.write" },
+      { icon: <DsCoinIcon />, name: "customsRates", section: "customsArea", path: "/customs-rates", permission: "customs.rate.write" },
+      { icon: <DsBuildingIcon />, name: "team", path: "/team", permission: "staff.manage" },
+      { icon: <DsChatIcon />, name: "customersAdmin", path: "/customers", permission: "customers.read" },
+      { icon: <DsLayersIcon />, name: "auditLog", path: "/audit", permission: "audit.read" },
       { icon: <DsAlertIcon />, name: "notificationTemplates", path: "/notification-templates", permission: "settings.notification_template.write" },
     ],
   },
@@ -150,4 +157,29 @@ export function allowedNav(user: SessionUser): NavGroup[] {
     (!i.accountTypes || i.accountTypes.includes(user.role) || (!!i.hubPermission && can(i.hubPermission))) &&
     (!i.role || [i.role].flat().some((r) => !!user.roles?.includes(r)));
   return NAV.map((g) => ({ ...g, items: g.items.filter(allowed) })).filter((g) => g.items.length);
+}
+
+/** The sidebar: pages of one section become a single entry, leading to the first one this person may open. */
+export function menuNav(user: SessionUser): NavGroup[] {
+  return allowedNav(user).map((g) => {
+    const seen = new Set<string>();
+    const items: NavItem[] = [];
+    for (const item of g.items) {
+      if (!item.section) {
+        items.push(item);
+      } else if (!seen.has(item.section)) {
+        seen.add(item.section);
+        const pages = g.items.filter((i) => i.section === item.section);
+        items.push(pages.length > 1 ? { ...item, name: `sections.${item.section}`, sectionPaths: pages.map((i) => i.path) } : item);
+      }
+    }
+    return { ...g, items };
+  });
+}
+
+/** The pages of the section this path belongs to, that this person may open. */
+export function sectionOf(user: SessionUser, pathname: string): NavItem[] {
+  const all = allowedNav(user).flatMap((g) => g.items);
+  const here = all.find((i) => i.section && i.path === pathname);
+  return here ? all.filter((i) => i.section === here.section) : [];
 }

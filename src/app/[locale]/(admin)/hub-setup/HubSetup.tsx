@@ -18,7 +18,7 @@ export function HubSetup({ currentHub }: { currentHub: { id: string; name: strin
   const router = useRouter();
   const t = useTranslations("hubSetup");
   const user = useSession();
-  const home = user.role === "SUPER_ADMIN" ? "/orders" : "/dashboard";
+  const home = "/dashboard";
   const canAddHub = !!user.permissions?.includes("network.hub.write");
   const [hubs, setHubs] = useState<Hub[]>([]);
   const [detect, setDetect] = useState<GeoDetectResult | null>(null);

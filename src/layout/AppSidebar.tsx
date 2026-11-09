@@ -8,7 +8,7 @@ import { useSession } from "../context/SessionContext";
 import { nameFromEmail } from "../lib/people";
 import { useRoleName } from "../lib/useRoleName";
 import { Logo } from "../components/common/Logo";
-import { allowedNav, NavItem } from "./nav";
+import { menuNav, NavItem } from "./nav";
 
 /**
  * TraceCartOps side nav (project/components/TraceCartOps/preview.html): the
@@ -22,7 +22,7 @@ const AppSidebar: React.FC = () => {
   const user = useSession();
   const t = useTranslations("common.nav");
   const roleName = useRoleName(user);
-  const groups = allowedNav(user);
+  const groups = menuNav(user);
   const showLabel = isExpanded || isHovered || isMobileOpen;
   const name = nameFromEmail(user.email);
 
@@ -37,6 +37,7 @@ const AppSidebar: React.FC = () => {
     if (pathname.startsWith("/returns/")) return item.path === "/returns";
     if (pathname.startsWith("/sellers/") && pathname !== "/sellers/settings") return item.path === "/sellers";
     if (pathname.startsWith("/b2b/")) return item.path === "/b2b";
+    if (item.sectionPaths) return item.sectionPaths.includes(pathname);
     const onPath = item.path === "/dashboard" ? pathname === "/dashboard" : pathname === item.path;
     if (!onPath) return false;
     // An item with a tab query is current on that tab; a plain item is current
