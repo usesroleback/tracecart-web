@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { QuoteBar } from "@/components/site/QuoteBar";
 import { StoreShell } from "@/components/store/StoreShell";
 import { SearchBox } from "@/components/store/SearchBox";
-import { ProductList } from "@/components/store/ProductCard";
-import { ForgetSeen } from "@/components/store/SaveCompare";
 import { JsonLd } from "@/components/store/JsonLd";
+import { CategoryCard } from "@/components/store/home/CategoryCard";
+import { OwnedDiscovery, PictureDiscovery } from "@/components/store/home/DiscoverySection";
+import { EditorialBanner, PromoBanner } from "@/components/store/home/EditorialBanner";
+import { PersonalizedRecommendations } from "@/components/store/home/PersonalizedRecommendations";
+import { PhotoDrop } from "@/components/store/home/PhotoDrop";
+import { ProductCollection } from "@/components/store/home/ProductCollection";
+import { ShippingBanner, SourcingBanner } from "@/components/store/home/ServiceBanners";
+import { CATEGORY_IMAGES, tintAt, tintVar } from "@/components/store/home/images";
 import { countryName } from "@/lib/country";
 import { MAX_SEEN, parseSlugs, SEEN_COOKIE } from "@/lib/shelf";
-import { STORE_CURRENCY, storeApi, storeCountry, type ProductCard } from "@/lib/store";
+import { STORE_CURRENCY, storeApi, storeCountry } from "@/lib/store";
 import { alternates, siteUrl } from "@/lib/siteUrl";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -20,11 +26,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 /**
- * The store's front page (PLAN §14 G2, ADR-078): search and departments, then
- * collections drawn from real activity only (popular from orders, deals,
- * what this device viewed, what's in stock nearby, what's new), photo search,
- * the brands, the other services, and the finder. A collection with nothing
- * in it, or whose data can't be fetched, is left out.
+ * The store's front page (PLAN §14 G2, ADR-078, ADR-085): search first, then a
+ * run of different kinds of section. Products come only from real activity and
+ * stock; a collection with nothing in it, or whose data can't be fetched, is
+ * left out. Department photographs always show, and lead to the department,
+ * which says so when it's empty.
  */
 export default async function StoreHome({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: Promise<{ need?: string }> }) {
   const { locale } = await params;
@@ -38,15 +44,31 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
 
   const [tree, trending, deals, seen, inStock, newest, brands] = await Promise.all([
     quiet(api.GET("/catalog/categories", { params: { query: context } })),
-    quiet(api.GET("/catalog/trending", { params: { query: { ...context, limit: 8 } } })),
+    quiet(api.GET("/catalog/trending", { params: { query: { ...context, limit: 10 } } })),
     quiet(api.GET("/catalog/deals", { params: { query: context } })),
     seenSlugs.length ? quiet(api.GET("/catalog/cards", { params: { query: { ...context, slug: seenSlugs } } })) : Promise.resolve(undefined),
     quiet(api.GET("/catalog/products", { params: { query: { ...context, pageSize: 8, ...(country ? { delivery: "local" as const } : {}) } } })),
-    quiet(api.GET("/catalog/products", { params: { query: { ...context, sort: "newest", pageSize: 8 } } })),
+    quiet(api.GET("/catalog/products", { params: { query: { ...context, sort: "newest", pageSize: 9 } } })),
     quiet(api.GET("/catalog/brands", { params: { query: context } })),
   ]);
-  const base = await siteUrl();
   const departments = tree?.categories ?? [];
+  const bySlug = new Map(departments.map((d) => [d.slug, d]));
+
+  // The two fullest departments with a photograph lead the editorial sections.
+  const featured = departments.filter((d) => d.count > 0 && CATEGORY_IMAGES[d.slug]).sort((a, b) => b.count - a.count).slice(0, 2);
+  const featuredItems = await Promise.all(featured.map((d) => quiet(api.GET("/catalog/products", { params: { query: { ...context, category: d.slug, pageSize: 4 } } }))));
+
+  const popular = Object.keys(CATEGORY_IMAGES).flatMap((slug) => bySlug.get(slug) ?? []);
+  const worthALook = (
+    [
+      { key: "fashion", slug: "fashion", image: "/images/categories/fashion.jpg" },
+      { key: "home", slug: "home-living", image: "/images/collections/home.jpg" },
+      { key: "beauty", slug: "beauty-personal-care", image: "/images/collections/beauty.jpg" },
+      { key: "electronics", slug: "electronics", image: "/images/categories/electronics.jpg" },
+    ] as const
+  ).filter((c) => bySlug.has(c.slug));
+  const examples = t.raw("welcomeExamples") as { label: string; image: string }[];
+  const base = await siteUrl();
 
   return (
     <StoreShell>
@@ -59,37 +81,86 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
           potentialAction: { "@type": "SearchAction", target: `${base}/${locale}/s?q={search_term_string}`, "query-input": "required name=search_term_string" },
         }}
       />
-      <section className="rounded-[var(--hp-corner-panel)] bg-surface-sunken px-5 py-10 sm:px-10 sm:py-14">
-        <h1 className="rb-headline max-w-[22ch] text-[32px] leading-[1.05] sm:text-[48px]">{t("title")}</h1>
-        <p className="mt-4 max-w-2xl text-lg text-ink-muted">{t("lead")}</p>
-        <div className="mt-8 max-w-2xl">
-          <SearchBox size="l" />
+
+      {/* A: search first. */}
+      <section style={{ background: tintVar("mint") }} className="grid gap-6 rounded-[var(--hp-corner-panel)] p-5 sm:p-8 lg:grid-cols-[3fr_2fr] lg:items-center lg:p-10">
+        <div>
+          <h1 className="rb-headline max-w-[20ch] text-[32px] leading-[1.05] sm:text-[46px]">{t("title")}</h1>
+          <p className="mt-3 max-w-xl text-lg text-ink-muted">{t("lead")}</p>
+          {/* On a phone the header's search is already right above. */}
+          <div className="mt-6 hidden max-w-2xl md:block">
+            <SearchBox size="l" />
+          </div>
+          <div className="mt-5 max-w-2xl md:mt-3">
+            <PhotoDrop />
+          </div>
         </div>
-        {departments.length ? (
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {/* Departments with something in them first (ADR-077). */}
-            {[...departments].sort((a, b) => Number(b.count > 0) - Number(a.count > 0)).slice(0, 8).map((c) => (
-              <li key={c.slug}>
-                <Link href={`/c/${c.slug}`} className="inline-flex rounded-[var(--radius-xs)] border border-line bg-surface-raised px-3 py-1.5 text-sm text-ink hover:border-ink">
-                  {c.name}
-                </Link>
+        <ul className="grid grid-cols-3 gap-2 sm:gap-3">
+          {examples.map((e, i) => (
+            <li key={e.label}>
+              <Link href={`/s/ai?q=${encodeURIComponent(e.label)}`} className="st-tile block overflow-hidden rounded-[var(--radius-s)] bg-surface-raised">
+                <span className="relative block aspect-[3/4] overflow-hidden">
+                  <Image src={e.image} alt="" fill sizes="(min-width: 1024px) 13vw, 30vw" priority={i === 0} className="st-photo object-cover" />
+                </span>
+                <span className="block p-2 text-xs font-medium leading-snug text-ink sm:p-3 sm:text-sm">{e.label}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* B: mixed sizes, so the first thing below the search isn't another even grid. */}
+      {popular.length ? (
+        <section aria-labelledby="home-popular" className="mt-10">
+          <h2 id="home-popular" className="rb-title-l mb-4">
+            {t("popularTitle")}
+          </h2>
+          <ul className="grid auto-rows-[190px] grid-cols-2 gap-3 sm:gap-4 md:auto-rows-[210px] md:grid-cols-4">
+            {popular.map((d, i) => (
+              <li key={d.slug} className={i === 0 ? "col-span-2 md:row-span-2" : i === 5 ? "md:col-span-2" : i === popular.length - 1 ? "col-span-2 md:col-span-1" : ""}>
+                <CategoryCard href={`/c/${d.slug}`} name={d.name} note={d.count ? t("products", { count: d.count }) : undefined} image={CATEGORY_IMAGES[d.slug]} tint={tintAt(i)} sizes={i === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"} />
               </li>
             ))}
           </ul>
-        ) : null}
-      </section>
+        </section>
+      ) : null}
 
-      <Collection id="home-trending" title={t("trendingTitle")} lead={trending ? t("trendingLead", { days: trending.days }) : undefined} items={trending?.items} />
-      <Collection id="home-deals" title={t("dealsTitle")} items={deals?.items.slice(0, 8)} href="/deals" seeAll={t("seeAll")} />
-      <Collection id="home-seen" title={t("seenTitle")} items={seen?.items} action={<ForgetSeen label={t("seenClear")} />} />
-      <Collection
-        id="home-local"
-        title={country ? t("localTitle", { country: countryName(country, locale) }) : t("localTitleAnywhere")}
-        items={inStock?.items}
-        href={country ? "/s?delivery=local" : "/s"}
-        seeAll={t("seeAll")}
-      />
+      {/* C */}
+      <ProductCollection id="home-trending" title={t("trendingTitle")} lead={trending ? t("trendingLead", { days: trending.days }) : undefined} items={trending?.items} layout="carousel" />
 
+      {/* D */}
+      <PictureDiscovery />
+
+      {/* E: four different treatments. */}
+      {featured[0] && featuredItems[0]?.items.length ? <EditorialBanner id="home-editorial-1" title={featured[0].name} href={`/c/${featured[0].slug}`} image={CATEGORY_IMAGES[featured[0].slug]} tint="stone" items={featuredItems[0].items} /> : null}
+
+      <ProductCollection id="home-deals" title={t("dealsTitle")} items={deals?.items.slice(0, 10)} href="/deals" layout="carousel" />
+
+      {worthALook.length ? (
+        <section aria-labelledby="home-look" className="mt-12">
+          <h2 id="home-look" className="rb-title-l mb-4">
+            {t("collections.title")}
+          </h2>
+          <ul className="grid auto-rows-[260px] grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {worthALook.map((c, i) => (
+              <li key={c.key}>
+                <CategoryCard href={`/c/${c.slug}`} name={t(`collections.${c.key}`)} image={c.image} tint={tintAt(i + 1)} sizes="(min-width: 1024px) 25vw, 50vw" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      <PromoBanner id="home-gifts" title={t("gifts.title")} body={t("gifts.body")} cta={t("gifts.cta")} href="/s/ai" image="/images/collections/gifts.jpg" />
+
+      <ProductCollection id="home-new" title={t("newTitle")} items={newest?.items} href="/s?sort=newest" layout="mosaic" />
+
+      {/* F */}
+      <OwnedDiscovery />
+
+      {featured[1] && featuredItems[1]?.items.length ? <EditorialBanner id="home-editorial-2" title={featured[1].name} href={`/c/${featured[1].slug}`} image={CATEGORY_IMAGES[featured[1].slug]} tint="sky" items={featuredItems[1].items} flip /> : null}
+
+      {/* G: every department, including the ones still empty, which say so. */}
       {departments.length ? (
         <section aria-labelledby="home-categories" className="mt-12">
           <div className="mb-4 flex items-baseline justify-between gap-4">
@@ -100,10 +171,10 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
               {t("seeAll")}
             </Link>
           </div>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {departments.map((c) => (
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5">
+            {departments.map((c, i) => (
               <li key={c.slug}>
-                <Link href={`/c/${c.slug}`} className="flex h-full min-h-24 flex-col justify-between gap-3 rounded-[var(--radius-m)] border border-line bg-surface-raised p-4 hover:border-ink">
+                <Link href={`/c/${c.slug}`} style={{ background: tintVar(tintAt(i)) }} className="st-tile flex h-full min-h-20 flex-col justify-between gap-2 rounded-[var(--radius-s)] p-3">
                   <span className="font-medium leading-snug text-ink">{c.name}</span>
                   <span className="rb-mono-s text-ink-muted">{c.count ? t("products", { count: c.count }) : t("nothingYet")}</span>
                 </Link>
@@ -113,25 +184,12 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
         </section>
       ) : null}
 
-      {/* Visual discovery: the photo search that exists, not a gallery of made-up looks. */}
-      <section aria-labelledby="home-photo" className="mt-12 grid items-center gap-6 rounded-[var(--hp-corner-panel)] border border-line bg-surface-raised px-5 py-8 sm:px-10 md:grid-cols-[1fr_auto]">
-        <div>
-          <p className="rb-overline text-ink-muted">{t("photoEyebrow")}</p>
-          <h2 id="home-photo" className="rb-headline mt-2 max-w-[26ch] text-[24px] sm:text-[30px]">
-            {t("photoTitle")}
-          </h2>
-          <p className="mt-3 max-w-2xl text-ink-muted">{t("photoLead")}</p>
-        </div>
-        <Link href="/s/ai" className="inline-flex h-12 items-center justify-center gap-2 rounded-[var(--radius-s)] bg-ink px-6 font-medium text-ink-inverse hover:opacity-90">
-          <svg viewBox="0 0 20 20" aria-hidden className="size-5" fill="none" stroke="currentColor" strokeWidth="1.7">
-            <path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h2l1.2-1.8h4.6L13.5 6h2A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5Z" strokeLinejoin="round" />
-            <circle cx="10" cy="10.8" r="2.8" />
-          </svg>
-          {t("photoCta")}
-        </Link>
-      </section>
+      {/* H, I */}
+      <SourcingBanner need={typeof need === "string" ? need.slice(0, 300) : ""} />
+      <ShippingBanner />
 
-      <Collection id="home-new" title={t("newTitle")} items={newest?.items} href="/s?sort=newest" seeAll={t("seeAll")} />
+      {/* J */}
+      <PersonalizedRecommendations seen={seen?.items} inStock={inStock?.items} inStockTitle={country ? t("localTitle", { country: countryName(country, locale) }) : t("localTitleAnywhere")} inStockHref={country ? "/s?delivery=local" : "/s"} />
 
       {brands?.brands.length ? (
         <section aria-labelledby="home-brands" className="mt-12">
@@ -151,83 +209,23 @@ export default async function StoreHome({ params, searchParams }: { params: Prom
         </section>
       ) : null}
 
-      <section aria-labelledby="home-services" className="mt-14">
-        <h2 id="home-services" className="rb-title-l mb-4">
-          {t("servicesTitle")}
-        </h2>
-        <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          {(
-            [
-              { key: "ship", href: "/freight" },
-              { key: "sell", href: "/sell" },
-              { key: "business", href: "/business" },
-              { key: "carry", href: "/carry" },
-            ] as const
-          ).map((s) => (
-            <li key={s.key}>
-              <Link href={s.href} className="flex h-full flex-col gap-2 rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 hover:border-ink">
-                <span className="text-lg font-semibold text-ink">{t(`services.${s.key}.title`)}</span>
-                <span className="text-sm text-ink-muted">{t(`services.${s.key}.body`)}</span>
-                <span className="mt-auto pt-2 text-sm font-medium text-ink underline underline-offset-4">{t(`services.${s.key}.cta`)}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section aria-labelledby="home-finder" className="mt-14 rounded-[var(--hp-corner-panel)] bg-surface-sunken px-5 py-10 sm:px-10">
-        <p className="rb-overline text-ink-muted">{t("finderEyebrow")}</p>
-        <h2 id="home-finder" className="rb-headline mt-2 max-w-[24ch] text-[26px] sm:text-[34px]">
-          {t("finderTitle")}
-        </h2>
-        <div className="mt-6 max-w-2xl scroll-mt-28">
-          <QuoteBar initialWhat={typeof need === "string" ? need.slice(0, 300) : ""} />
-        </div>
-        <Link href="/about" className="mt-6 inline-block text-sm font-medium text-ink underline">
-          {t("howItWorks")}
-        </Link>
-      </section>
+      <ul className="mt-12 grid gap-3 md:grid-cols-3">
+        {(
+          [
+            { key: "sell", href: "/sell" },
+            { key: "business", href: "/business" },
+            { key: "carry", href: "/carry" },
+          ] as const
+        ).map((s) => (
+          <li key={s.key}>
+            <Link href={s.href} className="st-tile flex h-full flex-col gap-2 rounded-[var(--radius-m)] border border-line bg-surface-raised p-5">
+              <span className="text-lg font-semibold text-ink">{t(`services.${s.key}.title`)}</span>
+              <span className="text-sm text-ink-muted">{t(`services.${s.key}.body`)}</span>
+              <span className="mt-auto pt-2 text-sm font-medium text-ink underline underline-offset-4">{t(`services.${s.key}.cta`)}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </StoreShell>
-  );
-}
-
-/** A row of product cards under a heading; nothing at all when it's empty. */
-async function Collection({
-  id,
-  title,
-  lead,
-  items,
-  href,
-  seeAll,
-  action,
-}: {
-  id: string;
-  title: string;
-  lead?: string;
-  items?: ProductCard[];
-  href?: string;
-  seeAll?: string;
-  action?: React.ReactNode;
-}) {
-  if (!items?.length) return null;
-  return (
-    <section aria-labelledby={id} className="mt-12">
-      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <div>
-          <h2 id={id} className="rb-title-l">
-            {title}
-          </h2>
-          {lead ? <p className="mt-1 text-sm text-ink-muted">{lead}</p> : null}
-        </div>
-        {href && seeAll ? (
-          <Link href={href} className="text-sm font-medium text-ink underline">
-            {seeAll}
-          </Link>
-        ) : (
-          action
-        )}
-      </div>
-      <ProductList products={items} />
-    </section>
   );
 }

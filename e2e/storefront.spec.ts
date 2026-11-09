@@ -14,9 +14,9 @@ test("the home page offers the departments, photo search and the other services"
   // Empty departments say so instead of a zero.
   await expect(departments.getByRole("link", { name: /Fashion/ })).toContainText("Nothing yet");
   await expect(departments.getByRole("link", { name: /Tools & Hardware/ })).toContainText(/\d+ products/);
-  const photo = page.locator("section", { has: page.getByRole("heading", { name: /Have a photo of it/ }) });
+  const photo = page.locator("section", { has: page.getByRole("heading", { name: /See something you like/ }) });
   await expect(photo.getByRole("link", { name: "Search with a photo" })).toHaveAttribute("href", "/en/s/ai");
-  await expect(page.getByRole("link", { name: /Request a shipment/ })).toHaveAttribute("href", "/en/freight");
+  await expect(page.getByRole("link", { name: /Get a shipping quote/ })).toHaveAttribute("href", "/en/freight");
   await expect(page.getByRole("link", { name: /Become a seller/ })).toHaveAttribute("href", "/en/sell");
 });
 

@@ -36,20 +36,16 @@ export function ShopHeader({ departments, currencies, currency, query }: { depar
           <img src="/images/logo/tracecart-lockup-white.svg" alt="" width={152} height={21} className="hidden h-[20px] w-auto dark:block" />
         </Link>
 
+        {/* Where it's delivered, beside the logo: it decides the prices shown. */}
+        <span className="hidden shrink-0 lg:block">
+          <CountryPicker className="text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]" />
+        </span>
+
         <div className="hidden min-w-0 flex-1 md:block">
           <SearchBox initialQuery={query} departments={departments} />
         </div>
 
         <div className="ml-auto flex items-center gap-1">
-          <span className="hidden lg:block">
-            <CountryPicker className="text-[var(--hp-text-muted)] hover:text-[var(--hp-text)]" />
-          </span>
-          <span className="hidden text-[var(--hp-text-muted)] lg:block">
-            <LanguageSwitch />
-          </span>
-          <span className="hidden text-[var(--hp-text-muted)] lg:block">
-            <CurrencyPicker options={currencies} current={currency} />
-          </span>
           <ThemeSwitch className={`hidden size-10 place-items-center sm:grid ${quiet}`} />
           <Link href="/account/orders" className={`hidden px-3 py-2 text-sm font-medium lg:block ${quiet}`}>
             {t("orders")}
@@ -87,7 +83,7 @@ export function ShopHeader({ departments, currencies, currency, query }: { depar
             ))}
           </ul>
           <ul className="flex shrink-0 items-center gap-1 border-l border-line pl-3 text-sm">
-            {LINKS.filter((l) => l.key !== "about").map((l) => (
+            {LINKS.filter((l) => l.key === "deals").map((l) => (
               <li key={l.key}>
                 <Link
                   href={l.href}
@@ -102,6 +98,12 @@ export function ShopHeader({ departments, currencies, currency, query }: { depar
               <Link href={findHref()} className="block rounded-[var(--hp-radius-chip)] px-3 py-2 font-medium text-[var(--hp-text)] underline-offset-4 hover:underline">
                 {t("findForMe")}
               </Link>
+            </li>
+            <li className="text-[var(--hp-text-muted)]">
+              <LanguageSwitch />
+            </li>
+            <li className="text-[var(--hp-text-muted)]">
+              <CurrencyPicker options={currencies} current={currency} />
             </li>
           </ul>
         </div>

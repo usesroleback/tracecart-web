@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState, type DragEvent } from "react";
+import { takePendingPhoto } from "@/lib/pendingPhoto";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useCountry } from "@/context/CountryContext";
@@ -25,7 +26,9 @@ export function AiSearch({ initialQuery = "" }: { initialQuery?: string }) {
   const [state, setState] = useState<"idle" | "searching" | "done">("idle");
   const [result, setResult] = useState<AiSearchResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [over, setOver] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
+  const examples = t.raw("examples") as string[];
 
   useEffect(() => {
     if (!file || !file.type.startsWith("image/")) return;
@@ -58,11 +61,36 @@ export function AiSearch({ initialQuery = "" }: { initialQuery?: string }) {
     if (!f || !f.type.startsWith("image/")) setPreview(null);
   }
 
+  // A photo chosen on the home page arrives here, ready for a description.
+  useEffect(() => {
+    const waiting = takePendingPhoto();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- a one-off hand-over from the previous page
+    if (waiting) setFile(waiting);
+  }, []);
+
+  function drop(e: DragEvent) {
+    e.preventDefault();
+    setOver(false);
+    const f = e.dataTransfer.files[0];
+    if (f && ACCEPT.split(",").includes(f.type)) pick(f);
+  }
+
   const findHref = result ? `/find?search=${encodeURIComponent(result.searchId)}${q.trim() ? `&q=${encodeURIComponent(q.trim())}` : ""}` : "/find";
 
   return (
     <div className="grid gap-6">
-      <form onSubmit={search} className="grid gap-3 rounded-[var(--radius-m)] border border-line bg-surface-raised p-4 sm:p-5">
+      <form
+        onSubmit={search}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setOver(true);
+        }}
+        onDragLeave={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOver(false);
+        }}
+        onDrop={drop}
+        className={`grid gap-3 rounded-[var(--radius-m)] border bg-surface-raised p-4 transition-colors sm:p-5 ${over ? "border-ink bg-[var(--store-tint-mint)]" : "border-line"}`}
+      >
         <label className="grid gap-1.5 text-sm">
           <span className="font-medium text-ink">{t("describe")}</span>
           <textarea
@@ -74,6 +102,14 @@ export function AiSearch({ initialQuery = "" }: { initialQuery?: string }) {
             className="rounded-[var(--radius-s)] border border-line-strong bg-surface-raised px-3 py-2 text-[15px] text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none"
           />
         </label>
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-ink-muted">{t("examplesLabel")}</span>
+          {examples.map((example) => (
+            <button key={example} type="button" onClick={() => setQ(example)} className="rounded-full border border-line-strong px-3 py-1.5 text-ink hover:border-ink">
+              {example}
+            </button>
+          ))}
+        </div>
         <div className="flex flex-wrap items-center gap-3">
           <input ref={fileInput} type="file" accept={ACCEPT} className="sr-only" id="ai-file" onChange={(e) => pick(e.target.files?.[0] ?? null)} />
           <label htmlFor="ai-file" className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-[var(--radius-s)] border border-ink px-4 text-sm font-medium text-ink hover:bg-ink hover:text-ink-inverse">
@@ -87,7 +123,7 @@ export function AiSearch({ initialQuery = "" }: { initialQuery?: string }) {
             <span className="flex items-center gap-2 text-sm text-ink-muted">
               {preview ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={preview} alt="" className="size-11 rounded-[var(--radius-xs)] object-cover" />
+                <img src={preview} alt="" className="size-16 rounded-[var(--radius-s)] object-cover" />
               ) : null}
               <span className="max-w-[16ch] truncate">{file.name}</span>
               <button type="button" className="rb-link" onClick={() => { pick(null); if (fileInput.current) fileInput.current.value = ""; }}>
@@ -95,7 +131,9 @@ export function AiSearch({ initialQuery = "" }: { initialQuery?: string }) {
               </button>
             </span>
           ) : (
-            <span className="text-xs text-ink-muted">{t("fileHint")}</span>
+            <span className="text-xs text-ink-muted">
+              {t("dropHere")} {t("fileHint")}
+            </span>
           )}
           <button type="submit" disabled={state === "searching"} className="ml-auto inline-flex h-11 items-center rounded-[var(--radius-s)] bg-ink px-5 font-medium text-ink-inverse hover:opacity-90 disabled:opacity-60">
             {state === "searching" ? t("searching") : t("search")}
@@ -104,7 +142,18 @@ export function AiSearch({ initialQuery = "" }: { initialQuery?: string }) {
         {error ? <p role="alert" className="text-sm text-critical">{error}</p> : null}
       </form>
 
-      {result ? <Results result={result} findHref={findHref} /> : null}
+      {state === "searching" ? (
+        <div role="status" className="grid gap-4">
+          <p className="text-ink-muted">{t("reading")}</p>
+          <ul aria-hidden className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {[0, 1, 2, 3].map((i) => (
+              <li key={i} className="st-skeleton aspect-[3/4] rounded-[var(--radius-m)]" />
+            ))}
+          </ul>
+        </div>
+      ) : result ? (
+        <Results result={result} findHref={findHref} />
+      ) : null}
     </div>
   );
 }

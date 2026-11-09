@@ -16,7 +16,7 @@
   },
   "nav": {
     "searchLabel": "Rechercher dans le catalogue",
-    "searchPlaceholder": "Cherchez un produit, décrivez votre besoin ou utilisez une photo…",
+    "searchPlaceholder": "Cherchez un produit, décrivez votre besoin ou envoyez une image…",
     "search": "Rechercher",
     "suggestions": "Suggestions",
     "suggestedProducts": "Produits",
@@ -30,8 +30,8 @@
     "photoSearch": "Photo"
   },
   "home": {
-    "title": "Trouvez ce qu'il vous faut. Même sans connaître son nom.",
-    "lead": "Cherchez avec des mots ou une photo, comparez les offres, achetez ou faites-le trouver, et faites-le livrer. Le prix livré complet avant de payer.",
+    "title": "Trouvez ce que vous cherchez. Même sans connaître son nom.",
+    "lead": "Cherchez avec des mots, explorez de nouveaux produits ou envoyez une image pour commencer.",
     "categoriesTitle": "Par rayon",
     "localTitle": "En stock dans votre pays : {country}",
     "localTitleAnywhere": "En stock maintenant",
@@ -43,7 +43,7 @@
     "howItWorks": "Comment fonctionne Tracecart",
     "products": "{count, plural, one {# produit} other {# produits}}",
     "nothingYet": "Rien pour l'instant",
-    "trendingTitle": "Populaires en ce moment",
+    "trendingTitle": "Découvrez les tendances",
     "trendingLead": "Commandés par plusieurs clients ces {days} derniers jours.",
     "dealsTitle": "Bonnes affaires",
     "seenTitle": "Vus récemment",
@@ -74,6 +74,78 @@
         "body": "Camions, fourgonnettes ou fret ? Transportez pour les clients de Tracecart sur vos itinéraires, à vos tarifs.",
         "cta": "Devenir transporteur"
       }
+    },
+    "previous": "Précédent",
+    "next": "Suivant",
+    "shopThis": "Voir ce rayon",
+    "dropPhoto": "Déposez une image ici, ou choisissez-en une",
+    "dropWrongType": "Utilisez une image JPEG, PNG ou WebP.",
+    "popularTitle": "Parcourez les catégories populaires",
+    "welcomeExamples": [
+      {
+        "label": "Trouver ce sac ou un modèle proche",
+        "image": "/images/discovery/photo-example.jpg"
+      },
+      {
+        "label": "Quoi pour mon appareil photo ?",
+        "image": "/images/categories/electronics.jpg"
+      },
+      {
+        "label": "Comment s'appelle cet outil ?",
+        "image": "/images/categories/tools-hardware.jpg"
+      }
+    ],
+    "collections": {
+      "title": "À découvrir",
+      "fashion": "Trouvailles mode",
+      "home": "Pour la maison",
+      "beauty": "Beauté et bien-être",
+      "electronics": "Électronique"
+    },
+    "gifts": {
+      "title": "Vous cherchez un cadeau ?",
+      "body": "Décrivez à qui il est destiné et ce que vous avez en tête, et voyez ce que nous pouvons trouver.",
+      "cta": "Décrire un cadeau"
+    },
+    "picture": {
+      "eyebrow": "Trouver à partir d'une image",
+      "title": "Quelque chose vous plaît ? Envoyez l'image. Nous vous aidons à le trouver.",
+      "steps": {
+        "one": "Ajoutez une image. Précisez ce que vous voulez, si vous le souhaitez.",
+        "two": "Tracey identifie ce que c'est : le type de produit, sa couleur, ses détails.",
+        "three": "Vous voyez ce qui correspond, et pourquoi. Si nous ne l'avons pas, nous pouvons le chercher."
+      },
+      "cta": "Chercher avec une photo",
+      "exampleAlt": "Un sac à main en cuir posé sur un manteau beige",
+      "exampleLabel": "Exemple de ce que Tracey lit",
+      "exampleRead": [
+        "Sac à main",
+        "Cuir",
+        "Noir",
+        "Bandoulière chaîne"
+      ]
+    },
+    "owned": {
+      "eyebrow": "Pour ce que vous possédez",
+      "title": "Vous avez déjà quelque chose ? Trouvez ce qui va avec.",
+      "lead": "Dites-nous ce que vous avez, et nous indiquons ce qui convient. Nous n'affirmons la compatibilité que sur preuve.",
+      "cta": "Trouver des pièces pour ce que j'ai",
+      "examples": [
+        "Un chargeur pour mon ordinateur portable",
+        "Des plaquettes de frein pour ma voiture",
+        "Un objectif pour mon appareil photo",
+        "Des accessoires pour mon téléphone"
+      ]
+    },
+    "sourcing": {
+      "title": "Vous cherchez quelque chose de difficile à trouver ?",
+      "lead": "Demandez à Tracecart de l'identifier et de le trouver auprès de fournisseurs. Vous recevez un devis avant toute commande.",
+      "cta": "Demander une recherche de produit"
+    },
+    "shipping": {
+      "title": "Vous avez déjà vos marchandises ? Nous vous aidons à les déplacer.",
+      "lead": "Obtenez une estimation tout de suite, puis un devis ferme pour l'enlèvement, le transport et la douane.",
+      "cta": "Obtenir un devis d'expédition"
     }
   },
   "listing": {

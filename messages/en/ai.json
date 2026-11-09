@@ -1,19 +1,19 @@
 {
   "title": "Search with a photo",
-  "lead": "Show us the tool, the part or its nameplate, or describe it in your words. We read it and find it in the catalogue, and say why each result matches.",
+  "lead": "Show us the product, a part or its label, or describe it in your own words. We read it, look through the catalogue, and say why each result matches.",
   "describe": "Describe it",
-  "describePlaceholder": "“18 V drill driver that takes Voltix batteries”, a model number, what it's for…",
+  "describePlaceholder": "“A black leather bag with a chain strap”, a model number, what it's for…",
   "addFile": "Add a photo or a video",
   "changeFile": "Change the file",
   "removeFile": "Remove",
   "fileHint": "A photo (PNG, JPEG, WebP, 5 MB) or a video of up to 30 seconds.",
   "search": "Search",
   "searching": "Reading and searching…",
-  "needSomething": "Describe the tool or add a photo.",
+  "needSomething": "Describe it or add a photo.",
   "rateLimited": "Too many searches for now. Try again in a few minutes.",
   "failed": "The search didn't go through. Try again.",
   "limited": "Photo reading isn't available right now: we searched your words.",
-  "notAProduct": "We couldn't see a tool or a part in this file. Describe it in words.",
+  "notAProduct": "We couldn't see a product in this file. Describe it in words.",
   "understood": "What we read",
   "unnamed": "Not identified exactly",
   "refine": "Narrow down",
@@ -32,5 +32,13 @@
     "fits": "Verified to fit your {target}",
     "mayFit": "May fit your {target} (not verified)"
   },
-  "toNarrow": "To narrow it down"
+  "toNarrow": "To narrow it down",
+  "dropHere": "Drop a picture here, or choose a file. One at a time.",
+  "replaceFile": "Replace",
+  "reading": "Reading what you sent and looking through the catalogue. A photo can take a few seconds.",
+  "examplesLabel": "Try:",
+  "examples": [
+    "Find this dress or something very similar.",
+    "I need compatible RAM for this laptop."
+  ]
 }

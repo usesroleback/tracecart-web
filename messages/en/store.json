@@ -16,7 +16,7 @@
   },
   "nav": {
     "searchLabel": "Search the catalogue",
-    "searchPlaceholder": "Search products, describe what you need, or use a photo…",
+    "searchPlaceholder": "Search products, describe what you need, or upload a picture…",
     "search": "Search",
     "suggestions": "Suggestions",
     "suggestedProducts": "Products",
@@ -30,8 +30,8 @@
     "photoSearch": "Photo"
   },
   "home": {
-    "title": "Find what you need. Even if you don't know its name.",
-    "lead": "Search with words or a photo, compare what's on offer, buy it or have it found for you, and ship it. The full delivered price before you pay.",
+    "title": "Find what you're looking for. Even if you don't know its name.",
+    "lead": "Search with words, explore new products or upload a picture to get started.",
     "categoriesTitle": "Shop by department",
     "localTitle": "In stock in {country}",
     "localTitleAnywhere": "In stock now",
@@ -43,7 +43,7 @@
     "howItWorks": "How Tracecart works",
     "products": "{count, plural, one {# product} other {# products}}",
     "nothingYet": "Nothing yet",
-    "trendingTitle": "Popular right now",
+    "trendingTitle": "Discover what's trending",
     "trendingLead": "Ordered by several customers in the last {days} days.",
     "dealsTitle": "Deals",
     "seenTitle": "Recently viewed",
@@ -74,6 +74,78 @@
         "body": "Run trucks, vans or freight? Carry for Tracecart's customers on your routes, at your rates.",
         "cta": "Become a carrier"
       }
+    },
+    "previous": "Previous",
+    "next": "Next",
+    "shopThis": "Shop this department",
+    "dropPhoto": "Drop a picture here, or choose one",
+    "dropWrongType": "Use a JPEG, PNG or WebP picture.",
+    "popularTitle": "Browse popular categories",
+    "welcomeExamples": [
+      {
+        "label": "Find this bag or something similar",
+        "image": "/images/discovery/photo-example.jpg"
+      },
+      {
+        "label": "What goes with my camera?",
+        "image": "/images/categories/electronics.jpg"
+      },
+      {
+        "label": "What is this tool called?",
+        "image": "/images/categories/tools-hardware.jpg"
+      }
+    ],
+    "collections": {
+      "title": "Worth a look",
+      "fashion": "Fashion finds",
+      "home": "Home upgrades",
+      "beauty": "Beauty and wellness",
+      "electronics": "Smart electronics"
+    },
+    "gifts": {
+      "title": "Looking for a gift?",
+      "body": "Describe who it's for and what you have in mind, and see what we can find.",
+      "cta": "Describe a gift"
+    },
+    "picture": {
+      "eyebrow": "Find it from a picture",
+      "title": "See something you like? Upload it. We'll help you find it.",
+      "steps": {
+        "one": "Add a picture. Say what you want, if you like.",
+        "two": "Tracey works out what it is: the kind of product, its colour, its details.",
+        "three": "You see what matches, and why. If we don't have it, we can look for it."
+      },
+      "cta": "Search with a photo",
+      "exampleAlt": "A leather handbag on a beige coat",
+      "exampleLabel": "Example of what Tracey reads",
+      "exampleRead": [
+        "Handbag",
+        "Leather",
+        "Black",
+        "Chain strap"
+      ]
+    },
+    "owned": {
+      "eyebrow": "For what you own",
+      "title": "Already have something? Find what goes with it.",
+      "lead": "Tell us what you have, and we'll say what fits. We only say it fits when there's evidence.",
+      "cta": "Find parts for what I own",
+      "examples": [
+        "A charger for my laptop",
+        "Brake pads for my car",
+        "A lens for my camera",
+        "Accessories for my phone"
+      ]
+    },
+    "sourcing": {
+      "title": "Looking for something hard to find?",
+      "lead": "Ask Tracecart to identify it and source it from suppliers. You get a quote before anything is ordered.",
+      "cta": "Request sourcing assistance"
+    },
+    "shipping": {
+      "title": "Already have your goods? We'll help you move them.",
+      "lead": "Get an estimate now, then a firm quote for pickup, transport and customs.",
+      "cta": "Get a shipping quote"
     }
   },
   "listing": {

@@ -1,10 +1,11 @@
 "use client";
 
 import { findHref } from "./links";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { CategoryNode } from "@/lib/store";
+import { CATEGORY_IMAGES } from "@/components/store/home/images";
 
 /** "Find it for me", with a department's name already typed. */
 
@@ -18,6 +19,8 @@ export function DepartmentMenu({ departments }: { departments: CategoryNode[] })
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(departments[0]?.slug ?? "");
   const root = useRef<HTMLDivElement>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const byHover = useRef(false);
   const current = departments.find((d) => d.slug === active) ?? departments[0];
 
   useEffect(() => {
@@ -35,13 +38,45 @@ export function DepartmentMenu({ departments }: { departments: CategoryNode[] })
   if (!departments.length) return null;
   const close = () => setOpen(false);
 
+  // With a mouse it opens on hover, with a short delay so crossing it does nothing.
+  const clearHover = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+  };
+  const hoverOpen = () => {
+    clearHover();
+    hoverTimer.current = setTimeout(() => {
+      setOpen((o) => {
+        if (!o) byHover.current = true;
+        return true;
+      });
+    }, 120);
+  };
+  const hoverClose = () => {
+    clearHover();
+    if (byHover.current) hoverTimer.current = setTimeout(close, 220);
+  };
+
+  /** Up and down move through the departments; Tab goes on into the chosen one. */
+  const moveFocus = (e: ReactKeyboardEvent<HTMLUListElement>) => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    e.preventDefault();
+    const links = [...e.currentTarget.querySelectorAll("a")];
+    const at = links.indexOf(document.activeElement as HTMLAnchorElement);
+    links[(at + (e.key === "ArrowDown" ? 1 : -1) + links.length) % links.length]?.focus();
+  };
+
   return (
-    <div ref={root} className="relative">
+    <div ref={root} className="relative" onMouseEnter={hoverOpen} onMouseLeave={hoverClose}>
       <button
         type="button"
         aria-expanded={open}
         aria-controls="department-panel"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          clearHover();
+          // A click on a menu the hover just opened keeps it open.
+          setOpen((o) => (byHover.current ? true : !o));
+          byHover.current = false;
+        }}
         className="inline-flex h-10 items-center gap-2 rounded-[var(--hp-radius-chip)] bg-[var(--hp-dark)] px-4 text-sm font-medium text-[var(--hp-on-dark)]"
       >
         <svg viewBox="0 0 20 20" aria-hidden className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -52,9 +87,9 @@ export function DepartmentMenu({ departments }: { departments: CategoryNode[] })
       {open && current ? (
         <div
           id="department-panel"
-          className="absolute left-0 top-12 z-50 grid w-[min(92vw,960px)] grid-cols-[240px_1fr] overflow-hidden rounded-[var(--radius-m)] border border-line bg-surface-raised text-ink shadow-[var(--shadow-2)]"
+          className="st-pop absolute left-0 top-12 z-50 grid w-[min(92vw,960px)] grid-cols-[240px_1fr] overflow-hidden rounded-[var(--radius-m)] border border-line bg-surface-raised text-ink shadow-[var(--shadow-2)]"
         >
-          <ul className="max-h-[70vh] overflow-y-auto border-r border-line bg-surface py-2" aria-label={t("departments")}>
+          <ul className="max-h-[70vh] overflow-y-auto border-r border-line bg-surface py-2" aria-label={t("departments")} onKeyDown={moveFocus}>
             {departments.map((d) => (
               <li key={d.slug}>
                 <Link
@@ -74,8 +109,14 @@ export function DepartmentMenu({ departments }: { departments: CategoryNode[] })
             ))}
           </ul>
           <div className="max-h-[70vh] overflow-y-auto p-6">
-            <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-              <p className="rb-title-l">{current.name}</p>
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <p className="rb-title-l flex items-center gap-3">
+                {CATEGORY_IMAGES[current.slug] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={CATEGORY_IMAGES[current.slug]} alt="" width={48} height={48} loading="lazy" className="size-12 rounded-[var(--radius-s)] object-cover" />
+                ) : null}
+                {current.name}
+              </p>
               <Link href={`/c/${current.slug}`} onClick={close} className="text-sm font-medium underline">
                 {t("seeAllIn", { name: current.name })}
               </Link>

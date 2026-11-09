@@ -192,7 +192,7 @@ export function SearchBox({
             aria-label={t("department")}
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
-            className={`${height} border-line-strong bg-surface-sunken text-ink focus:border-ink max-w-[11rem] shrink-0 cursor-pointer truncate rounded-l-[var(--radius-s)] border border-r-0 px-3 text-sm focus:outline-none`}
+            className={`${height} border-line-strong bg-surface-sunken text-ink focus:border-ink max-w-[8.5rem] shrink-0 cursor-pointer truncate rounded-l-[var(--radius-s)] border border-r-0 px-3 text-sm focus:outline-none`}
           >
             <option value="">{t("allDepartments")}</option>
             {departments.map((d) => (
@@ -205,6 +205,7 @@ export function SearchBox({
         <label htmlFor={`${id}-q`} className="sr-only">
           {t("searchLabel")}
         </label>
+        <div className={`${departments?.length ? "" : "rounded-l-[var(--radius-s)]"} border-line-strong bg-surface-raised focus-within:border-ink focus-within:ring-accent flex min-w-0 flex-1 items-center border border-r-0 transition-shadow focus-within:ring-2`}>
         <input
           id={`${id}-q`}
           name="q"
@@ -229,11 +230,32 @@ export function SearchBox({
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKey}
-          className={`${height} min-w-0 flex-1 ${departments?.length ? "" : "rounded-l-[var(--radius-s)]"} border-line-strong bg-surface-raised text-ink placeholder:text-ink-muted focus:border-ink border border-r-0 px-4 focus:outline-none`}
+          className={`${height} text-ink placeholder:text-ink-muted min-w-0 flex-1 bg-transparent px-4 focus:outline-none`}
         />
+        {/* Search by photo, video or a longer description (the AI search). */}
+        <Link
+          href={q ? `/s/ai?q=${encodeURIComponent(q)}` : "/s/ai"}
+          aria-label={t("aiSearch")}
+          title={t("aiSearch")}
+          className="text-ink hover:bg-surface-sunken mr-1 inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-[var(--radius-xs)] px-2.5 text-sm font-medium"
+        >
+          <svg
+            viewBox="0 0 20 20"
+            aria-hidden
+            className="size-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+          >
+            <path d="M3 7h3l1.5-2h5L14 7h3v9H3z" strokeLinejoin="round" />
+            <circle cx="10" cy="11" r="3" />
+          </svg>
+          <span className="hidden 2xl:inline">{t("photoSearch")}</span>
+        </Link>
+        </div>
         <button
           type="submit"
-          className={`${height} bg-ink text-ink-inverse shrink-0 rounded-r-[var(--radius-s)] px-4 font-medium hover:opacity-90 sm:px-5`}
+          className={`${height} bg-accent text-on-accent shrink-0 rounded-r-[var(--radius-s)] px-4 font-medium hover:opacity-90 sm:px-5`}
         >
           <span className="sr-only sm:not-sr-only">{t("search")}</span>
           <svg
@@ -248,26 +270,6 @@ export function SearchBox({
             <path d="m13.5 13.5 3.5 3.5" strokeLinecap="round" />
           </svg>
         </button>
-        {/* Search by photo, video or a longer description (the AI search). */}
-        <Link
-          href={q ? `/s/ai?q=${encodeURIComponent(q)}` : "/s/ai"}
-          aria-label={t("aiSearch")}
-          title={t("aiSearch")}
-          className={`${height} border-line-strong bg-surface-raised text-ink hover:border-ink ml-2 inline-flex shrink-0 items-center justify-center gap-2 rounded-[var(--radius-s)] border px-3 text-sm font-medium`}
-        >
-          <svg
-            viewBox="0 0 20 20"
-            aria-hidden
-            className="size-5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-          >
-            <path d="M3 7h3l1.5-2h5L14 7h3v9H3z" strokeLinejoin="round" />
-            <circle cx="10" cy="11" r="3" />
-          </svg>
-          <span className="hidden xl:inline">{t("photoSearch")}</span>
-        </Link>
       </form>
       {showList ? (
         <ul

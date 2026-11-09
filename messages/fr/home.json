@@ -154,6 +154,17 @@
     "carry": "Transporter avec Tracecart",
     "terms": "Conditions",
     "privacy": "Confidentialité",
-    "contact": "Contact"
+    "contact": "Contact",
+    "columnShop": "Boutique",
+    "columnServices": "Services",
+    "columnWork": "Travailler avec nous",
+    "columnHelp": "Aide",
+    "about": "À propos de Tracecart",
+    "deals": "Promotions",
+    "brands": "Marques",
+    "find": "Trouvez-le pour moi",
+    "parts": "Pièces pour ce que vous avez",
+    "orders": "Vos commandes",
+    "returns": "Retours et remboursements"
   }
 }

@@ -25,16 +25,44 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
   const t = useTranslations("home");
   const f = useTranslations("home.footer");
 
-  const links = [
-    { label: f("home"), href: "/" },
-    { label: f("howItWorks"), href: closing ? "#process" : "/about#process", active: closing },
-    { label: f("ship"), href: "/freight" },
-    { label: f("sell"), href: "/sell" },
-    { label: f("business"), href: "/business" },
-    { label: f("carry"), href: "/carry" },
-    { label: f("terms"), href: "/terms" },
-    { label: f("privacy"), href: "/privacy" },
-    { label: f("contact"), href: "/contact" },
+  // Only pages that exist: a help centre and social links join when they do.
+  const columns: { title: string; links: { label: string; href: string; active?: boolean }[] }[] = [
+    {
+      title: f("columnShop"),
+      links: [
+        { label: f("home"), href: "/" },
+        { label: f("deals"), href: "/deals" },
+        { label: f("brands"), href: "/brands" },
+        { label: f("parts"), href: "/parts" },
+      ],
+    },
+    {
+      title: f("columnServices"),
+      links: [
+        { label: f("howItWorks"), href: closing ? "#process" : "/about#process", active: closing },
+        { label: f("find"), href: "/find" },
+        { label: f("ship"), href: "/freight" },
+        { label: f("business"), href: "/business" },
+      ],
+    },
+    {
+      title: f("columnWork"),
+      links: [
+        { label: f("sell"), href: "/sell" },
+        { label: f("carry"), href: "/carry" },
+        { label: f("about"), href: "/about" },
+      ],
+    },
+    {
+      title: f("columnHelp"),
+      links: [
+        { label: f("contact"), href: "/contact" },
+        { label: f("orders"), href: "/account/orders" },
+        { label: f("returns"), href: "/account/returns" },
+        { label: f("terms"), href: "/terms" },
+        { label: f("privacy"), href: "/privacy" },
+      ],
+    },
   ];
 
   return (
@@ -54,15 +82,22 @@ export function ClosingAndFooter({ closing = true }: { closing?: boolean }) {
 
       <footer className="px-6 pb-8 sm:px-10">
         <nav aria-label={f("pages")} className={`pt-12 ${closing ? "border-t border-white/10" : ""}`}>
-          <ul className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-[var(--hp-on-dark-muted)]">
-            {links.map((l) => (
-              <li key={l.label}>
-                <FooterLink href={l.href} active={l.active}>
-                  {l.label}
-                </FooterLink>
-              </li>
+          <div className="grid grid-cols-2 gap-8 text-sm md:grid-cols-4">
+            {columns.map((c) => (
+              <div key={c.title}>
+                <p className="font-semibold text-[var(--hp-on-dark)]">{c.title}</p>
+                <ul className="mt-3 space-y-2.5 text-[var(--hp-on-dark-muted)]">
+                  {c.links.map((l) => (
+                    <li key={l.label}>
+                      <FooterLink href={l.href} active={l.active}>
+                        {l.label}
+                      </FooterLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
         </nav>
 
         <Reveal className="mt-16">

@@ -17,7 +17,7 @@ import { SaveCompare } from "./SaveCompare";
 export async function ProductCard({ product, priority = false }: { product: Card; priority?: boolean }) {
   const t = await getTranslations("store");
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-m)] border border-line bg-surface-raised transition-shadow hover:shadow-[var(--shadow-1)]">
+    <article className="st-card group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-m)] border border-line bg-surface-raised hover:shadow-[var(--shadow-1)]">
       <div className="relative">
         <StoreImage url={product.image?.url} alt={product.image?.alt ?? product.title} sizes="(min-width: 1280px) 280px, (min-width: 768px) 30vw, 50vw" priority={priority} />
         <div className="absolute right-2 top-2">

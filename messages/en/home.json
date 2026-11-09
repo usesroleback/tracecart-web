@@ -154,6 +154,17 @@
     "carry": "Carry with Tracecart",
     "terms": "Terms",
     "privacy": "Privacy",
-    "contact": "Contact"
+    "contact": "Contact",
+    "columnShop": "Shop",
+    "columnServices": "Services",
+    "columnWork": "Work with us",
+    "columnHelp": "Help",
+    "about": "About Tracecart",
+    "deals": "Deals",
+    "brands": "Brands",
+    "find": "Find it for me",
+    "parts": "Parts for what you own",
+    "orders": "Your orders",
+    "returns": "Returns and refunds"
   }
 }

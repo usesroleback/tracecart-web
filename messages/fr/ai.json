@@ -1,19 +1,19 @@
 {
   "title": "Chercher avec une photo",
-  "lead": "Montrez-nous l'outil, la pièce ou sa plaque signalétique, ou décrivez-le avec vos mots. Nous le lisons, le cherchons dans le catalogue et disons pourquoi chaque résultat correspond.",
+  "lead": "Montrez-nous le produit, une pièce ou son étiquette, ou décrivez-le avec vos mots. Nous le lisons, cherchons dans le catalogue et indiquons pourquoi chaque résultat correspond.",
   "describe": "Décrivez-le",
-  "describePlaceholder": "« Perceuse-visseuse 18 V qui prend les batteries Voltix », une référence, à quoi il sert…",
+  "describePlaceholder": "« Un sac en cuir noir à bandoulière chaîne », une référence, son usage…",
   "addFile": "Ajouter une photo ou une vidéo",
   "changeFile": "Changer de fichier",
   "removeFile": "Retirer",
   "fileHint": "Une photo (PNG, JPEG, WebP, 5 Mo) ou une vidéo de 30 secondes au plus.",
   "search": "Chercher",
   "searching": "Lecture et recherche…",
-  "needSomething": "Décrivez l'outil ou ajoutez une photo.",
+  "needSomething": "Décrivez-le ou ajoutez une photo.",
   "rateLimited": "Trop de recherches pour le moment. Réessayez dans quelques minutes.",
   "failed": "La recherche n'a pas abouti. Réessayez.",
   "limited": "La lecture des photos n'est pas disponible pour le moment : nous avons cherché vos mots.",
-  "notAProduct": "Nous ne voyons ni outil ni pièce dans ce fichier. Décrivez-le avec des mots.",
+  "notAProduct": "Nous ne voyons aucun produit dans ce fichier. Décrivez-le avec des mots.",
   "understood": "Ce que nous avons lu",
   "unnamed": "Pas identifié précisément",
   "refine": "Affiner",
@@ -32,5 +32,13 @@
     "fits": "Vérifié pour votre {target}",
     "mayFit": "Pourrait convenir à votre {target} (non vérifié)"
   },
-  "toNarrow": "Pour affiner"
+  "toNarrow": "Pour affiner",
+  "dropHere": "Déposez une image ici ou choisissez un fichier. Un à la fois.",
+  "replaceFile": "Remplacer",
+  "reading": "Lecture de ce que vous avez envoyé et recherche dans le catalogue. Une photo peut prendre quelques secondes.",
+  "examplesLabel": "Essayez :",
+  "examples": [
+    "Trouver cette robe ou un modèle très proche.",
+    "Il me faut de la RAM compatible avec cet ordinateur."
+  ]
 }
