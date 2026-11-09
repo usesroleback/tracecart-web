@@ -29,12 +29,11 @@ test.describe("the store", () => {
     await page.getByRole("button", { name: "Open the menu" }).click();
     const drawer = page.locator("#shop-drawer");
     await expect(drawer).toBeVisible();
-    // A department with tools in it opens on its categories; an empty one says so.
+    // Every department opens on its categories, listed yet or not (ADR-087).
     await drawer.getByRole("button", { name: "Tools & Hardware" }).click();
     await expect(drawer.getByRole("link", { name: "Power tools" })).toBeVisible();
     await drawer.getByRole("button", { name: "Fashion" }).click();
-    await expect(drawer.getByText("Nothing is listed in Fashion yet.")).toBeVisible();
-    await expect(drawer.getByRole("link", { name: "Find it for me" })).toHaveAttribute("href", /\/find\?q=Fashion/);
+    await expect(drawer.getByRole("link", { name: "Shoes" })).toBeVisible();
 
     const picker = drawer.locator("select").first();
     await picker.selectOption("ML");

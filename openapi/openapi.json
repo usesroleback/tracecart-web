@@ -9424,7 +9424,7 @@
         "tags": [
           "Catalogue"
         ],
-        "summary": "The category tree, with how many products each lists (its subcategories' included). Departments (the top level) always show; below them, empty categories are left out.",
+        "summary": "The category tree, with how many products each lists (its subcategories' included). Empty categories are included (ADR-087).",
         "security": [],
         "x-tracecart-access": "public",
         "parameters": [
@@ -25256,6 +25256,24 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Queue, outbox and process metrics in Prometheus format, with `Authorization: Bearer <METRICS_TOKEN>`. Not served without a token configured.",
+        "security": [],
+        "x-tracecart-access": "public",
+        "responses": {
+          "200": {
+            "description": "Prometheus text format"
+          },
+          "404": {
+            "description": "No METRICS_TOKEN configured, or a wrong token"
           }
         }
       }

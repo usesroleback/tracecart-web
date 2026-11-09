@@ -5454,7 +5454,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** The category tree, with how many products each lists (its subcategories' included). Departments (the top level) always show; below them, empty categories are left out. */
+        /** The category tree, with how many products each lists (its subcategories' included). Empty categories are included (ADR-087). */
         get: {
             parameters: {
                 query?: {
@@ -18889,6 +18889,47 @@ export interface paths {
                     content: {
                         "application/json": components["schemas"]["Error"];
                     };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metrics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Queue, outbox and process metrics in Prometheus format, with `Authorization: Bearer <METRICS_TOKEN>`. Not served without a token configured. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Prometheus text format */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description No METRICS_TOKEN configured, or a wrong token */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
                 };
             };
         };
