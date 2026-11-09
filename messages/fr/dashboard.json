@@ -80,7 +80,7 @@
       "shipmentProblems": "Envois avec un problème",
       "cashHeld": "Encaissements à reverser",
       "remittancesToConfirm": "Reversements à confirmer",
-      "paymentsToConfirm": "Virements à confirmer",
+      "paymentsToConfirm": "Factures net-30 à confirmer",
       "approvalsToDecide": "Remboursements à approuver",
       "refundsToPay": "Remboursements à payer",
       "returnsToDecide": "Demandes de retour à traiter",

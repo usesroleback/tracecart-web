@@ -178,3 +178,15 @@ test.describe("the store", () => {
     expect((await request.get("/fr/p/no-such-tool")).status()).toBe(404);
   });
 });
+
+test("the terms, privacy and contact pages need no account", async ({ page }) => {
+  for (const [path, heading] of [
+    ["/en/terms", "Terms of use"],
+    ["/en/privacy", "Privacy policy"],
+    ["/en/contact", "Contact"],
+  ]) {
+    await page.goto(path);
+    await expect(page).toHaveURL(new RegExp(`${path}$`));
+    await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
+  }
+});

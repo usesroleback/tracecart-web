@@ -151,6 +151,9 @@
     "disclaimer": "The price at checkout covers the item, delivery, customs duties and taxes. It is fixed when you order, and nothing is added at delivery. Delivery dates are estimates. A freight estimate is indicative, and a quote holds until the date shown on it. Trademarks belong to their owners.",
     "sell": "Sell on Tracecart",
     "business": "Buy as a company",
-    "carry": "Carry with Tracecart"
+    "carry": "Carry with Tracecart",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "contact": "Contact"
   }
 }

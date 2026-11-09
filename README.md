@@ -109,7 +109,7 @@ While tracecart-api is private, the contract and e2e jobs need the secret `API_R
 On the same Dokploy server as the API (tracecart-api README, "Deploying"):
 
 1. Create an **Application** with source **Docker image** `ghcr.io/tracecartops/tracecart-web:latest` (GHCR registry credentials as for the API).
-2. Environment: `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` (the same production values the image was built with) and `API_INTERNAL_URL`, the API on the server's private network (`http://<api service>:4000`), so server-side calls don't loop out through the internet.
+2. Environment: `CONTACT_EMAIL`, `LEGAL_ADDRESS`, `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` (the same production values the image was built with) and `API_INTERNAL_URL`, the API on the server's private network (`http://<api service>:4000`), so server-side calls don't loop out through the internet.
 3. Domains: the site's hostname, port 3000, HTTPS. The API's `CORS_ORIGIN` must be this URL.
 4. Copy the application's deploy webhook URL into this repository's secret `DOKPLOY_DEPLOY_WEBHOOK` (environment `production`).
 

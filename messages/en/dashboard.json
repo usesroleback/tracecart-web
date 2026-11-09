@@ -80,7 +80,7 @@
       "shipmentProblems": "Shipments with a problem",
       "cashHeld": "Cash collections to pass on",
       "remittancesToConfirm": "Cash remittances to confirm",
-      "paymentsToConfirm": "Bank transfers to confirm",
+      "paymentsToConfirm": "Net-30 invoices to confirm",
       "approvalsToDecide": "Refunds to approve",
       "refundsToPay": "Refunds to pay",
       "returnsToDecide": "Return requests to answer",

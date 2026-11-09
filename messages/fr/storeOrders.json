@@ -7,7 +7,7 @@
   "find": "Rechercher",
   "empty": "Aucune commande ne correspond.",
   "queues": {
-    "paymentsToConfirm": "Virements et net-30 à confirmer"
+    "paymentsToConfirm": "Net-30 à confirmer"
   },
   "more": "Afficher plus",
   "shipments": "Expéditions",

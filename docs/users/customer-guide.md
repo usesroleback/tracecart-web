@@ -139,7 +139,6 @@ The price on a product is the item's price. **The full delivered price** (delive
 6. Choose how to pay. Only methods that can take this order are offered; when one can't, it says why. Methods offered today:
    - **Mobile money or card** (online, through CinetPay) where it's switched on;
    - **Cash on delivery**, where it's available and up to a limit;
-   - **Bank transfer**: the order waits for your transfer, and the items are held for you meanwhile;
    - **Net 30**, for approved company accounts.
 7. Choose **Place the order**. If the total changed since it was shown, checkout tells you and shows the new one before anything is placed.
 

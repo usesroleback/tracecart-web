@@ -18,4 +18,4 @@ Each slot is an `<ImageSlot>` in the file named below. To fill one, put the phot
 
 ## Pages that don't exist yet
 
-FAQ, contact, privacy policy and terms aren't linked until they exist.
+The FAQ isn't linked until it exists.

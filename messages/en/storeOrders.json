@@ -7,7 +7,7 @@
   "find": "Search",
   "empty": "No order matches.",
   "queues": {
-    "paymentsToConfirm": "Transfers and net-30 to confirm"
+    "paymentsToConfirm": "Net-30 to confirm"
   },
   "more": "Show more",
   "shipments": "Shipments",

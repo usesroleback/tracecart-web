@@ -25,6 +25,8 @@ CLERK_SECRET_KEY=sk_test_…
 | Variable | Default / example | What it does |
 | --- | --- | --- |
 | `API_INTERNAL_URL` | — | Optional. Server-side calls (session lookup, the API proxy) on a private network, e.g. http://api:4000 in docker-compose. Unset: NEXT_PUBLIC_API_URL. |
+| `CONTACT_EMAIL` | `support@tracecart.co` | Set in production. Shown on the terms, privacy and contact pages (read at runtime). Unset: those pages show no email. |
+| `LEGAL_ADDRESS` | — | Set in production. The company's registered address, shown on the same pages. |
 | `SITE_URL` | `https://tracecart.example` | Optional. The site's public address, for canonical links, the sitemap and structured data (read at runtime). Unset: the address each request came to. |
 | `NEXT_PUBLIC_IMAGE_HOSTS` | `placehold.co,xyz.supabase.co` | Optional. Image hosts next/image may fetch and resize (comma-separated; compiled in). Photos on other hosts are shown as they are. Default: placehold.co. |
 

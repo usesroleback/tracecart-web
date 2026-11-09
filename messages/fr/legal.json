@@ -1,1 +1,44 @@
-{}
+{
+  "shared": {
+    "reachUs": "Nous joindre",
+    "company": "Tracecart est un produit de Roleback Platforms.",
+    "email": "E-mail",
+    "address": "Siège social"
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lead": "Ce que vous et Tracecart pouvez attendre l'un de l'autre lorsque vous cherchez, achetez, faites rechercher un produit ou expédiez avec nous.",
+    "sections": [
+      { "title": "Votre compte", "body": ["Un compte est nécessaire pour commander. Gardez votre e-mail et votre numéro à jour : tout ce qui concerne vos commandes passe par e-mail, et les livreurs utilisent votre numéro.", "Vous êtes responsable de ce qui est fait depuis votre compte."] },
+      { "title": "Prix", "body": ["Le prix affiché au paiement comprend l'article, la livraison, les droits de douane et les taxes. Il est fixé à la commande, et rien n'est ajouté à la livraison.", "Les prix affichés dans une autre devise sont approximatifs. Vous payez dans la devise indiquée au paiement."] },
+      { "title": "Paiement", "body": ["Vous pouvez payer en ligne (mobile money ou carte) ou en espèces à la livraison, lorsque chaque mode est disponible pour votre commande. Les comptes entreprise approuvés peuvent aussi payer sur facture, et les cartes cadeaux sont utilisables là où elles sont acceptées.", "Un paiement en ligne réserve vos articles pendant une durée limitée. S'il n'aboutit pas à temps, la commande est annulée."] },
+      { "title": "Livraison", "body": ["Les dates de livraison sont des estimations. Nous vous prévenons par e-mail lorsqu'une commande avance ou prend du retard.", "Les marchandises qui passent une frontière peuvent être retenues en douane. Les codes douaniers suggérés n'engagent jamais : c'est l'autorité douanière qui décide."] },
+      { "title": "Vendeurs", "body": ["Certains produits sont vendus par des vendeurs indépendants. La page du produit indique qui le vend, et « Vérifié » signifie que nous avons approuvé ce vendeur.", "Les vendeurs sont responsables de l'exactitude de leurs descriptions."] },
+      { "title": "Compatibilité", "body": ["Nous n'indiquons qu'une pièce est compatible que sur preuve : document du fabricant, référence croisée OEM ou essai par notre équipe. Dans les autres cas, il est écrit « peut convenir » : vérifiez avant d'acheter."] },
+      { "title": "Recherche de produits et fret", "body": ["Une estimation de fret est indicative. Un devis est valable jusqu'à la date qu'il indique.", "Lorsque nous cherchons un produit pour vous, rien n'est commandé avant que vous acceptiez un devis."] },
+      { "title": "Retours et remboursements", "body": ["Vous pouvez demander un retour depuis votre compte, dans le délai indiqué sur votre commande. Nous remboursons ce que vous avez payé une fois le retour accepté."] },
+      { "title": "Ce qui est interdit", "body": ["Tracecart ne peut pas servir à des marchandises illégales, contrefaites ou interdites, à tromper quiconque ou à perturber le service. Nous pouvons annuler les commandes ou fermer les comptes concernés."] },
+      { "title": "Modifications", "body": ["Nous pouvons modifier ces conditions. La version applicable à une commande est celle en vigueur quand vous la passez."] }
+    ]
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lead": "Ce que nous collectons, pourquoi, et qui d'autre y a accès.",
+    "sections": [
+      { "title": "Ce que nous collectons", "body": ["Votre compte : nom, e-mail et numéro de téléphone.", "Vos commandes : adresses de livraison, achats et état de vos paiements. Nous ne voyons ni ne conservons vos données de carte ou votre code mobile money.", "Ce que vous nous envoyez : les mots, photos et vidéos de vos recherches, et les fichiers joints à une demande.", "Si vous vendez ou transportez avec nous : les informations de votre société, vos pièces d'identité et votre compte de versement."] },
+      { "title": "Pourquoi", "body": ["Pour gérer votre compte, livrer vos commandes, répondre à vos demandes, trouver les produits que vous décrivez, prévenir la fraude et respecter nos obligations légales et comptables."] },
+      { "title": "Qui d'autre y a accès", "body": ["Clerk (connexion), CinetPay (paiements en ligne), Supabase (fichiers et sauvegardes), Hetzner (hébergement), notre prestataire d'e-mail et Sentry (rapports d'erreur, sans données personnelles).", "Lorsque vous cherchez avec des mots, des photos ou une vidéo, ce que vous envoyez passe par Anthropic et Voyage AI pour être compris. Les termes de recherche peuvent aussi aller à Mindcase lorsque nous cherchons un produit pour vous.", "Les livreurs et partenaires reçoivent ce qu'il leur faut pour livrer, jamais ce que vous avez payé."] },
+      { "title": "Cookies et cet appareil", "body": ["Nous utilisons des cookies pour maintenir votre connexion et retenir votre pays, votre langue et les produits récemment vus. Votre liste de comparaison reste sur votre appareil."] },
+      { "title": "Durée", "body": ["Nous conservons vos données tant que votre compte est ouvert, puis seulement le temps exigé par nos obligations légales et comptables."] },
+      { "title": "Vos droits", "body": ["Vous pouvez demander à consulter, corriger ou supprimer vos données, et désactiver dans votre compte les e-mails de suivi ou les actualités. Écrivez-nous aux coordonnées ci-dessous."] }
+    ]
+  },
+  "contact": {
+    "title": "Contact",
+    "lead": "Pour une commande, le plus rapide est de passer par la commande elle-même.",
+    "sections": [
+      { "title": "À propos d'une commande", "body": ["Ouvrez votre commande dans Compte, puis Commandes. Elle indique où elle en est, et vous pouvez y demander un retour."] },
+      { "title": "Vendre, transporter ou acheter en entreprise", "body": ["Faites votre demande depuis les pages dédiées à la vente, au transport et aux achats d'entreprise. Chacune indique ce dont nous avons besoin."] }
+    ]
+  }
+}
