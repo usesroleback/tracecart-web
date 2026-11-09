@@ -66,7 +66,10 @@
       "WAITING_CUSTOMER": "Waiting for the customer",
       "RESOLVED": "Resolved",
       "CLOSED": "Closed"
-    }
+    },
+    "attach": "Attach files",
+    "attachHint": "Up to 3 PDFs or images, 8 MB each. What you've typed goes with them.",
+    "attachInternal": "Files for staff only"
   },
   "boards": {
     "sales30": "Sales, last 30 days",

@@ -12,9 +12,15 @@ import { call } from "@/components/checkout/http";
 
 // Support cases (ADR-094), for customers and for staff.
 
-const box = "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
+const box =
+  "rounded-[var(--radius-m)] border border-line bg-surface-raised p-5 text-sm";
 type Status = "OPEN" | "WAITING_CUSTOMER" | "RESOLVED" | "CLOSED";
-const TONE: Record<Status, "attn" | "info" | "positive" | "default"> = { OPEN: "attn", WAITING_CUSTOMER: "info", RESOLVED: "positive", CLOSED: "default" };
+const TONE: Record<Status, "attn" | "info" | "positive" | "default"> = {
+  OPEN: "attn",
+  WAITING_CUSTOMER: "info",
+  RESOLVED: "positive",
+  CLOSED: "default",
+};
 
 interface Mine {
   id: string;
@@ -22,7 +28,81 @@ interface Mine {
   subject: string;
   status: Status;
   orderReference: string | null;
-  messages: { id: string; fromStaff: boolean; body: string; createdAt: string }[];
+  messages: {
+    id: string;
+    fromStaff: boolean;
+    body: string;
+    createdAt: string;
+    attachments: Attachment[];
+  }[];
+}
+
+interface Attachment {
+  id: string;
+  fileName: string;
+  mimeType: string;
+  sizeBytes: number;
+}
+
+const ACCEPT =
+  "application/pdf,image/jpeg,image/png,image/webp,image/heic,image/heif";
+
+/** Links to a message's files: each opens through a short-lived signed link (ADR-097). */
+function Files({ files, base }: { files: Attachment[]; base: string }) {
+  if (!files.length) return null;
+  return (
+    <ul className="mt-1 flex flex-wrap gap-x-3">
+      {files.map((f) => (
+        <li key={f.id}>
+          <a
+            href={`/api/tracecart${base}/attachments/${f.id}/file`}
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            {f.fileName}
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Picking files sends them at once, with what was typed. */
+function AttachInput({
+  busy,
+  onFiles,
+}: {
+  busy: boolean;
+  onFiles: (files: File[]) => void;
+}) {
+  const t = useTranslations("team.support");
+  return (
+    <label className="text-ink-muted block">
+      <span className="text-xs">{t("attach")}</span>
+      <input
+        className={`${input} mt-1`}
+        type="file"
+        multiple
+        accept={ACCEPT}
+        disabled={busy}
+        aria-label={t("attach")}
+        onChange={(e) => {
+          const files = Array.from(e.target.files ?? []).slice(0, 3);
+          e.target.value = "";
+          if (files.length) onFiles(files);
+        }}
+      />
+      <span className="mt-1 block text-xs">{t("attachHint")}</span>
+    </label>
+  );
+}
+
+function filesForm(files: File[], fields: Record<string, string>) {
+  const form = new FormData();
+  for (const f of files) form.append("files", f, f.name);
+  for (const [k, v] of Object.entries(fields)) if (v) form.append(k, v);
+  return form;
 }
 
 export function MySupport() {
@@ -36,7 +116,11 @@ export function MySupport() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const load = useCallback(async () => setItems((await call<{ items: Mine[] }>("GET", "/me/support")).items), []);
+  const load = useCallback(
+    async () =>
+      setItems((await call<{ items: Mine[] }>("GET", "/me/support")).items),
+    [],
+  );
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load().catch((e) => setError((e as Error).message));
@@ -60,12 +144,24 @@ export function MySupport() {
   return (
     <div className="flex max-w-3xl flex-col gap-5">
       <h1 className="rb-headline text-[28px]">{t("mine")}</h1>
-      {error ? <p role="alert" className="text-sm text-critical">{error}</p> : null}
+      {error ? (
+        <p role="alert" className="text-critical text-sm">
+          {error}
+        </p>
+      ) : null}
       <form
         className={`${box} grid gap-3`}
         onSubmit={async (e) => {
           e.preventDefault();
-          if (await act(() => call("POST", "/me/support", { subject: subject.trim(), message: message.trim(), ...(order.trim() ? { orderReference: order.trim() } : {}) }))) {
+          if (
+            await act(() =>
+              call("POST", "/me/support", {
+                subject: subject.trim(),
+                message: message.trim(),
+                ...(order.trim() ? { orderReference: order.trim() } : {}),
+              }),
+            )
+          ) {
             setSubject("");
             setMessage("");
             setOrder("");
@@ -74,53 +170,121 @@ export function MySupport() {
       >
         <h2 className="rb-title">{t("ask")}</h2>
         <Field label={t("subject")} required>
-          <input className={input} required minLength={3} maxLength={160} value={subject} onChange={(e) => setSubject(e.target.value)} />
+          <input
+            className={input}
+            required
+            minLength={3}
+            maxLength={160}
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+          />
         </Field>
         <Field label={t("orderReference")}>
-          <input className={input} maxLength={40} value={order} onChange={(e) => setOrder(e.target.value)} />
+          <input
+            className={input}
+            maxLength={40}
+            value={order}
+            onChange={(e) => setOrder(e.target.value)}
+          />
         </Field>
         <Field label={t("message")} required>
-          <textarea className={input} required minLength={3} maxLength={4000} rows={4} value={message} onChange={(e) => setMessage(e.target.value)} />
+          <textarea
+            className={input}
+            required
+            minLength={3}
+            maxLength={4000}
+            rows={4}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
         </Field>
         <Button type="submit" variant="primary" loading={busy}>
           {t("send")}
         </Button>
       </form>
-      {items && !items.length ? <p className="text-sm text-ink-muted">{t("noneMine")}</p> : null}
+      {items && !items.length ? (
+        <p className="text-ink-muted text-sm">{t("noneMine")}</p>
+      ) : null}
       {items?.map((c) => (
         <article key={c.id} className={box}>
           <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-medium">{c.subject}</h2>
             <Badge variant={TONE[c.status]}>{t(`statuses.${c.status}`)}</Badge>
           </div>
-          <p className="rb-mono-s mb-2 text-ink-muted">
+          <p className="rb-mono-s text-ink-muted mb-2">
             {c.reference}
             {c.orderReference ? ` · ${c.orderReference}` : ""}
           </p>
           <ul className="flex flex-col gap-2">
             {c.messages.map((m) => (
-              <li key={m.id} className={m.fromStaff ? "rounded-[var(--radius-s)] bg-surface-sunken p-2" : "p-2"}>
-                <p className="text-xs text-ink-muted">
-                  {m.fromStaff ? "Tracecart" : t("you")} · {format.dayTime(m.createdAt)}
+              <li
+                key={m.id}
+                className={
+                  m.fromStaff
+                    ? "bg-surface-sunken rounded-[var(--radius-s)] p-2"
+                    : "p-2"
+                }
+              >
+                <p className="text-ink-muted text-xs">
+                  {m.fromStaff ? "Tracecart" : t("you")} ·{" "}
+                  {format.dayTime(m.createdAt)}
                 </p>
                 <p className="whitespace-pre-line">{m.body}</p>
+                <Files files={m.attachments} base={`/me/support/${c.id}`} />
               </li>
             ))}
           </ul>
           {c.status !== "CLOSED" ? (
-            <div className="mt-3 flex gap-2">
-              <input className={input} aria-label={t("answer")} placeholder={t("answer")} maxLength={4000} value={replies[c.id] ?? ""} onChange={(e) => setReplies({ ...replies, [c.id]: e.target.value })} />
-              <Button
-                variant="secondary"
-                loading={busy}
-                disabled={!(replies[c.id] ?? "").trim()}
-                onClick={async () => {
-                  if (await act(() => call("POST", `/me/support/${c.id}/messages`, { body: replies[c.id].trim() }))) setReplies({ ...replies, [c.id]: "" });
-                }}
-              >
-                {t("send")}
-              </Button>
-            </div>
+            <>
+              <div className="mt-3 flex gap-2">
+                <input
+                  className={input}
+                  aria-label={t("answer")}
+                  placeholder={t("answer")}
+                  maxLength={4000}
+                  value={replies[c.id] ?? ""}
+                  onChange={(e) =>
+                    setReplies({ ...replies, [c.id]: e.target.value })
+                  }
+                />
+                <Button
+                  variant="secondary"
+                  loading={busy}
+                  disabled={!(replies[c.id] ?? "").trim()}
+                  onClick={async () => {
+                    if (
+                      await act(() =>
+                        call("POST", `/me/support/${c.id}/messages`, {
+                          body: replies[c.id].trim(),
+                        }),
+                      )
+                    )
+                      setReplies({ ...replies, [c.id]: "" });
+                  }}
+                >
+                  {t("send")}
+                </Button>
+              </div>
+              <div className="mt-2">
+                <AttachInput
+                  busy={busy}
+                  onFiles={async (files) => {
+                    if (
+                      await act(() =>
+                        call(
+                          "POST",
+                          `/me/support/${c.id}/attachments`,
+                          filesForm(files, {
+                            body: (replies[c.id] ?? "").trim(),
+                          }),
+                        ),
+                      )
+                    )
+                      setReplies({ ...replies, [c.id]: "" });
+                  }}
+                />
+              </div>
+            </>
           ) : null}
         </article>
       ))}
@@ -136,10 +300,24 @@ interface StaffCase {
   customer: { name: string; email: string; phone: string | null };
   assignee: { id: string; name: string } | null;
   order: { id: string; reference: string } | null;
-  messages: { id: string; fromStaff: boolean; internal: boolean; author: string; body: string; createdAt: string }[];
+  messages: {
+    id: string;
+    fromStaff: boolean;
+    internal: boolean;
+    author: string;
+    body: string;
+    createdAt: string;
+    attachments: Attachment[];
+  }[];
 }
 
-export function SupportDesk({ canWrite, myId }: { canWrite: boolean; myId: string }) {
+export function SupportDesk({
+  canWrite,
+  myId,
+}: {
+  canWrite: boolean;
+  myId: string;
+}) {
   const t = useTranslations("team.support");
   const format = useFormat();
   const [status, setStatus] = useState<Status | "">("OPEN");
@@ -147,8 +325,20 @@ export function SupportDesk({ canWrite, myId }: { canWrite: boolean; myId: strin
   const [text, setText] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [staffOnly, setStaffOnly] = useState<Record<string, boolean>>({});
 
-  const load = useCallback(async () => setItems((await call<{ items: StaffCase[] }>("GET", `/support/cases${status ? `?status=${status}` : ""}`)).items), [status]);
+  const load = useCallback(
+    async () =>
+      setItems(
+        (
+          await call<{ items: StaffCase[] }>(
+            "GET",
+            `/support/cases${status ? `?status=${status}` : ""}`,
+          )
+        ).items,
+      ),
+    [status],
+  );
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load().catch((e) => setError((e as Error).message));
@@ -172,13 +362,19 @@ export function SupportDesk({ canWrite, myId }: { canWrite: boolean; myId: strin
     <div className="flex max-w-4xl flex-col gap-4">
       <div>
         <h1 className="rb-headline mb-1 text-[28px]">{t("desk")}</h1>
-        <p className="text-sm text-ink-muted">{t("deskLead")}</p>
+        <p className="text-ink-muted text-sm">{t("deskLead")}</p>
       </div>
       <div className="max-w-xs">
         <Field label={t("status")}>
-          <select className={input} value={status} onChange={(e) => setStatus(e.target.value as Status | "")}>
+          <select
+            className={input}
+            value={status}
+            onChange={(e) => setStatus(e.target.value as Status | "")}
+          >
             <option value="">{t("all")}</option>
-            {(["OPEN", "WAITING_CUSTOMER", "RESOLVED", "CLOSED"] as Status[]).map((s) => (
+            {(
+              ["OPEN", "WAITING_CUSTOMER", "RESOLVED", "CLOSED"] as Status[]
+            ).map((s) => (
               <option key={s} value={s}>
                 {t(`statuses.${s}`)}
               </option>
@@ -186,58 +382,145 @@ export function SupportDesk({ canWrite, myId }: { canWrite: boolean; myId: strin
           </select>
         </Field>
       </div>
-      {error ? <p role="alert" className="text-sm text-critical">{error}</p> : null}
-      {items && !items.length ? <p className="text-sm text-ink-muted">{t("none")}</p> : null}
+      {error ? (
+        <p role="alert" className="text-critical text-sm">
+          {error}
+        </p>
+      ) : null}
+      {items && !items.length ? (
+        <p className="text-ink-muted text-sm">{t("none")}</p>
+      ) : null}
       {items?.map((c) => {
         const body = (text[c.id] ?? "").trim();
         return (
           <article key={c.id} className={box}>
             <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
               <h2 className="font-medium">{c.subject}</h2>
-              <Badge variant={TONE[c.status]}>{t(`statuses.${c.status}`)}</Badge>
+              <Badge variant={TONE[c.status]}>
+                {t(`statuses.${c.status}`)}
+              </Badge>
             </div>
-            <p className="mb-2 text-ink-muted">
-              <span className="rb-mono-s">{c.reference}</span> · {c.customer.name} · {c.customer.email}
+            <p className="text-ink-muted mb-2">
+              <span className="rb-mono-s">{c.reference}</span> ·{" "}
+              {c.customer.name} · {c.customer.email}
               {c.customer.phone ? ` · ${c.customer.phone}` : ""}
               {c.order ? (
                 <>
                   {" · "}
-                  <Link className="underline" href={`/store-orders/${c.order.id}`}>
+                  <Link
+                    className="underline"
+                    href={`/store-orders/${c.order.id}`}
+                  >
                     {c.order.reference}
                   </Link>
                 </>
               ) : null}
-              {c.assignee ? ` · ${t("assigned", { name: c.assignee.name })}` : ""}
+              {c.assignee
+                ? ` · ${t("assigned", { name: c.assignee.name })}`
+                : ""}
             </p>
             <ul className="flex flex-col gap-2">
               {c.messages.map((m) => (
-                <li key={m.id} className={m.internal ? "rounded-[var(--radius-s)] border border-dashed border-line p-2" : m.fromStaff ? "rounded-[var(--radius-s)] bg-surface-sunken p-2" : "p-2"}>
-                  <p className="text-xs text-ink-muted">
+                <li
+                  key={m.id}
+                  className={
+                    m.internal
+                      ? "border-line rounded-[var(--radius-s)] border border-dashed p-2"
+                      : m.fromStaff
+                        ? "bg-surface-sunken rounded-[var(--radius-s)] p-2"
+                        : "p-2"
+                  }
+                >
+                  <p className="text-ink-muted text-xs">
                     {m.author} · {format.dayTime(m.createdAt)}
                     {m.internal ? ` · ${t("internal")}` : ""}
                   </p>
                   <p className="whitespace-pre-line">{m.body}</p>
+                  <Files
+                    files={m.attachments}
+                    base={`/support/cases/${c.id}`}
+                  />
                 </li>
               ))}
             </ul>
             {canWrite && c.status !== "CLOSED" ? (
               <div className="mt-3 grid gap-2">
-                <textarea className={input} rows={3} aria-label={t("answer")} placeholder={t("answer")} maxLength={4000} value={text[c.id] ?? ""} onChange={(e) => setText({ ...text, [c.id]: e.target.value })} />
+                <textarea
+                  className={input}
+                  rows={3}
+                  aria-label={t("answer")}
+                  placeholder={t("answer")}
+                  maxLength={4000}
+                  value={text[c.id] ?? ""}
+                  onChange={(e) => setText({ ...text, [c.id]: e.target.value })}
+                />
                 <div className="flex flex-wrap gap-2">
-                  <Button size="s" variant="primary" loading={busy} disabled={!body} onClick={() => act(c.id, "reply", { body })}>
+                  <Button
+                    size="s"
+                    variant="primary"
+                    loading={busy}
+                    disabled={!body}
+                    onClick={() => act(c.id, "reply", { body })}
+                  >
                     {t("reply")}
                   </Button>
-                  <Button size="s" variant="secondary" loading={busy} disabled={!body} onClick={() => act(c.id, "reply", { body, internal: true })}>
+                  <Button
+                    size="s"
+                    variant="secondary"
+                    loading={busy}
+                    disabled={!body}
+                    onClick={() => act(c.id, "reply", { body, internal: true })}
+                  >
                     {t("note")}
                   </Button>
-                  <Button size="s" variant="secondary" loading={busy} disabled={body.length < 3 || c.status === "RESOLVED"} onClick={() => act(c.id, "resolve", { resolution: body })}>
+                  <Button
+                    size="s"
+                    variant="secondary"
+                    loading={busy}
+                    disabled={body.length < 3 || c.status === "RESOLVED"}
+                    onClick={() => act(c.id, "resolve", { resolution: body })}
+                  >
                     {t("resolve")}
                   </Button>
                   {c.assignee?.id !== myId ? (
-                    <Button size="s" variant="secondary" loading={busy} onClick={() => act(c.id, "assign", { assigneeId: myId }, false)}>
+                    <Button
+                      size="s"
+                      variant="secondary"
+                      loading={busy}
+                      onClick={() =>
+                        act(c.id, "assign", { assigneeId: myId }, false)
+                      }
+                    >
                       {t("takeIt")}
                     </Button>
                   ) : null}
+                </div>
+                <div className="flex flex-wrap items-end gap-3">
+                  <div className="min-w-[16rem] flex-1">
+                    <AttachInput
+                      busy={busy}
+                      onFiles={(files) =>
+                        act(
+                          c.id,
+                          "attachments",
+                          filesForm(files, {
+                            body,
+                            internal: staffOnly[c.id] ? "true" : "",
+                          }),
+                        )
+                      }
+                    />
+                  </div>
+                  <label className="text-ink-muted flex items-center gap-2 pb-6">
+                    <input
+                      type="checkbox"
+                      checked={!!staffOnly[c.id]}
+                      onChange={(e) =>
+                        setStaffOnly({ ...staffOnly, [c.id]: e.target.checked })
+                      }
+                    />
+                    {t("attachInternal")}
+                  </label>
                 </div>
               </div>
             ) : null}
@@ -264,13 +547,23 @@ function Cards({ entries }: { entries: [string, string | number][] }) {
 
 function useMoneyText() {
   const format = useFormat();
-  return (rows: { currency: string; amountMinor: number }[]) => rows.map((r) => `${format.number(toMajor(r.amountMinor, r.currency))} ${r.currency}`).join(" + ") || "0";
+  return (rows: { currency: string; amountMinor: number }[]) =>
+    rows
+      .map(
+        (r) =>
+          `${format.number(toMajor(r.amountMinor, r.currency))} ${r.currency}`,
+      )
+      .join(" + ") || "0";
 }
 
 interface SellerBoard {
   orders: Record<string, number>;
   sales: { currency: string; amountMinor: number }[];
-  topProducts: { sku: string; title: Record<string, string>; quantity: number }[];
+  topProducts: {
+    sku: string;
+    title: Record<string, string>;
+    quantity: number;
+  }[];
 }
 
 export function SellerDashboard({ locale }: { locale: string }) {
@@ -279,13 +572,28 @@ export function SellerDashboard({ locale }: { locale: string }) {
   const [d, setD] = useState<SellerBoard | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    call<SellerBoard>("GET", "/seller/dashboard").then(setD).catch((e) => setError((e as Error).message));
+    call<SellerBoard>("GET", "/seller/dashboard")
+      .then(setD)
+      .catch((e) => setError((e as Error).message));
   }, []);
-  if (error) return <p role="alert" className="mb-4 text-sm text-critical">{error}</p>;
+  if (error)
+    return (
+      <p role="alert" className="text-critical mb-4 text-sm">
+        {error}
+      </p>
+    );
   if (!d) return null;
   return (
     <section className="mb-6 flex flex-col gap-3">
-      <Cards entries={[[t("sales30"), money(d.sales)], ...Object.entries(d.orders).map(([k, v]): [string, number] => [t(`seller.${k}`), v])]} />
+      <Cards
+        entries={[
+          [t("sales30"), money(d.sales)],
+          ...Object.entries(d.orders).map(([k, v]): [string, number] => [
+            t(`seller.${k}`),
+            v,
+          ]),
+        ]}
+      />
       {d.topProducts.length ? (
         <div className={box}>
           <h2 className="rb-label mb-2">{t("topProducts")}</h2>
@@ -315,13 +623,29 @@ export function PartnerDashboard() {
   const [d, setD] = useState<PartnerBoard | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    call<PartnerBoard>("GET", "/partner/dashboard").then(setD).catch((e) => setError((e as Error).message));
+    call<PartnerBoard>("GET", "/partner/dashboard")
+      .then(setD)
+      .catch((e) => setError((e as Error).message));
   }, []);
-  if (error) return <p role="alert" className="mb-4 text-sm text-critical">{error}</p>;
+  if (error)
+    return (
+      <p role="alert" className="text-critical mb-4 text-sm">
+        {error}
+      </p>
+    );
   if (!d) return null;
   return (
     <section className="mb-6">
-      <Cards entries={[...Object.entries(d.work).map(([k, v]): [string, number] => [t(`partner.${k}`), v]), [t("cashToRemit"), money(d.cashToRemit)], [t("owedToYou"), money(d.owedToYou)]]} />
+      <Cards
+        entries={[
+          ...Object.entries(d.work).map(([k, v]): [string, number] => [
+            t(`partner.${k}`),
+            v,
+          ]),
+          [t("cashToRemit"), money(d.cashToRemit)],
+          [t("owedToYou"), money(d.owedToYou)],
+        ]}
+      />
     </section>
   );
 }
