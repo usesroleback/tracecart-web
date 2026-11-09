@@ -24,6 +24,7 @@ const WORKSPACES: [string, string, string][] = [
   ["support.agent", "/fr/customers", "Clients"],
   ["support.agent", "/fr/support", "Service client"],
   ["customer", "/fr/account/support", "Aide"],
+  ["customer", "/fr/account/payments", "Mes paiements"],
   ["seller.owner", "/fr/seller/orders", "Commandes à expédier"],
   ["seller.owner", "/fr/seller/finance", "Mes finances"],
   ["carrier", "/fr/partner/finance", "Mes finances"],

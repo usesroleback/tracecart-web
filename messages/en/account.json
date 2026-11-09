@@ -87,5 +87,32 @@
     "saved": "Saved."
   },
   "saved": "Saved",
-  "support": "Help"
+  "support": "Help",
+  "payments": {
+    "title": "My payments",
+    "lead": "What you paid and what was refunded to you, newest first.",
+    "empty": "No payments yet.",
+    "payment": "Payment",
+    "refund": "Refund",
+    "order": "Order {reference}",
+    "return": "Return {reference}",
+    "invoice": "Invoice {number}",
+    "creditNote": "Credit note {number}",
+    "settled": "on {date}",
+    "more": "Older",
+    "statuses": {
+      "PENDING": "Waiting",
+      "AUTHORIZED": "Authorised",
+      "CAPTURED": "Paid",
+      "PARTIALLY_REFUNDED": "Partly refunded",
+      "REFUNDED": "Refunded",
+      "FAILED": "Failed",
+      "CANCELLED": "Cancelled",
+      "EXPIRED": "Expired",
+      "PENDING_APPROVAL": "In progress",
+      "APPROVED": "Granted, being sent",
+      "PAID": "Sent"
+    }
+  },
+  "paymentsLink": "Payments"
 }

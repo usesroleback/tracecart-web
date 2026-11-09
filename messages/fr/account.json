@@ -87,5 +87,32 @@
     "saved": "Enregistré."
   },
   "saved": "Enregistrés",
-  "support": "Aide"
+  "support": "Aide",
+  "payments": {
+    "title": "Mes paiements",
+    "lead": "Ce que vous avez payé et ce qui vous a été remboursé, du plus récent au plus ancien.",
+    "empty": "Aucun paiement pour l'instant.",
+    "payment": "Paiement",
+    "refund": "Remboursement",
+    "order": "Commande {reference}",
+    "return": "Retour {reference}",
+    "invoice": "Facture {number}",
+    "creditNote": "Avoir {number}",
+    "settled": "le {date}",
+    "more": "Plus ancien",
+    "statuses": {
+      "PENDING": "En attente",
+      "AUTHORIZED": "Autorisé",
+      "CAPTURED": "Payé",
+      "PARTIALLY_REFUNDED": "Remboursé en partie",
+      "REFUNDED": "Remboursé",
+      "FAILED": "Échoué",
+      "CANCELLED": "Annulé",
+      "EXPIRED": "Expiré",
+      "PENDING_APPROVAL": "En cours",
+      "APPROVED": "Accordé, en cours de versement",
+      "PAID": "Versé"
+    }
+  },
+  "paymentsLink": "Paiements"
 }
