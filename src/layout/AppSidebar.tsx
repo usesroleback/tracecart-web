@@ -1,16 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Link, usePathname } from '@/i18n/navigation';
 import { useSidebar } from "../context/SidebarContext";
 import { useSession } from "../context/SessionContext";
-import { api } from "../lib/apiClient";
-import { fetchStatusCounts } from "../lib/kpi/adapter";
 import { nameFromEmail } from "../lib/people";
 import { useRoleName } from "../lib/useRoleName";
 import { Logo } from "../components/common/Logo";
-import { allowedNav, Counts, NavItem } from "./nav";
+import { allowedNav, NavItem } from "./nav";
 
 /**
  * TraceCartOps side nav (project/components/TraceCartOps/preview.html): the
@@ -24,9 +22,6 @@ const AppSidebar: React.FC = () => {
   const user = useSession();
   const t = useTranslations("common.nav");
   const roleName = useRoleName(user);
-  const [counts, setCounts] = useState<Counts>({});
-  const isAdmin = user.role === "SUPER_ADMIN" || !!user.permissions?.includes("orders.shipment.write");
-  const can = (permission: string) => !!user.permissions?.includes(permission);
   const groups = allowedNav(user);
   const showLabel = isExpanded || isHovered || isMobileOpen;
   const name = nameFromEmail(user.email);
@@ -34,8 +29,6 @@ const AppSidebar: React.FC = () => {
   // An item is current when its path matches and its tab query (if any) is
   // the one in the URL; a plain item only counts when no tab is selected.
   const isActive = (item: NavItem) => {
-    // An order's own page belongs to the list it was opened from.
-    if (pathname.startsWith("/orders/")) return !item.query && item.path === (isAdmin ? "/orders" : "/deliveries");
     // A product's page belongs to the catalogue list.
     if (pathname.startsWith("/catalog/products")) return item.path === "/catalog";
     if (pathname.startsWith("/store-orders/")) return item.path === "/store-orders";
@@ -52,26 +45,6 @@ const AppSidebar: React.FC = () => {
     if (item.query) return matches(item);
     return !groups.some((g) => g.items.some((i) => i.path === item.path && i.query && matches(i)));
   };
-
-  const readsOrders = isAdmin || user.role === "LOGISTICS_PARTNER" ? can("orders.read") : false;
-  const readsRequests = !!user.hubId && can("sourcing.request.read");
-  const readsReservations = !!user.hubId && can("sourcing.reservation.manage");
-
-  useEffect(() => {
-    if (isAdmin && !user.hubId) return;
-    let cancelled = false;
-    Promise.all([
-      readsOrders ? fetchStatusCounts().catch(() => ({})) : {},
-      readsRequests ? api.get<{ total: number }>("/sourcing-requests?limit=1&status=OPEN").catch(() => null) : null,
-      readsReservations ? api.get<{ total: number }>("/reservations?limit=1&status=RESERVED").catch(() => null) : null,
-    ]).then(([statusCounts, sourcing, reservations]) => {
-      if (cancelled) return;
-      setCounts({ ...statusCounts, sourcing: sourcing?.total, reservations: reservations?.total });
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [isAdmin, user.hubId, readsOrders, readsRequests, readsReservations]);
 
   return (
     <aside
@@ -98,7 +71,6 @@ const AppSidebar: React.FC = () => {
             <ul className="flex flex-col gap-0.5">
               {group.items.map((item) => {
                 const active = isActive(item);
-                const count = item.count?.(counts);
                 const href = item.query ? { pathname: item.path, query: item.query } : item.path;
                 return (
                   <li key={item.name}>
@@ -110,11 +82,6 @@ const AppSidebar: React.FC = () => {
                     >
                       <span className={active ? "menu-item-icon-active" : "menu-item-icon-inactive"}>{item.icon}</span>
                       {showLabel && <span className="menu-item-text">{t(item.name)}</span>}
-                      {showLabel && count != null && count > 0 && (
-                        <span className={`ml-auto text-xs font-[650] tabular-nums ${active ? "text-ink-inverse" : "text-ink-muted"}`}>
-                          {count}
-                        </span>
-                      )}
                       {!showLabel && <span className="sr-only">{t(item.name)}</span>}
                     </Link>
                   </li>

@@ -354,37 +354,10 @@
   }
 }
 
-/* ApexCharts. Series, axis and grid colors are set in code
-   (components/charts/ChartTheme.ts); these rules align the parts it renders
-   itself, like the legend and tooltip, with the same design tokens. */
-.apexcharts-legend-text {
-  @apply pl-5! !text-ink-muted;
+:root {
+  --store-tint-mint: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface-raised));
+  --store-tint-sky: color-mix(in srgb, var(--color-ds-info) 11%, var(--color-surface-raised));
+  --store-tint-butter: color-mix(in srgb, #f5c400 20%, var(--color-surface-raised));
+  --store-tint-clay: color-mix(in srgb, #e8622a 14%, var(--color-surface-raised));
+  --store-tint-stone: var(--color-surface-sunken);
 }
-
-.apexcharts-text {
-  @apply !fill-ink-muted;
-}
-
-.apexcharts-tooltip.apexcharts-theme-light,
-.apexcharts-tooltip.apexcharts-theme-dark {
-  @apply gap-1 p-3 !rounded-[var(--radius-m)] !border-line !bg-surface-raised !text-ink !shadow-[var(--shadow-2)];
-}
-
-.apexcharts-tooltip-series-group,
-.apexcharts-tooltip-y-group {
-  @apply !p-0;
-}
-.apexcharts-tooltip-title {
-  @apply !mb-0 !border-b-0 !bg-transparent !p-0 !text-[10px] !leading-4 !text-ink;
-}
-.apexcharts-tooltip-text {
-  @apply !text-xs !text-ink;
-}
-.apexcharts-tooltip-text-y-value {
-  @apply !font-medium;
-}
-
-.apexcharts-gridline {
-  @apply !stroke-line;
-}
-

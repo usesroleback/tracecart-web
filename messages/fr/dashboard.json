@@ -106,7 +106,16 @@
       "payoutsToSend": "Paiements vendeurs à envoyer",
       "sellerStockToReceive": "Stock vendeur à réceptionner",
       "sellerInboundsOpen": "Stock en entrée",
-      "payoutsToApprove": "Paiements vendeurs à approuver"
-    }
+      "payoutsToApprove": "Paiements vendeurs à approuver",
+      "carrierApplicationsToReview": "Candidatures de transporteurs à examiner"
+    },
+    "clearCount": "{count, plural, one {# file vide} other {# files vides}}"
+  },
+  "home": {
+    "orders": "Commandes, {days} derniers jours",
+    "inProgress": "Commandes en cours",
+    "delivered": "Livrées, {days} derniers jours",
+    "sales": "Ventes, {days} derniers jours",
+    "shortcuts": "Raccourcis"
   }
 }

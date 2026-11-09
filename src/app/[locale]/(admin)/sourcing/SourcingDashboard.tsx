@@ -3,8 +3,6 @@
 import { Fragment, useState } from "react";
 import { useTranslations } from "next-intl";
 import { api } from "@/lib/apiClient";
-import { IntentForm } from "@/components/tracecart/IntentForm";
-import { CustomerOwnedIntentForm } from "@/components/tracecart/CustomerOwnedIntentForm";
 import { ShipmentDraftSummary } from "@/components/tracecart/ShipmentDraftSummary";
 import { SourcingRequestForm } from "@/components/tracecart/SourcingRequestForm";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -48,13 +46,6 @@ export function destinationOf(r: Pick<SourcingRequest, "destinationCity" | "dest
 }
 
 /** What a matched request converts into: the listing chosen in discovery, else the catalogue product chosen here. */
-function chosenProduct(r: SourcingRequest): { url: string; title: string; imageUrl: string | null } | null {
-  const candidate = r.candidates?.[0];
-  if (candidate) return { url: candidate.url, title: candidate.title, imageUrl: candidate.imageUrl };
-  if (r.selectedProduct) return { url: r.selectedProduct.canonicalUrl, title: r.selectedProduct.title, imageUrl: r.selectedProduct.imageUrl };
-  return null;
-}
-
 const TH = "sticky top-0 whitespace-nowrap border-b border-line bg-surface-sunken px-3 py-2 text-left text-[12px] font-[650] uppercase tracking-[0.04em] text-ink-muted";
 const TD = "border-b border-line px-3 py-2 align-middle";
 
@@ -81,9 +72,6 @@ export function SourcingDashboard({
   const [matchesLoading, setMatchesLoading] = useState(false);
   const [matchesError, setMatchesError] = useState<string | null>(null);
   const [selectingKey, setSelectingKey] = useState<string | null>(null);
-  const [converting, setConverting] = useState<SourcingRequest | null>(null);
-  // A "ship my product" request: nothing to find, it becomes a transport-only order.
-  const [shipping, setShipping] = useState<SourcingRequest | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [segment, setSegment] = useState<Segment>("active");
 
@@ -133,11 +121,6 @@ export function SourcingDashboard({
     }
   }
 
-  function handleConverted() {
-    setConverting(null);
-    refresh();
-  }
-
   const counts: Record<Segment, number> = {
     active: requests.filter((r) => inSegment(r, "active")).length,
     open: requests.filter((r) => inSegment(r, "open")).length,
@@ -161,16 +144,6 @@ export function SourcingDashboard({
   function actions(r: SourcingRequest) {
     return (
       <div className="flex flex-wrap justify-end gap-2">
-        {r.status === "MATCHED" && chosenProduct(r) && (
-          <Button size="s" onClick={() => setConverting(r)}>
-            {t("createOrder")}
-          </Button>
-        )}
-        {r.requestType === "SHIP_MY_PRODUCT" && r.status === "OPEN" && (
-          <Button size="s" onClick={() => setShipping(r)}>
-            {t("createOrder")}
-          </Button>
-        )}
         {r.requestType !== "SHIP_MY_PRODUCT" && (r.status === "OPEN" || r.status === "MATCHED") && (
           <Button size="s" variant={r.status === "OPEN" ? "primary" : "secondary"} href={`/sourcing/${r.id}`}>
             {t("findProduct")}
@@ -179,11 +152,6 @@ export function SourcingDashboard({
         {r.requestType !== "SHIP_MY_PRODUCT" && (r.status === "OPEN" || r.status === "MATCHED") && (
           <Button size="s" variant="ghost" onClick={() => toggleMatches(r)}>
             {expandedId === r.id ? t("hide") : t("seeCandidates")}
-          </Button>
-        )}
-        {r.order && (
-          <Button size="s" variant="ghost" href={`/orders/${r.order.id}`}>
-            {r.order.reference}
           </Button>
         )}
       </div>
@@ -292,51 +260,7 @@ export function SourcingDashboard({
         </div>
       )}
 
-      {converting && chosenProduct(converting) && (
-        <div className="mt-6">
-          <IntentForm
-            onCreated={handleConverted}
-            onCancel={() => setConverting(null)}
-            initialProduct={{
-              url: chosenProduct(converting)!.url,
-              name: chosenProduct(converting)!.title,
-              imageUrl: chosenProduct(converting)!.imageUrl ?? undefined,
-              provider: null,
-              sourcingRequestId: converting.id,
-            }}
-            initialCustomer={{
-              name: converting.customerName,
-              phone: converting.customerPhone,
-              email: converting.customerEmail,
-              destinationCity: converting.destinationCity,
-              destinationCountry: converting.destinationCountry,
-              quantity: converting.quantity,
-            }}
-          />
-        </div>
-      )}
 
-      {shipping && (
-        <div className="mt-6">
-          <CustomerOwnedIntentForm
-            onCreated={() => {
-              setShipping(null);
-              handleConverted();
-            }}
-            onCancel={() => setShipping(null)}
-            initial={{
-              customerName: shipping.customerName,
-              customerPhone: shipping.customerPhone,
-              customerEmail: shipping.customerEmail,
-              destinationCity: shipping.destinationCity,
-              destinationCountry: shipping.destinationCountry,
-              productName: shipping.description,
-              quantity: shipping.quantity,
-              sourcingRequestId: shipping.id,
-            }}
-          />
-        </div>
-      )}
 
       <div className="mt-6 grid gap-6 @min-[1064px]/main:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0">

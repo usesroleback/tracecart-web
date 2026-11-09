@@ -106,7 +106,16 @@
       "payoutsToSend": "Seller payouts to send",
       "sellerStockToReceive": "Seller stock to receive",
       "sellerInboundsOpen": "Stock inbound",
-      "payoutsToApprove": "Seller payouts to approve"
-    }
+      "payoutsToApprove": "Seller payouts to approve",
+      "carrierApplicationsToReview": "Carrier applications to review"
+    },
+    "clearCount": "{count, plural, one {# queue is empty} other {# queues are empty}}"
+  },
+  "home": {
+    "orders": "Orders, last {days} days",
+    "inProgress": "Orders in progress",
+    "delivered": "Delivered, last {days} days",
+    "sales": "Sales, last {days} days",
+    "shortcuts": "Shortcuts"
   }
 }

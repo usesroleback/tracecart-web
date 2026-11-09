@@ -22,10 +22,12 @@
   },
   "nav": {
     "groups": {
-      "operations": "Opérations",
+      "sales": "Ventes",
+      "fulfilment": "Préparation et livraison",
       "catalogue": "Catalogue",
-      "network": "Réseau",
-      "store": "Boutique",
+      "marketing": "Promotions",
+      "partners": "Vendeurs et transporteurs",
+      "settings": "Réglages",
       "seller": "Vente",
       "partner": "Partenaire"
     },

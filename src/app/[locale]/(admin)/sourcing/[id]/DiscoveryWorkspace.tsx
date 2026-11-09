@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { api } from "@/lib/apiClient";
 import { useFormat } from "@/lib/format";
 import { Alert } from "@/components/ui/alert/Alert";
@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge/Badge";
 import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
 import { SourcingRequestStatusTag } from "@/components/ui/status/Status";
-import { IntentForm } from "@/components/tracecart/IntentForm";
 import { destinationOf } from "../SourcingDashboard";
 import { DsChevronRightIcon, DsExternalIcon } from "@/icons";
 import { DiscoverySpec, DiscoveryState, ProviderOutcome, SourcingCandidate, SpecField } from "@/lib/types";
@@ -51,13 +50,10 @@ const EMPTY_SPEC: DiscoverySpec = {
 export function DiscoveryWorkspace({ initial }: { initial: DiscoveryState }) {
   const t = useTranslations("sourcing");
   const f = useFormat();
-  const router = useRouter();
   const [state, setState] = useState(initial);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [converting, setConverting] = useState(false);
   const r = state.request;
-  const id = r.id;
   const frozen = r.status === "CONVERTED" || r.status === "CLOSED";
 
   async function act(key: string, fn: () => Promise<DiscoveryState>) {
@@ -121,33 +117,6 @@ export function DiscoveryWorkspace({ initial }: { initial: DiscoveryState }) {
 
       <SourcingQuotes request={r} selected={selected ?? null} categorySlug={(state.spec as { categorySlug?: string | null } | null)?.categorySlug ?? null} />
 
-      {selected && r.status === "MATCHED" && (
-        <Card padding={24} className="mt-4">
-          <h2 className="rb-title">{t("d.order.title")}</h2>
-          <p className="mt-1 text-sm text-ink-muted">{t("d.order.hint")}</p>
-          {converting ? (
-            <div className="mt-4">
-              <IntentForm
-                onCreated={() => router.push("/orders")}
-                onCancel={() => setConverting(false)}
-                initialProduct={{ url: selected.url, name: selected.title, imageUrl: selected.imageUrl ?? undefined, provider: null, sourcingRequestId: id }}
-                initialCustomer={{
-                  name: r.customerName,
-                  phone: r.customerPhone,
-                  email: r.customerEmail,
-                  destinationCity: r.destinationCity,
-                  destinationCountry: r.destinationCountry,
-                  quantity: r.quantity,
-                }}
-              />
-            </div>
-          ) : (
-            <Button className="mt-4" onClick={() => setConverting(true)}>
-              {t("d.order.title")}
-            </Button>
-          )}
-        </Card>
-      )}
     </div>
   );
 }

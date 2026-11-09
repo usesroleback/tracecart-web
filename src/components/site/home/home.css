@@ -222,13 +222,6 @@
 
 /* Storefront (ADR-085): soft grounds mixed from the system's hues, so they
    follow the light and dark themes. Decoration only, never a status. */
-.hp {
-  --store-tint-mint: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface-raised));
-  --store-tint-sky: color-mix(in srgb, var(--color-ds-info) 11%, var(--color-surface-raised));
-  --store-tint-butter: color-mix(in srgb, #f5c400 20%, var(--color-surface-raised));
-  --store-tint-clay: color-mix(in srgb, #e8622a 14%, var(--color-surface-raised));
-  --store-tint-stone: var(--color-surface-sunken);
-}
 .st-tile, .st-card { transition: box-shadow 200ms ease, transform 200ms ease; }
 .st-photo { transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 .st-card img { transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1); }

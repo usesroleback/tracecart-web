@@ -22,10 +22,12 @@
   },
   "nav": {
     "groups": {
-      "operations": "Operations",
+      "sales": "Sales",
+      "fulfilment": "Fulfilment",
       "catalogue": "Catalogue",
-      "network": "Network",
-      "store": "Store",
+      "marketing": "Marketing",
+      "partners": "Sellers and carriers",
+      "settings": "Settings",
       "seller": "Selling",
       "partner": "Partner"
     },

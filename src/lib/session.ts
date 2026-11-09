@@ -6,7 +6,7 @@ import { SERVER_API_URL } from "./apiBase";
 import { Role, SessionUser } from "./types";
 
 export const ROLE_HOME: Record<Role, string> = {
-  SUPER_ADMIN: "/orders",
+  SUPER_ADMIN: "/dashboard",
   // Their dashboard: a pickup point has no deliveries page, so it can't be everyone's home.
   LOGISTICS_PARTNER: "/dashboard",
   CUSTOMER: "/account",

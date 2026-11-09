@@ -17,9 +17,6 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.17
         version: 4.3.3
-      apexcharts:
-        specifier: ^4.7.0
-        version: 4.7.0
       next:
         specifier: ^16.1.6
         version: 16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.10.0)(@playwright/test@1.64.1)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -32,15 +29,9 @@ importers:
       react:
         specifier: ^19.2.0
         version: 19.2.8
-      react-apexcharts:
-        specifier: ^1.8.0
-        version: 1.9.0(apexcharts@4.7.0)(react@19.2.8)
       react-dom:
         specifier: ^19.2.0
         version: 19.2.8(react@19.2.8)
-      tailwind-merge:
-        specifier: ^2.6.0
-        version: 2.6.1
     devDependencies:
       '@axe-core/playwright':
         specifier: ^4.14.0
@@ -1141,31 +1132,6 @@ packages:
   '@stablelib/base64@1.0.1':
     resolution: {integrity: sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ==}
 
-  '@svgdotjs/svg.draggable.js@3.0.6':
-    resolution: {integrity: sha512-7iJFm9lL3C40HQcqzEfezK2l+dW2CpoVY3b77KQGqc8GXWa6LhhmX5Ckv7alQfUXBuZbjpICZ+Dvq1czlGx7gA==}
-    peerDependencies:
-      '@svgdotjs/svg.js': ^3.2.4
-
-  '@svgdotjs/svg.filter.js@3.0.9':
-    resolution: {integrity: sha512-/69XMRCDoam2HgC4ldHIaDgeQf1ViHIsa0Ld4uWgiXtZ+E24DWHe/9Ib6kbNiZ7WRIdlVokUDR1Fg0kjIpkfbw==}
-    engines: {node: '>= 0.8.0'}
-
-  '@svgdotjs/svg.js@3.2.8':
-    resolution: {integrity: sha512-NUdbI/7FDdqGpzKmqr09IQoy9MUcrAC/3bC8gLgXi6OfJuyri450zMLvJekFUhuq3iN5gpdPjoSoStNl9Eijfg==}
-
-  '@svgdotjs/svg.resize.js@2.0.5':
-    resolution: {integrity: sha512-4heRW4B1QrJeENfi7326lUPYBCevj78FJs8kfeDxn5st0IYPIRXoTtOSYvTzFWgaWWXd3YCDE6ao4fmv91RthA==}
-    engines: {node: '>= 14.18'}
-    peerDependencies:
-      '@svgdotjs/svg.js': ^3.2.4
-      '@svgdotjs/svg.select.js': ^4.0.1
-
-  '@svgdotjs/svg.select.js@4.0.3':
-    resolution: {integrity: sha512-qkMgso1sd2hXKd1FZ1weO7ANq12sNmQJeGDjs46QwDVsxSRcHmvWKL2NDF7Yimpwf3sl5esOLkPqtV2bQ3v/Jg==}
-    engines: {node: '>= 14.18'}
-    peerDependencies:
-      '@svgdotjs/svg.js': ^3.2.4
-
   '@svgr/babel-plugin-add-jsx-attribute@8.0.0':
     resolution: {integrity: sha512-b9MIk7yhdS1pMCZM8VeNfUlSKVRhsHZNMl5O9SfaX0l0t5wjdgu4IDzGB8bpnGBBOjGST3rRFVsaaEtI4W6f7g==}
     engines: {node: '>=14'}
@@ -1622,9 +1588,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@yr/monotone-cubic-spline@1.0.3':
-    resolution: {integrity: sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==}
-
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
@@ -1649,9 +1612,6 @@ packages:
   ansi-styles@4.3.0:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
     engines: {node: '>=8'}
-
-  apexcharts@4.7.0:
-    resolution: {integrity: sha512-iZSrrBGvVlL+nt2B1NpqfDuBZ9jX61X9I2+XV0hlYXHtTwhwLTHDKGXjNXAgFBDLuvSYCB/rq2nPWVPRv2DrGA==}
 
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
@@ -2893,12 +2853,6 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-apexcharts@1.9.0:
-    resolution: {integrity: sha512-DDBzQFuKdwyCEZnji1yIcjlnV8hRr4VDabS5Y3iuem/WcTq6n4VbjWPzbPm3aOwW4I+rf/gA3zWqhws4z9CwLw==}
-    peerDependencies:
-      apexcharts: '>=4.0.0'
-      react: '>=16.8.0'
-
   react-dom@19.2.8:
     resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
     peerDependencies:
@@ -3121,9 +3075,6 @@ packages:
     resolution: {integrity: sha512-8SQMzdrvWaD8deUmrnYB+ASyxBVgWUOilg+A75nE/76WdLpj6LopCwiAVvkzkcqy/9b7t2Mg7faFLjg0ZRcZ3w==}
     engines: {node: '>=14.0.0'}
     hasBin: true
-
-  tailwind-merge@2.6.1:
-    resolution: {integrity: sha512-Oo6tHdpZsGpkKG88HJ8RR1rg/RdnEkQEfMoEk2x1XRI3F1AxeU+ijRXpiVUF4UbLfcxxRGw6TbUINKYdWVsQTQ==}
 
   tailwindcss@4.3.3:
     resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
@@ -4464,25 +4415,6 @@ snapshots:
 
   '@stablelib/base64@1.0.1': {}
 
-  '@svgdotjs/svg.draggable.js@3.0.6(@svgdotjs/svg.js@3.2.8)':
-    dependencies:
-      '@svgdotjs/svg.js': 3.2.8
-
-  '@svgdotjs/svg.filter.js@3.0.9':
-    dependencies:
-      '@svgdotjs/svg.js': 3.2.8
-
-  '@svgdotjs/svg.js@3.2.8': {}
-
-  '@svgdotjs/svg.resize.js@2.0.5(@svgdotjs/svg.js@3.2.8)(@svgdotjs/svg.select.js@4.0.3(@svgdotjs/svg.js@3.2.8))':
-    dependencies:
-      '@svgdotjs/svg.js': 3.2.8
-      '@svgdotjs/svg.select.js': 4.0.3(@svgdotjs/svg.js@3.2.8)
-
-  '@svgdotjs/svg.select.js@4.0.3(@svgdotjs/svg.js@3.2.8)':
-    dependencies:
-      '@svgdotjs/svg.js': 3.2.8
-
   '@svgr/babel-plugin-add-jsx-attribute@8.0.0(@babel/core@7.29.7)':
     dependencies:
       '@babel/core': 7.29.7
@@ -4900,8 +4832,6 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
 
-  '@yr/monotone-cubic-spline@1.0.3': {}
-
   acorn-jsx@5.3.2(acorn@8.18.0):
     dependencies:
       acorn: 8.18.0
@@ -4922,15 +4852,6 @@ snapshots:
   ansi-styles@4.3.0:
     dependencies:
       color-convert: 2.0.1
-
-  apexcharts@4.7.0:
-    dependencies:
-      '@svgdotjs/svg.draggable.js': 3.0.6(@svgdotjs/svg.js@3.2.8)
-      '@svgdotjs/svg.filter.js': 3.0.9
-      '@svgdotjs/svg.js': 3.2.8
-      '@svgdotjs/svg.resize.js': 2.0.5(@svgdotjs/svg.js@3.2.8)(@svgdotjs/svg.select.js@4.0.3(@svgdotjs/svg.js@3.2.8))
-      '@svgdotjs/svg.select.js': 4.0.3(@svgdotjs/svg.js@3.2.8)
-      '@yr/monotone-cubic-spline': 1.0.3
 
   argparse@2.0.1: {}
 
@@ -6287,12 +6208,6 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-apexcharts@1.9.0(apexcharts@4.7.0)(react@19.2.8):
-    dependencies:
-      apexcharts: 4.7.0
-      prop-types: 15.8.1
-      react: 19.2.8
-
   react-dom@19.2.8(react@19.2.8):
     dependencies:
       react: 19.2.8
@@ -6590,8 +6505,6 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.6.1
-
-  tailwind-merge@2.6.1: {}
 
   tailwindcss@4.3.3: {}
 

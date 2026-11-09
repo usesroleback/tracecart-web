@@ -35,6 +35,7 @@ const PATHS: Record<string, string> = {
   freightToQuote: "/freight-requests",
   requestsOpen: "/sourcing",
   productsToFinish: "/catalog",
+  carrierApplicationsToReview: "/carrier-applications",
   sellersToReview: "/sellers?queue=toReview",
   sellerPayoutsToConfirm: "/sellers?queue=payoutToConfirm",
   listingsToReview: "/listings?queue=toReview",
@@ -64,10 +65,10 @@ export function WorkBoard({ items }: { items: WorkItem[] }) {
       </h2>
       {!waiting.length ? <p className="mb-3 text-sm text-ink-muted">{t("allClear")}</p> : null}
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {[...waiting, ...clear].map((item) => (
+        {waiting.map((item) => (
           <li key={item.key}>
             <Link href={PATHS[item.key]} className="block h-full">
-              <Card interactive className={`h-full ${item.count === 0 ? "opacity-60" : ""}`}>
+              <Card interactive className="h-full">
                 <p className="rb-numeral text-[28px]">{f.number(item.count)}</p>
                 <p className="mt-1 text-sm text-ink">{t(`queues.${item.key}` as "queues.lowStock")}</p>
               </Card>
@@ -75,6 +76,20 @@ export function WorkBoard({ items }: { items: WorkItem[] }) {
           </li>
         ))}
       </ul>
+      {clear.length ? (
+        <details className="mt-3 text-sm text-ink-muted">
+          <summary className="cursor-pointer">{t("clearCount", { count: clear.length })}</summary>
+          <ul className="mt-2 flex flex-wrap gap-2">
+            {clear.map((item) => (
+              <li key={item.key}>
+                <Link href={PATHS[item.key]} className="inline-flex rounded-[var(--radius-xs)] border border-line px-2.5 py-1 hover:border-ink">
+                  {t(`queues.${item.key}` as "queues.lowStock")}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
     </section>
   );
 }

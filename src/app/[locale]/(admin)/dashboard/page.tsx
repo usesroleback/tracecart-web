@@ -1,19 +1,14 @@
-import { DashboardHome } from "./DashboardHome";
+import { DashboardHome, type Overview } from "./DashboardHome";
 import { WorkItem } from "@/components/dashboard/WorkBoard";
 import { can, getSessionState } from "@/lib/session";
 import { serverGet } from "@/lib/serverApi";
-import { Order } from "@/lib/types";
-import { serverFetchDashboardStats } from "@/lib/kpi/serverAdapter";
 
 export default async function RootPage() {
   const state = await getSessionState();
   const user = state.status === "ok" ? state.user : null;
-  // Legacy orders only mean something to hub admins and carriers (ADR-048).
-  const readsOrders = !!user && (can(user, "orders.shipment.write") || (can(user, "orders.read") && user.role === "LOGISTICS_PARTNER"));
-  const [work, result, stats] = await Promise.all([
+  const [work, overview] = await Promise.all([
     serverGet<{ items: WorkItem[] }>("/me/work"),
-    readsOrders ? serverGet<{ items: Order[] }>("/orders?limit=50") : null,
-    user?.role === "SUPER_ADMIN" ? serverFetchDashboardStats(30) : null,
+    user && can(user, "orders.store.read") ? serverGet<Overview>("/store-orders/overview") : null,
   ]);
-  return <DashboardHome work={work?.items ?? []} initialOrders={result?.items ?? []} initialStats={stats} />;
+  return <DashboardHome work={work?.items ?? []} overview={overview} />;
 }
