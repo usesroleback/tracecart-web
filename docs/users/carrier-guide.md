@@ -63,6 +63,10 @@ When the customer accepts a quote built on your price, the request shows **Yours
 - An incident on a shipment opens a problem for our team. They read it before the customer hears anything.
 - Notices without a shipment are for news such as a border closure or a capacity change.
 
+### Parcels and loads
+
+When a parcel is yours, you get an email with where to collect it, its weight and the date to deliver by. Parcels grouped into one load come as a single message when the load is ready. If a parcel is taken back or its order is cancelled, you get an email saying not to collect it. The full address and phone are on the parcel's page, along with any cash to collect.
+
 ### 5. Suspension
 
 If your account is suspended, your active routes are switched off at once and you can't change them. The email and the **Carry with Tracecart** page say why. When we reinstate you, the routes the suspension switched off come back on.

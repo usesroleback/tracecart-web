@@ -169,5 +169,44 @@
     "termDocuments": "Il vous faudra : {documents}.",
     "gateTitle": "Demander à vendre",
     "gateLead": "Connectez-vous ou créez un compte pour commencer votre demande."
+  },
+  "orders": {
+    "title": "Commandes à expédier",
+    "lead": "Préparez chaque colis et indiquez son poids : Tracecart choisit le transporteur et prépare l'étiquette.",
+    "toShip": "À expédier",
+    "late": "En retard",
+    "onTime": "À temps sur 30 jours",
+    "views": {
+      "toShip": "À expédier",
+      "shipped": "Expédiées",
+      "all": "Toutes"
+    },
+    "empty": "Rien à expédier pour le moment.",
+    "isLate": "En retard",
+    "to": "Vers {city}, {country}",
+    "shipBy": "à expédier avant le {date}",
+    "heldByTracecart": "Stocké chez Tracecart : nous nous occupons de l'expédition.",
+    "waitingLoad": "Part avec d'autres colis le {date} au plus tard.",
+    "weight": "Poids (g)",
+    "ready": "Colis prêt",
+    "findingCarrier": "Tracecart cherche un transporteur : nous vous écrirons.",
+    "label": "Imprimer l'étiquette",
+    "handedOver": "Remis au transporteur",
+    "status": {
+      "PLANNED": "À préparer",
+      "PICKING": "En préparation",
+      "PACKED": "Emballé",
+      "LABELLED": "Prêt à remettre",
+      "HANDED_OVER": "Remis au transporteur",
+      "IN_TRANSIT": "En route",
+      "AT_PICKUP_POINT": "Au point relais",
+      "OUT_FOR_DELIVERY": "En livraison",
+      "DELIVERY_FAILED": "Livraison manquée",
+      "DELIVERED": "Livré",
+      "RETURNING": "En retour",
+      "RETURNED": "Retourné",
+      "LOST": "Perdu",
+      "CANCELLED": "Annulé"
+    }
   }
 }

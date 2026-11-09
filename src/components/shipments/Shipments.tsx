@@ -313,6 +313,7 @@ interface Detail {
   deliveryMethod: string;
   destination: { recipientName: string | null; phone: string | null; countryCode: string; city: string; address: string | null; landmark: string | null; pickupPoint: string | null };
   collectFrom: { countryCode: string; city: string; addressLine?: string; landmark?: string; contactName?: string; phone?: string } | null;
+  collectAt: { name: string; addressLine: string | null; city: string; countryCode: string; phone: string | null } | null;
   promise: { from: string; to: string };
   eta: { from: string | null; to: string | null } | null;
   warehouse: { name: string; city: string; countryCode: string };
@@ -488,6 +489,18 @@ export function ShipmentDetail({ id, canPack, canRoute, canRecord, canProve, can
             )}
             <p>
               {s.warehouse.name}, {s.warehouse.city}
+              {s.collectAt?.addressLine ? (
+                <>
+                  <br />
+                  {s.collectAt.addressLine}
+                </>
+              ) : null}
+              {s.collectAt?.phone ? (
+                <>
+                  <br />
+                  {s.collectAt.phone}
+                </>
+              ) : null}
             </p>
             <h2 className="rb-label mb-2 mt-4">{d.pickupPoint ? t("pickupPoint") : t("to")}</h2>
             <p>

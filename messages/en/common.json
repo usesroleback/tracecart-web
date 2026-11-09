@@ -85,7 +85,8 @@
     "carrierApplications": "Carrier applications",
     "customs": "Customs",
     "customsReviews": "Customs cases",
-    "loads": "Grouped loads"
+    "loads": "Grouped loads",
+    "sellerOrders": "Orders to ship"
   },
   "notifications": {
     "title": "Notifications",

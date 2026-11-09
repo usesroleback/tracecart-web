@@ -114,7 +114,8 @@
     "LOST": "Lost",
     "CANCELLED": "Cancelled",
     "POSITION_REPORTED": "Position reported",
-    "COLLECTION_CODE_REISSUED": "New code sent"
+    "COLLECTION_CODE_REISSUED": "New code sent",
+    "PICKUP_REMINDER": "Last pickup reminder"
   },
   "exceptions": {
     "DELAY": "Delay",

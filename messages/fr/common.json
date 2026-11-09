@@ -85,7 +85,8 @@
     "carrierApplications": "Demandes transporteurs",
     "customs": "Douane",
     "customsReviews": "Dossiers douane",
-    "loads": "Chargements"
+    "loads": "Chargements",
+    "sellerOrders": "Commandes à expédier"
   },
   "notifications": {
     "title": "Notifications",

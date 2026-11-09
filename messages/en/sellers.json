@@ -169,5 +169,44 @@
     "termDocuments": "You'll need: {documents}.",
     "gateTitle": "Apply to sell",
     "gateLead": "Sign in or create an account to start your application."
+  },
+  "orders": {
+    "title": "Orders to ship",
+    "lead": "Prepare each parcel and enter its weight: Tracecart chooses the carrier and makes the label.",
+    "toShip": "To ship",
+    "late": "Late",
+    "onTime": "On time, last 30 days",
+    "views": {
+      "toShip": "To ship",
+      "shipped": "Shipped",
+      "all": "All"
+    },
+    "empty": "Nothing to ship right now.",
+    "isLate": "Late",
+    "to": "To {city}, {country}",
+    "shipBy": "ship by {date}",
+    "heldByTracecart": "Held by Tracecart: we take care of shipping it.",
+    "waitingLoad": "Leaves with other parcels by {date}.",
+    "weight": "Weight (g)",
+    "ready": "Parcel ready",
+    "findingCarrier": "Tracecart is finding a carrier, and will write to you.",
+    "label": "Print the label",
+    "handedOver": "Handed to the carrier",
+    "status": {
+      "PLANNED": "To prepare",
+      "PICKING": "Being prepared",
+      "PACKED": "Packed",
+      "LABELLED": "Ready to hand over",
+      "HANDED_OVER": "With the carrier",
+      "IN_TRANSIT": "On its way",
+      "AT_PICKUP_POINT": "At the pickup point",
+      "OUT_FOR_DELIVERY": "Out for delivery",
+      "DELIVERY_FAILED": "Delivery missed",
+      "DELIVERED": "Delivered",
+      "RETURNING": "Coming back",
+      "RETURNED": "Returned",
+      "LOST": "Lost",
+      "CANCELLED": "Cancelled"
+    }
   }
 }
