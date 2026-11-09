@@ -84,7 +84,8 @@
     "partnerQuotes": "Demandes de prix",
     "carrierApplications": "Demandes transporteurs",
     "customs": "Douane",
-    "customsReviews": "Dossiers douane"
+    "customsReviews": "Dossiers douane",
+    "loads": "Chargements"
   },
   "notifications": {
     "title": "Notifications",

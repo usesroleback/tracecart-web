@@ -6417,6 +6417,12 @@ export interface paths {
                             phone?: string;
                         };
                         /**
+                         * @description Standard groups parcels on the next departure and costs less; Express goes alone and sooner.
+                         * @default STANDARD
+                         * @enum {string}
+                         */
+                        speed?: "STANDARD" | "EXPRESS";
+                        /**
                          * @description GIFT_CARD only when the gift card pays the whole total.
                          * @enum {string}
                          */
@@ -6571,6 +6577,12 @@ export interface paths {
                             recipientName?: string;
                             phone?: string;
                         };
+                        /**
+                         * @description Standard groups parcels on the next departure and costs less; Express goes alone and sooner.
+                         * @default STANDARD
+                         * @enum {string}
+                         */
+                        speed?: "STANDARD" | "EXPRESS";
                         couponCode?: string;
                         giftCardCode?: string;
                     };
@@ -28648,6 +28660,156 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/shipment-loads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Grouped loads, newest first, with what grouping saved */
+        get: {
+            parameters: {
+                query?: {
+                    status?: "FORMING" | "READY";
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The loads */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            items: components["schemas"]["ShipmentLoad"][];
+                        };
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/shipment-loads/{id}/close": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a forming load now: its shipments can be handed over */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The load */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ShipmentLoad"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/shipments": {
         parameters: {
             query?: never;
@@ -32515,6 +32677,25 @@ export interface components {
                 currency: string;
                 amountMinor: number;
             }[];
+        };
+        ShipmentLoad: {
+            id: string;
+            reference: string;
+            /** @enum {string} */
+            status: "FORMING" | "READY";
+            route: string;
+            closesAt: string;
+            closedAt: string | null;
+            shipments: {
+                id: string;
+                reference: string;
+                status: string;
+                weightGrams: number | null;
+            }[];
+            /** @description What the carrier would charge for each alone */
+            aloneCostMinor: number | null;
+            combinedCostMinor: number | null;
+            costCurrency: string | null;
         };
     };
     responses: never;

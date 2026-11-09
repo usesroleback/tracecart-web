@@ -177,5 +177,14 @@
     "assign": "Give them this carrier",
     "clear": "Clear the selection",
     "done": "{count, plural, one {# shipment done.} other {# shipments done.}}"
+  },
+  "loads": {
+    "title": "Grouped loads",
+    "lead": "Standard shipments on the same route leave together, and the carrier is paid once for the combined weight.",
+    "empty": "No loads yet.",
+    "leaves": "Leaves by {date}",
+    "ready": "Ready to hand over",
+    "saved": "Saved {amount}",
+    "sendNow": "Send now"
   }
 }

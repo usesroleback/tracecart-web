@@ -84,7 +84,8 @@
     "partnerQuotes": "Quote requests",
     "carrierApplications": "Carrier applications",
     "customs": "Customs",
-    "customsReviews": "Customs cases"
+    "customsReviews": "Customs cases",
+    "loads": "Grouped loads"
   },
   "notifications": {
     "title": "Notifications",

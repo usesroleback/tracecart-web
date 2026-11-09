@@ -147,6 +147,13 @@
       "EXPIRED": "Cette carte cadeau a expiré.",
       "EMPTY": "Il ne reste rien sur cette carte cadeau.",
       "CURRENCY": "Cette carte cadeau est dans une autre devise."
+    },
+    "speed": {
+      "title": "Vitesse de livraison",
+      "STANDARD": "Standard",
+      "EXPRESS": "Express",
+      "EXPRESSHint": "Part seul, par la route la plus rapide.",
+      "STANDARDHint": "Voyage avec d'autres colis, pour moins cher."
     }
   },
   "address": {

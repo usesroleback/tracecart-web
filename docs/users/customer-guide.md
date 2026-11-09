@@ -136,11 +136,12 @@ The price on a product is the item's price. **The full delivered price** (delive
 3. Choose **Check out** and sign in.
 4. Choose **To an address** (add an address with a landmark the driver can find) or **To a pickup point** (choose the country and the point, and give a phone number for the collection code).
 5. Checkout shows each shipment, the delivered total, and the dates it should arrive between.
-6. Choose how to pay. Only methods that can take this order are offered; when one can't, it says why. Methods offered today:
+6. If the order crosses a border, choose **Standard** (travels with other parcels, for less) or **Express** (leaves on its own, by the fastest route). Each shows its price and dates.
+7. Choose how to pay. Only methods that can take this order are offered; when one can't, it says why. Methods offered today:
    - **Mobile money or card** (online, through CinetPay) where it's switched on;
    - **Cash on delivery**, where it's available and up to a limit;
    - **Net 30**, for approved company accounts.
-7. Choose **Place the order**. If the total changed since it was shown, checkout tells you and shows the new one before anything is placed.
+8. Choose **Place the order**. If the total changed since it was shown, checkout tells you and shows the new one before anything is placed.
 
 ## 11. Your orders and deliveries
 

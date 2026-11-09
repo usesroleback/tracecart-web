@@ -57,6 +57,7 @@ const NAV: NavGroup[] = [
     title: "fulfilment",
     items: [
       { icon: <DsTruckIcon />, name: "shipments", path: "/shipments", permission: "shipments.read" },
+      { icon: <DsLayersIcon />, name: "loads", path: "/loads", permission: "logistics.routing.assign" },
       { icon: <DsLayersIcon />, name: "inventory", path: "/inventory", permission: "inventory.read" },
       { icon: <DsPackageIcon />, name: "purchasing", path: "/purchasing", permission: ["purchasing.po.read", "inventory.receive", "customs.file.write"] },
       { icon: <DsPackageIcon />, name: "cash", path: "/cod", permission: ["shipments.cod.collect", "payments.read"] },

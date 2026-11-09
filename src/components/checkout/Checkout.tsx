@@ -112,6 +112,8 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
   const [giftDraft, setGiftDraft] = useState("");
   const [giftApplied, setGiftApplied] = useState<string | undefined>();
   const [placing, setPlacing] = useState(false);
+  const [speed, setSpeed] = useState<"STANDARD" | "EXPRESS">("STANDARD");
+  const speedNow = useRef(speed);
   const [message, setMessage] = useState<string | null>(null);
   const attempt = useRef<string | null>(null);
 
@@ -137,7 +139,7 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
     setQuoting(true);
     setMessage(null);
     try {
-      const q = await call<Quote>("POST", "/checkout/quote", { delivery: d, ...(code ? { couponCode: code } : {}), ...(gift ? { giftCardCode: gift } : {}) });
+      const q = await call<Quote>("POST", "/checkout/quote", { delivery: d, speed: speedNow.current, ...(code ? { couponCode: code } : {}), ...(gift ? { giftCardCode: gift } : {}) });
       setQuote(q);
       setPayment((current) => (q.paymentMethods.some((m) => m.method === current && m.available) ? current : (q.paymentMethods.find((m) => m.available)?.method ?? null)));
     } catch (e) {
@@ -172,6 +174,7 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
         "/checkout/orders",
         {
           delivery,
+          speed,
           paymentMethod: payWith,
           expectedTotalMinor: quote.totals.totalMinor,
           ...(note.trim() ? { note: note.trim() } : {}),
@@ -288,6 +291,42 @@ function CheckoutForm({ addresses, reloadAddresses }: { addresses: Address[]; re
             </div>
           )}
         </section>
+
+        {quote?.speedOptions.length ? (
+          <section className={box} aria-labelledby="speed-title">
+            <h2 id="speed-title" className="rb-title mb-3">
+              {t("speed.title")}
+            </h2>
+            <div className="flex flex-col gap-2" role="radiogroup" aria-labelledby="speed-title">
+              {quote.speedOptions.map((o) => (
+                <label key={o.speed} className={`flex cursor-pointer items-start gap-3 rounded-[var(--radius-s)] border p-3 ${speed === o.speed ? "border-ink" : "border-line"} ${o.available ? "" : "opacity-50"}`}>
+                  <input
+                    type="radio"
+                    name="speed"
+                    className="mt-1"
+                    checked={speed === o.speed}
+                    disabled={!o.available}
+                    onChange={() => {
+                      setSpeed(o.speed);
+                      speedNow.current = o.speed;
+                      if (delivery) void requote(delivery, couponApplied, giftApplied);
+                    }}
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="flex flex-wrap justify-between gap-2 font-medium">
+                      {t(`speed.${o.speed}`)}
+                      <span className="rb-numeral">{money(o.shippingMinor)}</span>
+                    </span>
+                    <span className="block text-sm text-ink-muted">
+                      {t(`speed.${o.speed}Hint`)}
+                      {o.promise ? ` ${t("arrives", { from: day(o.promise.from), to: day(o.promise.to) })}` : ""}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         {quote ? (
           <section className={box} aria-labelledby="payment-title">

@@ -55,6 +55,9 @@ export interface Quote {
   shipments: { key: string; from: { city: string; countryCode: string }; crossBorder: boolean; lineIds: string[]; shippingMinor: number }[];
   totals: Breakdown;
   promise: { from: string; to: string } | null;
+  /** Offered where a border is crossed (ADR-090). */
+  speed: "STANDARD" | "EXPRESS";
+  speedOptions: { speed: "STANDARD" | "EXPRESS"; available: boolean; shippingMinor: number; totalMinor: number; promise: { from: string; to: string } | null }[];
   paymentMethods: { method: PaymentMethod; available: boolean; blockers: string[]; instructions: string | null }[];
   coupon: { code: string; discountMinor: number; error: string | null } | null;
   /** A gift card pays part or all of the total (ADR-071); amountDueMinor is the rest. */

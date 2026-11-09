@@ -147,6 +147,13 @@
       "EXPIRED": "This gift card has expired.",
       "EMPTY": "This gift card has nothing left on it.",
       "CURRENCY": "This gift card is in another currency."
+    },
+    "speed": {
+      "title": "Delivery speed",
+      "STANDARD": "Standard",
+      "EXPRESS": "Express",
+      "EXPRESSHint": "Leaves on its own, on the fastest route.",
+      "STANDARDHint": "Travels with other parcels, for less."
     }
   },
   "address": {

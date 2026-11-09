@@ -1987,6 +1987,86 @@
           "delivered",
           "sales"
         ]
+      },
+      "ShipmentLoad": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reference": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FORMING",
+              "READY"
+            ]
+          },
+          "route": {
+            "type": "string"
+          },
+          "closesAt": {
+            "type": "string"
+          },
+          "closedAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "shipments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "reference": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "weightGrams": {
+                  "type": "number",
+                  "nullable": true
+                }
+              },
+              "required": [
+                "id",
+                "reference",
+                "status",
+                "weightGrams"
+              ]
+            }
+          },
+          "aloneCostMinor": {
+            "type": "number",
+            "nullable": true,
+            "description": "What the carrier would charge for each alone"
+          },
+          "combinedCostMinor": {
+            "type": "number",
+            "nullable": true
+          },
+          "costCurrency": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "reference",
+          "status",
+          "route",
+          "closesAt",
+          "closedAt",
+          "shipments",
+          "aloneCostMinor",
+          "combinedCostMinor",
+          "costCurrency"
+        ]
       }
     },
     "parameters": {}
@@ -10918,6 +10998,15 @@
                       }
                     ]
                   },
+                  "speed": {
+                    "type": "string",
+                    "enum": [
+                      "STANDARD",
+                      "EXPRESS"
+                    ],
+                    "default": "STANDARD",
+                    "description": "Standard groups parcels on the next departure and costs less; Express goes alone and sooner."
+                  },
                   "paymentMethod": {
                     "type": "string",
                     "enum": [
@@ -11127,6 +11216,15 @@
                         ]
                       }
                     ]
+                  },
+                  "speed": {
+                    "type": "string",
+                    "enum": [
+                      "STANDARD",
+                      "EXPRESS"
+                    ],
+                    "default": "STANDARD",
+                    "description": "Standard groups parcels on the next departure and costs less; Express goes alone and sooner."
                   },
                   "couponCode": {
                     "type": "string",
@@ -36822,6 +36920,174 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment-loads": {
+      "get": {
+        "tags": [
+          "Shipments"
+        ],
+        "summary": "Grouped loads, newest first, with what grouping saved",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "logistics.routing.assign",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "FORMING",
+                "READY"
+              ]
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The loads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ShipmentLoad"
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipment-loads/{id}/close": {
+      "post": {
+        "tags": [
+          "Shipments"
+        ],
+        "summary": "Send a forming load now: its shipments can be handed over",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "logistics.routing.assign",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The load",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShipmentLoad"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request",

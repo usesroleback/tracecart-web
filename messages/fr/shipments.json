@@ -177,5 +177,14 @@
     "assign": "Leur donner ce transporteur",
     "clear": "Effacer la sélection",
     "done": "{count, plural, one {# expédition traitée.} other {# expéditions traitées.}}"
+  },
+  "loads": {
+    "title": "Chargements",
+    "lead": "Les envois Standard d'une même route partent ensemble, et le transporteur est payé une fois pour le poids total.",
+    "empty": "Aucun chargement pour l'instant.",
+    "leaves": "Départ au plus tard le {date}",
+    "ready": "Prêt à remettre",
+    "saved": "{amount} économisés",
+    "sendNow": "Envoyer maintenant"
   }
 }
