@@ -1,5 +1,6 @@
 // Fails when the locales' message files drift apart: a namespace or key in
-// one locale but not the other, or a message whose {placeholders} differ.
+// one locale but not the other, a message whose {placeholders} differ, or a
+// key with a dot in it.
 // Run with `pnpm i18n:check` (from this folder).
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -75,6 +76,11 @@ const load = (locale) =>
   );
 
 const problems = [];
+// next-intl refuses a key with a dot in it (it nests on dots), and every page then fails.
+const dotted = (obj, path) => Object.entries(obj).flatMap(([k, v]) => [...(k.includes(".") ? [`${path}: "${k}"`] : []), ...(v && typeof v === "object" ? dotted(v, `${path}.${k}`) : [])]);
+for (const locale of locales)
+  for (const f of readdirSync(join(root, locale)).filter((f) => f.endsWith(".json")))
+    for (const k of dotted(JSON.parse(readFileSync(join(root, locale, f), "utf8")), `${locale}/${f}`)) problems.push(`${k} has a dot in its key: use "_" instead`);
 const ref = load(base);
 for (const locale of others) {
   const cur = load(locale);

@@ -66,6 +66,9 @@ const GROUPS: [string, string[]][] = [
   ["liabilities", ["sellerPayableMinor", "carrierPayableMinor", "dutiesTaxesPayableMinor"]],
 ];
 
+// Message keys can't hold dots (next-intl nests on them): payment.captured is kinds.payment_captured.
+const kindKey = (kind: string) => kind.replace(/\./g, "_");
+
 export function FinanceOverview() {
   const t = useTranslations("finance");
   const money = useMoney();
@@ -169,7 +172,7 @@ export function LedgerExplorer() {
         {rows.map((r) => (
           <article key={r.id} className={box}>
             <div className="mb-2 flex flex-wrap justify-between gap-2">
-              <p className="font-medium">{t.has(`kinds.${r.kind}`) ? t(`kinds.${r.kind}`) : r.kind}</p>
+              <p className="font-medium">{t.has(`kinds.${kindKey(r.kind)}`) ? t(`kinds.${kindKey(r.kind)}`) : r.kind}</p>
               <p className="text-ink-muted">{format.dayTime(r.postedAt)}</p>
             </div>
             <p className="rb-mono-s mb-2 text-ink-muted">

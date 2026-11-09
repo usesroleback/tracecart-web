@@ -165,18 +165,18 @@
     "COD_WRITE_OFF": "Cash variances written off"
   },
   "kinds": {
-    "payment.captured": "Payment received",
-    "cod.collected": "Cash collected",
-    "cod.remitted": "Cash remitted",
-    "cod.variance.made_good": "Variance made good",
-    "cod.variance.write_off": "Variance written off",
-    "cod.collection.variance": "Collection variance closed",
-    "delivery.recognised": "Delivery recognised",
-    "carrier.delivered": "Owed to carrier",
-    "carrier.settled": "Carrier paid",
-    "seller.paid": "Seller paid",
-    "refund.paid": "Refund paid",
-    "refund.seller_reversal": "Seller share reversed",
-    "gift_card.released": "Gift card credited back"
+    "payment_captured": "Payment received",
+    "cod_collected": "Cash collected",
+    "cod_remitted": "Cash remitted",
+    "cod_variance_made_good": "Variance made good",
+    "cod_variance_write_off": "Variance written off",
+    "cod_collection_variance": "Collection variance closed",
+    "delivery_recognised": "Delivery recognised",
+    "carrier_delivered": "Owed to carrier",
+    "carrier_settled": "Carrier paid",
+    "seller_paid": "Seller paid",
+    "refund_paid": "Refund paid",
+    "refund_seller_reversal": "Seller share reversed",
+    "gift_card_released": "Gift card credited back"
   }
 }

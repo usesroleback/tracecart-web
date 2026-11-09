@@ -165,18 +165,18 @@
     "COD_WRITE_OFF": "Écarts d'espèces passés en perte"
   },
   "kinds": {
-    "payment.captured": "Paiement reçu",
-    "cod.collected": "Espèces encaissées",
-    "cod.remitted": "Espèces reversées",
-    "cod.variance.made_good": "Écart régularisé",
-    "cod.variance.write_off": "Écart passé en perte",
-    "cod.collection.variance": "Écart d'encaissement clos",
-    "delivery.recognised": "Livraison comptabilisée",
-    "carrier.delivered": "Dû au transporteur",
-    "carrier.settled": "Transporteur payé",
-    "seller.paid": "Vendeur payé",
-    "refund.paid": "Remboursement versé",
-    "refund.seller_reversal": "Part vendeur reprise",
-    "gift_card.released": "Carte cadeau recréditée"
+    "payment_captured": "Paiement reçu",
+    "cod_collected": "Espèces encaissées",
+    "cod_remitted": "Espèces reversées",
+    "cod_variance_made_good": "Écart régularisé",
+    "cod_variance_write_off": "Écart passé en perte",
+    "cod_collection_variance": "Écart d'encaissement clos",
+    "delivery_recognised": "Livraison comptabilisée",
+    "carrier_delivered": "Dû au transporteur",
+    "carrier_settled": "Transporteur payé",
+    "seller_paid": "Vendeur payé",
+    "refund_paid": "Remboursement versé",
+    "refund_seller_reversal": "Part vendeur reprise",
+    "gift_card_released": "Carte cadeau recréditée"
   }
 }
