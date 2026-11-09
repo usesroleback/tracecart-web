@@ -6,7 +6,7 @@ Open the console and choose **Catalogue**. You see **Categories** if you can rea
 
 ## 1. Categories
 
-**Catalogue → Categories** shows the tree: the fifteen departments at the top, their categories below. Choose a category's name to open it.
+**Catalogue → Categories** shows the tree: the departments at the top, their categories below. Choose a category's name to open it.
 
 - **Add a category:** fill in the names (French and English), a slug (lowercase, with dashes, as it will appear in the address) and its parent, then choose **Add**.
 - **Switch off** hides a category and everything under it from the store. Its products stay in the console.

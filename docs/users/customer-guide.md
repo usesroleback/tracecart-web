@@ -42,7 +42,7 @@ On your account page you can:
 
 **The home page** starts with the search and the departments. Below, it shows collections when there is something real in them: **Popular right now** (products several customers ordered in the last 30 days), **Deals**, **Recently viewed** (see [section 6](#6-saving-and-comparing)), what's in stock in your country, and what's new. A collection with nothing in it isn't shown. Further down: every department, searching with a photo, the brands, and Tracecart's other services (shipping, selling, buying for a company).
 
-Tracecart is organised in departments: Fashion, Electronics, Computers, Phones & Accessories, Home & Living, Beauty & Personal Care, Sports & Outdoors, Automotive, Industrial & Business, Tools & Hardware, Machinery, Agriculture, Health & Medical, Office & School, and Toys & Games. Each department has categories, and some categories have their own subcategories.
+Tracecart is organised in departments: Fashion, Electronics, Computers, Phones & Accessories, Home & Living, Beauty & Personal Care, Sports & Outdoors, Automotive, Industrial & Business, Tools & Hardware, Machinery, Agriculture, Health & Medical, Office & School, Toys & Games, Groceries & Drinks, Books & Media, and Pet Supplies. Each department has categories, and some categories have their own subcategories.
 
 **On a computer:** choose **All departments** under the search bar. Point at a department to see its categories, then choose one. The bar beside it also lists every department.
 
