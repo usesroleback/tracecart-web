@@ -4,15 +4,12 @@ import type { ProductCard as Card } from "@/lib/store";
 import { findHref } from "@/components/site/header/links";
 import { StoreImage } from "./StoreImage";
 import { Price } from "./Price";
-import { AvailabilityNote } from "./AvailabilityNote";
-import { DealNote } from "./DealNote";
 import { Rating } from "./Rating";
 import { SaveCompare } from "./SaveCompare";
 
 /**
- * A product in a grid: photo, brand, title, then only what's true of it
- * (ADR-078): the price or "on request", a deal's end, where it ships from,
- * who sells it and whether a person verified them, and its approved reviews.
+ * A product in a grid (ADR-086): the photo, the title, approved reviews if any,
+ * and the price or "on request". Stock, seller and delivery are for the product page.
  */
 export async function ProductCard({ product, priority = false }: { product: Card; priority?: boolean }) {
   const t = await getTranslations("store");
@@ -25,8 +22,7 @@ export async function ProductCard({ product, priority = false }: { product: Card
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
-        {product.brand ? <p className="rb-overline text-ink-muted">{product.brand.name}</p> : null}
-        <h3 className="line-clamp-3 text-[15px] font-medium leading-snug text-ink">
+        <h3 className="line-clamp-2 text-[15px] font-medium leading-snug text-ink">
           {/* The whole card is the link: the title's ::after covers it. */}
           <Link href={`/p/${product.slug}`} className="after:absolute after:inset-0 after:z-10 focus-visible:outline-none group-focus-within:underline">
             {product.title}
@@ -35,22 +31,7 @@ export async function ProductCard({ product, priority = false }: { product: Card
         {product.rating ? <Rating average={product.rating.average} count={product.rating.count} /> : null}
         <div className="mt-auto flex flex-col gap-2 pt-1">
           {product.price ? (
-            <>
-              <Price amountMinor={product.price.amountMinor} currency={product.price.currency} compareAtMinor={product.compareAtMinor} size="s" />
-              <DealNote endsAt={product.dealEndsAt} />
-              {product.availability ? <AvailabilityNote availability={product.availability} /> : null}
-              <p className="text-xs text-ink-muted">
-                {product.seller ? t("card.soldBy", { seller: product.seller.name }) : t("card.soldByTracecart")}
-                {product.seller?.verified ? (
-                  <span className="ml-1 inline-flex items-center gap-0.5 font-medium text-ink" title={t("card.verifiedTitle")}>
-                    <svg viewBox="0 0 16 16" aria-hidden className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="m4 8.5 2.5 2.5L12 5.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    {t("card.verified")}
-                  </span>
-                ) : null}
-              </p>
-            </>
+            <Price amountMinor={product.price.amountMinor} currency={product.price.currency} compareAtMinor={product.compareAtMinor} size="s" />
           ) : (
             <>
               <p className="text-base font-semibold text-ink">{t("card.onRequest")}</p>
@@ -59,7 +40,6 @@ export async function ProductCard({ product, priority = false }: { product: Card
               </Link>
             </>
           )}
-          {product.variantCount > 1 ? <p className="text-xs text-ink-muted">{t("card.versions", { count: product.variantCount })}</p> : null}
         </div>
       </div>
     </article>

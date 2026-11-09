@@ -20,10 +20,10 @@ test("the home page offers the departments, photo search and the other services"
   await expect(page.getByRole("link", { name: /Become a seller/ })).toHaveAttribute("href", "/en/sell");
 });
 
-test("cards say who sells; two products compare side by side", async ({ page }) => {
+test("cards keep to the photo, name and price; two products compare side by side", async ({ page }) => {
   await page.goto("/en/c/tools-hardware/power-tools");
   const cards = page.locator("article");
-  await expect(cards.first()).toContainText(/Sold by /);
+  await expect(cards.first()).not.toContainText(/Sold by |In stock/);
   const titles = [await cards.nth(0).locator("h3").innerText(), await cards.nth(1).locator("h3").innerText()];
 
   await cards.nth(0).getByRole("button", { name: /^Compare:/ }).click();

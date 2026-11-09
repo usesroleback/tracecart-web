@@ -50,7 +50,7 @@ Tracecart is organised in departments: Fashion, Electronics, Computers, Phones &
 
 **A department with nothing in it yet** says so. Sellers are still adding products. Choose **Find it for me** and we'll look for what you need (see [section 14](#14-find-it-for-me)).
 
-**Each product card** shows its photo, brand and name, then only what's true of it: the price (or **Price on request**), a deal's end date, where it ships from, who sells it, and the stars from published reviews, if there are any. **Verified** next to a seller means a person at Tracecart checked the seller's company and documents. Cards also have **Save** and **Compare** buttons (see [section 6](#6-saving-and-comparing)).
+**Each product card** shows its photo and name, its rating when it has approved reviews, and the price (or **Price on request**, with **Request a quote**). Where it ships from and who sells it are on the product page.
 
 **In a category,** use **Filter and sort** to narrow the list: brand, price, condition, where it ships from, and the details that matter for that kind of product (size and colour for clothing, memory for a laptop, voltage for a drill). Each filter you apply is shown, and you can remove it.
 
