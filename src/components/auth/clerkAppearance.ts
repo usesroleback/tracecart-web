@@ -30,7 +30,9 @@ export const clerkAppearance: ComponentProps<typeof ClerkProvider>["appearance"]
   },
   elements: {
     rootBox: "w-full",
-    cardBox: "w-full shadow-none",
+    // The pop-up sign-in window: wider than Clerk's 25rem, never wider than a phone.
+    modalContent: "w-[min(30rem,calc(100vw-2rem))] max-w-none",
+    cardBox: "w-full max-w-none shadow-none",
     card: "shadow-none border border-line rounded-[var(--radius-m)] bg-surface-raised",
     headerTitle: "hidden",
     headerSubtitle: "hidden",
