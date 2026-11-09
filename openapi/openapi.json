@@ -27894,6 +27894,30 @@
           {
             "schema": {
               "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "description": "A seller's name, or part of it, or its id"
+            },
+            "required": false,
+            "description": "A seller's name, or part of it, or its id",
+            "name": "seller",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2,
+              "description": "The country the order goes to (ISO code)"
+            },
+            "required": false,
+            "description": "The country the order goes to (ISO code)",
+            "name": "country",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
               "format": "uuid"
             },
             "required": false,
@@ -40002,6 +40026,30 @@
           {
             "schema": {
               "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "description": "A seller's name, or part of it, or its id"
+            },
+            "required": false,
+            "description": "A seller's name, or part of it, or its id",
+            "name": "seller",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2,
+              "description": "The country the order goes to (ISO code)"
+            },
+            "required": false,
+            "description": "The country the order goes to (ISO code)",
+            "name": "country",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
               "format": "uuid"
             },
             "required": false,
@@ -40298,6 +40346,30 @@
             "required": false,
             "description": "Only shipments with an open problem",
             "name": "problems",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "description": "A seller's name, or part of it, or its id"
+            },
+            "required": false,
+            "description": "A seller's name, or part of it, or its id",
+            "name": "seller",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2,
+              "description": "The country the order goes to (ISO code)"
+            },
+            "required": false,
+            "description": "The country the order goes to (ISO code)",
+            "name": "country",
             "in": "query"
           }
         ],
@@ -43628,6 +43700,30 @@
           {
             "schema": {
               "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "description": "A seller's name, or part of it, or its id"
+            },
+            "required": false,
+            "description": "A seller's name, or part of it, or its id",
+            "name": "seller",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2,
+              "description": "The country the order goes to (ISO code)"
+            },
+            "required": false,
+            "description": "The country the order goes to (ISO code)",
+            "name": "country",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
               "format": "uuid"
             },
             "required": false,
@@ -43749,6 +43845,30 @@
             "required": false,
             "description": "Reference, customer email or name",
             "name": "q",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "description": "A seller's name, or part of it, or its id"
+            },
+            "required": false,
+            "description": "A seller's name, or part of it, or its id",
+            "name": "seller",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2,
+              "description": "The country the order goes to (ISO code)"
+            },
+            "required": false,
+            "description": "The country the order goes to (ISO code)",
+            "name": "country",
             "in": "query"
           }
         ],

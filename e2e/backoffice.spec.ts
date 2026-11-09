@@ -28,6 +28,8 @@ const WORKSPACES: [string, string, string][] = [
   ["seller.owner", "/fr/seller/orders", "Commandes à expédier"],
   ["seller.owner", "/fr/seller/finance", "Mes finances"],
   ["carrier", "/fr/partner/finance", "Mes finances"],
+  ["admin", "/fr/store-orders?seller=Quincaillerie&country=BF", "Commandes boutique"],
+  ["admin", "/fr/shipments?country=BF", "Expéditions"],
 ];
 
 for (const [role, path, heading] of WORKSPACES) {

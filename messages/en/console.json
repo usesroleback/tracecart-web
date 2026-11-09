@@ -32,5 +32,11 @@
     "title": "Keyboard shortcuts",
     "help": "These shortcuts",
     "close": "Close"
+  },
+  "market": {
+    "seller": "Seller",
+    "sellerHint": "Seller's name",
+    "country": "Destination country",
+    "allCountries": "All countries"
   }
 }

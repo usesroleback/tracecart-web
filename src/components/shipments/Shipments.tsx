@@ -12,13 +12,21 @@ import { Field, input } from "@/components/ui/form/Form";
 import { call } from "@/components/checkout/http";
 import {
   ExportButton,
+  MarketFilters,
   QueueChip,
   SavedViews,
   useListFilters,
 } from "@/components/console/ListTools";
 import { useSession } from "@/context/SessionContext";
 
-const LIST_FILTERS = ["q", "status", "problems", "queue"] as const;
+const LIST_FILTERS = [
+  "q",
+  "status",
+  "problems",
+  "queue",
+  "seller",
+  "country",
+] as const;
 
 const STATUSES = [
   "PLANNED",
@@ -128,6 +136,7 @@ export function ShipmentsList({
   const canAssign = !!user.permissions?.includes("logistics.routing.assign");
   const { applied, query, apply } = useListFilters(LIST_FILTERS);
   const [q, setQ] = useState(applied.q);
+  const [seller, setSeller] = useState(applied.seller);
   const status = applied.status;
   const problems = applied.problems === "open";
   const [rows, setRows] = useState<Row[]>([]);
@@ -157,8 +166,9 @@ export function ShipmentsList({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPicked(new Set());
     setQ(applied.q);
+    setSeller(applied.seller);
     load(null, query);
-  }, [load, query, applied.q]);
+  }, [load, query, applied.q, applied.seller]);
 
   return (
     <div>
@@ -179,7 +189,7 @@ export function ShipmentsList({
         className="mb-4 flex flex-wrap gap-2"
         onSubmit={(e: FormEvent) => {
           e.preventDefault();
-          apply({ ...applied, q });
+          apply({ ...applied, q, seller });
         }}
       >
         <input
@@ -193,7 +203,9 @@ export function ShipmentsList({
           className={`${input} max-w-[14rem]`}
           value={status}
           aria-label={t("status")}
-          onChange={(e) => apply({ ...applied, q, status: e.target.value })}
+          onChange={(e) =>
+            apply({ ...applied, q, seller, status: e.target.value })
+          }
         >
           <option value="">{t("allStatuses")}</option>
           {STATUSES.map((s) => (
@@ -207,11 +219,22 @@ export function ShipmentsList({
             type="checkbox"
             checked={problems}
             onChange={(e) =>
-              apply({ ...applied, q, problems: e.target.checked ? "open" : "" })
+              apply({
+                ...applied,
+                q,
+                seller,
+                problems: e.target.checked ? "open" : "",
+              })
             }
           />
           {t("onlyProblems")}
         </label>
+        <MarketFilters
+          seller={seller}
+          onSeller={setSeller}
+          country={applied.country}
+          onCountry={(country) => apply({ ...applied, q, seller, country })}
+        />
         <Button type="submit" variant="secondary">
           {t("find")}
         </Button>

@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import Button from "@/components/ui/button/Button";
 import { input } from "@/components/ui/form/Form";
+import { COUNTRY_CODES, countryName } from "@/lib/country";
 import { ApiError, call } from "@/components/checkout/http";
 
 // What console lists share (ADR-049): filters kept in the address, so a view can
@@ -16,7 +17,10 @@ export function useListFilters(keys: readonly string[]) {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const applied = useMemo(() => Object.fromEntries(keys.map((k) => [k, params.get(k) ?? ""])), [keys, params]);
+  const applied = useMemo(
+    () => Object.fromEntries(keys.map((k) => [k, params.get(k) ?? ""])),
+    [keys, params],
+  );
   const query = useMemo(() => {
     const out = new URLSearchParams();
     for (const k of keys) if (applied[k]) out.set(k, applied[k]);
@@ -27,9 +31,11 @@ export function useListFilters(keys: readonly string[]) {
       const out = new URLSearchParams();
       for (const k of keys) if (next[k]?.trim()) out.set(k, next[k].trim());
       const text = out.toString();
-      router.replace(text ? `${pathname}?${text}` : pathname, { scroll: false });
+      router.replace(text ? `${pathname}?${text}` : pathname, {
+        scroll: false,
+      });
     },
-    [keys, pathname, router]
+    [keys, pathname, router],
   );
   return { applied, query, apply };
 }
@@ -41,7 +47,15 @@ interface View {
 }
 
 /** A person's saved filters for this list: choose one, save the current ones, or delete one. */
-export function SavedViews({ list, query, onApply }: { list: "shipments" | "storeOrders" | "returns"; query: string; onApply: (filters: Record<string, string>) => void }) {
+export function SavedViews({
+  list,
+  query,
+  onApply,
+}: {
+  list: "shipments" | "storeOrders" | "returns";
+  query: string;
+  onApply: (filters: Record<string, string>) => void;
+}) {
   const t = useTranslations("console.views");
   const [views, setViews] = useState<View[]>([]);
   const [naming, setNaming] = useState(false);
@@ -84,7 +98,20 @@ export function SavedViews({ list, query, onApply }: { list: "shipments" | "stor
   return (
     <div className="flex flex-wrap items-center gap-2 text-sm">
       {views.length ? (
-        <select className={`${input} max-w-[14rem]`} aria-label={t("label")} value={current?.id ?? ""} onChange={(e) => onApply(Object.fromEntries(new URLSearchParams(views.find((v) => v.id === e.target.value)?.query ?? "")))}>
+        <select
+          className={`${input} max-w-[14rem]`}
+          aria-label={t("label")}
+          value={current?.id ?? ""}
+          onChange={(e) =>
+            onApply(
+              Object.fromEntries(
+                new URLSearchParams(
+                  views.find((v) => v.id === e.target.value)?.query ?? "",
+                ),
+              ),
+            )
+          }
+        >
           <option value="">{t("all")}</option>
           {views.map((v) => (
             <option key={v.id} value={v.id}>
@@ -94,11 +121,19 @@ export function SavedViews({ list, query, onApply }: { list: "shipments" | "stor
         </select>
       ) : null}
       {current ? (
-        <button type="button" className="underline" onClick={() => remove(current.id)}>
+        <button
+          type="button"
+          className="underline"
+          onClick={() => remove(current.id)}
+        >
           {t("delete")}
         </button>
       ) : query && !naming ? (
-        <button type="button" className="underline" onClick={() => setNaming(true)}>
+        <button
+          type="button"
+          className="underline"
+          onClick={() => setNaming(true)}
+        >
           {t("save")}
         </button>
       ) : null}
@@ -110,7 +145,15 @@ export function SavedViews({ list, query, onApply }: { list: "shipments" | "stor
             save();
           }}
         >
-          <input className={`${input} max-w-[12rem]`} aria-label={t("name")} placeholder={t("name")} required maxLength={60} value={name} onChange={(e) => setName(e.target.value)} />
+          <input
+            className={`${input} max-w-[12rem]`}
+            aria-label={t("name")}
+            placeholder={t("name")}
+            required
+            maxLength={60}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <Button type="submit" variant="secondary" disabled={!name.trim()}>
             {t("saveCta")}
           </Button>
@@ -135,12 +178,26 @@ export function ExportButton({ path, query }: { path: string; query: string }) {
     setBusy(true);
     setError(null);
     try {
-      const res = await fetch(`/api/tracecart${path}${query ? `?${query}` : ""}`, { headers: { "X-Tracecart-Locale": document.documentElement.lang }, cache: "no-store" });
+      const res = await fetch(
+        `/api/tracecart${path}${query ? `?${query}` : ""}`,
+        {
+          headers: { "X-Tracecart-Locale": document.documentElement.lang },
+          cache: "no-store",
+        },
+      );
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        throw new ApiError(body?.error?.message ?? t("failed"), res.status, body?.error?.code ?? null, null);
+        throw new ApiError(
+          body?.error?.message ?? t("failed"),
+          res.status,
+          body?.error?.code ?? null,
+          null,
+        );
       }
-      const name = res.headers.get("content-disposition")?.match(/filename="([^"]+)"/)?.[1] ?? "tracecart.csv";
+      const name =
+        res.headers
+          .get("content-disposition")
+          ?.match(/filename="([^"]+)"/)?.[1] ?? "tracecart.csv";
       const url = URL.createObjectURL(await res.blob());
       const link = document.createElement("a");
       link.href = url;
@@ -169,7 +226,13 @@ export function ExportButton({ path, query }: { path: string; query: string }) {
 }
 
 /** Says the list is one dashboard queue, and how to see the rest. */
-export function QueueChip({ label, onClear }: { label: string; onClear: () => void }) {
+export function QueueChip({
+  label,
+  onClear,
+}: {
+  label: string;
+  onClear: () => void;
+}) {
   const t = useTranslations("console");
   return (
     <p className="mb-4 flex flex-wrap items-center gap-2 text-sm">
@@ -178,5 +241,45 @@ export function QueueChip({ label, onClear }: { label: string; onClear: () => vo
         {t("seeAll")}
       </button>
     </p>
+  );
+}
+
+/** By seller (a name, sent with the search) and by destination country (at once). */
+export function MarketFilters({
+  seller,
+  onSeller,
+  country,
+  onCountry,
+}: {
+  seller: string;
+  onSeller: (v: string) => void;
+  country: string;
+  onCountry: (v: string) => void;
+}) {
+  const t = useTranslations("console.market");
+  const locale = useLocale();
+  return (
+    <>
+      <input
+        className={`${input} max-w-[12rem]`}
+        value={seller}
+        onChange={(e) => onSeller(e.target.value)}
+        placeholder={t("sellerHint")}
+        aria-label={t("seller")}
+      />
+      <select
+        className={`${input} max-w-[14rem]`}
+        value={country}
+        aria-label={t("country")}
+        onChange={(e) => onCountry(e.target.value)}
+      >
+        <option value="">{t("allCountries")}</option>
+        {COUNTRY_CODES.map((c) => (
+          <option key={c} value={c}>
+            {countryName(c, locale)}
+          </option>
+        ))}
+      </select>
+    </>
   );
 }

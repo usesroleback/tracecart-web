@@ -32,5 +32,11 @@
     "title": "Raccourcis clavier",
     "help": "Ces raccourcis",
     "close": "Fermer"
+  },
+  "market": {
+    "seller": "Vendeur",
+    "sellerHint": "Nom du vendeur",
+    "country": "Pays de destination",
+    "allCountries": "Tous les pays"
   }
 }

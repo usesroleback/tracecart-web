@@ -21107,6 +21107,10 @@ export interface paths {
                     q?: string;
                     /** @description Only shipments with an open problem */
                     problems?: "open";
+                    /** @description A seller's name, or part of it, or its id */
+                    seller?: string;
+                    /** @description The country the order goes to (ISO code) */
+                    country?: string;
                     cursor?: string;
                     limit?: number;
                 };
@@ -31350,6 +31354,10 @@ export interface paths {
                     q?: string;
                     /** @description Only shipments with an open problem */
                     problems?: "open";
+                    /** @description A seller's name, or part of it, or its id */
+                    seller?: string;
+                    /** @description The country the order goes to (ISO code) */
+                    country?: string;
                     cursor?: string;
                     limit?: number;
                 };
@@ -31572,6 +31580,10 @@ export interface paths {
                     q?: string;
                     /** @description Only shipments with an open problem */
                     problems?: "open";
+                    /** @description A seller's name, or part of it, or its id */
+                    seller?: string;
+                    /** @description The country the order goes to (ISO code) */
+                    country?: string;
                 };
                 header?: never;
                 path?: never;
@@ -34343,6 +34355,10 @@ export interface paths {
                     queue?: "paymentsToConfirm";
                     /** @description Reference, customer email or name */
                     q?: string;
+                    /** @description A seller's name, or part of it, or its id */
+                    seller?: string;
+                    /** @description The country the order goes to (ISO code) */
+                    country?: string;
                     cursor?: string;
                     limit?: number;
                 };
@@ -34421,6 +34437,10 @@ export interface paths {
                     queue?: "paymentsToConfirm";
                     /** @description Reference, customer email or name */
                     q?: string;
+                    /** @description A seller's name, or part of it, or its id */
+                    seller?: string;
+                    /** @description The country the order goes to (ISO code) */
+                    country?: string;
                 };
                 header?: never;
                 path?: never;
