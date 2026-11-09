@@ -18181,6 +18181,83 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/me/seller/agreement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Accept the version of the seller agreement in force. Who, when and from where is recorded. */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @description The version of the seller agreement read and accepted: GET /sellers/terms gives the one in force */
+                        agreementVersion: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not allowed */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/me/seller/documents": {
         parameters: {
             query?: never;
@@ -18732,7 +18809,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Send the application for review */
+        /** Accept the seller agreement and send the application for review */
         post: {
             parameters: {
                 query?: never;
@@ -18740,7 +18817,14 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @description The version of the seller agreement read and accepted: GET /sellers/terms gives the one in force */
+                        agreementVersion: string;
+                    };
+                };
+            };
             responses: {
                 /** @description OK */
                 200: {
@@ -18748,6 +18832,15 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content?: never;
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
                 };
                 /** @description Not signed in */
                 401: {

@@ -168,7 +168,8 @@
     "termHold": "{days, plural, =0 {You're paid right after delivery.} one {You're paid # day after delivery.} other {You're paid # days after delivery.}}",
     "termDocuments": "You'll need: {documents}.",
     "gateTitle": "Apply to sell",
-    "gateLead": "Sign in or create an account to start your application."
+    "gateLead": "Sign in or create an account to start your application.",
+    "termAgreement": "Read the seller agreement"
   },
   "orders": {
     "title": "Orders to ship",
@@ -212,5 +213,12 @@
     "refuse": "Refuse",
     "refuseReason": "Why you're refusing",
     "refused": "Refused: {reason}"
-  }
+  },
+  "agreementCheck": "I have read and accept the {link}",
+  "agreementLink": "seller agreement",
+  "agreementNew": "The seller agreement has changed. Read the new version and accept it to keep selling with no surprises.",
+  "agreementAccept": "I accept the new agreement",
+  "agreementAccepted": "Seller agreement accepted on {date} (version {version})",
+  "agreementNone": "Seller agreement not accepted yet",
+  "agreementOld": "Accepted an earlier version of the agreement ({version})"
 }

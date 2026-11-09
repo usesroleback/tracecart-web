@@ -5,7 +5,7 @@ import { StoreShell } from "@/components/store/StoreShell";
 type Section = { title: string; body: string[] };
 
 /** Terms, privacy and contact: one layout, with the words in messages/{fr,en}/legal.json. */
-export async function LegalPage({ page }: { page: "terms" | "privacy" | "contact" }) {
+export async function LegalPage({ page }: { page: "terms" | "privacy" | "contact" | "sellerAgreement" }) {
   // Who to reach is set on the server and read per request (.env.example).
   await connection();
   const email = process.env.CONTACT_EMAIL?.trim() || null;
@@ -20,6 +20,7 @@ export async function LegalPage({ page }: { page: "terms" | "privacy" | "contact
       <article className="max-w-3xl pb-12">
         <h1 className="rb-headline text-[28px] sm:text-[36px]">{t("title")}</h1>
         <p className="mb-8 mt-2 text-ink-muted">{t("lead")}</p>
+        {t.has("version") ? <p className="-mt-6 mb-8 text-sm text-ink-muted">{t("version")}</p> : null}
         {sections.map((s) => (
           <section key={s.title} className="mb-6">
             <h2 className="text-lg font-semibold">{s.title}</h2>

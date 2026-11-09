@@ -24778,6 +24778,84 @@
         }
       }
     },
+    "/me/seller/agreement": {
+      "post": {
+        "tags": [
+          "My seller account"
+        ],
+        "summary": "Accept the version of the seller agreement in force. Who, when and from where is recorded.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agreementVersion": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "The version of the seller agreement read and accepted: GET /sellers/terms gives the one in force"
+                  }
+                },
+                "required": [
+                  "agreementVersion"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/me/seller/documents": {
       "post": {
         "tags": [
@@ -25316,16 +25394,45 @@
         "tags": [
           "My seller account"
         ],
-        "summary": "Send the application for review",
+        "summary": "Accept the seller agreement and send the application for review",
         "security": [
           {
             "bearerAuth": []
           }
         ],
         "x-tracecart-access": "account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agreementVersion": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "The version of the seller agreement read and accepted: GET /sellers/terms gives the one in force"
+                  }
+                },
+                "required": [
+                  "agreementVersion"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "401": {
             "description": "Not signed in",

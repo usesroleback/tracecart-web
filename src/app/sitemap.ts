@@ -23,6 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry("/brands"),
     entry("/about"),
     entry("/terms"),
+    entry("/sell/agreement"),
     entry("/privacy"),
     entry("/contact"),
     ...(data?.categories ?? []).map((c) => entry(`/c/${c.slug}`)),

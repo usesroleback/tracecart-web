@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { box, SignInGate } from "@/components/services/SignInGate";
 import { percent, SellerPanel } from "./SellerPanel";
 
@@ -18,6 +19,9 @@ export function SellOnTracecart({ terms }: { terms: { commissionBps: number; pay
             <li>{t("sell.termHold", { days: terms.payoutHoldDays })}</li>
             <li>{t("sell.termDocuments", { documents: terms.requiredDocuments.map((k) => t(`kinds.${k}` as "kinds.OTHER")).join(", ") })}</li>
           </ul>
+          <Link href="/sell/agreement" className="mt-2 inline-block font-medium underline">
+            {t("sell.termAgreement")}
+          </Link>
         </section>
       ) : null}
       <SignInGate title={t("sell.gateTitle")} lead={t("sell.gateLead")}>

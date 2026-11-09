@@ -9,36 +9,208 @@
     "title": "Terms of use",
     "lead": "What you and Tracecart can expect from each other when you search, buy, have something sourced or ship with us.",
     "sections": [
-      { "title": "Your account", "body": ["You need an account to place an order. Keep your email and phone number correct: we send everything about your orders by email, and couriers use your number to deliver.", "You are responsible for what is done from your account."] },
-      { "title": "Prices", "body": ["The price at checkout covers the item, delivery, customs duties and taxes. It is fixed when you order, and nothing is added at delivery.", "Prices shown in another currency are approximate. You pay in the currency shown at checkout."] },
-      { "title": "Paying", "body": ["You can pay online (mobile money or card) or in cash on delivery, where each is available for your order. Approved company accounts may also pay on invoice, and gift cards can be used where accepted.", "An online payment holds your items for a limited time. If it isn't completed in that time, the order is cancelled."] },
-      { "title": "Delivery", "body": ["Delivery dates are estimates. We tell you by email when an order moves or is delayed.", "Goods crossing a border can be held by customs. Suggested customs codes are never binding: a customs authority decides."] },
-      { "title": "Sellers", "body": ["Some products are sold by independent sellers. The product page says who sells each one, and \"Verified\" means we approved that seller.", "Sellers are responsible for describing their products accurately."] },
-      { "title": "Will it fit?", "body": ["We say a part fits only when that rests on evidence: a manufacturer document, an OEM cross-reference or a test by our staff. Anything else says \"may fit\": check it before you buy."] },
-      { "title": "Sourcing and freight", "body": ["A freight estimate is indicative. A quote holds until the date shown on it.", "When we find a product for you, nothing is ordered until you accept a quote."] },
-      { "title": "Returns and refunds", "body": ["You can ask to return an item from your account, within the period shown on your order. We refund what you paid once the return is accepted."] },
-      { "title": "What you can't do", "body": ["You may not use Tracecart for illegal, counterfeit or prohibited goods, to mislead anyone, or to interfere with the service. We may cancel orders or close accounts that do."] },
-      { "title": "Changes", "body": ["We may update these terms. The version that applies to an order is the one in force when you place it."] }
+      {
+        "title": "Your account",
+        "body": [
+          "You need an account to place an order. Keep your email and phone number correct: we send everything about your orders by email, and couriers use your number to deliver.",
+          "You are responsible for what is done from your account."
+        ]
+      },
+      {
+        "title": "Prices",
+        "body": [
+          "The price at checkout covers the item, delivery, customs duties and taxes. It is fixed when you order, and nothing is added at delivery.",
+          "Prices shown in another currency are approximate. You pay in the currency shown at checkout."
+        ]
+      },
+      {
+        "title": "Paying",
+        "body": [
+          "You can pay online (mobile money or card) or in cash on delivery, where each is available for your order. Approved company accounts may also pay on invoice, and gift cards can be used where accepted.",
+          "An online payment holds your items for a limited time. If it isn't completed in that time, the order is cancelled."
+        ]
+      },
+      {
+        "title": "Delivery",
+        "body": [
+          "Delivery dates are estimates. We tell you by email when an order moves or is delayed.",
+          "Goods crossing a border can be held by customs. Suggested customs codes are never binding: a customs authority decides."
+        ]
+      },
+      {
+        "title": "Sellers",
+        "body": [
+          "Some products are sold by independent sellers. The product page says who sells each one, and \"Verified\" means we approved that seller.",
+          "Sellers are responsible for describing their products accurately."
+        ]
+      },
+      {
+        "title": "Will it fit?",
+        "body": [
+          "We say a part fits only when that rests on evidence: a manufacturer document, an OEM cross-reference or a test by our staff. Anything else says \"may fit\": check it before you buy."
+        ]
+      },
+      {
+        "title": "Sourcing and freight",
+        "body": [
+          "A freight estimate is indicative. A quote holds until the date shown on it.",
+          "When we find a product for you, nothing is ordered until you accept a quote."
+        ]
+      },
+      {
+        "title": "Returns and refunds",
+        "body": [
+          "You can ask to return an item from your account, within the period shown on your order. We refund what you paid once the return is accepted."
+        ]
+      },
+      {
+        "title": "What you can't do",
+        "body": [
+          "You may not use Tracecart for illegal, counterfeit or prohibited goods, to mislead anyone, or to interfere with the service. We may cancel orders or close accounts that do."
+        ]
+      },
+      {
+        "title": "Changes",
+        "body": [
+          "We may update these terms. The version that applies to an order is the one in force when you place it."
+        ]
+      }
     ]
   },
   "privacy": {
     "title": "Privacy policy",
     "lead": "What we collect, why, and who else handles it.",
     "sections": [
-      { "title": "What we collect", "body": ["Your account: name, email and phone number.", "Your orders: delivery addresses, what you bought, and the status of your payments. We never see or store your card details or mobile money PIN.", "What you send us: the words, photos and videos you search with, and the files you attach to a request.", "If you sell or carry with us: your company's details, identity documents and payout account."] },
-      { "title": "Why", "body": ["To run your account, deliver your orders, answer your requests, find the products you describe, prevent fraud and meet our legal and accounting obligations."] },
-      { "title": "Who else handles it", "body": ["Clerk (sign-in), CinetPay (online payments), Supabase (stored files and backups), Hetzner (hosting), our email provider, and Sentry (error reports, without personal details).", "When you search with words, photos or video, what you send goes to Anthropic and Voyage AI to understand it. Search terms may also go to Mindcase when we look for a product for you.", "Couriers and partners get what they need to deliver, never what you paid."] },
-      { "title": "Cookies and this device", "body": ["We use cookies to keep you signed in and to remember your country, language and recently viewed products. Your comparison list stays on your device."] },
-      { "title": "How long", "body": ["We keep your data while your account is open, and after that only as long as our legal and accounting obligations require."] },
-      { "title": "Your rights", "body": ["You can ask to see, correct or delete your data, and you can turn off order progress emails or news in your account. Write to us using the details below."] }
+      {
+        "title": "What we collect",
+        "body": [
+          "Your account: name, email and phone number.",
+          "Your orders: delivery addresses, what you bought, and the status of your payments. We never see or store your card details or mobile money PIN.",
+          "What you send us: the words, photos and videos you search with, and the files you attach to a request.",
+          "If you sell or carry with us: your company's details, identity documents and payout account."
+        ]
+      },
+      {
+        "title": "Why",
+        "body": [
+          "To run your account, deliver your orders, answer your requests, find the products you describe, prevent fraud and meet our legal and accounting obligations."
+        ]
+      },
+      {
+        "title": "Who else handles it",
+        "body": [
+          "Clerk (sign-in), CinetPay (online payments), Supabase (stored files and backups), Hetzner (hosting), our email provider, and Sentry (error reports, without personal details).",
+          "When you search with words, photos or video, what you send goes to Anthropic and Voyage AI to understand it. Search terms may also go to Mindcase when we look for a product for you.",
+          "Couriers and partners get what they need to deliver, never what you paid."
+        ]
+      },
+      {
+        "title": "Cookies and this device",
+        "body": [
+          "We use cookies to keep you signed in and to remember your country, language and recently viewed products. Your comparison list stays on your device."
+        ]
+      },
+      {
+        "title": "How long",
+        "body": [
+          "We keep your data while your account is open, and after that only as long as our legal and accounting obligations require."
+        ]
+      },
+      {
+        "title": "Your rights",
+        "body": [
+          "You can ask to see, correct or delete your data, and you can turn off order progress emails or news in your account. Write to us using the details below."
+        ]
+      }
     ]
   },
   "contact": {
     "title": "Contact",
     "lead": "The quickest way to get help with an order is from the order itself.",
     "sections": [
-      { "title": "About an order", "body": ["Open your order under Account, then Orders. It shows where the order is, and from there you can ask for a return."] },
-      { "title": "Selling, carrying or buying as a company", "body": ["Apply from the Sell on Tracecart, Carry with Tracecart or Buy as a company pages. Each one says what we need from you."] }
+      {
+        "title": "About an order",
+        "body": [
+          "Open your order under Account, then Orders. It shows where the order is, and from there you can ask for a return."
+        ]
+      },
+      {
+        "title": "Selling, carrying or buying as a company",
+        "body": [
+          "Apply from the Sell on Tracecart, Carry with Tracecart or Buy as a company pages. Each one says what we need from you."
+        ]
+      }
+    ]
+  },
+  "sellerAgreement": {
+    "title": "Seller agreement",
+    "lead": "What you agree to by selling on Tracecart, and what Tracecart does for you. Your acceptance is recorded with the date, your account and your IP address.",
+    "version": "Version of 10 November 2026",
+    "sections": [
+      {
+        "title": "Who sells",
+        "body": [
+          "You sell in your own name: you are the seller of the products you list. Tracecart is the marketplace that shows them, takes the payment and arranges delivery.",
+          "You guarantee that your products are genuine, legal to sell in the countries you offer them in, and described accurately: photos, specifications, condition and warranty."
+        ]
+      },
+      {
+        "title": "Orders",
+        "body": [
+          "You accept or refuse each order promptly, then prepare it, label it and hand it to the carrier Tracecart chose before the date shown.",
+          "An item you refuse or can't find is cancelled and refunded to the customer. Repeated delays or cancellations can lead to suspension."
+        ]
+      },
+      {
+        "title": "Delivery",
+        "body": [
+          "Tracecart chooses the carrier and arranges delivery to the customer. You don't negotiate transport."
+        ]
+      },
+      {
+        "title": "Customer data",
+        "body": [
+          "You see only what you need to prepare the order. The customer's name and phone number stay with Tracecart and the carrier. You use an order's information for that order only."
+        ]
+      },
+      {
+        "title": "Prices and commission",
+        "body": [
+          "You set your prices. Tracecart keeps a commission on each sale: the rate that applies to you is shown in your seller account.",
+          "Import duties and taxes are estimated at checkout. If the real charge differs, Tracecart bears the difference, not you."
+        ]
+      },
+      {
+        "title": "Cash on delivery",
+        "body": [
+          "When the customer pays in cash, the carrier collects it and hands it over to Tracecart. A sale paid this way is owed to you only once Tracecart has received that cash."
+        ]
+      },
+      {
+        "title": "Your payouts",
+        "body": [
+          "A sale is owed to you after delivery, then after the holding period shown in your account, which covers returns. Tracecart pays the account you gave, once a person has checked it. Any change of account is checked again before the next payout.",
+          "Every sale, its commission and its payment state are in your finance page, with a downloadable statement."
+        ]
+      },
+      {
+        "title": "Returns and refunds",
+        "body": [
+          "A refund to the customer takes back your share of the sale, in proportion to what is refunded. If that share was already paid to you, it comes off your next payout."
+        ]
+      },
+      {
+        "title": "Suspension",
+        "body": [
+          "Tracecart can suspend a seller account that doesn't keep to this agreement: its offers are paused, and you're told why. Orders under way are completed or refunded."
+        ]
+      },
+      {
+        "title": "Changes",
+        "body": [
+          "If this agreement changes, a new version is published on this page, and you're asked to accept it from your seller account."
+        ]
+      }
     ]
   }
 }

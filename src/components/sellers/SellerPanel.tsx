@@ -37,6 +37,7 @@ export interface Application {
   payout: { method: "MOBILE_MONEY" | "BANK"; holderName: string; provider: string; accountEnding: string; confirmed: boolean } | null;
   documents: SellerDocument[];
   missing: string[];
+  agreement: { version: string; acceptedVersion: string | null; acceptedAt: string | null; current: boolean };
   terms: { commissionBps: number; payoutHoldDays: number; requiredDocuments: string[] };
 }
 
@@ -51,6 +52,7 @@ export function SellerPanel() {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   const load = useCallback(async () => {
     const res = await call<{ application: Application | null }>("GET", "/me/seller");
@@ -119,6 +121,20 @@ export function SellerPanel() {
         </dl>
       </section>
 
+      {live && !a.agreement.current ? (
+        <section className={`${box} border-attn`} role="status">
+          <p className="mb-3">{t("agreementNew")}</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/sell/agreement" target="_blank" className="font-medium underline">
+              {t("agreementLink")}
+            </Link>
+            <Button variant="primary" loading={busy} onClick={() => act(() => call("POST", "/me/seller/agreement", { agreementVersion: a.agreement.version }))}>
+              {t("agreementAccept")}
+            </Button>
+          </div>
+        </section>
+      ) : null}
+
       {editable || live ? <DetailsForm key={a.status} application={a} locked={live} busy={busy} onSave={(body) => act(() => call("PUT", "/me/seller", body))} /> : null}
 
       <section className={box} aria-labelledby="seller-documents">
@@ -149,7 +165,19 @@ export function SellerPanel() {
               </ul>
             </>
           ) : null}
-          <Button variant="primary" loading={busy} disabled={a.missing.length > 0} onClick={() => act(() => call("POST", "/me/seller/submit"))}>
+          <label className="mb-3 flex items-start gap-2">
+            <input type="checkbox" className="mt-1" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+            <span>
+              {t.rich("agreementCheck", {
+                link: () => (
+                  <Link href="/sell/agreement" target="_blank" className="font-medium underline">
+                    {t("agreementLink")}
+                  </Link>
+                ),
+              })}
+            </span>
+          </label>
+          <Button variant="primary" loading={busy} disabled={a.missing.length > 0 || !agreed} onClick={() => act(() => call("POST", "/me/seller/submit", { agreementVersion: a.agreement.version }))}>
             {t("submit")}
           </Button>
         </section>

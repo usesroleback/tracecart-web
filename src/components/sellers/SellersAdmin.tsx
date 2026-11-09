@@ -202,6 +202,13 @@ export function SellerDetail({ id, canSetCommission, ownId }: { id: string; canS
             </p>
             {s.description ? <p className="mt-2 text-ink-muted">{s.description}</p> : null}
             {s.decisionNote ? <p className="mt-2 whitespace-pre-line font-medium">{s.decisionNote}</p> : null}
+            <p className={`mt-2 ${s.agreement.current ? "text-ink-muted" : "text-critical"}`}>
+              {s.agreement.current && s.agreement.acceptedAt
+                ? t("agreementAccepted", { date: new Date(s.agreement.acceptedAt).toLocaleDateString(locale), version: s.agreement.version })
+                : s.agreement.acceptedVersion
+                  ? t("agreementOld", { version: s.agreement.acceptedVersion })
+                  : t("agreementNone")}
+            </p>
           </section>
 
           <section className={box}>

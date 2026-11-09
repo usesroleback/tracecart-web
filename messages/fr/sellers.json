@@ -168,7 +168,8 @@
     "termHold": "{days, plural, =0 {Vous êtes payé juste après la livraison.} one {Vous êtes payé # jour après la livraison.} other {Vous êtes payé # jours après la livraison.}}",
     "termDocuments": "Il vous faudra : {documents}.",
     "gateTitle": "Demander à vendre",
-    "gateLead": "Connectez-vous ou créez un compte pour commencer votre demande."
+    "gateLead": "Connectez-vous ou créez un compte pour commencer votre demande.",
+    "termAgreement": "Lire le contrat vendeur"
   },
   "orders": {
     "title": "Commandes à expédier",
@@ -212,5 +213,12 @@
     "refuse": "Refuser",
     "refuseReason": "Motif du refus",
     "refused": "Refusée : {reason}"
-  }
+  },
+  "agreementCheck": "J'ai lu et j'accepte le {link}",
+  "agreementLink": "contrat vendeur",
+  "agreementNew": "Le contrat vendeur a changé. Lisez la nouvelle version et acceptez-la pour continuer à vendre sereinement.",
+  "agreementAccept": "J'accepte le nouveau contrat",
+  "agreementAccepted": "Contrat vendeur accepté le {date} (version {version})",
+  "agreementNone": "Contrat vendeur pas encore accepté",
+  "agreementOld": "A accepté une version précédente du contrat ({version})"
 }
