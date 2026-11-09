@@ -52,6 +52,7 @@ const NAV: NavGroup[] = [
       { icon: <DsPackageIcon />, name: "storeOrders", path: "/store-orders", permission: "orders.store.read" },
       { icon: <DsChatIcon />, name: "requests", path: "/sourcing", permission: "sourcing.request.read" },
       { icon: <DsTruckIcon />, name: "freight", path: "/freight-requests", permission: "freight.request.read" },
+      { icon: <DsChatIcon />, name: "support", path: "/support", permission: "support.ticket.read" },
       { icon: <DsPackageIcon />, name: "returns", path: "/returns", permission: "returns.read" },
       { icon: <DsPackageIcon />, name: "refunds", path: "/refunds", permission: ["payments.read", "orders.refund"] },
       { icon: <DsBuildingIcon />, name: "b2b", path: "/b2b", permission: "customers.b2b.approve" },

@@ -263,6 +263,22 @@ export function StoreOrderDetail({ id, canCancel, canConfirm, canRefund, canReco
                     <p className="rb-mono-s text-ink-muted">
                       {l.sku} · {l.fulfillmentType ? t(`fulfillment.${l.fulfillmentType}` as "fulfillment.TRACECART_STOCK") : t("kind.FREIGHT")} · {l.status}
                     </p>
+                    {canCancel && ["OPEN", "ALLOCATED", "SOURCING", "RECEIVED", "PICKED"].includes(l.status) && order.lines.filter((x) => x.status !== "CANCELLED").length > 1 ? (
+                      <button
+                        type="button"
+                        className="text-sm underline"
+                        disabled={busy}
+                        onClick={() => {
+                          const reason = window.prompt(t("cancelLineReason", { title: l.title }))?.trim();
+                          if (reason && reason.length >= 3) void act(async () => {
+                            await call("POST", `/store-orders/${order.id}/lines/${l.id}/cancel`, { reason });
+                            return call<StaffOrder>("GET", `/store-orders/${order.id}`);
+                          });
+                        }}
+                      >
+                        {t("cancelLine")}
+                      </button>
+                    ) : null}
                   </td>
                   <td className="rb-numeral py-2 text-right">{money(l.breakdown.itemMinor)}</td>
                   <td className="rb-numeral py-2 text-right">{money(l.breakdown.shippingMinor)}</td>

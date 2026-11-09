@@ -39,5 +39,57 @@
     "about": "Sur",
     "who": "Qui",
     "more": "Afficher plus"
+  },
+  "support": {
+    "mine": "Aide",
+    "ask": "Poser une question",
+    "subject": "Sujet",
+    "orderReference": "Référence de commande (facultatif)",
+    "message": "Votre message",
+    "send": "Envoyer",
+    "noneMine": "Aucune demande pour l'instant.",
+    "you": "Vous",
+    "answer": "Votre réponse",
+    "desk": "Service client",
+    "deskLead": "Les demandes des clients. Une note interne n'est jamais montrée au client.",
+    "status": "État",
+    "all": "Tous",
+    "none": "Aucune demande.",
+    "assigned": "Suivi par {name}",
+    "internal": "Note interne",
+    "reply": "Répondre",
+    "note": "Ajouter une note interne",
+    "resolve": "Résoudre avec cette réponse",
+    "takeIt": "Prendre en charge",
+    "statuses": {
+      "OPEN": "À traiter",
+      "WAITING_CUSTOMER": "En attente du client",
+      "RESOLVED": "Résolue",
+      "CLOSED": "Fermée"
+    }
+  },
+  "boards": {
+    "sales30": "Ventes sur 30 jours",
+    "topProducts": "Meilleures ventes sur 30 jours",
+    "cashToRemit": "Espèces à reverser",
+    "owedToYou": "Tracecart vous doit",
+    "seller": {
+      "toAnswer": "À accepter",
+      "preparing": "En préparation",
+      "awaitingPickup": "En attente d'enlèvement",
+      "inTransit": "En route",
+      "delivered": "Livrées (30 j)",
+      "cancelled": "Annulées (30 j)",
+      "returnsOpen": "Retours en cours"
+    },
+    "partner": {
+      "toAnswer": "À accepter",
+      "awaitingPickup": "À enlever",
+      "onTheRoad": "En route",
+      "dueSoon": "À livrer sous 48 h",
+      "failed": "Livraisons manquées",
+      "problems": "Problèmes",
+      "atPoint": "Au point relais"
+    }
   }
 }

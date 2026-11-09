@@ -1,4 +1,5 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { SellerDashboard } from "@/components/support/Support";
 import { Link } from "@/i18n/navigation";
 import { SellerPanel } from "@/components/sellers/SellerPanel";
 import { requireRoleKey } from "@/lib/session";
@@ -27,6 +28,7 @@ export default async function SellerCenterPage() {
           </Link>
         </div>
       </div>
+      <SellerDashboard locale={await getLocale()} />
       <SellerPanel />
     </div>
   );

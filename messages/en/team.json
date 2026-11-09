@@ -39,5 +39,57 @@
     "about": "On",
     "who": "Who",
     "more": "Show more"
+  },
+  "support": {
+    "mine": "Help",
+    "ask": "Ask a question",
+    "subject": "Subject",
+    "orderReference": "Order reference (optional)",
+    "message": "Your message",
+    "send": "Send",
+    "noneMine": "No requests yet.",
+    "you": "You",
+    "answer": "Your answer",
+    "desk": "Customer service",
+    "deskLead": "Customers' requests. An internal note is never shown to the customer.",
+    "status": "Status",
+    "all": "All",
+    "none": "No requests.",
+    "assigned": "With {name}",
+    "internal": "Internal note",
+    "reply": "Reply",
+    "note": "Add an internal note",
+    "resolve": "Resolve with this answer",
+    "takeIt": "Take it",
+    "statuses": {
+      "OPEN": "To deal with",
+      "WAITING_CUSTOMER": "Waiting for the customer",
+      "RESOLVED": "Resolved",
+      "CLOSED": "Closed"
+    }
+  },
+  "boards": {
+    "sales30": "Sales, last 30 days",
+    "topProducts": "Best sellers, last 30 days",
+    "cashToRemit": "Cash to remit",
+    "owedToYou": "Tracecart owes you",
+    "seller": {
+      "toAnswer": "To accept",
+      "preparing": "Being prepared",
+      "awaitingPickup": "Awaiting pickup",
+      "inTransit": "On the road",
+      "delivered": "Delivered (30 days)",
+      "cancelled": "Cancelled (30 days)",
+      "returnsOpen": "Open returns"
+    },
+    "partner": {
+      "toAnswer": "To accept",
+      "awaitingPickup": "To collect",
+      "onTheRoad": "On the road",
+      "dueSoon": "Due within 48 h",
+      "failed": "Missed deliveries",
+      "problems": "Problems",
+      "atPoint": "At the pickup point"
+    }
   }
 }

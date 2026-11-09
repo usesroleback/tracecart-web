@@ -62,5 +62,7 @@
     "PRODUCTS": "Store",
     "SOURCING": "Sourcing",
     "FREIGHT": "Freight"
-  }
+  },
+  "cancelLine": "Cancel this item",
+  "cancelLineReason": "Why cancel “{title}”?"
 }

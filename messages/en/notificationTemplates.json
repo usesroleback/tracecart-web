@@ -20,6 +20,7 @@
     "order_delivered": "Delivered",
     "shipment_update": "Shipment update",
     "return_update": "Return update",
-    "refund_paid": "Refund paid"
+    "refund_paid": "Refund paid",
+    "order_line_cancelled": "Item cancelled"
   }
 }

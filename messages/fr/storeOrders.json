@@ -62,5 +62,7 @@
     "PRODUCTS": "Boutique",
     "SOURCING": "Sourcing",
     "FREIGHT": "Fret"
-  }
+  },
+  "cancelLine": "Annuler cet article",
+  "cancelLineReason": "Pourquoi annuler « {title} » ?"
 }

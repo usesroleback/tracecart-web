@@ -28,6 +28,7 @@ const KEYS = [
   "order_cancelled",
   "order_part_shipped",
   "order_shipped",
+  "order_line_cancelled",
   "order_delivered",
   "shipment_update",
   "return_update",

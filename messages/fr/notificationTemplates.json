@@ -20,6 +20,7 @@
     "order_delivered": "Livrée",
     "shipment_update": "Mise à jour d'expédition",
     "return_update": "Mise à jour de retour",
-    "refund_paid": "Remboursement envoyé"
+    "refund_paid": "Remboursement envoyé",
+    "order_line_cancelled": "Article annulé"
   }
 }

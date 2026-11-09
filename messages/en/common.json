@@ -105,7 +105,8 @@
       "sellersArea": "Sellers",
       "carriersArea": "Carriers",
       "financeArea": "Finance"
-    }
+    },
+    "support": "Customer service"
   },
   "notifications": {
     "title": "Notifications",

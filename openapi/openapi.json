@@ -25360,6 +25360,231 @@
         }
       }
     },
+    "/me/support": {
+      "get": {
+        "tags": [
+          "Support (customer)"
+        ],
+        "summary": "One's support cases",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Support (customer)"
+        ],
+        "summary": "Ask Tracecart for help",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 160
+                  },
+                  "message": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 4000
+                  },
+                  "orderReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 40
+                  }
+                },
+                "required": [
+                  "subject",
+                  "message"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/support/{id}/messages": {
+      "post": {
+        "tags": [
+          "Support (customer)"
+        ],
+        "summary": "Answer on one's own case",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "account",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "body"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/me/views": {
       "get": {
         "tags": [
@@ -26033,6 +26258,7 @@
                       "order_placed",
                       "payment_received",
                       "order_cancelled",
+                      "order_line_cancelled",
                       "order_part_shipped",
                       "order_shipped",
                       "order_delivered",
@@ -26726,6 +26952,55 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/partner/dashboard": {
+      "get": {
+        "tags": [
+          "Partner portal"
+        ],
+        "summary": "One's company's work, cash and what it is owed",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "shipments.event.record",
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Not signed in",
@@ -34738,6 +35013,55 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seller/dashboard": {
+      "get": {
+        "tags": [
+          "Seller orders"
+        ],
+        "summary": "One's work and sales, from real orders",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "seller.order.fulfil",
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Not signed in",
@@ -43388,6 +43712,104 @@
         }
       }
     },
+    "/store-orders/{id}/lines/{lineId}/cancel": {
+      "post": {
+        "tags": [
+          "Store orders"
+        ],
+        "summary": "Cancel one line not yet sent. The others carry on; the money follows the line.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "orders.cancel",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "lineId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 300
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/store-orders/{id}/refunds": {
       "get": {
         "tags": [
@@ -43586,6 +44008,373 @@
             "in": "path"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/cases": {
+      "get": {
+        "tags": [
+          "Support"
+        ],
+        "summary": "Support cases, latest activity first",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "support.ticket.read",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "WAITING_CUSTOMER",
+                "RESOLVED",
+                "CLOSED"
+              ]
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true"
+              ]
+            },
+            "required": false,
+            "name": "mine",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "required": false,
+            "name": "q",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/cases/{id}/assign": {
+      "post": {
+        "tags": [
+          "Support"
+        ],
+        "summary": "Give a case to someone, or to nobody",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "support.ticket.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "assigneeId": {
+                    "type": "string",
+                    "nullable": true,
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "assigneeId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/cases/{id}/reply": {
+      "post": {
+        "tags": [
+          "Support"
+        ],
+        "summary": "Answer the customer, or add a note for staff only",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "support.ticket.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "internal": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "A note for staff only"
+                  }
+                },
+                "required": [
+                  "body"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/cases/{id}/resolve": {
+      "post": {
+        "tags": [
+          "Support"
+        ],
+        "summary": "Resolve a case: the answer goes to the customer",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-tracecart-access": "support.ticket.write",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resolution": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "resolution"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
